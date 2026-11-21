@@ -243,7 +243,7 @@
   function knopTekst() {
     if (!knop) return;
     knop.setAttribute('aria-pressed', String(aan));
-    knop.textContent = aan ? 'Muziek aan' : 'Muziek uit';
+    knop.title = aan ? 'Muziek uitzetten' : 'Muziek aanzetten';
   }
 
   function zet(waarde) {

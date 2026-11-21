@@ -405,6 +405,10 @@
       Geluid.klok();
       bezig = false; knopStand(); tekenSpelers();
       ui.werp.textContent = 'Werp de stenen';
+      // duiten: een mens die wint krijgt 40, verliezen tegen de computer levert 15 op
+      if (window.Duiten && spelers.some((q) => !q.computer)) {
+        window.Duiten.beloon({ spel: 'ganzenbord', bedrag: p.computer ? 15 : 40, gewonnen: !p.computer, tekst: p.computer ? `${p.naam} won, goed gespeeld` : `${p.naam} wint!` });
+      }
       return;
     }
     await wacht(500);
@@ -430,6 +434,7 @@
       }
     },
     stop() { spelId++; bezig = false; },
+    opnieuw() { nieuwSpel(); },
     // een losse prent van het bord, om aan de muur van het huis te hangen
     maakPrent() { const b = bouwBord('-wand', true); b.svg.removeAttribute('class'); b.svg.setAttribute('aria-hidden', 'true'); return b.svg; }
   };

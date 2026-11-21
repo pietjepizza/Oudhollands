@@ -7,6 +7,17 @@ Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in
 marmeren vloer, tegelplint, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
 in naar het spel. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
 
+**Duiten verdienen en het huis opknappen.** De voorkamer begint stoffig: spinnenwebben, vuile ruiten, vochtige muren,
+een doffe vloer. Met elk potje verdien je duiten (winnen 40, verliezen 10 à 15, sjoelen 10 plus een kwart van je score).
+Daarmee doe je tien klussen, van "Spinnenwebben weg" (10) tot "Kussen voor de kat" (80). Elke klus verandert iets
+zichtbaars in de kamer, met een korte animatie. Is de kamer klaar, dan branden beneden in het grachtenpand de lichten.
+Alles wordt in de browser bewaard; via het menu kun je opnieuw beginnen.
+
+**Op de telefoon** is de kamer staand en vult hij het scherm. Onderaan zit de klusknop, binnen bereik van je duim.
+
+**Als app.** De site is installeerbaar (manifest, iconen) en werkt offline dankzij een service worker (`sw.js`).
+Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
+
 **Speelbaar in deze eerste versie**
 
 - **Ganzenbord**: handgekleurd prentbord, 2 tot 4 spelers (mens of computer), met gans, brug, herberg, put, doolhof, gevangenis en dood.
@@ -17,7 +28,7 @@ in naar het spel. Spellen die nog niet klaar zijn hangen achter een gordijntje o
 
 | Plek | Stuk | Klank |
 |---|---|---|
-| Tegelwand | Engels Nachtegaeltje | blokfluit |
+| Het huis | Engels Nachtegaeltje | blokfluit |
 | Ganzenbord | Malle Symen | blokfluit en trom |
 | Sjoelen | Onder de Linde groene | luit |
 | Molenspel | Doen Daphne d'over schoone Maeght | luit |

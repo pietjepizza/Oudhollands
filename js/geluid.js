@@ -116,6 +116,42 @@
     plons() { ruis(0.5, 400, 0.7, 0.35); },
     jammer() { toon(300, 0.25, 0.1, 'triangle'); toon(220, 0.4, 0.1, 'triangle', 0.22); },
     deur() { ruis(0.6, 220, 1.2, 0.25); toon(140, 0.5, 0.06, 'triangle', 0.05); },
-    woesj() { ruis(0.5, 700, 0.6, 0.18); }
+    woesj() { ruis(0.5, 700, 0.6, 0.18); },
+    // munten die rinkelen
+    munt() {
+      for (let i = 0; i < 5; i++) {
+        const w = i * 0.075 + Math.random() * 0.02;
+        toon(2300 + Math.random() * 700, 0.16, 0.07, 'sine', w);
+        toon(3400 + Math.random() * 600, 0.08, 0.03, 'sine', w);
+        ruis(0.03, 5000, 4, 0.12, w);
+      }
+    },
+    // schrobben en een glinstering
+    klus() {
+      for (let i = 0; i < 4; i++) ruis(0.14, 1400 + i * 200, 1.2, 0.22, i * 0.12);
+      [1568, 2093, 2637].forEach((f, i) => toon(f, 0.5, 0.06, 'sine', 0.55 + i * 0.09));
+    },
+    // de kamer is af
+    tada() {
+      [523, 659, 784, 1047].forEach((f, i) => { toon(f, 0.6, 0.11, 'triangle', i * 0.12); toon(f * 2, 0.4, 0.03, 'sine', i * 0.12); });
+      [0.6, 1.0].forEach((w) => toon(1568, 1.2, 0.05, 'sine', w));
+    },
+    miauw() {
+      const c = context(); if (!c) return;
+      const t = c.currentTime;
+      const o = c.createOscillator(); o.type = 'sawtooth';
+      o.frequency.setValueAtTime(520, t);
+      o.frequency.linearRampToValueAtTime(860, t + 0.18);
+      o.frequency.linearRampToValueAtTime(470, t + 0.62);
+      const f = c.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 2.2;
+      f.frequency.setValueAtTime(900, t); f.frequency.linearRampToValueAtTime(1500, t + 0.2); f.frequency.linearRampToValueAtTime(800, t + 0.6);
+      const g = c.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.18, t + 0.06);
+      g.gain.setValueAtTime(0.16, t + 0.45);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+      o.connect(f); f.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t + 0.75);
+    }
   };
 })();

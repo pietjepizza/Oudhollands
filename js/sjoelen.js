@@ -124,13 +124,16 @@
       const t = telling();
       let best = 0;
       try { best = Number(localStorage.getItem('speelhuys.sjoelen.best') || 0); } catch (e) { /* */ }
-      if (t.totaal > best) {
+      const record = t.totaal > best;
+      if (record) {
         try { localStorage.setItem('speelhuys.sjoelen.best', String(t.totaal)); } catch (e) { /* */ }
         melding = `Klaar! ${t.totaal} punten, je beste worp tot nu toe.`;
         Geluid.klok();
       } else {
         melding = `Klaar! ${t.totaal} punten. Je beste is ${best}.`;
       }
+      // duiten: 10 voor het meedoen plus een kwart van de score
+      if (window.Duiten) window.Duiten.beloon({ spel: 'sjoelen', bedrag: 10 + Math.round(t.totaal / 4), gewonnen: record, tekst: record ? `${t.totaal} punten · record!` : `${t.totaal} punten` });
     }
     werkPaneelBij();
   }
@@ -430,6 +433,7 @@
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(lus);
     },
-    stop() { actief = false; cancelAnimationFrame(raf); if (vast) { hand++; vast = null; } laden = null; }
+    stop() { actief = false; cancelAnimationFrame(raf); if (vast) { hand++; vast = null; } laden = null; },
+    opnieuw() { nieuwSpel(); if (doek) doek.focus({ preventScroll: true }); }
   };
 })();

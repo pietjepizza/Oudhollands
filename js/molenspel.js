@@ -231,7 +231,11 @@
     const t = ander(aanZet);
     if (tel(bord, t) + teZetten[t] < 3) return einde(aanZet, `${NAAM[t]} heeft nog maar twee stenen.`);
     if (mag(bord, t, teZetten).length === 0) return einde(aanZet, `${NAAM[t]} kan geen kant meer op.`);
-    if (zettenZonderMolen >= 50) { winnaar = 3; melding('Vijftig zetten zonder molen: remise.'); teken(); return; }
+    if (zettenZonderMolen >= 50) {
+      winnaar = 3; melding('Vijftig zetten zonder molen: remise.'); teken();
+      if (window.Duiten) window.Duiten.beloon({ spel: 'molenspel', bedrag: 20, gewonnen: false, tekst: 'Remise' });
+      return;
+    }
     aanZet = t;
     const f = faseTekst(aanZet);
     const uitleg = { zetten: 'Zet een steen op een leeg kruispunt.', schuiven: 'Kies een steen en schuif hem naar een leeg buurpunt.', springen: 'Nog drie stenen: je mag naar elk leeg punt springen.' };
@@ -245,6 +249,11 @@
     melding(`${reden} ${NAAM[w]} wint!`);
     if (!tegenComputer || w === 1) Geluid.klok(); else Geluid.jammer();
     teken();
+    // duiten: winnen van de computer 40, verliezen 10, met z'n tweeën 30
+    if (window.Duiten) {
+      const gewonnen = !tegenComputer || w === 1;
+      window.Duiten.beloon({ spel: 'molenspel', bedrag: !tegenComputer ? 30 : (w === 1 ? 40 : 10), gewonnen, tekst: gewonnen ? `${NAAM[w]} wint!` : 'Zwart won, goed gespeeld' });
+    }
   }
 
   async function computerBeurt() {
@@ -321,6 +330,7 @@
         computerBeurt();
       }
     },
-    stop() { spelId++; }
+    stop() { spelId++; },
+    opnieuw() { nieuwSpel(); }
   };
 })();
