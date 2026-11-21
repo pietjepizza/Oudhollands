@@ -1,6 +1,6 @@
 /* Het Speelhuys
-   Layout: een tegelwand in Delfts blauw als startscherm; elk spel krijgt een eigen speelruimte
-   met een paneel ernaast (op de telefoon eronder). Tegels, papier en hout zijn "voorwerpen":
+   Layout: een grachtenpand en een 17e-eeuwse kamer als startscherm, met de spellen aan de muur;
+   elk spel krijgt een eigen speelruimte met een paneel ernaast (op de telefoon eronder). Tegels, papier en hout zijn "voorwerpen":
    hun kleuren veranderen niet met het thema, de omgeving (de muur) wel. */
 
 :root {
@@ -88,7 +88,7 @@ a { color: var(--accent); }
 
 /* ---------- Kop ---------- */
 .kop { padding-block: 14px; border-bottom: 1px solid var(--lijn); }
-.kop-binnen, main, .voet-binnen { max-width: 1120px; margin-inline: auto; }
+.kop-binnen, .voet-binnen, .spel, .thuis-tekst { max-width: 1120px; margin-inline: auto; }
 .kop-binnen { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .merk { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--inkt); font-family: var(--f-sier); font-size: 1.5rem; }
 .merk-tegel { width: 38px; height: 38px; flex: none; }
@@ -107,7 +107,7 @@ a { color: var(--accent); }
 @media (max-width: 640px) { .nu-speelt { display: none; } .merk { font-size: 1.25rem; } .merk-tegel { width: 32px; height: 32px; } .knop-geluid { padding: 3px 10px; font-size: .88rem; } .kop-knoppen { gap: 6px; } }
 
 /* ---------- Startscherm ---------- */
-.thuis { padding-block: 40px 24px; }
+.thuis { padding-block: 0 24px; }
 .intro { max-width: 40rem; display: grid; gap: 10px; margin-bottom: 28px; }
 .bovenregel { margin: 0; font-family: var(--f-kapitaal); letter-spacing: .08em; color: var(--inkt-zacht); font-size: var(--maat-m); }
 .intro h1 { font-size: var(--maat-xl); }
@@ -288,3 +288,143 @@ select {
 .voet { border-top: 1px solid var(--lijn); padding-block: 22px 32px; margin-top: 24px; }
 .voet p { margin: 0 0 6px; color: var(--inkt-zacht); font-size: 1rem; max-width: 60rem; }
 .voet .bronnen { font-size: .92rem; }
+
+/* ---------- Het huis ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.kop { position: relative; z-index: 2; }
+.toneel {
+  --zand: #F7E3B5;
+  position: relative;
+  overflow: hidden;
+  height: min(calc(100svh - 70px), 64vw);
+  min-height: 440px;
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  background: #140D08;
+  isolation: isolate;
+}
+@media (max-width: 760px) { .toneel { height: 74svh; min-height: 470px; } }
+.gevel, .kamer { position: absolute; inset: 0; }
+.gevel-svg, .kamer-svg { display: block; width: 100%; height: 100%; transform-origin: 0 0; }
+.gevel-svg { transform-origin: 0 0; }
+.zoomt { will-change: transform; }
+.kamer-scroll { position: absolute; inset: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; overscroll-behavior-x: contain; }
+.kamer-scroll::-webkit-scrollbar { display: none; }
+@media (max-aspect-ratio: 13/10) {
+  .kamer-svg { width: auto; aspect-ratio: 1.6 / 1; max-width: none; }
+}
+.sluier { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: var(--grond); z-index: 3; }
+
+.gevel-tekst {
+  position: absolute; left: max(24px, 4%); top: 6%;
+  width: min(21rem, 36%);
+  display: grid; gap: 4px; justify-items: start;
+  padding: 18px 22px 20px;
+  background: rgba(246, 237, 216, .93);
+  color: #1E2433;
+  border-radius: 3px;
+  box-shadow: 0 10px 30px rgba(20, 14, 6, .35), inset 0 0 0 1px rgba(120, 90, 40, .35), inset 0 0 0 5px rgba(246, 237, 216, .93), inset 0 0 0 6px rgba(120, 90, 40, .3);
+}
+.gevel-tekst .bovenregel { color: #5A4630; }
+.gevel-titel { margin: 0; font-family: var(--f-sier); font-size: clamp(2.2rem, 1.4rem + 2.6vw, 3.6rem); line-height: 1; color: #22392B; }
+.gevel-uitleg { margin: 6px 0 10px; font-size: 1.05rem; color: #3A3428; }
+.knop-binnen {
+  font-size: 1.15rem; padding: 10px 22px;
+  background: #22392B; color: #F6EBD2;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.25);
+}
+.knop-binnen:hover { filter: brightness(1.15); }
+.deur-wenk { animation: wenk 2.4s ease-in-out infinite; pointer-events: none; }
+@keyframes wenk { 0%, 100% { opacity: 0; } 50% { opacity: .9; } }
+@media (max-width: 760px) {
+  .gevel-tekst { left: 12px; right: 12px; top: 12px; width: auto; padding: 12px 16px 14px; justify-items: center; text-align: center; }
+  .gevel-uitleg { display: none; }
+  .gevel-titel { font-size: 2.1rem; }
+  .knop-binnen { margin-top: 6px; }
+}
+
+.huis-label {
+  position: absolute; z-index: 4; pointer-events: none;
+  transform: translate(-50%, -100%);
+  background: #F4E9CF; color: #2A1A08;
+  font-family: var(--f-sier); font-size: 1.05rem; font-style: italic;
+  padding: 5px 12px; border-radius: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35), inset 0 0 0 1px rgba(90,60,20,.3);
+  white-space: nowrap;
+}
+.veeg-hint {
+  display: none;
+  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); margin: 0;
+  background: rgba(20, 13, 8, .7); color: #F4E9CF; padding: 5px 14px; border-radius: 999px;
+  font-family: var(--f-kapitaal); font-size: .9rem; letter-spacing: .05em; pointer-events: none;
+  transition: opacity .6s ease;
+}
+.veeg-hint.weg { opacity: 0; }
+@media (max-aspect-ratio: 13/10) { .veeg-hint { display: block; } }
+
+/* voorwerpen aan de muur */
+.voorwerp { cursor: pointer; outline: none; }
+.voorwerp .vw { transition: transform .45s cubic-bezier(.2,.8,.2,1), filter .45s ease; transform-box: fill-box; transform-origin: 50% 20%; }
+.speelbaar:hover .vw, .speelbaar:focus-visible .vw { transform: translateY(-7px) scale(1.035); filter: drop-shadow(0 14px 14px rgba(30, 18, 6, .45)) brightness(1.06); }
+.speelbaar:focus-visible .vw { filter: drop-shadow(0 0 5px #F2C14E) drop-shadow(0 0 2px #F2C14E) drop-shadow(0 14px 14px rgba(30, 18, 6, .45)); }
+.binnenkort:hover .vw, .binnenkort:focus-visible .vw { transform: translateY(-3px); filter: brightness(1.08); }
+.binnenkort:focus-visible .vw { filter: drop-shadow(0 0 4px #F2C14E); }
+.gordijn { transition: transform .6s cubic-bezier(.2,.8,.2,1); transform-box: fill-box; transform-origin: 100% 0; }
+.binnenkort:hover .gordijn, .binnenkort:focus-visible .gordijn { transform: scaleX(.55); }
+.schud .vw { animation: schud .5s ease; }
+@keyframes schud { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+
+/* sfeer in de kamer */
+.tafel { transform: translate(calc(var(--px, 0) * -22px), calc(var(--py, 0) * -6px)); transition: transform .8s ease-out; }
+.diepte { transform: translate(calc(var(--px, 0) * -12px), calc(var(--py, 0) * -4px)); transition: transform .8s ease-out; }
+.kroon { transform-origin: 800px -10px; animation: slinger-klein 7s ease-in-out infinite alternate; }
+.vlam { transform-box: fill-box; transform-origin: 50% 100%; animation: flakker 1.7s ease-in-out infinite alternate; }
+.vlam:nth-of-type(2n) { animation-duration: 1.3s; }
+.gloed { animation: gloei 2.3s ease-in-out infinite alternate; }
+.stofje { animation-name: zweven; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; opacity: .5; }
+.lichtbundel { animation: ademen 13s ease-in-out infinite alternate; }
+.zonvlek { animation: ademen-vlek 13s ease-in-out infinite alternate; }
+.koek-touw { transform-origin: 1290px -10px; animation: slinger 3.8s ease-in-out infinite alternate; }
+.hoepel-hang { transform-origin: 1190px 386px; animation: slinger-klein 5.5s ease-in-out infinite alternate; }
+.kat-lijf { transform-box: fill-box; transform-origin: 50% 100%; animation: ademhalen 3.4s ease-in-out infinite; }
+.kat-staart { transform-origin: 1450px 926px; animation: kwispel 3s ease-in-out infinite alternate; }
+.gangLicht { animation: gloei 4s ease-in-out infinite alternate; }
+
+@keyframes slinger { from { transform: rotate(-3.2deg); } to { transform: rotate(3.2deg); } }
+@keyframes slinger-klein { from { transform: rotate(-.9deg); } to { transform: rotate(.9deg); } }
+@keyframes flakker { 0% { transform: scale(1, 1) skewX(0); } 30% { transform: scale(.92, 1.08) skewX(2deg); } 60% { transform: scale(1.05, .94) skewX(-2deg); } 100% { transform: scale(.96, 1.06) skewX(1deg); } }
+@keyframes gloei { from { opacity: .7; } to { opacity: 1; } }
+@keyframes zweven { from { transform: translate(0, 0); opacity: .15; } to { transform: translate(var(--dx), var(--dy)); opacity: .85; } }
+@keyframes ademen { from { opacity: .4; } to { opacity: .7; } }
+@keyframes ademen-vlek { from { opacity: .4; } to { opacity: .62; } }
+@keyframes ademhalen { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.045); } }
+@keyframes kwispel { 0%, 70% { transform: rotate(0); } 85% { transform: rotate(-7deg); } 100% { transform: rotate(3deg); } }
+
+/* gevel */
+.wolk { animation-name: drijven; animation-timing-function: linear; animation-iteration-count: infinite; }
+@keyframes drijven { from { transform: translateX(-420px); } to { transform: translateX(1700px); } }
+.uithangbord { transform-origin: 1127px 626px; animation: zwaai 4.6s ease-in-out infinite alternate; }
+@keyframes zwaai { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.vogels { animation: vliegen 34s linear infinite; }
+@keyframes vliegen { from { transform: translate(-120px, 140px); } 50% { transform: translate(800px, 90px); } to { transform: translate(1750px, 160px); } }
+.water-glans line { animation: glinster 5s ease-in-out infinite alternate; }
+@keyframes glinster { from { transform: translateX(-12px); opacity: .1; } to { transform: translateX(12px); opacity: .5; } }
+.deur-blad { transform-box: fill-box; transform-origin: 0 50%; }
+.deur-klik { cursor: pointer; }
+.deur-licht { animation: gloei 3s ease-in-out infinite alternate; }
+
+/* spel komt binnen */
+.spel:not([hidden]) { animation: binnenkomen .5s ease-out; }
+@keyframes binnenkomen { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .kroon, .vlam, .gloed, .stofje, .lichtbundel, .zonvlek, .koek-touw, .hoepel-hang, .kat-lijf, .kat-staart, .gangLicht,
+  .wolk, .uithangbord, .vogels, .water-glans line, .deur-licht, .deur-wenk, .spel:not([hidden]), .schud .vw { animation: none !important; }
+  .tafel, .diepte { transform: none; }
+  .voorwerp .vw, .gordijn { transition: none; }
+}
+
+.thuis-tekst { padding-top: 32px; }
+.intro-kop { font-size: var(--maat-xl); }
+.spellijst { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--f-sier); font-size: 1.25rem; }
+.spellijst .later { flex-basis: 100%; font-family: var(--f-tekst); font-size: 1rem; color: var(--inkt-zacht); }

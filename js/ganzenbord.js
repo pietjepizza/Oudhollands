@@ -75,23 +75,24 @@
     el('path', Object.assign({}, lijn, { d: paden[soort], stroke: kleur }), g);
   }
 
-  function bouwBord() {
-    svg = el('svg', { viewBox: '0 0 720 720', class: 'gb-bord', role: 'img', 'aria-label': 'Ganzenbord met 63 velden in een spiraal' });
+  function bouwBord(sfx, eenvoudig) {
+    sfx = sfx || '';
+    const svg = el('svg', { viewBox: '0 0 720 720', class: 'gb-bord', role: 'img', 'aria-label': 'Ganzenbord met 63 velden in een spiraal' });
     const defs = el('defs', {}, svg);
-    const f = el('filter', { id: 'gb-papier' }, defs);
+    const f = el('filter', { id: 'gb-papier' + sfx }, defs);
     el('feTurbulence', { type: 'fractalNoise', baseFrequency: '0.9', numOctaves: '3', result: 'r' }, f);
     el('feColorMatrix', { in: 'r', values: '0 0 0 0 .45  0 0 0 0 .33  0 0 0 0 .15  0 0 0 .13 0' }, f);
     el('feComposite', { in2: 'SourceGraphic', operator: 'in' }, f);
-    const rg = el('radialGradient', { id: 'gb-vignet', cx: '50%', cy: '50%', r: '70%' }, defs);
+    const rg = el('radialGradient', { id: 'gb-vignet' + sfx, cx: '50%', cy: '50%', r: '70%' }, defs);
     el('stop', { offset: '.6', 'stop-color': '#7A5A2A', 'stop-opacity': '0' }, rg);
     el('stop', { offset: '1', 'stop-color': '#7A5A2A', 'stop-opacity': '.28' }, rg);
-    const pg = el('radialGradient', { id: 'gb-pion', cx: '35%', cy: '30%', r: '75%' }, defs);
+    const pg = el('radialGradient', { id: 'gb-pion' + sfx, cx: '35%', cy: '30%', r: '75%' }, defs);
     el('stop', { offset: '0', 'stop-color': '#fff', 'stop-opacity': '.6' }, pg);
     el('stop', { offset: '.5', 'stop-color': '#fff', 'stop-opacity': '0' }, pg);
 
     el('rect', { width: 720, height: 720, fill: '#EFE3C3' }, svg);
-    el('rect', { width: 720, height: 720, fill: '#EFE3C3', filter: 'url(#gb-papier)' }, svg);
-    el('rect', { width: 720, height: 720, fill: 'url(#gb-vignet)' }, svg);
+    if (!eenvoudig) el('rect', { width: 720, height: 720, fill: '#EFE3C3', filter: 'url(#gb-papier' + sfx + ')' }, svg);
+    el('rect', { width: 720, height: 720, fill: 'url(#gb-vignet' + sfx + ')' }, svg);
     el('rect', { x: 9, y: 9, width: 702, height: 702, fill: 'none', stroke: INKT, 'stroke-width': 2.4 }, svg);
     el('rect', { x: 16, y: 16, width: 688, height: 688, fill: 'none', stroke: INKT, 'stroke-width': .8 }, svg);
 
@@ -137,8 +138,8 @@
     const tb = el('text', { x: 97, y: 696, 'text-anchor': 'middle', 'font-family': 'IM Fell English SC, Georgia, serif', 'font-size': 14, fill: INKT }, veldLaag);
     tb.textContent = 'Begin';
 
-    pionLaag = el('g', {}, svg);
-    return svg;
+    const laag = el('g', {}, svg);
+    return { svg, laag };
   }
 
   function pionPlek(index, pos) {
@@ -418,7 +419,9 @@
       veld = document.getElementById('gb-veld');
       paneel = document.getElementById('gb-paneel');
       if (!gebouwd) {
-        veld.appendChild(bouwBord());
+        const b = bouwBord();
+        svg = b.svg; pionLaag = b.laag;
+        veld.appendChild(svg);
         bouwPaneel();
         gebouwd = true;
         nieuwSpel();
@@ -426,6 +429,8 @@
         beurtBegin();
       }
     },
-    stop() { spelId++; bezig = false; }
+    stop() { spelId++; bezig = false; },
+    // een losse prent van het bord, om aan de muur van het huis te hangen
+    maakPrent() { const b = bouwBord('-wand', true); b.svg.removeAttribute('class'); b.svg.setAttribute('aria-hidden', 'true'); return b.svg; }
   };
 })();

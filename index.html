@@ -173,7 +173,7 @@
 
 <header class="kop">
   <div class="kop-binnen">
-    <a class="merk" href="#" aria-label="Het Speelhuys, naar de tegelwand">
+    <a class="merk" href="#" aria-label="Het Speelhuys, naar de kamer">
       <svg class="merk-tegel" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" class="merk-grond"/><use href="#hoeken" class="merk-hoeken"/><use href="#ill-gans" x="12" y="10" width="76" height="76" class="tekening"/></svg>
       <span>Het Speelhuys</span>
     </a>
@@ -186,100 +186,64 @@
 </header>
 
 <main>
-  <!-- STARTSCHERM: de tegelwand -->
+  <!-- STARTSCHERM: het huis -->
   <section id="thuis" class="weergave thuis" aria-labelledby="thuis-titel">
-    <div class="intro">
-      <p class="bovenregel">Oud-Hollandse spellen</p>
-      <h1 id="thuis-titel">Kies een tegel en speel</h1>
-      <p class="intro-tekst">Ganzenbord, sjoelen en molenspel, zoals ze eeuwenlang in Hollandse huiskamers, herbergen en op straat gespeeld werden. Op 17e-eeuwse Delftse tegels stond vaak één kinderspel per tegel. Hier is elke tegel een spel.</p>
+    <h1 id="thuis-titel" class="sr-only">Het Speelhuys</h1>
+    <div class="toneel" id="toneel">
+      <div class="gevel" id="gevel" hidden>
+        <div class="gevel-tekst">
+          <p class="bovenregel">Welkom in</p>
+          <p class="gevel-titel">Het Speelhuys</p>
+          <p class="gevel-uitleg">Oud-Hollandse spellen, zoals ze eeuwenlang gespeeld werden in huiskamers, herbergen en op straat.</p>
+          <button class="knop knop-binnen" id="naar-binnen" type="button">Ga naar binnen</button>
+        </div>
+      </div>
+      <div class="kamer" id="kamer" hidden>
+        <div class="kamer-scroll" id="kamer-scroll"></div>
+        <p class="veeg-hint" id="veeg-hint">Veeg om rond te kijken</p>
+      </div>
+      <div class="huis-label" id="huis-label" hidden></div>
+      <div class="sluier" id="sluier" aria-hidden="true"></div>
     </div>
 
-    <div class="tegelwand" role="list">
-      <a class="tegel" role="listitem" href="#ganzenbord">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-gans" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Ganzenbord</span>
-        <span class="tegel-sub">Speel nu</span>
-      </a>
-      <a class="tegel" role="listitem" href="#sjoelen">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-sjoelbak" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Sjoelen</span>
-        <span class="tegel-sub">Speel nu</span>
-      </a>
-      <a class="tegel" role="listitem" href="#molenspel">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-molen" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Molenspel</span>
-        <span class="tegel-sub">Speel nu</span>
-      </a>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-dammen" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Dammen</span>
-        <span class="tegel-sub">Nog in de oven</span>
+    <div class="thuis-tekst">
+      <div class="intro">
+        <p class="bovenregel">Oud-Hollandse spellen</p>
+        <h2 class="intro-kop">Kies een spel aan de muur</h2>
+        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak of het molenspel om te spelen. De andere spellen in de kamer zijn nog niet klaar: de prenten hangen nog achter een gordijntje.</p>
+        <ul class="spellijst">
+          <li><a href="#ganzenbord">Ganzenbord</a></li>
+          <li><a href="#sjoelen">Sjoelen</a></li>
+          <li><a href="#molenspel">Molenspel</a></li>
+          <li class="later">Binnenkort: dammen, klaverjassen, knikkeren, tollen, kolf op het ijs, koekhappen, hoepelen, kop van Jut en uilenspel</li>
+        </ul>
+        <p><a href="#" id="naar-buiten">Bekijk het huis van buiten</a></p>
       </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-kaarten" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Klaverjassen</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-knikkers" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Knikkeren</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-tol" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Tollen</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-kolf" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Kolf op het ijs</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-koek" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Koekhappen</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-hoepel" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Hoepelen</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-jut" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Kop van Jut</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-      <div class="tegel tegel--oven" role="listitem" aria-disabled="true">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#hoeken" class="tegel-hoeken"/><circle cx="50" cy="44" r="31" class="medaillon"/><use href="#ill-uil" x="22" y="16" width="56" height="56" class="tekening"/></svg>
-        <span class="tegel-naam">Uilenspel</span>
-        <span class="tegel-sub">Nog in de oven</span>
-      </div>
-    </div>
 
-    <section class="over" aria-labelledby="over-titel">
-      <h2 id="over-titel">Waar deze spellen vandaan komen</h2>
-      <div class="over-kolommen">
-        <article>
-          <h3>Gedrukte spelborden</h3>
-          <p>De vroegst bekende gedrukte ganzenborden uit de Lage Landen stammen uit de eerste helft van de 17e eeuw. Uitgevers als Kannewet en Oortman verkochten handgekleurde prenten met de spelregels op rijm in het midden.</p>
-        </article>
-        <article>
-          <h3>Tegels en gravures</h3>
-          <p>Delftse tegels uit de 17e eeuw tonen hoepelen, tollen, knikkeren en vliegeren, één spel per tegel. Adriaen van de Venne tekende voor Jacob Cats een heel plein vol spelende kinderen: <i>Kinder-spel</i> (1625).</p>
-        </article>
-        <article>
-          <h3>Herberg, huiskamer en ijs</h3>
-          <p>Klaverjassen ontstond waarschijnlijk in de 17e eeuw in Nederland. Avercamp schilderde kolf op het ijs. De sjoelbak kwam pas aan het eind van de 19e eeuw op en is nog steeds een wedstrijdsport.</p>
-        </article>
-      </div>
-    </section>
+      <section class="over" aria-labelledby="over-titel">
+        <h2 id="over-titel">Waar deze spellen vandaan komen</h2>
+        <div class="over-kolommen">
+          <article>
+            <h3>Gedrukte spelborden</h3>
+            <p>De vroegst bekende gedrukte ganzenborden uit de Lage Landen stammen uit de eerste helft van de 17e eeuw. Uitgevers als Kannewet en Oortman verkochten handgekleurde prenten met de spelregels op rijm in het midden.</p>
+          </article>
+          <article>
+            <h3>Tegels, prenten en schilderijen</h3>
+            <p>Delftse tegels uit de 17e eeuw tonen hoepelen, tollen, knikkeren en vliegeren. Schilders als Vermeer en De Hooch schilderden kamers met marmeren vloeren, glas-in-loodramen en een kroonluchter, zoals dit huis.</p>
+          </article>
+          <article>
+            <h3>Herberg, huiskamer en ijs</h3>
+            <p>Klaverjassen ontstond waarschijnlijk in de 17e eeuw in Nederland. Avercamp schilderde kolf op het ijs. De sjoelbak kwam pas aan het eind van de 19e eeuw op en is nog steeds een wedstrijdsport.</p>
+          </article>
+        </div>
+      </section>
+    </div>
   </section>
 
   <!-- GANZENBORD -->
   <section id="ganzenbord" class="weergave spel" aria-labelledby="gb-titel" hidden>
     <div class="spel-kop">
-      <a class="terug" href="#">← Terug naar de tegelwand</a>
+      <a class="terug" href="#">← Terug naar het huis</a>
       <h1 id="gb-titel">Het vermakelijk Gansespel</h1>
       <p class="spel-ondertitel">Gooi met twee stenen, volg de spiraal en bereik als eerste veld 63.</p>
     </div>
@@ -292,7 +256,7 @@
   <!-- SJOELEN -->
   <section id="sjoelen" class="weergave spel" aria-labelledby="sj-titel" hidden>
     <div class="spel-kop">
-      <a class="terug" href="#">← Terug naar de tegelwand</a>
+      <a class="terug" href="#">← Terug naar het huis</a>
       <h1 id="sj-titel">Sjoelen</h1>
       <p class="spel-ondertitel">Dertig schijven, drie beurten. Schuif ze door de poortjes in de vakken 2, 3, 4 en 1.</p>
     </div>
@@ -305,7 +269,7 @@
   <!-- MOLENSPEL -->
   <section id="molenspel" class="weergave spel" aria-labelledby="mo-titel" hidden>
     <div class="spel-kop">
-      <a class="terug" href="#">← Terug naar de tegelwand</a>
+      <a class="terug" href="#">← Terug naar het huis</a>
       <h1 id="mo-titel">Molenspel</h1>
       <p class="spel-ondertitel">Maak drie op een rij, een molen, en neem dan een steen van je tegenstander.</p>
     </div>
@@ -329,6 +293,7 @@
 <script src="js/ganzenbord.js"></script>
 <script src="js/sjoelen.js"></script>
 <script src="js/molenspel.js"></script>
+<script src="js/huis.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

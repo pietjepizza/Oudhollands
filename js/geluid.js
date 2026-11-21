@@ -1,18 +1,76 @@
-/* Eenvoudige geluiden, opgewekt met Web Audio (geen geluidsbestanden nodig). */
+/* Klank: één gedeelde AudioContext voor geluidseffecten en muziek.
+   Op de iPhone gelden twee extra regels:
+   1. Geluid mag pas starten na een aanraking; die telt pas bij het loslaten (touchend), niet bij het neerzetten.
+   2. De stille-modus-schakelaar dempt Web Audio. Met audioSession 'playback' (iOS 17+) of een
+      stil afspelend audio-element (oudere iOS) speelt het geluid toch, zoals bij een video. */
 (function () {
   let ctx = null;
+  let stilleSpeler = null;
+
+  function maak() {
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      try { ctx = new AC(); } catch (e) { return null; }
+    }
+    return ctx;
+  }
+
+  function stilteWav() {
+    const n = 4000; // een halve seconde stilte, 8 kHz, 8 bit mono
+    const b = new Uint8Array(44 + n);
+    const dv = new DataView(b.buffer);
+    const tekst = (o, t) => { for (let i = 0; i < t.length; i++) b[o + i] = t.charCodeAt(i); };
+    tekst(0, 'RIFF'); dv.setUint32(4, 36 + n, true); tekst(8, 'WAVE');
+    tekst(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+    dv.setUint32(24, 8000, true); dv.setUint32(28, 8000, true); dv.setUint16(32, 1, true); dv.setUint16(34, 8, true);
+    tekst(36, 'data'); dv.setUint32(40, n, true);
+    b.fill(128, 44);
+    let s = ''; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
+    return 'data:audio/wav;base64,' + btoa(s);
+  }
+
+  const iOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  function ontgrendel() {
+    const c = maak();
+    if (!c) return;
+    try { if (navigator.audioSession && navigator.audioSession.type !== 'playback') navigator.audioSession.type = 'playback'; } catch (e) { /* */ }
+    if (iOS && !navigator.audioSession && (window.Geluid.aan || (window.Muziek && window.Muziek.aan))) {
+      if (!stilleSpeler) {
+        stilleSpeler = new Audio(stilteWav());
+        stilleSpeler.loop = true;
+        stilleSpeler.setAttribute('playsinline', '');
+      }
+      if (stilleSpeler.paused) stilleSpeler.play().catch(() => { /* */ });
+    }
+    if (c.state !== 'running') {
+      c.resume().catch(() => { /* */ });
+      // een leeg geluidje binnen de aanraking zet oudere iOS-versies open
+      const buf = c.createBuffer(1, 1, 22050);
+      const src = c.createBufferSource(); src.buffer = buf; src.connect(c.destination); src.start(0);
+    }
+  }
+
+  ['touchend', 'pointerup', 'click', 'keydown'].forEach((t) => {
+    window.addEventListener(t, ontgrendel, { capture: true, passive: true });
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && stilleSpeler && !stilleSpeler.paused) stilleSpeler.pause();
+  });
+
+  window.Klank = { maak, ontgrendel, get ctx() { return ctx; } };
+
+  // ---------- Geluidseffecten ----------
   let aan = true;
   try { aan = localStorage.getItem('speelhuys.geluid') !== 'uit'; } catch (e) { /* geen opslag */ }
 
   function context() {
     if (!aan) return null;
-    if (!ctx) {
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return null;
-      ctx = new AC();
-    }
-    if (ctx.state === 'suspended') ctx.resume();
-    return ctx;
+    const c = maak();
+    if (!c) return null;
+    if (c.state === 'suspended') c.resume().catch(() => { /* */ });
+    return c;
   }
 
   function ruis(duur, freq, q, volume, wanneer) {
@@ -46,6 +104,7 @@
     zet(waarde) {
       aan = waarde;
       try { localStorage.setItem('speelhuys.geluid', aan ? 'aan' : 'uit'); } catch (e) { /* */ }
+      if (aan) ontgrendel();
     },
     dobbel() { for (let i = 0; i < 6; i++) ruis(0.05, 1800 + Math.random() * 1500, 4, 0.5, i * 0.06 + Math.random() * 0.03); },
     stap() { ruis(0.04, 900, 3, 0.35); },
@@ -55,6 +114,8 @@
     pak() { ruis(0.05, 1200, 2, 0.4); },
     klok() { [0, 0.45, 0.9].forEach((w, i) => { toon(660 - i * 110, 1.4, 0.18, 'sine', w); toon(1320 - i * 220, 0.8, 0.05, 'sine', w); }); },
     plons() { ruis(0.5, 400, 0.7, 0.35); },
-    jammer() { toon(300, 0.25, 0.1, 'triangle'); toon(220, 0.4, 0.1, 'triangle', 0.22); }
+    jammer() { toon(300, 0.25, 0.1, 'triangle'); toon(220, 0.4, 0.1, 'triangle', 0.22); },
+    deur() { ruis(0.6, 220, 1.2, 0.25); toon(140, 0.5, 0.06, 'triangle', 0.05); },
+    woesj() { ruis(0.5, 700, 0.6, 0.18); }
   };
 })();

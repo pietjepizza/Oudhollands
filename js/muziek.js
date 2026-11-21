@@ -87,10 +87,10 @@
   try { aan = localStorage.getItem('speelhuys.muziek') === 'aan'; } catch (e) { /* geen opslag */ }
 
   function maakContext() {
-    if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return ctx; }
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return null;
-    ctx = new AC();
+    if (ctx) { if (ctx.state === 'suspended') ctx.resume().catch(() => { /* */ }); return ctx; }
+    ctx = window.Klank ? window.Klank.maak() : null;
+    if (!ctx) return null;
+    if (ctx.state === 'suspended') ctx.resume().catch(() => { /* */ });
     hoofd = ctx.createGain(); hoofd.gain.value = 0.16;
     // eenvoudige galm, als in een betegelde kamer
     galm = ctx.createConvolver();
@@ -250,7 +250,7 @@
     aan = waarde;
     try { localStorage.setItem('speelhuys.muziek', aan ? 'aan' : 'uit'); } catch (e) { /* */ }
     knopTekst();
-    if (aan) begin(gewenst); else stopHuidig();
+    if (aan) { if (window.Klank) window.Klank.ontgrendel(); begin(gewenst); } else stopHuidig();
   }
 
   if (knop) knop.addEventListener('click', () => zet(!aan));
@@ -258,12 +258,10 @@
 
   // Browsers spelen pas geluid na een klik: stond de muziek de vorige keer aan, dan start hij bij de eerste klik.
   function eersteGebaar() {
-    window.removeEventListener('pointerdown', eersteGebaar, true);
-    window.removeEventListener('keydown', eersteGebaar, true);
+    ['touchend', 'pointerup', 'keydown'].forEach((t) => window.removeEventListener(t, eersteGebaar, true));
     if (aan && !speelt) begin(gewenst);
   }
-  window.addEventListener('pointerdown', eersteGebaar, true);
-  window.addEventListener('keydown', eersteGebaar, true);
+  ['touchend', 'pointerup', 'keydown'].forEach((t) => window.addEventListener(t, eersteGebaar, true));
 
   document.addEventListener('visibilitychange', () => {
     if (!ctx) return;
@@ -274,6 +272,7 @@
   window.Muziek = {
     stukken: STUKKEN,
     get speelt() { return speelt ? speelt.naam : null; },
+    get aan() { return aan; },
     kies(naam) {
       const doel = STUKKEN[naam] ? naam : 'thuis';
       gewenst = doel;

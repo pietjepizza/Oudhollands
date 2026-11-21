@@ -1,17 +1,26 @@
-/* Navigatie tussen de tegelwand en de spellen (via #ganzenbord, #sjoelen, #molenspel). */
+/* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel). */
 (function () {
   const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel'];
-  let huidig = null;
+  let huidig; // undefined = er is nog niets getoond
 
   function toon() {
     const naam = (location.hash || '').replace('#', '');
     const spel = SPELLEN.includes(naam) ? naam : null;
-    if (huidig && huidig !== spel && window.Spellen[huidig]) window.Spellen[huidig].stop();
+    const vorige = huidig;
+    if (vorige && vorige !== spel && window.Spellen[vorige]) window.Spellen[vorige].stop();
     document.getElementById('thuis').hidden = !!spel;
     SPELLEN.forEach((s) => { document.getElementById(s).hidden = s !== spel; });
-    if (spel && huidig !== spel) {
+    if (spel && vorige !== spel) {
       window.scrollTo(0, 0);
       window.Spellen[spel].start();
+    }
+    if (!spel && window.Huis) {
+      if (vorige) {
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => window.Huis.terugUit(vorige));
+      } else if (vorige === undefined) {
+        window.Huis.toon();
+      }
     }
     document.title = spel ? `${document.getElementById(spel).querySelector('h1').textContent} · Het Speelhuys` : 'Het Speelhuys';
     huidig = spel;

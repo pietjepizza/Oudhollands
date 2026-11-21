@@ -2,6 +2,11 @@
 
 Oud-Hollandse spellen om digitaal te spelen, in de sfeer van Delfts blauw en 17e-eeuwse prentborden.
 
+**Het huis.** Je begint aan de gracht, voor een pand met een trapgevel, een gevelsteen met een gans en een uithangbord.
+Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
+marmeren vloer, tegelplint, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
+in naar het spel. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
+
 **Speelbaar in deze eerste versie**
 
 - **Ganzenbord**: handgekleurd prentbord, 2 tot 4 spelers (mens of computer), met gans, brug, herberg, put, doolhof, gevangenis en dood.
