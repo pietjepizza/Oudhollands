@@ -209,7 +209,7 @@
     ui.spelers = paneel.querySelector('#gb-spelers');
     ui.kroniek = paneel.querySelector('#gb-kroniek');
     ui.instRijen = paneel.querySelector('#gb-inst-rijen');
-    ui.werp.addEventListener('click', () => { if (!bezig && !huidige().computer && !winnaar) werp(); });
+    ui.werp.addEventListener('click', () => { if (!bezig && !huidige().computer && !winnaar) { if (window.Tril) Tril.klik(); werp(); } });
     paneel.querySelector('#gb-nieuw').addEventListener('click', nieuwSpel);
     paneel.querySelector('#gb-meer').addEventListener('click', () => { if (instelling.length < 4) { instelling.push({ computer: true }); tekenInstelling(); } });
     paneel.querySelector('#gb-minder').addEventListener('click', () => { if (instelling.length > 2) { instelling.pop(); tekenInstelling(); } });
@@ -417,6 +417,32 @@
     volgende();
   }
 
+  // dobbelstenen uit de pronkkast
+  function kleurDobbels() {
+    const st = window.Pronk ? Pronk.stijl('dobbels') : null;
+    const doos = paneel && paneel.querySelector('.dobbels');
+    if (!st || !doos) return;
+    doos.style.setProperty('--dob-a', st.a); doos.style.setProperty('--dob-b', st.b);
+    doos.style.setProperty('--dob-c', st.c); doos.style.setProperty('--dob-pip', st.pip);
+  }
+  if (window.Pronk) Pronk.opWijziging(kleurDobbels);
+
+  // ---------- Uitleg door Gijs de gans ----------
+  function veldVak(i, maat) {
+    const m = svg.getScreenCTM(), p = midden[i];
+    const x = m.a * p[0] + m.c * p[1] + m.e, y = m.b * p[0] + m.d * p[1] + m.f, h = maat * m.a;
+    return { left: x - h, top: y - h, width: h * 2, height: h * 2 };
+  }
+  if (window.Les) {
+    Les.zet('ganzenbord', () => [
+      { doel: () => ui.werp, gebaar: 'tik', tekst: 'Gooi de stenen' },
+      { doel: () => (spelers[0] && spelers[0].g ? spelers[0].g.getBoundingClientRect() : veldVak(0, 50)), vorm: 'rond', gebaar: 'wijs', tekst: 'Je pion loopt vanzelf' },
+      { doel: () => veldVak(5, 34), vorm: 'rond', gebaar: 'wijs', tekst: 'Op een gans: nog een keer!' },
+      { doel: () => veldVak(58, 34), vorm: 'rond', gebaar: 'wijs', tekst: 'De dood: terug naar het begin' },
+      { doel: () => veldVak(63, 66), vorm: 'rond', gebaar: 'wijs', tekst: 'Precies op 63 wint' }
+    ]);
+  }
+
   window.Spellen = window.Spellen || {};
   window.Spellen.ganzenbord = {
     start() {
@@ -432,6 +458,8 @@
       } else if (!winnaar) {
         beurtBegin();
       }
+      kleurDobbels();
+      if (window.Les) Les.eersteKeer('ganzenbord');
     },
     stop() { spelId++; bezig = false; },
     opnieuw() { nieuwSpel(); },

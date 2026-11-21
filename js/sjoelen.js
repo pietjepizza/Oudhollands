@@ -53,7 +53,7 @@
 
   function tik(kracht) {
     const nu = performance.now();
-    if (kracht > 60 && nu - laatsteTik > 45) { laatsteTik = nu; Geluid.hout(Math.min(1, kracht / 700)); }
+    if (kracht > 60 && nu - laatsteTik > 45) { laatsteTik = nu; Geluid.hout(Math.min(1, kracht / 700)); if (window.Tril) Tril.bots(kracht / 700); }
   }
 
   function stapNatuur(dt) {
@@ -191,6 +191,7 @@
     vast = null; spoor = [];
     melding = '';
     Geluid.schuif();
+    if (window.Tril) Tril.tik();
     werkPaneelBij();
   }
 
@@ -285,11 +286,27 @@
     g.fillStyle = 'rgba(40, 20, 5, .35)';
     g.beginPath(); g.ellipse(x + (opgetild ? 5 : 2), y + (opgetild ? 6 : 2.5), RS, RS, 0, 0, Math.PI * 2); g.fill();
     const r = opgetild ? RS * 1.06 : RS;
+    // de schijven uit de pronkkast: beukenhout, kersenhout, Delfts blauw, goud of chocolade
+    const st = window.Pronk ? Pronk.stijl('schijven') : { a: '#F6DDB0', b: '#D9A866', c: '#A8743C', rand: '#7A4B22' };
     const gr = g.createRadialGradient(x - r * .35, y - r * .4, r * .1, x, y, r);
-    gr.addColorStop(0, '#F6DDB0'); gr.addColorStop(.7, '#D9A866'); gr.addColorStop(1, '#A8743C');
+    gr.addColorStop(0, st.a); gr.addColorStop(.7, st.b); gr.addColorStop(1, st.c);
     g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
-    g.strokeStyle = 'rgba(90, 50, 20, .55)'; g.lineWidth = 1.2; g.stroke();
-    g.beginPath(); g.arc(x, y, r * .6, 0, Math.PI * 2); g.strokeStyle = 'rgba(120, 70, 30, .3)'; g.stroke();
+    g.strokeStyle = st.rand; g.globalAlpha = (geest ? 0.45 : 1) * 0.8; g.lineWidth = 1.2; g.stroke();
+    g.beginPath(); g.arc(x, y, r * .6, 0, Math.PI * 2); g.globalAlpha = (geest ? 0.45 : 1) * 0.35; g.stroke();
+    g.globalAlpha = geest ? 0.45 : 1;
+    if (st.motief === 'delft') {
+      g.strokeStyle = '#1C3473'; g.lineWidth = 1.3;
+      g.beginPath(); g.arc(x, y, r * .82, 0, Math.PI * 2); g.stroke();
+      g.fillStyle = '#1C3473'; g.beginPath(); g.arc(x, y, r * .2, 0, Math.PI * 2); g.fill();
+    } else if (st.motief === 'ster') {
+      g.fillStyle = 'rgba(120, 80, 20, .75)';
+      g.beginPath();
+      for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * .2 : r * .45; g.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
+      g.closePath(); g.fill();
+    } else if (st.motief === 'choco') {
+      g.strokeStyle = 'rgba(30, 14, 6, .45)'; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(x - r * .7, y); g.lineTo(x + r * .7, y); g.moveTo(x, y - r * .7); g.lineTo(x, y + r * .7); g.stroke();
+    }
     g.restore();
   }
 
@@ -401,6 +418,18 @@
     ui.status.textContent = melding || (klaar ? '' : `Beurt ${beurt} van 3 · nog ${hand} in de hand`);
   }
 
+  // ---------- Uitleg door Gijs de gans ----------
+  function punt(px, py) { const r = doek.getBoundingClientRect(); return [r.left + px * schaal, r.top + py * schaal]; }
+  function vak(px, py, b, h) { const r = doek.getBoundingClientRect(); return { left: r.left + px * schaal, top: r.top + py * schaal, width: b * schaal, height: h * schaal }; }
+  if (window.Les) {
+    Les.zet('sjoelen', () => [
+      { doel: () => vak(L, WERP_Y, R - L, ONDER - WERP_Y), gebaar: 'veeg', van: () => punt(RUST_X, RUST_Y), naar: () => punt(RUST_X, WERP_Y - 150), voorwerp: 'schijf', tekst: 'Pak de schijf en schuif hem' },
+      { doel: () => vak(L, POORT_Y - 8, R - L, POORT_H + 16), gebaar: 'wijs', tekst: 'Door de poortjes' },
+      { doel: () => vak(L, TOP - 6, R - L, 100), gebaar: 'wijs', tekst: 'Eén in elk vak: 20 punten' },
+      { doel: () => vak(R - 120, ONDER - 34, 116, 30), gebaar: 'wijs', tekst: 'Je hebt drie beurten' }
+    ]);
+  }
+
   window.Spellen = window.Spellen || {};
   window.Spellen.sjoelen = {
     start() {
@@ -432,6 +461,7 @@
       vorigeT = 0;
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(lus);
+      if (window.Les) Les.eersteKeer('sjoelen');
     },
     stop() { actief = false; cancelAnimationFrame(raf); if (vast) { hand++; vast = null; } laden = null; },
     opnieuw() { nieuwSpel(); if (doek) doek.focus({ preventScroll: true }); }

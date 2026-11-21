@@ -1,7 +1,7 @@
 /* Service worker: bewaart de site op het toestel, zodat Het Speelhuys ook zonder internet werkt.
    Eigen bestanden: eerst uit de opslag (snel), en op de achtergrond verversen.
    Letters van Google Fonts: één keer ophalen en daarna uit de opslag. */
-const VERSIE = 'speelhuys-v5';
+const VERSIE = 'speelhuys-v6';
 const LETTERS = 'speelhuys-letters-v1';
 const KERN = [
   './',
@@ -11,9 +11,14 @@ const KERN = [
   './js/geluid.js',
   './js/muziek.js',
   './js/duiten.js',
+  './js/pronk.js',
+  './js/seizoen.js',
+  './js/les.js',
   './js/ganzenbord.js',
   './js/sjoelen.js',
   './js/molenspel.js',
+  './js/knikkeren.js',
+  './js/tollen.js',
   './js/huis.js',
   './js/app.js',
   './iconen/icoon-192.png',

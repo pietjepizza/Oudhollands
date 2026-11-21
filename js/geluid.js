@@ -61,6 +61,46 @@
 
   window.Klank = { maak, ontgrendel, get ctx() { return ctx; } };
 
+  // ---------- Trillen ----------
+  // Android: navigator.vibrate. iPhone (iOS 18 en nieuwer): Safari geeft een tikje als een
+  // schakelaar (input type=checkbox switch) omgaat; dat werkt alleen tijdens een aanraking.
+  // In een latere App Store-versie (Capacitor) wordt de Haptics-plug-in gebruikt.
+  let trilAan = true;
+  try { trilAan = localStorage.getItem('speelhuys.trillen') !== 'uit'; } catch (e) { /* */ }
+  let schakel = null;
+  function iosTik() {
+    try {
+      if (!schakel) {
+        const label = document.createElement('label');
+        label.setAttribute('aria-hidden', 'true');
+        label.style.cssText = 'position:fixed;left:-200px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none';
+        const inp = document.createElement('input');
+        inp.type = 'checkbox'; inp.setAttribute('switch', ''); inp.tabIndex = -1;
+        label.appendChild(inp);
+        document.body.appendChild(label);
+        schakel = label;
+      }
+      schakel.click();
+    } catch (e) { /* */ }
+  }
+  function capacitor() { return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics; }
+  function tril(patroon, sterkte) {
+    if (!trilAan) return;
+    const cap = capacitor();
+    if (cap) { try { cap.impact({ style: sterkte || 'LIGHT' }); } catch (e) { /* */ } return; }
+    if (navigator.vibrate) { try { navigator.vibrate(patroon); } catch (e) { /* */ } return; }
+    if (iOS) iosTik();
+  }
+  window.Tril = {
+    get aan() { return trilAan; },
+    zet(w) { trilAan = w; try { localStorage.setItem('speelhuys.trillen', w ? 'aan' : 'uit'); } catch (e) { /* */ } if (w) tril(20, 'MEDIUM'); },
+    tik() { tril(8, 'LIGHT'); },
+    klik() { tril(18, 'MEDIUM'); },
+    bots(kracht) { if (kracht > 0.45) tril(Math.round(6 + kracht * 14), 'LIGHT'); },
+    succes() { tril([14, 60, 22], 'HEAVY'); },
+    fout() { tril([30, 40, 30], 'MEDIUM'); }
+  };
+
   // ---------- Geluidseffecten ----------
   let aan = true;
   try { aan = localStorage.getItem('speelhuys.geluid') !== 'uit'; } catch (e) { /* geen opslag */ }
@@ -136,6 +176,16 @@
       [523, 659, 784, 1047].forEach((f, i) => { toon(f, 0.6, 0.11, 'triangle', i * 0.12); toon(f * 2, 0.4, 0.03, 'sine', i * 0.12); });
       [0.6, 1.0].forEach((w) => toon(1568, 1.2, 0.05, 'sine', w));
     },
+    // zacht houten tikje bij elke aanraking
+    tik() { ruis(0.025, 2400, 5, 0.12); },
+    // knikker tegen knikker, en een knikker die in het potje valt
+    knik(kracht) { const v = Math.min(0.7, 0.12 + (kracht || 0.5) * 0.6); toon(3200 + Math.random() * 900, 0.05, v * 0.25, 'sine'); ruis(0.02, 4500, 6, v * 0.5); },
+    plop() { toon(520, 0.12, 0.16, 'sine'); toon(380, 0.18, 0.1, 'sine', 0.05); ruis(0.06, 900, 2, 0.25); },
+    // zweepslag en het brommen van een tol
+    zweep() { ruis(0.05, 3800, 1.5, 0.5); ruis(0.12, 1200, 1, 0.15, 0.02); },
+    val() { ruis(0.18, 600, 1.2, 0.4); toon(120, 0.25, 0.12, 'triangle'); },
+    cadeau() { [784, 988, 1175, 1568].forEach((f, i) => toon(f, 0.35, 0.08, 'sine', i * 0.08)); ruis(0.3, 6000, 1, 0.08, 0.05); },
+    koer() { [0, 0.28].forEach((w) => { toon(420, 0.22, 0.1, 'sine', w); toon(380, 0.2, 0.06, 'sine', w + 0.12); }); },
     miauw() {
       const c = context(); if (!c) return;
       const t = c.currentTime;

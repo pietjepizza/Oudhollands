@@ -158,7 +158,7 @@
       const [x, y] = xy(i);
       const g = el('g', { class: 'steen' }, steenLaag);
       el('ellipse', { cx: x + 3, cy: y + 5, rx: 23, ry: 21, fill: 'rgba(0,0,0,.35)' }, g);
-      el('circle', { cx: x, cy: y, r: 23, fill: v === 1 ? 'url(#mo-wit)' : 'url(#mo-zwart)', stroke: v === 1 ? '#8D8167' : '#000', 'stroke-width': 1.2 }, g);
+      el('circle', { cx: x, cy: y, r: 23, fill: v === 1 ? 'url(#mo-wit)' : 'url(#mo-zwart)', stroke: v === 1 ? steenStijl().wit[3] : steenStijl().zwart[3], 'stroke-width': 1.2 }, g);
       el('circle', { cx: x, cy: y, r: 15, fill: 'none', stroke: v === 1 ? 'rgba(120,100,60,.35)' : 'rgba(255,255,255,.12)', 'stroke-width': 1.2 }, g);
       if (i === gekozen) el('circle', { cx: x, cy: y, r: 27, fill: 'none', stroke: '#C2892A', 'stroke-width': 3.5 }, steenLaag);
       if (pakbaar.has(i)) el('circle', { cx: x, cy: y, r: 27, fill: 'none', stroke: '#B6452C', 'stroke-width': 3, 'stroke-dasharray': '5 4' }, steenLaag);
@@ -208,6 +208,7 @@
     bord[naar] = s;
     gekozen = null;
     Geluid.steen();
+    if (window.Tril) { if (molen) Tril.succes(); else Tril.tik(); }
     if (molen) {
       wegnemen = true;
       zettenZonderMolen = 0;
@@ -316,6 +317,35 @@
     ui.z.textContent = fmt(2);
   }
 
+  // stenen uit de pronkkast: wit en zwart, Delfts, of barnsteen en git
+  function steenStijl() { return window.Pronk ? Pronk.stijl('stenen') : { wit: ['#FFFDF6', '#E6DCC6', '#B9AD92', '#8D8167'], zwart: ['#6A5F57', '#2C2522', '#151110', '#000'] }; }
+  function kleurStenen() {
+    if (!svg) return;
+    const st = steenStijl();
+    [['mo-wit', st.wit], ['mo-zwart', st.zwart]].forEach(([id, k]) => {
+      const stops = svg.querySelectorAll(`#${id} stop`);
+      stops.forEach((stop, i) => stop.setAttribute('stop-color', k[i]));
+    });
+    if (bord) teken();
+  }
+  if (window.Pronk) Pronk.opWijziging(kleurStenen);
+
+  // ---------- Uitleg door Gijs de gans ----------
+  function puntVak(lijst, maat) {
+    const m = svg.getScreenCTM();
+    const pts = lijst.map((i) => { const [x, y] = xy(i); return [m.a * x + m.c * y + m.e, m.b * x + m.d * y + m.f]; });
+    const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]), h = maat * m.a;
+    return { left: Math.min(...xs) - h, top: Math.min(...ys) - h, width: Math.max(...xs) - Math.min(...xs) + 2 * h, height: Math.max(...ys) - Math.min(...ys) + 2 * h };
+  }
+  if (window.Les) {
+    Les.zet('molenspel', () => [
+      { doel: () => puntVak([4], 26), vorm: 'rond', gebaar: 'tik', tekst: 'Zet een steen op een punt' },
+      { doel: () => puntVak([0, 1, 2], 30), gebaar: 'wijs', tekst: 'Drie op een rij: een molen' },
+      { doel: () => puntVak([21], 26), vorm: 'rond', gebaar: 'tik', tekst: 'Pak dan een steen van de ander' },
+      { doel: () => puntVak([9, 10], 30), gebaar: 'veeg', van: () => { const r = puntVak([9], 0); return [r.left, r.top]; }, naar: () => { const r = puntVak([10], 0); return [r.left, r.top]; }, voorwerp: 'steen', tekst: 'Later schuif je je stenen' }
+    ]);
+  }
+
   window.Spellen = window.Spellen || {};
   window.Spellen.molenspel = {
     start() {
@@ -329,6 +359,8 @@
       } else if (computerAanZet() && !winnaar) {
         computerBeurt();
       }
+      kleurStenen();
+      if (window.Les) Les.eersteKeer('molenspel');
     },
     stop() { spelId++; },
     opnieuw() { nieuwSpel(); }

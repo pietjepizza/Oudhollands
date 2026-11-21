@@ -1,7 +1,9 @@
-/* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel),
-   de knoppen in de kop, het menu en het installeren als app. */
+/* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel, #knikkeren, #tollen),
+   de knoppen in de kop, het menu, tikgeluid en trilling, en het installeren als app. */
 (function () {
-  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel'];
+  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'knikkeren', 'tollen'];
+  // muziek per spel; de zolderspellen lenen een vrolijk stuk
+  const MUZIEK = { knikkeren: 'ganzenbord', tollen: 'sjoelen' };
   let huidig; // undefined = er is nog niets getoond
 
   function toon() {
@@ -26,7 +28,7 @@
     }
     document.title = spel ? `${document.getElementById('scherm-' + spel).querySelector('h1').textContent} · Het Speelhuys` : 'Het Speelhuys';
     huidig = spel;
-    if (window.Muziek) window.Muziek.kies(spel || 'thuis');
+    if (window.Muziek) window.Muziek.kies(spel ? (MUZIEK[spel] || spel) : 'thuis');
   }
 
   // ---------- Hoogte van de kop, zodat de kamer precies het scherm vult ----------
@@ -51,7 +53,9 @@
   function openMenu() {
     vorigeFocus = document.activeElement;
     document.getElementById('menu-duiten').textContent = window.Duiten ? Duiten.saldo : 0;
-    document.getElementById('menu-klussen').textContent = window.Duiten ? `${Duiten.aantalKlaar}/${Duiten.klussenLijst.length}` : '0';
+    document.getElementById('menu-klussen').textContent = klussenTekst();
+    tekenSeizoenen();
+    trilStand();
     document.getElementById('wis-vraag').hidden = true;
     document.getElementById('installeer').hidden = true;
     document.getElementById('menu-installeer').hidden = isApp();
@@ -79,8 +83,81 @@
     if (window.Duiten) Duiten.wis();
     if (window.Huis) Huis.werkBij();
     document.getElementById('menu-duiten').textContent = window.Duiten ? Duiten.saldo : 0;
-    document.getElementById('menu-klussen').textContent = window.Duiten ? `0/${Duiten.klussenLijst.length}` : '0';
+    document.getElementById('menu-klussen').textContent = klussenTekst();
     document.getElementById('wis-vraag').hidden = true;
+  });
+
+  function klussenTekst() {
+    if (!window.Duiten) return '0';
+    let af = 0, alle = 0;
+    Object.keys(Duiten.kamers).forEach((k) => {
+      if (!Duiten.kamerOpen(k)) return;
+      af += Duiten.aantalKlaar(k);
+      alle += Duiten.klussenVan(k).length;
+    });
+    return `${af}/${alle}`;
+  }
+  document.getElementById('menu-kast').addEventListener('click', () => {
+    sluitMenu();
+    setTimeout(() => { if (window.Pronk) Pronk.open(); }, 60);
+  });
+
+  // ---------- Trillen ----------
+  const trilKnop = document.getElementById('menu-tril');
+  function trilStand() { if (trilKnop && window.Tril) trilKnop.setAttribute('aria-checked', String(Tril.aan)); }
+  if (trilKnop) trilKnop.addEventListener('click', () => {
+    if (!window.Tril) return;
+    Tril.zet(!Tril.aan);
+    trilStand();
+    if (Tril.aan) Tril.klik();
+  });
+
+  // ---------- Seizoen kiezen ----------
+  function tekenSeizoenen() {
+    const vak = document.getElementById('seizoen-keuze');
+    if (!vak || !window.Seizoen) return;
+    vak.innerHTML = '';
+    Object.keys(Seizoen.namen).forEach((k) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'seizoen-chip';
+      b.setAttribute('aria-pressed', String(Seizoen.keuze === k));
+      b.textContent = Seizoen.namen[k];
+      b.addEventListener('click', () => { Seizoen.kies(k); tekenSeizoenen(); });
+      vak.appendChild(b);
+    });
+  }
+
+  // ---------- Proefknoppen (om alles snel te kunnen bekijken) ----------
+  document.getElementById('proef-duiten').addEventListener('click', () => {
+    if (!window.Duiten) return;
+    Duiten.bij(200);
+    document.getElementById('menu-duiten').textContent = Duiten.saldo;
+  });
+  document.getElementById('proef-schoen').addEventListener('click', () => {
+    if (!window.Seizoen) return;
+    if (Seizoen.schoenStand() === 'leeg') Seizoen.schoenKlik();
+    Seizoen.schoenMorgen();
+    if (window.Huis) Huis.werkBij();
+    sluitMenu();
+  });
+
+  // ---------- Gijs de gans: de vraagteken-knop in elk spel ----------
+  document.querySelectorAll('.les-knop').forEach((k) => {
+    k.addEventListener('click', () => { if (window.Les) Les.toon(k.getAttribute('data-les')); });
+  });
+
+  // ---------- Een klein tikje bij elke aanraking ----------
+  const TIKBAAR = 'button, a[href], [role="button"], .voorwerp, .plek-klik, .kast-vak, .seizoen-chip';
+  document.addEventListener('pointerdown', (e) => {
+    const doel = e.target.closest && e.target.closest(TIKBAAR);
+    if (!doel || doel.disabled) return;
+    if (window.Geluid && Geluid.tik) Geluid.tik();
+  }, { passive: true });
+  document.addEventListener('click', (e) => {
+    const doel = e.target.closest && e.target.closest(TIKBAAR);
+    if (!doel || doel.disabled) return;
+    if (window.Tril) Tril.tik();
   });
 
   // ---------- Installeren als app ----------
