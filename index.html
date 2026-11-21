@@ -177,7 +177,11 @@
       <svg class="merk-tegel" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" class="merk-grond"/><use href="#hoeken" class="merk-hoeken"/><use href="#ill-gans" x="12" y="10" width="76" height="76" class="tekening"/></svg>
       <span>Het Speelhuys</span>
     </a>
-    <button class="knop-geluid" id="knop-geluid" type="button" aria-pressed="true">Geluid aan</button>
+    <div class="kop-knoppen">
+      <span class="nu-speelt" id="nu-speelt" hidden></span>
+      <button class="knop-geluid" id="knop-muziek" type="button" aria-pressed="false">Muziek uit</button>
+      <button class="knop-geluid" id="knop-geluid" type="button" aria-pressed="true">Geluid aan</button>
+    </div>
   </div>
 </header>
 
@@ -315,11 +319,13 @@
 <footer class="voet">
   <div class="voet-binnen">
     <p><b>Het Speelhuys</b> is een eerste proefversie. Spelregels volgen de gangbare Nederlandse huisregels.</p>
+    <p class="bronnen">Muziek: melodieën uit Jacob van Eyck, <i>Der Fluyten Lust-hof</i> (Amsterdam, 1649 en 1654): <i>Engels Nachtegaeltje</i>, <i>Malle Symen</i>, <i>Onder de Linde groene</i> en <i>Doen Daphne d'over schoone Maeght</i>. De browser speelt de noten zelf; er worden geen opnames gebruikt.</p>
     <p class="bronnen">Bronnen: Rijksmuseum (ganzenborden, uilenspel), Museum De Lakenhal (tegelvelden met kinderspelen), Cats &amp; Van de Venne, <i>Houwelyck</i> (1625), Pagat (Nederlandse kaartspellen), Algemene Nederlandse Sjoelbond.</p>
   </div>
 </footer>
 
 <script src="js/geluid.js"></script>
+<script src="js/muziek.js"></script>
 <script src="js/ganzenbord.js"></script>
 <script src="js/sjoelen.js"></script>
 <script src="js/molenspel.js"></script>

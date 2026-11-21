@@ -15,6 +15,7 @@
     }
     document.title = spel ? `${document.getElementById(spel).querySelector('h1').textContent} · Het Speelhuys` : 'Het Speelhuys';
     huidig = spel;
+    if (window.Muziek) window.Muziek.kies(spel || 'thuis');
   }
 
   const knop = document.getElementById('knop-geluid');

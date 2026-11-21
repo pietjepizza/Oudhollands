@@ -8,6 +8,17 @@ Oud-Hollandse spellen om digitaal te spelen, in de sfeer van Delfts blauw en 17e
 - **Sjoelen**: houten sjoelbak met natuurkunde. 30 schijven, 3 beurten, de echte telling (20 per volle reeks, verder 2-3-4-1).
 - **Molenspel**: op een ingekraste steen, tegen de computer of met z'n tweeën.
 
+**Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), die de browser zelf speelt met Web Audio, op blokfluit en luit. Elke plek heeft een eigen stuk:
+
+| Plek | Stuk | Klank |
+|---|---|---|
+| Tegelwand | Engels Nachtegaeltje | blokfluit |
+| Ganzenbord | Malle Symen | blokfluit en trom |
+| Sjoelen | Onder de Linde groene | luit |
+| Molenspel | Doen Daphne d'over schoone Maeght | luit |
+
+De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
+
 Nog "in de oven": dammen, klaverjassen, knikkeren, tollen, kolf op het ijs, koekhappen, hoepelen, kop van Jut en uilenspel.
 
 ## Techniek
