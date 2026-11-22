@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Het Speelhuys</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Oud-Hollandse spellen om te spelen in een 17e-eeuws grachtenpand: ganzenbord, sjoelen, molenspel, dammen en meer.">
+<meta name="description" content="Oud-Hollandse spellen om te spelen in een 17e-eeuws grachtenpand: ganzenbord, sjoelen, molenspel, dammen, klaverjassen en meer.">
 <meta name="theme-color" content="#1C3473">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=17">
+<link rel="stylesheet" href="css/stijl.css?v=18">
 </head>
 <body>
 
@@ -339,6 +339,11 @@
       <ellipse cx="12" cy="8.4" rx="8.4" ry="3.4" fill="currentColor"/>
       <path d="M3.6 8.4v2.2c0 1.9 3.8 3.4 8.4 3.4s8.4-1.5 8.4-3.4V8.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
     </symbol>
+    <!-- klaverjassen: twee speelkaarten -->
+    <symbol id="i-kaarten" viewBox="0 0 24 24">
+      <rect x="3.2" y="5.2" width="11" height="15" rx="2" transform="rotate(-13 8.7 12.7)" fill="currentColor" opacity=".55"/>
+      <rect x="9.6" y="3.6" width="11" height="15" rx="2" transform="rotate(9 15.1 11.1)" fill="currentColor"/>
+    </symbol>
     <!-- zolder, straat, pronkkast en seizoenen -->
     <symbol id="i-trap" viewBox="0 0 24 24">
       <path d="M3 20.5h4.5v-4h4v-4h4v-4H20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -494,12 +499,13 @@
       <div class="intro">
         <p class="bovenregel">Oud-Hollandse spellen</p>
         <h2 class="intro-kop">Speel, verdien duiten en knap het huis op</h2>
-        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel of het dambord om te spelen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
+        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel, het dambord of de speelkaarten om te spelen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
         <ul class="spellijst">
           <li><a href="#ganzenbord">Ganzenbord</a></li>
           <li><a href="#sjoelen">Sjoelen</a></li>
           <li><a href="#molenspel">Molenspel</a></li>
           <li><a href="#dammen">Dammen</a></li>
+          <li><a href="#klaverjassen">Klaverjassen</a></li>
           <li class="later">Op de zolder: knikkeren en tollen</li>
           <li class="later">Binnenkort: de herberg met kaartspellen, de kermis en kolf op het ijs</li>
         </ul>
@@ -547,6 +553,11 @@
   <section id="scherm-dammen" class="weergave spel volscherm" aria-labelledby="dm-titel" hidden>
     <h1 id="dm-titel" class="sr-only">Dammen</h1>
     <div class="mo-podium dm-podium" id="dm-podium"></div>
+  </section>
+  <!-- KLAVERJASSEN (schermvullend) -->
+  <section id="scherm-klaverjassen" class="weergave spel volscherm" aria-labelledby="kj-titel" hidden>
+    <h1 id="kj-titel" class="sr-only">Klaverjassen</h1>
+    <div class="mo-podium kj-podium" id="kj-podium"></div>
   </section>
   <!-- KNIKKEREN (zolder) -->
   <section id="scherm-knikkeren" class="weergave spel volscherm" aria-labelledby="kn-titel" hidden>
@@ -698,21 +709,23 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=17"></script>
-<script src="js/muziek.js?v=17"></script>
-<script src="js/duiten.js?v=17"></script>
-<script src="js/pronk.js?v=17"></script>
-<script src="js/seizoen.js?v=17"></script>
-<script src="js/les.js?v=17"></script>
-<script src="js/personen.js?v=17"></script>
-<script src="js/ganzenbord.js?v=17"></script>
-<script src="js/sjoelen.js?v=17"></script>
-<script src="js/molenspel.js?v=17"></script>
-<script src="js/damregels.js?v=17"></script>
-<script src="js/dammen.js?v=17"></script>
-<script src="js/knikkeren.js?v=17"></script>
-<script src="js/tollen.js?v=17"></script>
-<script src="js/huis.js?v=17"></script>
-<script src="js/app.js?v=17"></script>
+<script src="js/geluid.js?v=18"></script>
+<script src="js/muziek.js?v=18"></script>
+<script src="js/duiten.js?v=18"></script>
+<script src="js/pronk.js?v=18"></script>
+<script src="js/seizoen.js?v=18"></script>
+<script src="js/les.js?v=18"></script>
+<script src="js/personen.js?v=18"></script>
+<script src="js/ganzenbord.js?v=18"></script>
+<script src="js/sjoelen.js?v=18"></script>
+<script src="js/molenspel.js?v=18"></script>
+<script src="js/damregels.js?v=18"></script>
+<script src="js/dammen.js?v=18"></script>
+<script src="js/klaverregels.js?v=18"></script>
+<script src="js/klaverjassen.js?v=18"></script>
+<script src="js/knikkeren.js?v=18"></script>
+<script src="js/tollen.js?v=18"></script>
+<script src="js/huis.js?v=18"></script>
+<script src="js/app.js?v=18"></script>
 </body>
 </html>

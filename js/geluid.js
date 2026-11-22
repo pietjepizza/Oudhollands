@@ -216,6 +216,10 @@
       });
     },
     // een vrolijk fluitje van een bewoner
+    // kaarten: een kaart neerleggen, delen en schudden
+    kaart() { ruis(0.035, 3200, 1.8, 0.32); ruis(0.02, 900, 1, 0.12, 0.012); },
+    deel() { ruis(0.028, 4200, 2.5, 0.2); },
+    schud() { for (let i = 0; i < 12; i++) ruis(0.03, 2400 + Math.random() * 1400, 2, 0.16, i * 0.045 + Math.random() * 0.01); },
     fluit() { [0, 0.16].forEach((w, i) => toon(1180 + i * 400, 0.14, 0.06, 'sine', w)); },
     miauw() {
       const c = context(); if (!c) return;

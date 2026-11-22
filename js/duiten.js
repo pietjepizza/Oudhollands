@@ -23,7 +23,7 @@
       ],
       // na de laatste klus: de trap naar de zolder
       ontgrendelt: { id: 'trap', naam: 'Trap naar de zolder', icoon: 'trap', prijs: 60, kamer: 'zolder' },
-      spellen: ['ganzenbord', 'sjoelen', 'molenspel', 'dammen']
+      spellen: ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen']
     },
     zolder: {
       naam: 'Zolder',

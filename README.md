@@ -19,7 +19,7 @@ een klus klaarstaat.
 
 **Het huis.** Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
 marmeren vloer, een schouw, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
-in naar het spel. Op tafel ligt het dambord. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
+in naar het spel. Op tafel liggen het dambord en de speelkaarten. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
 
 **Duiten verdienen en het huis opknappen.** De voorkamer begint stoffig: spinnenwebben, vuile ruiten, vochtige muren,
 een doffe vloer. Met elk potje verdien je duiten (winnen 40, verliezen 10 à 15, sjoelen 10 plus een kwart van je score).
@@ -81,6 +81,16 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   terugnemen, een tip, en de partij blijft bewaard als je weggaat. Op de tafel in de voorkamer ligt hetzelfde bord.
   De computer denkt in een achtergrondwerker (alfa-bèta met een opzoektabel), dus het scherm blijft vloeiend; de
   zettengenerator is gecontroleerd met de bekende telgetallen (perft) van de beginstand, tot 6.483.961 standen.
+- **Klaverjassen** (schermvullend): aan de voorkamertafel met het Perzische kleed. Je speelt samen met Opoe, tegenover
+  je, tegen Jantje en Grietje, Grietje en Molenaar Kees, of Molenaar Kees en de burgemeester (versla een paar en het
+  volgende komt aan tafel). Verplicht spelen: wie uitkomt, kiest troef. Rotterdams of Amsterdams, en vier spellen of een
+  hele boom van zestien. Kaarten met Hollandse letters en getekende plaatjes (de heer met kroon en baard, de vrouw met
+  kanten mutsje en tulp, de boer met verenhoed) en een Delfts blauwe rug met Gijs. Je kunt geen fout maken: kaarten
+  die niet mogen zijn grijs, en tik je er toch op, dan hoor je waarom (bekennen, troeven, overtroeven, ondertroeven
+  mag niet). Roem (drie op een rij 20, vier op een rij 50, stuk 20, vier gelijke 100) wordt geroepen door wie de slag
+  haalt; nat en pit worden gevierd of betreurd, en de stand staat in een gelinieerd klaverjasboekje. De tafelgenoten
+  rekenen vanaf de derde slag met Monte Carlo en open-kaarten-zoeken in een achtergrondwerker; de regels zijn getest
+  met handgemaakte gevallen en duizenden hele spellen. De speelkaarten op de voorkamertafel openen het spel.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -101,18 +111,18 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 |---|---|---|
 | Het huis | Engels Nachtegaeltje | blokfluit |
 | Ganzenbord | Malle Symen | blokfluit en trom |
-| Sjoelen | Onder de Linde groene | luit |
+| Sjoelen en klaverjassen | Onder de Linde groene | luit |
 | Molenspel en dammen | Doen Daphne d'over schoone Maeght | luit |
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": klaverjassen (herberg), kolf op het ijs (ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen.
+Nog "in de oven": kolf op het ijs (ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=17`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=18`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

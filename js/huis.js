@@ -914,15 +914,30 @@
     const voor = T((x0 + x1) / 2, 640);
     naambordje(dam, voor[0], voor[1] + 7, 'Dammen');
 
-    // speelkaarten (binnenkort)
-    const kaarten = voorwerp(g, { label: 'Klaverjassen · komt binnenkort' });
-    [[-430, 700, -0.5, '#B6452C'], [-410, 690, -0.15, '#1E1714'], [-392, 696, 0.25, '#B6452C'], [-372, 706, 0.6, '#1E1714']].forEach(([cx, cz, hoek, kleur]) => {
+    // de speelkaarten: speelbaar, en net als in het spel: ivoren kaarten met een rood of zwart teken,
+    // en een stapeltje met de Delfts blauwe rug
+    const kaarten = voorwerp(g, { spel: 'klaverjassen', label: 'Speel klaverjassen' });
+    const ka = T(-468, 748), kb2 = T(-352, 748), kc = T(-352, 672);
+    el('rect', { x: ka[0] - 4, y: kc[1] - 16, width: kb2[0] - ka[0] + 8, height: ka[1] - kc[1] + 22, fill: 'transparent' }, kaarten);
+    const kaart = (cx, cz, hoek, rug, kleur, teken) => {
       const hb = 17, hl = 25, co = Math.cos(hoek), si = Math.sin(hoek);
-      const hoekpunt = (dx, dz) => T(cx + dx * co - dz * si, cz + dx * si + dz * co);
-      veelhoek([hoekpunt(-hb, -hl), hoekpunt(hb, -hl), hoekpunt(hb, hl), hoekpunt(-hb, hl)], { fill: '#F7F1E2', stroke: '#8C7B5A', 'stroke-width': 0.8 }, kaarten);
-      const m = T(cx, cz);
-      el('ellipse', { cx: m[0], cy: m[1], rx: 3.5, ry: 1.8, fill: kleur }, kaarten);
-    });
+      const hp = (dx, dz) => T(cx + dx * co - dz * si, cz + dx * si + dz * co);
+      veelhoek([hp(-hb + 1.5, -hl + 2), hp(hb + 1.5, -hl + 2), hp(hb + 1.5, hl + 2), hp(-hb + 1.5, hl + 2)], { fill: '#000', opacity: 0.22 }, kaarten);
+      veelhoek([hp(-hb, -hl), hp(hb, -hl), hp(hb, hl), hp(-hb, hl)], { fill: rug ? '#F4F1E8' : '#FBF6EA', stroke: '#8C7B5A', 'stroke-width': 0.8 }, kaarten);
+      if (rug) {
+        veelhoek([hp(-hb + 3.5, -hl + 3.5), hp(hb - 3.5, -hl + 3.5), hp(hb - 3.5, hl - 3.5), hp(-hb + 3.5, hl - 3.5)], { fill: '#DCE3F0', stroke: BLAUW, 'stroke-width': 1 }, kaarten);
+        const m = T(cx, cz);
+        el('ellipse', { cx: m[0], cy: m[1], rx: 4.2, ry: 1.9, fill: '#F4F1E8', stroke: BLAUW, 'stroke-width': 0.7 }, kaarten);
+        return;
+      }
+      const m = T(cx, cz), h = T(cx - 11 * co + 18 * si, cz - 11 * si - 18 * co);
+      if (teken === 'r') el('path', { d: `M${m[0]} ${m[1] - 2.2} l 4 2.2 l -4 2.2 l -4 -2.2 Z`, fill: kleur }, kaarten);
+      else el('ellipse', { cx: m[0], cy: m[1], rx: 3.6, ry: 1.9, fill: kleur }, kaarten);
+      el('rect', { x: h[0] - 1.4, y: h[1] - 0.8, width: 2.8, height: 1.6, fill: kleur, opacity: 0.85 }, kaarten);
+    };
+    // een stapeltje dichte kaarten, dan een waaiertje open kaarten
+    [0, 1, 2, 3].forEach((i) => kaart(-450 + i * 0.4, 742 - i * 0.6, -0.12, true));
+    [[-428, 702, -0.5, '#B3302A', 'h'], [-410, 692, -0.15, '#B3302A', 'r'], [-392, 698, 0.25, '#1F1B17', 'k'], [-372, 708, 0.6, '#1F1B17', 's']].forEach(([cx, cz, hoek, kleur, t]) => kaart(cx, cz, hoek, false, kleur, t));
   }
 
   function bouwKnikkers(ouder) {

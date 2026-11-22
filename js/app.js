@@ -1,9 +1,9 @@
-/* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel, #dammen, #knikkeren, #tollen),
+/* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel, #dammen, #klaverjassen, #knikkeren, #tollen),
    de knoppen in de kop, het menu, tikgeluid en trilling, en het installeren als app. */
 (function () {
-  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'knikkeren', 'tollen'];
+  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'knikkeren', 'tollen'];
   // muziek per spel; de zolderspellen lenen een vrolijk stuk, dammen het rustige molenstuk
-  const MUZIEK = { knikkeren: 'ganzenbord', tollen: 'sjoelen', dammen: 'molenspel' };
+  const MUZIEK = { knikkeren: 'ganzenbord', tollen: 'sjoelen', dammen: 'molenspel', klaverjassen: 'sjoelen' };
   let huidig; // undefined = er is nog niets getoond
 
   function toon() {
