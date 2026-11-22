@@ -1878,10 +1878,13 @@
   }
 
   function koppelVoorwerpen(svg) {
+    const viaToetsen = (v) => { try { return v.matches(':focus-visible'); } catch (e) { return false; } };
     svg.querySelectorAll('.voorwerp').forEach((v) => {
-      v.addEventListener('pointerenter', () => toonLabel(v));
-      v.addEventListener('pointerleave', verbergLabel);
-      v.addEventListener('focus', () => toonLabel(v));
+      // labels alleen bij de muis of het toetsenbord: op een aanraakscherm kan een label dat bij het
+      // aanraken verschijnt ervoor zorgen dat Safari de tik als "aanwijzen" ziet en niet als klik
+      v.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') toonLabel(v); });
+      v.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') verbergLabel(); });
+      v.addEventListener('focus', () => { if (viaToetsen(v)) toonLabel(v); });
       v.addEventListener('blur', verbergLabel);
       v.addEventListener('click', (e) => {
         if (v.classList.contains('speelbaar')) {
@@ -2073,6 +2076,16 @@
 
   async function doeKlus() {
     if (bezig || !window.Duiten) return;
+    try {
+      await voerKlusUit();
+    } catch (err) {
+      bezig = false;
+      kamer.classList.remove('hud-weg');
+      if (kamerSvg) { kamerSvg.getAnimations().forEach((a) => a.cancel()); kamerSvg.classList.remove('zoomt'); pasStaatToe(kamerSvg); }
+      werkHudBij();
+    }
+  }
+  async function voerKlusUit() {
     if (klusknop.classList.contains('ga')) {
       const ont = Duiten.kamers[kamerNaam].ontgrendelt;
       if (ont) gaNaarKamer(ont.kamer, klusknop);
@@ -2214,23 +2227,40 @@
     verbergWenk();
     if (rustig()) { location.hash = '#' + spel; return; }
     bezig = true;
-    kamerSvg.getAnimations().forEach((a) => a.cancel());
-    const doel = zoomWaarden(v);
-    Geluid.woesj();
-    kamerSvg.classList.add('zoomt');
-    kamer.classList.add('hud-weg');
-    kamerSvg.animate([{ transform: 'translate(0px, 0px) scale(1)' }, { transform: doel }], { duration: 950, easing: 'cubic-bezier(.65,0,.3,1)', fill: 'forwards' });
-    sluier.style.background = 'var(--grond)';
-    sluier.animate([{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1 }], { duration: 950, easing: 'ease-in', fill: 'forwards' });
-    setTimeout(() => {
-      location.hash = '#' + spel;
+    try {
+      kamerSvg.getAnimations().forEach((a) => a.cancel());
+      const doel = zoomWaarden(v);
+      Geluid.woesj();
+      kamerSvg.classList.add('zoomt');
+      kamer.classList.add('hud-weg');
+      kamerSvg.animate([{ transform: 'translate(0px, 0px) scale(1)' }, { transform: doel }], { duration: 950, easing: 'cubic-bezier(.65,0,.3,1)', fill: 'forwards' });
+      sluier.style.background = 'var(--grond)';
+      sluier.animate([{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1 }], { duration: 950, easing: 'ease-in', fill: 'forwards' });
+    } catch (err) {
       bezig = false;
+      location.hash = '#' + spel;
+      return;
+    }
+    setTimeout(() => {
+      bezig = false;
+      location.hash = '#' + spel;
     }, 960);
   }
 
   // Van kamer wisselen: de trap op of af.
   async function gaNaarKamer(naar, bron) {
     if (bezig || !KAMERS.includes(naar)) return;
+    try {
+      await wisselKamer(naar, bron);
+    } catch (err) {
+      bezig = false;
+      kamer.classList.remove('hud-weg');
+      sluier.getAnimations().forEach((a) => a.cancel());
+      sluier.style.opacity = 0;
+      if (getekend !== kamerNaam) maakKamer(gewensteIndeling());
+    }
+  }
+  async function wisselKamer(naar, bron) {
     if (naar === kamerNaam) { centreer(); return; }
     if (!kamerOpen(naar)) {
       schud(bron);
@@ -2337,6 +2367,7 @@
     zetBinnen(true);
     if (window.Duiten && !Duiten.veld('bezocht', false)) Duiten.zetVeld('bezocht', true);
     if (naar !== kamerNaam) zetKamerNaam(naar);
+    if (getekend !== kamerNaam) maakKamer(gewensteIndeling());
     if (rustig()) { toonKamer(); return; }
     bezig = true;
     verbergLabel();
@@ -2360,14 +2391,18 @@
       sluier.animate([{ opacity: 0 }, { opacity: 0, offset: 0.55 }, { opacity: 1 }], { duration: 1100, easing: 'ease-in', fill: 'forwards' });
     }, wachtTijd);
     setTimeout(() => {
-      toonKamer();
-      kamerSvg.getAnimations().forEach((a) => a.cancel());
-      kamerSvg.classList.add('zoomt');
-      const a = kamerSvg.animate([{ transform: 'scale(1.18)', filter: 'blur(3px)' }, { transform: 'scale(1)', filter: 'blur(0px)' }], { duration: 1300, easing: 'cubic-bezier(.2,.7,.2,1)' });
-      a.onfinish = () => kamerSvg.classList.remove('zoomt');
-      sluier.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, easing: 'ease-out', fill: 'forwards' });
       bezig = false;
-      if (hint) hint.classList.remove('weg');
+      try {
+        toonKamer();
+        kamerSvg.getAnimations().forEach((a) => a.cancel());
+        kamerSvg.classList.add('zoomt');
+        const a = kamerSvg.animate([{ transform: 'scale(1.18)', filter: 'blur(3px)' }, { transform: 'scale(1)', filter: 'blur(0px)' }], { duration: 1300, easing: 'cubic-bezier(.2,.7,.2,1)' });
+        a.onfinish = () => kamerSvg.classList.remove('zoomt');
+        sluier.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, easing: 'ease-out', fill: 'forwards' });
+        if (hint) hint.classList.remove('weg');
+      } catch (err) {
+        gevel.hidden = true; kamer.hidden = false; sluier.style.opacity = 0;
+      }
     }, wachtTijd + 1120);
   }
 

@@ -182,7 +182,16 @@
   const host = location.hostname;
   if ('serviceWorker' in navigator && (host.endsWith('github.io') || host === 'localhost' || host === '127.0.0.1')) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(() => { /* offline werken is een extraatje */ });
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => { /* offline werken is een extraatje */ });
+    });
+    // Neemt een nieuwe versie het over, laad dan één keer opnieuw (niet midden in een spel: dan bij terugkomst in het huis).
+    const hadVersie = !!navigator.serviceWorker.controller;
+    let herladen = false;
+    const herlaad = () => { if (!herladen) { herladen = true; location.reload(); } };
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadVersie) return;
+      if (!location.hash || location.hash === '#') herlaad();
+      else window.addEventListener('hashchange', () => { if (!location.hash || location.hash === '#') herlaad(); });
     });
   }
 
