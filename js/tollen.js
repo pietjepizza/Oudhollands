@@ -534,9 +534,10 @@
     tollen.forEach((T, i) => {
       if (!spelers[i] || !spelers[i].mens || T.ligt) return;
       const [sx, sy] = naarScherm(T.x, T.z), s = k(T.z);
-      const y = sy - (HT + 18) * s + Math.sin(nu / 260 + i) * 2.5;
-      ctx.fillStyle = i ? '#7FA8F0' : '#F2C14E'; ctx.strokeStyle = 'rgba(40, 20, 6, .6)'; ctx.lineWidth = 1.4;
-      ctx.beginPath(); ctx.moveTo(sx - 8, y - 7); ctx.lineTo(sx + 8, y - 7); ctx.lineTo(sx, y + 3); ctx.closePath(); ctx.fill(); ctx.stroke();
+      const kantel = T.valt ? 0 : T.kant * Math.sin(T.pre) * Math.PI / 180;
+      const x = sx + Math.sin(kantel) * HT * s, y = sy - (HT + 9) * s * Math.cos(kantel) + Math.sin(nu / 260 + i) * 2;
+      ctx.fillStyle = i ? '#7FA8F0' : '#F2C14E'; ctx.strokeStyle = 'rgba(40, 20, 6, .65)'; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(x - 9, y - 8); ctx.lineTo(x + 9, y - 8); ctx.lineTo(x, y + 3); ctx.closePath(); ctx.fill(); ctx.stroke();
     });
     // vonken en stof
     deeltjes.forEach((d) => {
