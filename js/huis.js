@@ -909,8 +909,9 @@
       [4, 5, 1], [3, 6, 1], [7, 6, 1], [0, 7, 1], [4, 7, 1], [8, 7, 1], [1, 8, 1], [5, 8, 1], [9, 8, 1], [2, 9, 1], [6, 9, 1]
     ];
     stukken.sort((a, b) => a[1] - b[1]).forEach(([c, r, wit, isDam]) => steen(c, r, !!wit, !!isDam));
-    // een messing naambordje aan de voorkant van de tafel, zoals bij de spellen aan de muur
-    const voor = T((x0 + x1) / 2, 640);
+    // een messing naambordje aan de voorkant van de tafel, zoals bij de spellen aan de muur;
+    // in het oog midden onder het bord (dat ligt verder weg, dus een tikje rechts van zijn middenlijn)
+    const voor = T(-269, 640);
     naambordje(dam, voor[0], voor[1] + 7, 'Dammen');
 
     // de speelkaarten: speelbaar, en net als in het spel: ivoren kaarten met een rood of zwart teken,
@@ -937,6 +938,10 @@
     // een stapeltje dichte kaarten, dan een waaiertje open kaarten
     [0, 1, 2, 3].forEach((i) => kaart(-450 + i * 0.4, 742 - i * 0.6, -0.12, true));
     [[-428, 702, -0.5, '#B3302A', 'h'], [-410, 692, -0.15, '#B3302A', 'r'], [-392, 698, 0.25, '#1F1B17', 'k'], [-372, 708, 0.6, '#1F1B17', 's']].forEach(([cx, cz, hoek, kleur, t]) => kaart(cx, cz, hoek, false, kleur, t));
+    // en net als bij het dambord een messing naambordje aan de tafelrand, in het oog onder de kaarten;
+    // zo hangt het ook op een hoge telefoon, waar de kamer aan de zijkant wordt bijgesneden, helemaal in beeld
+    const kv = T(-358, 640);
+    naambordje(kaarten, kv[0], kv[1] + 7, 'Klaverjassen');
   }
 
   // Bikkels op de vloer: vier botjes en een leren balletje. Knikkeren speel je op de zolder; bikkelen komt nog.
