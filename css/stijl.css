@@ -334,6 +334,8 @@ svg.duit { width: 22px; height: 22px; flex: none; }
 /* licht, stof, schemer en sneeuw liggen over de voorwerpen heen en mogen nooit een tik opvangen */
 .lichtbundel, .zonvlek, .stof, .stofje, .schemer, .vlok, .sneeuwval, .kamer-svg image, .gevel-svg image { pointer-events: none; }
 .stofje { animation-name: zweven; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; opacity: .5; }
+/* in de winter geen zwevende stofjes in het licht: die lijken dan op sneeuw binnen */
+html[data-seizoen="winter"] .stof { display: none; }
 .lichtbundel { animation: ademen 13s ease-in-out infinite alternate; }
 .zonvlek { animation: ademen-vlek 13s ease-in-out infinite alternate; }
 .koek-touw { transform-box: fill-box; transform-origin: 50% 0; animation: slinger 3.8s ease-in-out infinite alternate; }

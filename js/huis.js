@@ -402,6 +402,8 @@
     muurVuil(voor('muren', links), linkerwand, [[W((r.z0 + r.z1) / 2, r.y1 + 70), 60, 90]], [], []);
     veelhoek([W(r.z0 - 22, r.y0 - 22), W(r.z1 + 22, r.y0 - 22), W(r.z1 + 22, r.y1 + 22), W(r.z0 - 22, r.y1 + 22)], { fill: '#3A291C' }, links);
     veelhoek(glas, { fill: 'url(#h-glas)' }, links);
+    // wat je buiten door het glas ziet (de sneeuw in de winter): achter het lood en de roeden
+    el('g', { class: 'alleen-winter raam-buiten', 'clip-path': 'url(#h-raamclip)', 'pointer-events': 'none' }, links);
     const lood = el('g', { 'clip-path': 'url(#h-raamclip)', stroke: '#55534C', 'stroke-width': 1.3, 'stroke-opacity': 0.75 }, links);
     const zm = (r.z0 + r.z1) / 2, bereik = 2 * hh + 400;
     for (let c = -bereik; c <= bereik; c += 30) {
@@ -410,6 +412,8 @@
         el('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, lood);
       });
     }
+    // ijsbloemen groeien aan de binnenkant op het glas: over het lood, onder de roeden
+    el('g', { class: 'alleen-winter raam-ijs', 'clip-path': 'url(#h-raamclip)', 'pointer-events': 'none' }, links);
     const ym = r.y0 + (r.y1 - r.y0) * 0.4;
     veelhoek([W(zm - 6, r.y0), W(zm + 6, r.y0), W(zm + 6, r.y1), W(zm - 6, r.y1)], { fill: '#3A291C' }, links);
     veelhoek([W(r.z0, ym - 6), W(r.z1, ym - 6), W(r.z1, ym + 6), W(r.z0, ym + 6)], { fill: '#3A291C' }, links);
@@ -1131,15 +1135,24 @@
     const sint = el('g', { class: 'alleen-sinterklaas' }, svg);
     bouwTafelSint(plek('tafel', sint));
     bouwKlomp(plek('schoen', sint));
-    // Winter: ijsbloemen op het raam en sneeuw buiten
-    const winter = el('g', { class: 'alleen-winter', 'clip-path': 'url(#h-raamclip)' }, svg);
+    // Winter: sneeuw buiten (achter het glas, tegen een grijze winterlucht) en ijsbloemen op het glas
+    const winter = svg.querySelector('.raam-buiten'), opGlas = svg.querySelector('.raam-ijs');
     const rr = [glas[0], glas[1], glas[2], glas[3]];
+    veelhoek(rr, { fill: '#97A6B5', opacity: 0.55 }, winter);
     const breedte = Math.abs(rr[1][0] - rr[0][0]) + 40, hoog = Math.max(rr[2][1], rr[3][1]) - Math.min(rr[0][1], rr[1][1]);
     const x0 = Math.min(rr[0][0], rr[1][0], rr[2][0], rr[3][0]), y0 = Math.min(rr[0][1], rr[1][1]), y1 = Math.max(rr[2][1], rr[3][1]);
-    for (let i = 0; i < 30; i++) {
-      el('circle', { cx: (x0 + rnd() * breedte).toFixed(1), cy: (y0 + rnd() * hoog * 0.8).toFixed(1), r: (1.6 + rnd() * 2.4).toFixed(1), fill: '#FFFFFF', class: 'vlok', style: `animation-delay:-${(rnd() * 8).toFixed(1)}s;animation-duration:${(5 + rnd() * 5).toFixed(1)}s` }, winter);
+    // kleine vlokken ver weg (trager, doffer), grote dichtbij
+    for (let i = 0; i < 44; i++) {
+      const ver = i < 18;
+      el('circle', {
+        cx: (x0 + rnd() * breedte).toFixed(1), cy: (y0 + rnd() * hoog * 0.8).toFixed(1), r: (ver ? 1 + rnd() * 1.1 : 1.8 + rnd() * 2.2).toFixed(1),
+        fill: '#FFFFFF', opacity: (ver ? 0.7 : 0.95).toFixed(2), class: 'vlok',
+        style: `animation-delay:-${(rnd() * 9).toFixed(1)}s;animation-duration:${((ver ? 8 : 5) + rnd() * 4).toFixed(1)}s`
+      }, winter);
     }
-    const ijs = el('g', { fill: 'none', stroke: '#FFFFFF', 'stroke-width': 1.4, opacity: 0.75, 'stroke-linecap': 'round' }, winter);
+    // buiten ligt de sneeuw al tegen het raam
+    veelhoek([rr[3], rr[2], [rr[2][0], rr[2][1] - 18], [rr[3][0], rr[3][1] - 22]], { fill: '#FFFFFF', opacity: 0.7 }, winter);
+    const ijs = el('g', { fill: 'none', stroke: '#FFFFFF', 'stroke-width': 1.4, opacity: 0.75, 'stroke-linecap': 'round' }, opGlas);
     for (let i = 0; i < 9; i++) {
       const x = x0 + rnd() * breedte, y = y1 - rnd() * hoog * 0.25;
       let d = `M${x.toFixed(1)} ${y.toFixed(1)}`;
@@ -1147,7 +1160,6 @@
       el('path', { d }, ijs);
       el('path', { d: `M${x.toFixed(1)} ${y.toFixed(1)} l -10 -6 M${x.toFixed(1)} ${y.toFixed(1)} l 9 -8`, opacity: 0.8 }, ijs);
     }
-    veelhoek([rr[3], rr[2], [rr[2][0], rr[2][1] - 18], [rr[3][0], rr[3][1] - 22]], { fill: '#FFFFFF', opacity: 0.55, stroke: 'none' }, ijs);
     // Koningsdag: vlaggetjes langs de bovenkant van beide zijmuren
     const oranje = el('g', { class: 'alleen-koningsdag' }, svg);
     vlaggetjes(oranje, Q(-hw, -hh + 40, ZB - 10), Q(-hw, -hh + 40, zv + 40), 40, 26);
