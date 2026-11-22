@@ -116,13 +116,14 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": kolf op het ijs (ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen.
+Nog "in de oven": bikkelen (de bikkels en het balletje liggen al op de vloer van de voorkamer), kolf op het ijs (ijsbaan),
+de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=20`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=21`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

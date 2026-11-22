@@ -104,7 +104,7 @@
       raam: { z0: 690, z1: 930, y0: -210, y1: 150 },
       deur: { z0: 694, z1: 912, top: -64 },
       licht: [1, 0.7, 0.5],
-      plaats: { knikkers: 'translate(220 -6)' },
+      plaats: { bikkels: 'translate(220 -6)' },
       // de schouw onder het ganzenbord: midden, halve breedte, bovenkant kroonlijst, tegels naast elkaar
       schouw: { X: -4, hb: 150, top: 136, kolommen: 8, diep: 50, maat: 1 }
     },
@@ -126,7 +126,7 @@
         plank: plaats([1196, 588], [658, 1010], 1.0),
         kolf: plaats([1290, 775], [764, 1180], 1.05),
         tafel: plaats([60, 945], [-30, 1300], 0.75),
-        knikkers: plaats([918, 880], [470, 1250], 0.85),
+        bikkels: plaats([918, 880], [470, 1250], 0.85),
         kat: plaats([1390, 925], [720, 1265], 0.8),
         koek: plaats([1290, -10], [640, -10], 1.0),
         schoen: plaats([1006.7, 789.5], [578, 1192], 0.85)
@@ -316,9 +316,8 @@
     verloop(defs, 'h-gloed', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#FFD27A', 0.55], [1, '#FFD27A', 0]]);
     verloop(defs, 'h-gang', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, '#FBE6B2'], [1, '#C48F50']]);
     verloop(defs, 'h-papier', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#F2E6C8'], [1, '#D9C59A']]);
-    verloop(defs, 'h-knikker-b', 'radialGradient', { cx: '35%', cy: '30%', r: '70%' }, [[0, '#E6F0FF'], [0.4, '#4C79C9'], [1, '#1B3170']]);
-    verloop(defs, 'h-knikker-g', 'radialGradient', { cx: '35%', cy: '30%', r: '70%' }, [[0, '#EAFBE6'], [0.4, '#4F9A54'], [1, '#1E4D22']]);
-    verloop(defs, 'h-knikker-o', 'radialGradient', { cx: '35%', cy: '30%', r: '70%' }, [[0, '#FFF4DC'], [0.4, '#D9963A'], [1, '#7A4510']]);
+    verloop(defs, 'h-bikkel', 'radialGradient', { cx: '36%', cy: '30%', r: '78%' }, [[0, '#FFF9EC'], [0.42, '#EBDCBA'], [1, '#BFA273']]);
+    verloop(defs, 'h-bikkelbal', 'radialGradient', { cx: '34%', cy: '28%', r: '76%' }, [[0, '#E8BC86'], [0.45, '#B2703A'], [1, '#5A2F12']]);
     verloop(defs, 'h-kat', 'radialGradient', { cx: '40%', cy: '35%', r: '70%' }, [[0, '#E9A45E'], [1, '#A9612A']]);
     verloop(defs, 'h-vlek', 'radialGradient', { cx: '42%', cy: '55%', r: '60%' }, [[0, '#FFF3D2', 0.75], [0.6, '#FFF3D2', 0.3], [1, '#FFF3D2', 0]]);
     verloop(defs, 'h-vlek-warm', 'radialGradient', { cx: '50%', cy: '50%', r: '55%' }, [[0, '#FFDFA0', 0.6], [1, '#FFDFA0', 0]]);
@@ -532,7 +531,7 @@
     // ---------- Voorgrond ----------
     bouwKolf(plek('kolf', svg));
     bouwTafel(plek('tafel', svg));
-    bouwKnikkers(plek('knikkers', svg));
+    bouwBikkels(plek('bikkels', svg));
     bouwKat(plek('kat', svg));
     bouwKoek(plek('koek', svg));
     bouwKroon(plek('kroon', svg));
@@ -940,21 +939,52 @@
     [[-428, 702, -0.5, '#B3302A', 'h'], [-410, 692, -0.15, '#B3302A', 'r'], [-392, 698, 0.25, '#1F1B17', 'k'], [-372, 708, 0.6, '#1F1B17', 's']].forEach(([cx, cz, hoek, kleur, t]) => kaart(cx, cz, hoek, false, kleur, t));
   }
 
-  function bouwKnikkers(ouder) {
-    const g = voorwerp(ouder, { spel: 'knikkeren', label: 'Speel knikkeren', slot: 'Knikkeren · koop eerst de trap naar de zolder' });
+  // Bikkels op de vloer: vier botjes en een leren balletje. Knikkeren speel je op de zolder; bikkelen komt nog.
+  // Bikkels van schapen-, varkens- en runderbotjes zijn in Delft opgegraven uit lagen van 1600 tot 1800.
+  function bouwBikkels(ouder) {
+    const g = voorwerp(ouder, { label: 'Bikkelen · komt binnenkort' });
     const K = (X, Z) => P(X, HH, Z);
-    const zak = K(40, 760);
-    const verst = K(165, 690);
-    el('rect', { x: zak[0] - 34, y: zak[1] - 52, width: verst[0] - zak[0] + 52, height: 66, fill: 'transparent' }, g);
-    el('ellipse', { cx: zak[0] + 6, cy: zak[1] + 4, rx: 30, ry: 8, fill: 'url(#h-schaduwvlek)' }, g);
-    el('path', { d: `M${zak[0] - 26} ${zak[1]} Q${zak[0] - 30} ${zak[1] - 30} ${zak[0] - 6} ${zak[1] - 34} L${zak[0] - 2} ${zak[1] - 44} M${zak[0] - 6} ${zak[1] - 34} Q${zak[0] + 28} ${zak[1] - 30} ${zak[0] + 26} ${zak[1]} Z`, fill: '#8C6A43', stroke: '#5A4026', 'stroke-width': 1.4 }, g);
-    el('path', { d: `M${zak[0] - 14} ${zak[1] - 32} q 8 6 18 0`, fill: 'none', stroke: '#C9A46A', 'stroke-width': 2 }, g);
-    [[95, 720, 'b'], [130, 700, 'g'], [70, 690, 'o'], [160, 740, 'b'], [112, 760, 'o']].forEach(([X, Z, k]) => {
-      const m = K(X, Z), r = 9 * 1000 / Z * 0.75;
-      el('ellipse', { cx: m[0] + 3, cy: m[1] + 1, rx: r, ry: r * 0.4, fill: '#000', opacity: 0.35 }, g);
-      el('circle', { cx: m[0], cy: m[1] - r, r, fill: `url(#h-knikker-${k})` }, g);
-      el('circle', { cx: m[0] - r * 0.35, cy: m[1] - r * 1.35, r: r * 0.25, fill: '#fff', opacity: 0.8 }, g);
-    });
+    const verweg = K(30, 770), dichtbij = K(180, 680);
+    el('rect', { x: verweg[0] - 24, y: verweg[1] - 30, width: dichtbij[0] - verweg[0] + 48, height: dichtbij[1] - verweg[1] + 48, fill: 'transparent' }, g);
+    // een kootbeentje van boven gezien: twee knobbels, een smalle taille en een holletje aan de onderkant
+    const VORM = 'M-1 -0.12 C-1.04 -0.52 -0.62 -0.7 -0.3 -0.56 C-0.1 -0.47 0.1 -0.47 0.3 -0.56 C0.64 -0.72 1.04 -0.5 1 -0.08 C0.97 0.3 0.74 0.62 0.36 0.58 C0.16 0.56 0.07 0.42 -0.04 0.42 C-0.17 0.42 -0.26 0.61 -0.5 0.6 C-0.84 0.59 -0.97 0.26 -1 -0.12 Z';
+    // de vier kanten van een bikkel: bol, hol, rug (smal, met een groef) en S (smal, met een kronkel)
+    const bikkel = (X, Z, hoek, maat, kant) => {
+      const smal = kant === 'rug' || kant === 's' ? 0.74 : 1;
+      const m = K(X, Z), s = 13 * 1000 / Z * 0.75 * maat, dik = s * (smal < 1 ? 0.42 : 0.34);
+      // eerst draaien op de vloer, dan in perspectief platdrukken
+      const stand = `scale(${s.toFixed(2)} ${(s * 0.64).toFixed(2)}) rotate(${hoek}) scale(1 ${smal})`;
+      const op = (dy) => `translate(${m[0].toFixed(1)} ${(m[1] - dy).toFixed(1)}) ${stand}`;
+      el('ellipse', { cx: m[0] + 3, cy: m[1] + 1, rx: s * 1.06, ry: s * 0.4 * smal, fill: '#000', opacity: 0.3 }, g);
+      // de zijkant: de onderste omtrek en een paar lagen ertussen, zodat het één stevig botje wordt
+      el('path', { d: VORM, transform: op(0), fill: '#937850', stroke: '#5A452A', 'stroke-width': 0.08 }, g);
+      [0.34, 0.67].forEach((f) => el('path', { d: VORM, transform: op(dik * f), fill: '#A2875B' }, g));
+      const boven = el('g', { transform: op(dik) }, g);
+      el('path', { d: VORM, fill: 'url(#h-bikkel)', stroke: '#6B5434', 'stroke-width': 0.07 }, boven);
+      if (kant === 'hol') el('ellipse', { cx: 0.04, cy: 0.1, rx: 0.3, ry: 0.17, fill: '#AE9367', opacity: 0.85 }, boven);
+      else if (kant === 'bol') el('path', { d: 'M-0.62 -0.04 Q0 0.18 0.62 -0.04', fill: 'none', stroke: '#C4AB7E', 'stroke-width': 0.08 }, boven);
+      else if (kant === 's') el('path', { d: 'M-0.58 0.14 C-0.24 -0.34 0.24 0.38 0.58 -0.1', fill: 'none', stroke: '#A68C60', 'stroke-width': 0.09, 'stroke-linecap': 'round' }, boven);
+      else el('path', { d: 'M-0.62 0.03 L0.62 0.03', fill: 'none', stroke: '#B29770', 'stroke-width': 0.1, 'stroke-linecap': 'round' }, boven);
+      el('ellipse', { cx: -0.44, cy: -0.27, rx: 0.24, ry: 0.1, fill: '#fff', opacity: 0.65 }, boven);
+    };
+    const bal = (X, Z) => {
+      const m = K(X, Z), r = 12 * 1000 / Z * 0.75;
+      el('ellipse', { cx: m[0] + 4, cy: m[1] + 1, rx: r * 1.05, ry: r * 0.4, fill: '#000', opacity: 0.35 }, g);
+      el('circle', { cx: m[0], cy: m[1] - r, r, fill: 'url(#h-bikkelbal)', stroke: '#45250E', 'stroke-width': 0.8 }, g);
+      // de naden van het leer
+      el('path', {
+        d: `M${(m[0] - r * 0.93).toFixed(1)} ${(m[1] - r * 1.3).toFixed(1)} Q${(m[0] - r * 0.05).toFixed(1)} ${(m[1] - r * 0.72).toFixed(1)} ${(m[0] + r * 0.22).toFixed(1)} ${(m[1] - r * 1.97).toFixed(1)}` +
+          ` M${(m[0] - r * 0.2).toFixed(1)} ${(m[1] - r * 0.03).toFixed(1)} Q${(m[0] + r * 0.22).toFixed(1)} ${(m[1] - r * 0.92).toFixed(1)} ${(m[0] + r * 0.96).toFixed(1)} ${(m[1] - r * 0.74).toFixed(1)}`,
+        fill: 'none', stroke: '#F0DDB6', 'stroke-width': 1, 'stroke-dasharray': '1.8 1.4', opacity: 0.85
+      }, g);
+      el('circle', { cx: m[0] - r * 0.38, cy: m[1] - r * 1.38, r: r * 0.24, fill: '#fff', opacity: 0.5 }, g);
+    };
+    // van achteren naar voren
+    bikkel(140, 756, -28, 1, 'bol');
+    bikkel(96, 736, 18, 0.96, 'hol');
+    bal(58, 726);
+    bikkel(162, 712, 58, 0.94, 's');
+    bikkel(118, 690, -64, 1.04, 'rug');
   }
 
   function bouwKat(ouder) {
