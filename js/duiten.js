@@ -119,7 +119,7 @@
 
   // ---------- Beloning na een spel ----------
   const bel = document.getElementById('beloning');
-  let belSpel = null, belTimer = 0, vorigeFocus = null;
+  let belSpel = null, belTimer = 0, vorigeFocus = null, belVerder = null;
 
   function beloon(o) {
     if (!o || !o.bedrag) return;
@@ -136,6 +136,12 @@
   function toonBeloning(o) {
     if (!bel) return;
     belSpel = o.spel;
+    belVerder = o.verder || null;
+    const verder = document.getElementById('bel-verder');
+    if (verder) {
+      verder.hidden = !belVerder;
+      if (belVerder) verder.querySelector('span').textContent = belVerder.tekst;
+    }
     vorigeFocus = document.activeElement;
     document.getElementById('bel-sub-tekst').textContent = o.tekst || (o.gewonnen ? 'Gewonnen!' : 'Goed gespeeld');
     const v = Duiten.volgendeKlus(Duiten.kamerVanSpel(o.spel)) || Duiten.volgendeKlus('voorkamer');
@@ -177,6 +183,8 @@
 
   if (bel) {
     document.getElementById('bel-huis').addEventListener('click', () => { sluit(); location.hash = '#'; });
+    const verderKnop = document.getElementById('bel-verder');
+    if (verderKnop) verderKnop.addEventListener('click', () => { const v = belVerder; sluit(); if (v && v.actie) v.actie(); });
     document.getElementById('bel-nog').addEventListener('click', () => {
       sluit();
       const s = window.Spellen && window.Spellen[belSpel];

@@ -41,7 +41,10 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 
 - **Ganzenbord**: handgekleurd prentbord, 2 tot 4 spelers (mens of computer), met gans, brug, herberg, put, doolhof, gevangenis en dood.
 - **Sjoelen**: houten sjoelbak met natuurkunde. 30 schijven, 3 beurten, de echte telling (20 per volle reeks, verder 2-3-4-1).
-- **Molenspel**: op een ingekraste steen, tegen de computer of met z'n tweeën.
+- **Molenspel** (schermvullend): op een ingekraste steen, tegen vier tegenstanders met een eigen gezicht en karakter
+  (Jantje, Grietje, Molenaar Kees en de burgemeester; versla er een en de volgende komt vrij) of met z'n tweeën.
+  Je ziet waar je kunt zetten en wat de ander net deed, je kunt tikken of slepen, onbeperkt terugnemen en een tip
+  vragen. Een molen wordt gevierd, een zwikmolen nog meer.
 - **Knikkeren** (zolder): schiet tien knikkers in het potje, met drie duimpjes extra.
 - **Tollen** (zolder): zweep de tol aan door langs hem te vegen en houd hem op de plank zo lang je kunt.
 
@@ -62,7 +65,7 @@ Nog "in de oven": dammen, klaverjassen (herberg), kolf op het ijs (ijsbaan), de 
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=8`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=9`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

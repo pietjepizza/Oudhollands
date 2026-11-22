@@ -180,6 +180,11 @@
     tik() { ruis(0.025, 2400, 5, 0.12); },
     // knikker tegen knikker, en een knikker die in het potje valt
     knik(kracht) { const v = Math.min(0.7, 0.12 + (kracht || 0.5) * 0.6); toon(3200 + Math.random() * 900, 0.05, v * 0.25, 'sine'); ruis(0.02, 4500, 6, v * 0.5); },
+    // molen: drie houten tikken en een klokje
+    molen() {
+      [0, 0.1, 0.2].forEach((w, i) => { ruis(0.05, 1300 + i * 350, 4, 0.5, w); toon(520 + i * 130, 0.12, 0.08, 'triangle', w); });
+      [784, 1047, 1319].forEach((f, i) => toon(f, 0.5, 0.07, 'sine', 0.34 + i * 0.08));
+    },
     plop() { toon(520, 0.12, 0.16, 'sine'); toon(380, 0.18, 0.1, 'sine', 0.05); ruis(0.06, 900, 2, 0.25); },
     // zweepslag en het brommen van een tol
     zweep() { ruis(0.05, 3800, 1.5, 0.5); ruis(0.12, 1200, 1, 0.15, 0.02); },

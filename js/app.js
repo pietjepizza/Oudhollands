@@ -14,6 +14,8 @@
     document.getElementById('thuis').hidden = !!spel;
     SPELLEN.forEach((s) => { document.getElementById('scherm-' + s).hidden = s !== spel; });
     document.body.classList.toggle('in-spel', !!spel);
+    // sommige spellen vullen het hele scherm: dan verdwijnen de kop en de tekst eronder
+    document.body.classList.toggle('volscherm', !!spel && document.getElementById('scherm-' + spel).classList.contains('volscherm'));
     if (spel && vorige !== spel) {
       window.scrollTo(0, 0);
       window.Spellen[spel].start();
