@@ -1312,6 +1312,60 @@ button.mo-kaart { cursor: pointer; }
   .sj-speler { padding: 2px 6px 2px 2px; column-gap: 5px; }
 }
 
+/* ---------- Knikkeren (de stand, pops, kaart en banier delen we met sjoelen) ---------- */
+.kn-podium { grid-template-columns: minmax(0, 1fr); }
+.kn-stand { overflow: hidden; }
+.kn-veldvak { position: relative; width: var(--veld, 300px); height: calc(var(--veld, 300px) * 1.4); }
+.kn-getal { display: inline-flex; align-items: center; gap: 4px; }
+.kn-getal .kn-mini { width: 12px; height: 12px; }
+.kn-gat { width: 14px; height: 9px; border-radius: 50%; background: radial-gradient(ellipse at 55% 60%, #6E4E26, #2E1E0E 65%); box-shadow: 0 0 0 1.5px #C9A86E; }
+@media (max-width: 420px) { .kn-meer { display: none !important; } }
+.kn-doek { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; outline: none; border-radius: 6px; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .5)); }
+.kn-doek.mikt { cursor: grabbing; }
+.kn-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E; }
+.kn-pot { display: inline-grid; justify-items: center; align-content: center; gap: 0; min-width: 42px; margin: 0 2px; }
+.kn-pot svg { width: 34px; height: 22px; display: block; }
+.kn-pot b { font-family: var(--f-tekst); font-weight: 600; font-size: 1.15rem; line-height: 1; color: #FFF4D6; font-variant-numeric: lining-nums tabular-nums; }
+.kn-hand { display: inline-flex; align-items: center; gap: 2px; min-height: 12px; }
+.kn-mini {
+  width: 11px; height: 11px; border-radius: 50%; flex: none;
+  background: radial-gradient(circle at 35% 30%, var(--a), var(--b) 60%, var(--c));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+}
+.kn-mini.leeg { opacity: .22; box-shadow: inset 0 0 0 1px rgba(244, 233, 207, .5); background: none; }
+.kn-eigen {
+  display: block; width: 26px; height: 26px; border-radius: 50%; margin: auto;
+  background: radial-gradient(circle at 35% 30%, var(--a), var(--b) 58%, var(--c));
+  box-shadow: inset -2px -3px 5px rgba(0, 0, 0, .25), 0 1px 3px rgba(0, 0, 0, .4);
+}
+.kn-eigen.groot { width: 40px; height: 40px; margin-top: 5px; }
+.mo-gezicht .kn-eigen.groot { position: relative; }
+.kn-zelf .mo-gezicht { display: grid; place-items: center; background: rgba(233, 223, 200, .14); border-radius: 50%; }
+.sj-twee .kn-eigen { width: 34px; height: 34px; }
+.sj-twee .kn-eigen + .kn-eigen { margin-left: -10px; }
+.kn-zelf .mo-info { align-items: center; }
+.kn-zelf .mo-doe { grid-column: 2; }
+.kn-terug { transform: rotate(90deg); }
+.kn-op { transform: rotate(-90deg); }
+.sj-speler.kn-winnaar { box-shadow: 0 0 0 2px #E7C36A, 0 0 18px rgba(231, 195, 106, .55); background: rgba(60, 38, 14, .72); }
+.sj-speler.kn-wip { animation: kn-wip .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes kn-wip { 0% { transform: scale(1); } 40% { transform: scale(1.16); } 100% { transform: scale(1); } }
+.kn-pop.raak { font-family: var(--f-sier); font-weight: normal; font-size: 1.7rem; color: #FFE29A; }
+.kn-pop.feest { font-family: var(--f-sier); font-weight: normal; font-size: 1.5rem; color: #FFF4D6; animation-duration: 1.5s; }
+.kn-vlieg {
+  position: absolute; width: 16px; height: 16px; border-radius: 50%; pointer-events: none; z-index: 4;
+  background: radial-gradient(circle at 35% 30%, var(--a), var(--b) 58%, var(--c));
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .45);
+}
+.kn-beurt {
+  position: absolute; z-index: 4; left: 50%; top: 52%; transform: translate(-50%, -50%);
+  padding: 7px 16px; border-radius: 999px; pointer-events: none; white-space: nowrap;
+  background: rgba(30, 18, 8, .78); color: #F4E9CF; font-family: var(--f-sier); font-size: 1.15rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(255, 236, 200, .25);
+  animation: kn-beurt 1.3s ease forwards;
+}
+@keyframes kn-beurt { 0% { opacity: 0; transform: translate(-50%, -30%); } 18%, 75% { opacity: 1; transform: translate(-50%, -50%); } 100% { opacity: 0; transform: translate(-50%, -70%); } }
+
 /* ---------- Telefoon: de kamer vult het scherm, weinig tekst ---------- */
 @media (max-width: 760px) {
   .toneel { height: calc(100svh - var(--kop-h, 60px)); min-height: 460px; }
@@ -1369,6 +1423,7 @@ button.mo-kaart { cursor: pointer; }
   .mo-molenlijn { animation: none !important; stroke-dashoffset: 0; }
   .gb-beker.klaar, .gb-beker.schudt svg, .gb-beker.gooit svg, .gb-kaartje.in, .gb-pion-binnen.gewonnen { animation: none !important; }
   .sj-pop, .sj-banier, .sj-kaart.in { animation: none !important; }
+  .kn-beurt, .sj-speler.kn-wip { animation: none !important; }
   .gevel-svg .ster, .gevel-svg .straal, .gevel-svg .flakker, .gevel-svg .glans, .plek-wijzer .zweef, .plek-wijzer.kan .puls,
   .hoepelaar .loopt, .hoepelaar .huppel, .hoepel-draai, .gevel-svg .been, .wandelaar .loopt, .wandelaar .stap,
   .pijprook circle, .schoorsteenrook circle, .zwaaiarm, .straatkat-staart, .zwem, .eend-lijf, .riem, .kruin, .vleugel, .wieken { animation: none !important; }

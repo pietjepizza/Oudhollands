@@ -68,7 +68,12 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   (Jantje, Grietje, Molenaar Kees en de burgemeester; versla er een en de volgende komt vrij) of met z'n tweeën.
   Je ziet waar je kunt zetten en wat de ander net deed, je kunt tikken of slepen, onbeperkt terugnemen en een tip
   vragen. Een molen wordt gevierd, een zwikmolen nog meer.
-- **Knikkeren** (zolder): schiet tien knikkers in het potje, met drie duimpjes extra.
+- **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
+  knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
+  Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
+  naar achteren en laat los: een stippellijn laat zien waar je knikker een andere raakt en welke kant die op gaat, de
+  kracht schat je zelf met een krachtring. Tegen Jantje, Grietje, Molenaar Kees en de burgemeester (je ziet ze mikken;
+  versla er een en de volgende komt vrij) of met z'n tweeën. Dezelfde zandbak staat op de zolder.
 - **Tollen** (zolder): zweep de tol aan door langs hem te vegen en houd hem op de plank zo lang je kunt.
 
 **Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), die de browser zelf speelt met Web Audio, op blokfluit en luit. Elke plek heeft een eigen stuk:
@@ -88,7 +93,7 @@ Nog "in de oven": dammen, klaverjassen (herberg), kolf op het ijs (ijsbaan), de 
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=12`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=13`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

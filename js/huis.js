@@ -1345,22 +1345,80 @@
     }
   }
 
+  // De zandbak zoals in het spel: een houten bak met hoekbeslag, geharkt zand, een streep, het potje
+  // met al een paar knikkers erin, de knikkers van de buren en een knikkerzakje op de vloer.
   function bouwZandbak(ouder) {
     const g = voorwerp(ouder, { spel: 'knikkeren', label: 'Speel knikkeren' });
-    const x0 = -420, x1 = -120, z0 = 780, z1 = 900, top = 304, bodem = 330;
-    el('ellipse', { cx: (PZ(x0, bodem, z0)[0] + PZ(x1, bodem, z0)[0]) / 2 + 8, cy: PZ(0, bodem, z0)[1] + 4, rx: 200, ry: 16, fill: 'url(#h-schaduwvlek)' }, g);
+    const x0 = -420, x1 = -120, z0 = 780, z1 = 900, top = 304, bodem = 330, rx = 14, rz = 10;
+    el('ellipse', { cx: (PZ(x0, bodem, z0)[0] + PZ(x1, bodem, z0)[0]) / 2 + 8, cy: PZ(0, bodem, z0)[1] + 4, rx: 205, ry: 16, fill: 'url(#h-schaduwvlek)' }, g);
+    // zijkant en voorkant van de bak, met nerf
     veelhoek([PZ(x1, top, z0), PZ(x1, top, z1), PZ(x1, bodem, z1), PZ(x1, bodem, z0)], { fill: '#4E3018' }, g);
-    veelhoek([PZ(x0, top, z1), PZ(x1, top, z1), PZ(x1, top, z0), PZ(x0, top, z0)], { fill: '#8A5A2E' }, g);
-    veelhoek([PZ(x0 + 14, top, z1 - 10), PZ(x1 - 14, top, z1 - 10), PZ(x1 - 14, top, z0 + 10), PZ(x0 + 14, top, z0 + 10)], { fill: '#D9BC86' }, g);
     veelhoek([PZ(x0, top, z0), PZ(x1, top, z0), PZ(x1, bodem, z0), PZ(x0, bodem, z0)], { fill: '#6B4423' }, g);
+    [310, 316, 322].forEach((y, i) => {
+      const a1 = PZ(x0 + 6, y, z0), b1 = PZ(x1 - 6, y + (i % 2 ? 0.6 : -0.4), z0);
+      el('path', { d: `M${a1[0].toFixed(1)} ${a1[1].toFixed(1)} Q${((a1[0] + b1[0]) / 2).toFixed(1)} ${(a1[1] + 1.2).toFixed(1)} ${b1[0].toFixed(1)} ${b1[1].toFixed(1)}`, stroke: '#3A2210', 'stroke-width': 0.8, fill: 'none', opacity: 0.45 }, g);
+    });
+    // de bovenrand van de planken
+    veelhoek([PZ(x0, top, z1), PZ(x1, top, z1), PZ(x1, top, z0), PZ(x0, top, z0)], { fill: '#9A6838' }, g);
+    // het zand
+    const zand = [PZ(x0 + rx, top, z1 - rz), PZ(x1 - rx, top, z1 - rz), PZ(x1 - rx, top, z0 + rz), PZ(x0 + rx, top, z0 + rz)];
+    veelhoek(zand, { fill: '#DEC28C' }, g);
+    veelhoek([zand[0], zand[1], PZ(x1 - rx, top, z1 - rz - 16), PZ(x0 + rx, top, z1 - rz - 16)], { fill: '#6A4A22', opacity: 0.18 }, g);
+    veelhoek([zand[3], zand[0], PZ(x0 + rx + 12, top, z1 - rz), PZ(x0 + rx + 12, top, z0 + rz)], { fill: '#6A4A22', opacity: 0.12 }, g);
+    // geharkte boogjes en korrels
+    [826, 842, 858, 874].forEach((z) => {
+      const a1 = PZ(x0 + rx + 10, top, z), m1 = PZ((x0 + x1) / 2, top, z - 9), b1 = PZ(x1 - rx - 10, top, z);
+      el('path', { d: `M${a1[0].toFixed(1)} ${a1[1].toFixed(1)} Q${m1[0].toFixed(1)} ${m1[1].toFixed(1)} ${b1[0].toFixed(1)} ${b1[1].toFixed(1)}`, stroke: '#FFF6DE', 'stroke-width': 1, fill: 'none', opacity: 0.35 }, g);
+    });
+    for (let i = 0; i < 40; i++) {
+      const p = PZ(x0 + rx + 6 + rnd() * (x1 - x0 - 2 * rx - 12), top, z0 + rz + 4 + rnd() * (z1 - z0 - 2 * rz - 8));
+      el('circle', { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 0.7, fill: rnd() > 0.5 ? '#9A7440' : '#FFF4DA', opacity: 0.6 }, g);
+    }
+    // de streep vooraan
+    const s1 = PZ(x0 + rx + 10, top, z0 + rz + 16), s2 = PZ(x1 - rx - 10, top, z0 + rz + 16);
+    el('line', { x1: s1[0], y1: s1[1] + 0.8, x2: s2[0], y2: s2[1] + 0.8, stroke: '#FFF4D6', 'stroke-width': 1, opacity: 0.6 }, g);
+    el('line', { x1: s1[0], y1: s1[1], x2: s2[0], y2: s2[1], stroke: '#5C3E1A', 'stroke-width': 1.6, opacity: 0.7 }, g);
+    // het potje, met een lichte rand linksboven en al twee knikkers erin
     const pot = PZ(-270, top, 868);
-    el('ellipse', { cx: pot[0], cy: pot[1], rx: 18, ry: 6, fill: '#4A3218' }, g);
-    el('ellipse', { cx: pot[0], cy: pot[1] - 1, rx: 12, ry: 3.5, fill: '#2A1A0C' }, g);
-    [[-330, 820, '#4C79C9'], [-250, 810, '#B0573A'], [-200, 845, '#4F9A54'], [-300, 850, '#D9963A'], [-180, 800, '#E8CFAB']].forEach(([X, Z, k]) => {
+    el('ellipse', { cx: pot[0], cy: pot[1], rx: 24, ry: 8, fill: '#B08A52', opacity: 0.5 }, g);
+    el('ellipse', { cx: pot[0], cy: pot[1], rx: 16, ry: 5.4, fill: '#2E1E0E' }, g);
+    el('path', { d: `M${pot[0] - 16} ${pot[1]} A16 5.4 0 0 1 ${pot[0] + 16} ${pot[1]}`, fill: 'none', stroke: '#FFF0CC', 'stroke-width': 1.4, opacity: 0.7 }, g);
+    el('path', { d: `M${pot[0] - 13} ${pot[1] + 1} A13 3.6 0 0 0 ${pot[0] + 13} ${pot[1] + 1}`, fill: 'none', stroke: '#8A6436', 'stroke-width': 1.4, opacity: 0.8 }, g);
+    [[-5, 0.8, '#7A3A26'], [4, 1.2, '#3E5A34']].forEach(([dx, dy, k]) => el('circle', { cx: pot[0] + dx, cy: pot[1] + dy, r: 3.4, fill: k }, g));
+    // knikkers in het zand: van jou (klei) en van de buren
+    const knikker = (X, Z, a, b, c) => {
       const p = PZ(X, top, Z);
-      el('circle', { cx: p[0] + 1.5, cy: p[1] + 1, r: 6, fill: '#000', opacity: 0.25 }, g);
-      el('circle', { cx: p[0], cy: p[1] - 2, r: 6, fill: k }, g);
-      el('circle', { cx: p[0] - 2, cy: p[1] - 4, r: 1.8, fill: '#fff', opacity: 0.8 }, g);
+      el('ellipse', { cx: p[0] + 2.4, cy: p[1] + 1.4, rx: 6.4, ry: 3, fill: '#4A3218', opacity: 0.35 }, g);
+      el('circle', { cx: p[0], cy: p[1] - 3, r: 5.8, fill: b }, g);
+      el('path', { d: `M${(p[0] - 5.8).toFixed(1)} ${(p[1] - 3).toFixed(1)} A5.8 5.8 0 0 0 ${(p[0] + 5.8).toFixed(1)} ${(p[1] - 3).toFixed(1)}`, fill: c, opacity: 0.55 }, g);
+      el('circle', { cx: p[0] - 1.9, cy: p[1] - 5, r: 1.9, fill: a, opacity: 0.9 }, g);
+    };
+    knikker(-330, 846, '#FFF0D8', '#C9A06A', '#7A5432');
+    knikker(-226, 858, '#FFE4D8', '#C2533A', '#6A2214');
+    knikker(-298, 822, '#EEFBE4', '#5E9A4E', '#21441C');
+    knikker(-190, 834, '#FFFFFF', '#E2DED4', '#9C9484');
+    knikker(-262, 806, '#FFF8D8', '#E2B44B', '#86560F');
+    knikker(-366, 812, '#FFF0D8', '#C9A06A', '#7A5432');
+    // het stokje waarmee de streep is getrokken
+    const t1 = PZ(-180, top, 798), t2 = PZ(-140, top, 812);
+    el('line', { x1: t1[0], y1: t1[1], x2: t2[0], y2: t2[1], stroke: '#6A4626', 'stroke-width': 2.2, 'stroke-linecap': 'round' }, g);
+    // ijzeren hoekbeslag op de voorste hoeken
+    [[x0, 1], [x1, -1]].forEach(([X, r]) => {
+      const a1 = PZ(X, top, z0), b1 = PZ(X + r * 26, top, z0), c1 = PZ(X, top, z0 + 18), d1 = PZ(X, top + 12, z0);
+      el('path', { d: `M${a1[0].toFixed(1)} ${a1[1].toFixed(1)} L${b1[0].toFixed(1)} ${b1[1].toFixed(1)} M${a1[0].toFixed(1)} ${a1[1].toFixed(1)} L${c1[0].toFixed(1)} ${c1[1].toFixed(1)} M${a1[0].toFixed(1)} ${a1[1].toFixed(1)} L${d1[0].toFixed(1)} ${d1[1].toFixed(1)}`, stroke: '#2E2A26', 'stroke-width': 3.2, 'stroke-linecap': 'round' }, g);
+      el('circle', { cx: (a1[0] + r * 6).toFixed(1), cy: (a1[1] + 5).toFixed(1), r: 1.3, fill: '#8A8076' }, g);
+    });
+    // een knikkerzakje op de vloer, met twee knikkers ernaast
+    const zk = PZ(-96, bodem, 768);
+    const zak = el('g', { transform: `translate(${zk[0].toFixed(1)} ${zk[1].toFixed(1)})` }, g);
+    el('ellipse', { cx: 4, cy: 1, rx: 22, ry: 5, fill: '#2A1A0C', opacity: 0.3 }, zak);
+    el('path', { d: 'M-16 -2 C-20 -14 -12 -26 -6 -30 L6 -30 C12 -26 20 -14 16 -2 C10 3 -10 3 -16 -2 Z', fill: '#9A7A56', stroke: '#5E4428', 'stroke-width': 1 }, zak);
+    el('path', { d: 'M-7 -30 Q0 -26 7 -30 L5 -35 Q0 -33 -5 -35 Z', fill: '#8A6A46', stroke: '#5E4428', 'stroke-width': 0.8 }, zak);
+    el('path', { d: 'M-6 -29 Q0 -25 6 -29 M2 -28 q8 2 10 9 M-2 -28 q-6 4 -4 10', stroke: '#B6452C', 'stroke-width': 1.3, fill: 'none' }, zak);
+    el('path', { d: 'M-12 -10 Q0 -6 12 -10', stroke: '#6E5232', 'stroke-width': 0.8, 'stroke-dasharray': '2 2', fill: 'none' }, zak);
+    [[24, -2, '#4C79C9'], [34, 1, '#C2533A']].forEach(([x, y, k]) => {
+      el('circle', { cx: x, cy: y - 3, r: 4.6, fill: k }, zak);
+      el('circle', { cx: x - 1.5, cy: y - 4.6, r: 1.4, fill: '#fff', opacity: 0.75 }, zak);
     });
     const v = PZ(-270, 317, z0);
     naambordje(g, v[0], v[1] - 11, 'Knikkeren');
