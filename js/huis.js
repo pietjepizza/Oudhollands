@@ -126,7 +126,7 @@
         tafel: plaats([60, 945], [-30, 1300], 0.75),
         knikkers: plaats([918, 880], [470, 1250], 0.85),
         kat: plaats([1390, 925], [720, 1265], 0.8),
-        koek: plaats([1290, -10], [800, -10], 1.0),
+        koek: plaats([1290, -10], [640, -10], 1.0),
         schoen: plaats([1056, 783], [604, 1188], 0.85)
       }
     }
@@ -228,7 +228,7 @@
       g.closePath(); g.fill();
     }));
     const randen = (lijst) => lijst.reduce((m, p) => [Math.min(m[0], p[0]), Math.min(m[1], p[1]), Math.max(m[2], p[0]), Math.max(m[3], p[1])], [Infinity, Infinity, -Infinity, -Infinity]);
-    const lichtBeeld = (url, ouder, klasse) => el('image', { href: url, x: 0, y: 0, width: L.b, height: L.h, preserveAspectRatio: 'none', class: klasse }, ouder);
+    const lichtBeeld = (url, ouder, klasse) => el('image', { 'pointer-events': 'none', href: url, x: 0, y: 0, width: L.b, height: L.h, preserveAspectRatio: 'none', class: klasse }, ouder);
     const achterClip = el('clipPath', { id: 'h-achterclip' }, defs);
     veelhoek([Q(-hw, -hh, ZB), Q(hw, -hh, ZB), Q(hw, hh, ZB), Q(-hw, hh, ZB)], {}, achterClip);
 
@@ -355,7 +355,7 @@
       }
     }
     const vy0 = Q(0, hh, ZB)[1];
-    if (marmerUrl) el('image', { href: marmerUrl, x: -200, y: vy0 - 5, width: L.b + 400, height: L.h - vy0 + 80, preserveAspectRatio: 'none', opacity: 0.8 }, vl);
+    if (marmerUrl) el('image', { 'pointer-events': 'none', href: marmerUrl, x: -200, y: vy0 - 5, width: L.b + 400, height: L.h - vy0 + 80, preserveAspectRatio: 'none', opacity: 0.8 }, vl);
     veelhoek(vloer, { fill: 'url(#h-vloerglans)' }, vl);
     if (lv.vloer.length) {
       const rv = randen(lv.vloer);
@@ -389,7 +389,7 @@
     bouwPlank(plek('plank', wand));
 
     // ---------- Lichtbundel en stofjes (na het lappen van de ramen) ----------
-    const lichtNa = na('ramen', svg);
+    const lichtNa = na('ramen', svg, { 'pointer-events': 'none' });
     const bundel = omhulsel(glas.concat(lv.wand, lv.vloer));
     const gemPunt = (lijst) => lijst.reduce((a, p) => [a[0] + p[0] / lijst.length, a[1] + p[1] / lijst.length], [0, 0]);
     const bundelUrl = zacht('bundel', bundel, '#FFF6DA', gemPunt(glas), gemPunt(lv.wand.concat(lv.vloer).length ? lv.wand.concat(lv.vloer) : glas), 0.62, 0.02, 34);
@@ -635,6 +635,7 @@
   function bouwHoepel(ouder) {
     const g = voorwerp(ouder, { label: 'Hoepelen · komt binnenkort' });
     const h = el('g', { class: 'hoepel-hang' }, g);
+    el('circle', { cx: 1190, cy: 450, r: 66, fill: 'transparent' }, h);
     el('circle', { cx: 1198, cy: 460, r: 62, fill: 'none', stroke: '#2A1A0C', 'stroke-opacity': 0.35, 'stroke-width': 8, filter: 'url(#h-schaduw)' }, h);
     el('line', { x1: 1204, y1: 392, x2: 1246, y2: 548, stroke: '#5E3B1E', 'stroke-width': 5, 'stroke-linecap': 'round' }, h);
     el('circle', { cx: 1190, cy: 450, r: 62, fill: 'none', stroke: '#8A5A2E', 'stroke-width': 8 }, h);
@@ -760,6 +761,8 @@
     const g = voorwerp(ouder, { kamer: 'zolder', label: 'Knikkeren · op de zolder' });
     const K = (X, Z) => P(X, HH, Z);
     const zak = K(40, 760);
+    const verst = K(165, 690);
+    el('rect', { x: zak[0] - 34, y: zak[1] - 52, width: verst[0] - zak[0] + 52, height: 66, fill: 'transparent' }, g);
     el('ellipse', { cx: zak[0] + 6, cy: zak[1] + 4, rx: 30, ry: 8, fill: 'url(#h-schaduwvlek)' }, g);
     el('path', { d: `M${zak[0] - 26} ${zak[1]} Q${zak[0] - 30} ${zak[1] - 30} ${zak[0] - 6} ${zak[1] - 34} L${zak[0] - 2} ${zak[1] - 44} M${zak[0] - 6} ${zak[1] - 34} Q${zak[0] + 28} ${zak[1] - 30} ${zak[0] + 26} ${zak[1]} Z`, fill: '#8C6A43', stroke: '#5A4026', 'stroke-width': 1.4 }, g);
     el('path', { d: `M${zak[0] - 14} ${zak[1] - 32} q 8 6 18 0`, fill: 'none', stroke: '#C9A46A', 'stroke-width': 2 }, g);
@@ -792,6 +795,7 @@
   function bouwKoek(ouder) {
     const g = voorwerp(ouder, { label: 'Koekhappen · komt binnenkort' });
     const t = el('g', { class: 'koek-touw' }, g);
+    el('rect', { x: 1258, y: 150, width: 64, height: 100, fill: 'transparent' }, t);
     el('line', { x1: 1290, y1: -10, x2: 1290, y2: 212, stroke: '#D8CBB0', 'stroke-width': 1.6 }, t);
     el('rect', { x: 1268, y: 214, width: 52, height: 32, rx: 5, fill: '#1A0F06', opacity: 0.3, filter: 'url(#h-zacht)', transform: 'translate(6 6)' }, t);
     el('rect', { x: 1264, y: 210, width: 52, height: 32, rx: 5, fill: '#7A4519' }, t);
@@ -1125,7 +1129,7 @@
     });
     const vlekUrl = zachteVorm(L, 'z-vloervlek', omhulsel(vloerVlek), '#FFF1CC', vloerVlek[0], vloerVlek[2], 0.75, 0.25, 40);
     const vlekNa = na('z-luik', vl);
-    if (vlekUrl) el('image', { href: vlekUrl, x: 0, y: 0, width: L.b, height: L.h, preserveAspectRatio: 'none', class: 'zonvlek' }, vlekNa);
+    if (vlekUrl) el('image', { 'pointer-events': 'none', href: vlekUrl, x: 0, y: 0, width: L.b, height: L.h, preserveAspectRatio: 'none', class: 'zonvlek' }, vlekNa);
     // stoffige vloer met gaten (voor de klus)
     const vloerVuil = voor('z-vloer', vl, { 'data-vonk': 'z-vloer' });
     veelhoek(vloer, { fill: '#6A6152', opacity: 0.5 }, vloerVuil);
@@ -1166,8 +1170,8 @@
     // ---------- Lichtbundel door het open luik ----------
     const bundel = omhulsel(lp.concat(vloerVlek));
     const bundelUrl = zachteVorm(L, 'z-bundel', bundel, '#FFF4D6', [(lp[0][0] + lp[1][0]) / 2, lp[0][1]], [(vloerVlek[0][0] + vloerVlek[2][0]) / 2, Math.max(vloerVlek[0][1], vloerVlek[2][1])], 0.55, 0.04, 34);
-    const lichtNa = na('z-luik', svg);
-    if (bundelUrl) el('image', { href: bundelUrl, x: 0, y: 0, width: L.b, height: L.h, preserveAspectRatio: 'none', class: 'lichtbundel' }, lichtNa);
+    const lichtNa = na('z-luik', svg, { 'pointer-events': 'none' });
+    if (bundelUrl) el('image', { 'pointer-events': 'none', href: bundelUrl, x: 0, y: 0, width: L.b, height: L.h, preserveAspectRatio: 'none', class: 'lichtbundel' }, lichtNa);
     const stof = el('g', { class: 'stof' }, lichtNa);
     const van = [(lp[0][0] + lp[1][0]) / 2, (lp[0][1] + lp[2][1]) / 2], naar = [(vloerVlek[0][0] + vloerVlek[2][0]) / 2, (vloerVlek[0][1] + vloerVlek[2][1]) / 2];
     for (let i = 0; i < 34; i++) {
@@ -1401,6 +1405,7 @@
 
   function bouwDuiven(ouder) {
     const g = el('g', { 'data-na': 'z-duiven', 'data-doel': 'z-duiven', 'data-vonk': 'z-duiven', class: 'duiven' }, ouder);
+    el('rect', { x: 880, y: 250, width: 150, height: 48, fill: 'transparent' }, g);
     [[915, 288, 1], [990, 290, -1]].forEach(([x, y, r], i) => {
       const p = el('g', { transform: `translate(${x} ${y}) scale(${r} 1)` }, g);
       const d = el('g', { class: 'duif', style: `animation-delay:-${i * 1.3}s` }, p);
@@ -1549,7 +1554,7 @@
     el('rect', { x: 754, y: 758, width: 92, height: 151, fill: 'none', stroke: '#FFD98A', 'stroke-width': 3, class: 'deur-wenk', rx: 2 }, huis);
     el('rect', { x: 758, y: 762, width: 84, height: 143, fill: 'transparent', class: 'deur-klik plek-klik', 'data-plek': 'voorkamer', role: 'button', tabindex: 0, 'aria-label': 'Naar de voorkamer' }, huis);
     // schaduw langs de randen van het pand
-    el('path', { d: trap, fill: 'url(#g-schaduw)' }, huis);
+    el('path', { d: trap, fill: 'url(#g-schaduw)', 'pointer-events': 'none' }, huis);
 
     // uithangbord
     const bord = el('g', {}, gevelGroep);
