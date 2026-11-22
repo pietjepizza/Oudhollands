@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=13">
+<link rel="stylesheet" href="css/stijl.css?v=14">
 </head>
 <body>
 
@@ -396,6 +396,10 @@
       <rect x="8" y="3.5" width="8" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.9"/>
       <path d="M4.6 8.5v7M19.4 8.5v7M1.8 10.5v3M22.2 10.5v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
     </symbol>
+    <symbol id="i-zweep" viewBox="0 0 24 24">
+      <path d="M3.5 20.5 L10 14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M10 14 C14 10 19 9 20.5 4.5 M20.5 4.5 C18 7 15 7.5 13.5 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
     <symbol id="i-zon" viewBox="0 0 24 24">
       <circle cx="12" cy="12" r="4.3" fill="currentColor"/>
       <path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.4 5.4l2.1 2.1M16.5 16.5l2.1 2.1M5.4 18.6l2.1-2.1M16.5 7.5l2.1-2.1" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
@@ -538,17 +542,9 @@
   </section>
 
   <!-- TOLLEN (zolder) -->
-  <section id="scherm-tollen" class="weergave spel" aria-labelledby="to-titel" hidden>
-    <div class="spel-kop">
-      <a class="terug" href="#"><svg aria-hidden="true"><use href="#i-huis"/></svg><span>Naar het huis</span></a>
-      <h1 id="to-titel">Tollen</h1>
-      <p class="spel-ondertitel">Zweep je tol en houd hem draaiende.</p>
-      <button class="les-knop" type="button" data-les="tollen" aria-label="Gijs laat zien hoe het werkt" title="Hoe werkt het?"><svg aria-hidden="true"><use href="#i-vraag"/></svg></button>
-    </div>
-    <div class="spel-indeling">
-      <div class="speelveld speelveld--sjoel" id="to-veld"></div>
-      <aside class="paneel" id="to-paneel"></aside>
-    </div>
+  <section id="scherm-tollen" class="weergave spel volscherm" aria-labelledby="to-titel" hidden>
+    <h1 id="to-titel" class="sr-only">Tollen</h1>
+    <div class="mo-podium to-podium" id="to-podium"></div>
   </section>
 </main>
 
@@ -689,19 +685,19 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=13"></script>
-<script src="js/muziek.js?v=13"></script>
-<script src="js/duiten.js?v=13"></script>
-<script src="js/pronk.js?v=13"></script>
-<script src="js/seizoen.js?v=13"></script>
-<script src="js/les.js?v=13"></script>
-<script src="js/personen.js?v=13"></script>
-<script src="js/ganzenbord.js?v=13"></script>
-<script src="js/sjoelen.js?v=13"></script>
-<script src="js/molenspel.js?v=13"></script>
-<script src="js/knikkeren.js?v=13"></script>
-<script src="js/tollen.js?v=13"></script>
-<script src="js/huis.js?v=13"></script>
-<script src="js/app.js?v=13"></script>
+<script src="js/geluid.js?v=14"></script>
+<script src="js/muziek.js?v=14"></script>
+<script src="js/duiten.js?v=14"></script>
+<script src="js/pronk.js?v=14"></script>
+<script src="js/seizoen.js?v=14"></script>
+<script src="js/les.js?v=14"></script>
+<script src="js/personen.js?v=14"></script>
+<script src="js/ganzenbord.js?v=14"></script>
+<script src="js/sjoelen.js?v=14"></script>
+<script src="js/molenspel.js?v=14"></script>
+<script src="js/knikkeren.js?v=14"></script>
+<script src="js/tollen.js?v=14"></script>
+<script src="js/huis.js?v=14"></script>
+<script src="js/app.js?v=14"></script>
 </body>
 </html>

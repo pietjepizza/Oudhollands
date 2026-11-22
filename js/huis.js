@@ -1424,9 +1424,39 @@
     naambordje(g, v[0], v[1] - 11, 'Knikkeren');
   }
 
+  // De tolkist met ervoor op de vloer een krijtkring, zoals in het spel: één tol draait nog, de ander ligt
   function bouwTolkist(ouder) {
     const g = voorwerp(ouder, { spel: 'tollen', label: 'Speel tollen' });
     const x0 = 160, x1 = 380, z0 = 800, z1 = 920, top = 220, bodem = 330;
+    // de krijtkring op de vloer
+    const kring = [];
+    for (let i = 0; i <= 48; i++) {
+      const a = i / 48 * Math.PI * 2, p = PZ(265 + Math.cos(a) * 92, bodem, 738 + Math.sin(a) * 50);
+      kring.push(`${i ? 'L' : 'M'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`);
+    }
+    el('path', { d: kring.join(' ') + ' Z', fill: 'none', stroke: '#F6F2E6', 'stroke-width': 4, opacity: 0.35 }, g);
+    el('path', { d: kring.join(' ') + ' Z', fill: 'none', stroke: '#FBF8EE', 'stroke-width': 1.8, opacity: 0.8 }, g);
+    const mk = PZ(265, bodem, 738);
+    el('path', { d: `M${mk[0] - 6} ${mk[1]} h12 M${mk[0]} ${mk[1] - 3} v6`, stroke: '#FBF8EE', 'stroke-width': 1.4, opacity: 0.6 }, g);
+    // een draaiende tol in de kring, met de krijtkringetjes op zijn kop
+    const t1 = PZ(238, bodem, 730);
+    const draait = el('g', { transform: `translate(${t1[0].toFixed(1)} ${t1[1].toFixed(1)})` }, g);
+    el('ellipse', { cx: 6, cy: 1, rx: 13, ry: 3.4, fill: '#000', opacity: 0.3 }, draait);
+    el('path', { d: 'M-12 -26 C-12 -15 -4 -6 0 0 C4 -6 12 -15 12 -26 Z', fill: '#B6452C', stroke: '#5A2215', 'stroke-width': 0.8 }, draait);
+    el('path', { d: 'M-11.5 -21 H11.5 L10.6 -18 H-10.6 Z', fill: '#1C3473' }, draait);
+    el('path', { d: 'M-9 -14 H9 L8 -12 H-8 Z', fill: '#E7C36A' }, draait);
+    el('ellipse', { cx: 0, cy: -26, rx: 12, ry: 4.2, fill: '#D45A3C' }, draait);
+    [9, 6, 3].forEach((r, i) => el('ellipse', { cx: 0, cy: -26, rx: r, ry: r * 0.35, fill: 'none', stroke: ['#E7C36A', '#FFFFFF', '#1C3473'][i], 'stroke-width': 1.2, opacity: 0.85 }, draait));
+    el('path', { d: 'M-18 -18 q-4 6 0 12 M18 -18 q4 6 0 12', fill: 'none', stroke: '#F6E6C0', 'stroke-width': 1.2, opacity: 0.6 }, draait);
+    // de tol van de buurjongen ligt al om
+    const t2 = PZ(306, bodem, 722);
+    const ligt = el('g', { transform: `translate(${t2[0].toFixed(1)} ${t2[1].toFixed(1)}) rotate(78)` }, g);
+    el('path', { d: 'M-11 -24 C-11 -14 -4 -6 0 0 C4 -6 11 -14 11 -24 Z', fill: '#E8741C', stroke: '#6A3010', 'stroke-width': 0.8 }, ligt);
+    el('path', { d: 'M-10.6 -19 H10.6 L9.8 -16 H-9.8 Z', fill: '#2A2420' }, ligt);
+    el('ellipse', { cx: 0, cy: -24, rx: 11, ry: 4, fill: '#F09A3E' }, ligt);
+    // een stukje krijt
+    const kr = PZ(372, bodem, 706);
+    el('rect', { x: kr[0], y: kr[1] - 3, width: 12, height: 4, rx: 1, fill: '#F6F2E6', transform: `rotate(-12 ${kr[0]} ${kr[1]})` }, g);
     el('ellipse', { cx: (PZ(x0, bodem, z0)[0] + PZ(x1, bodem, z0)[0]) / 2 + 10, cy: PZ(0, bodem, z0)[1] + 4, rx: 160, ry: 14, fill: 'url(#h-schaduwvlek)' }, g);
     veelhoek([PZ(x0, top, z0), PZ(x0, top, z1), PZ(x0, bodem, z1), PZ(x0, bodem, z0)], { fill: '#4E331C' }, g);
     veelhoek([PZ(x0, top, z1), PZ(x1, top, z1), PZ(x1, top, z0), PZ(x0, top, z0)], { fill: '#9A6A3E' }, g);

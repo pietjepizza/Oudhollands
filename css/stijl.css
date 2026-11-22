@@ -1366,6 +1366,32 @@ button.mo-kaart { cursor: pointer; }
 }
 @keyframes kn-beurt { 0% { opacity: 0; transform: translate(-50%, -30%); } 18%, 75% { opacity: 1; transform: translate(-50%, -50%); } 100% { opacity: 0; transform: translate(-50%, -70%); } }
 
+/* ---------- Tollen (de stand, pops, kaart en banier delen we met sjoelen en knikkeren) ---------- */
+.to-podium { grid-template-columns: minmax(0, 1fr); }
+.to-stand { overflow: hidden; }
+.to-veldvak { position: relative; width: var(--veld, 300px); height: calc(var(--veld, 300px) * 1.4); }
+.to-doek { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; outline: none; border-radius: 10px; box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+.to-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E, 0 18px 40px rgba(0, 0, 0, .45); }
+.to-rondes { display: inline-flex; gap: 4px; align-items: center; min-height: 14px; }
+.to-rondes i { width: 11px; height: 11px; border-radius: 50%; background: rgba(244, 233, 207, .18); box-shadow: inset 0 0 0 1.5px rgba(244, 233, 207, .5); }
+.to-rondes i.vol { background: radial-gradient(circle at 35% 30%, #FFE7A0, #C9973F 70%); box-shadow: 0 0 6px rgba(242, 193, 78, .6); }
+.sj-speler-beeld > svg[viewBox="0 0 40 40"] { padding: 3px; box-sizing: border-box; background: #E9DFC8; }
+.to-zelf .mo-gezicht { display: grid; place-items: center; background: rgba(233, 223, 200, .14); border-radius: 50%; }
+.to-zelf .mo-gezicht > svg { width: 42px; height: 42px; box-shadow: none; border-radius: 0; overflow: visible; }
+.to-zelf.aan .mo-gezicht > svg, .to-zelf .mo-gezicht > svg { box-shadow: none !important; }
+.to-zelf .mo-info { align-items: center; }
+.to-zelf .mo-doe { grid-column: 2; }
+.to-meters { display: inline-flex; gap: 6px; flex: 1 1 auto; min-width: 70px; max-width: 180px; }
+.to-meter { position: relative; flex: 1 1 0; height: 9px; border-radius: 6px; overflow: hidden; background: rgba(244, 233, 207, .15); box-shadow: inset 0 0 0 1px rgba(244, 233, 207, .3); }
+.to-meter i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 6px; background: linear-gradient(90deg, #6FB860, #9AD884); transition: width .12s linear; }
+.to-meter i.midden { background: linear-gradient(90deg, #D9A73A, #F2C14E); }
+.to-meter i.laag { background: linear-gradient(90deg, #B8442C, #E0623E); }
+.to-meter i.wiebel { background: repeating-linear-gradient(90deg, #E8742C 0 6px, #F2A64E 6px 12px); }
+.to-zweepje { width: 18px; height: 18px; }
+.to-pop.raak { font-family: var(--f-sier); font-weight: normal; font-size: 1.6rem; color: #FFE29A; }
+.to-pop.mis { font-family: var(--f-sier); font-weight: normal; font-size: 1.35rem; color: #FFD2BE; }
+.sj-twee > svg[viewBox="0 0 40 40"] { width: 40px; height: 40px; }
+
 /* ---------- Telefoon: de kamer vult het scherm, weinig tekst ---------- */
 @media (max-width: 760px) {
   .toneel { height: calc(100svh - var(--kop-h, 60px)); min-height: 460px; }
