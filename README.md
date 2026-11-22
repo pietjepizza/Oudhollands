@@ -18,13 +18,16 @@ fonkelt even. Gouden wijzers bij de deur en het luik tonen met een ring hoe ver 
 een klus klaarstaat.
 
 **Het huis.** Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
-marmeren vloer, tegelplint, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
+marmeren vloer, een schouw, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
 in naar het spel. Op tafel ligt het dambord. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
 
 **Duiten verdienen en het huis opknappen.** De voorkamer begint stoffig: spinnenwebben, vuile ruiten, vochtige muren,
 een doffe vloer. Met elk potje verdien je duiten (winnen 40, verliezen 10 à 15, sjoelen 10 plus een kwart van je score).
 Daarmee doe je tien klussen, van "Spinnenwebben weg" (10) tot "Kussen voor de kat" (80). Elke klus verandert iets
-zichtbaars in de kamer, met een korte animatie. Is de kamer klaar, dan branden beneden in het grachtenpand de lichten.
+zichtbaars in de kamer, met een korte animatie. Bij "Tegels zetten" krijgt de kale, beroete haardwand van de schouw
+Delftse tegels met kinderspelen, over de volle breedte met de gietijzeren haardplaat in het midden, zoals in de 17e
+eeuw, en gaat het vuur aan. Rond Sinterklaas staat je klomp naast de haard. Is de kamer klaar, dan branden beneden in
+het grachtenpand de lichten.
 Alles wordt in de browser bewaard; via het menu kun je opnieuw beginnen.
 
 **Kamers vrijspelen.** Is de voorkamer klaar, dan koop je de trap (60 duiten): de deur naar de gang gaat open en een
@@ -109,7 +112,7 @@ Nog "in de oven": klaverjassen (herberg), kolf op het ijs (ijsbaan), de kermis, 
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=15`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=16`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

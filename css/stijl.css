@@ -324,6 +324,13 @@ svg.duit { width: 22px; height: 22px; flex: none; }
 .vlam { transform-box: fill-box; transform-origin: 50% 100%; animation: flakker 1.7s ease-in-out infinite alternate; }
 .vlam:nth-of-type(2n) { animation-duration: 1.3s; }
 .gloed { animation: gloei 2.3s ease-in-out infinite alternate; }
+/* het vuur in de schouw */
+.haardvlam { transform-box: fill-box; transform-origin: 50% 100%; animation: haardvlam 1.1s ease-in-out infinite alternate; }
+.haardvlam.b { animation-duration: .85s; animation-delay: -.3s; }
+.haardvlam.c { animation-duration: 1.35s; animation-delay: -.6s; }
+@keyframes haardvlam { 0% { transform: scale(1, 1) skewX(0deg); } 30% { transform: scale(.9, 1.14) skewX(-5deg); } 65% { transform: scale(1.06, .9) skewX(4deg); } 100% { transform: scale(.95, 1.08) skewX(-2deg); } }
+.haardgloed { animation: gloei 1.9s ease-in-out infinite alternate; }
+.gloeit { animation: gloei 1.2s ease-in-out infinite alternate; }
 /* licht, stof, schemer en sneeuw liggen over de voorwerpen heen en mogen nooit een tik opvangen */
 .lichtbundel, .zonvlek, .stof, .stofje, .schemer, .vlok, .sneeuwval, .kamer-svg image, .gevel-svg image { pointer-events: none; }
 .stofje { animation-name: zweven; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; opacity: .5; }
@@ -1478,7 +1485,7 @@ button.mo-kaart { cursor: pointer; }
 .als-app .voet { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .kroon, .vlam, .gloed, .stofje, .lichtbundel, .zonvlek, .koek-touw, .hoepel-hang, .kat-lijf, .kat-staart, .gangLicht, .glim,
+  .kroon, .vlam, .gloed, .haardvlam, .haardgloed, .gloeit, .stofje, .lichtbundel, .zonvlek, .koek-touw, .hoepel-hang, .kat-lijf, .kat-staart, .gangLicht, .glim,
   .wolk, .uithangbord, .vogels, .water-glans line, .deur-licht, .deur-wenk, .spel:not([hidden]), .schud .vw,
   .klusknop.kan, .klusknop.schud, .speelbaar.wenk .vw, .beurs.wip, .beloning.open .bel-kaart, .beloning.open .bel-munt,
   .vel.open .vel-kaart, .kamer-svg .verschijnt, .feest, .klus-wenk.in,

@@ -104,7 +104,9 @@
       raam: { z0: 690, z1: 930, y0: -210, y1: 150 },
       deur: { z0: 694, z1: 912, top: -64 },
       licht: [1, 0.7, 0.5],
-      plaats: { knikkers: 'translate(220 -6)' }
+      plaats: { knikkers: 'translate(220 -6)' },
+      // de schouw onder het ganzenbord: midden, halve breedte, bovenkant kroonlijst, tegels naast elkaar
+      schouw: { X: -4, hb: 150, top: 136, kolommen: 8, diep: 50, maat: 1 }
     },
     staand: {
       naam: 'staand', b: 900, h: 1600, VX: 450, VY: 690, HW: 330, HH: 490, ZV: 520,
@@ -121,14 +123,15 @@
         molenspel: plaats([550, 292], [240, 735], 1.05),
         uilenspel: plaats([360, 173], [440, 755], 0.9),
         hoepel: plaats([1190, 386], [622, 760], 1.0),
-        plank: plaats([1196, 588], [628, 1010], 1.0),
+        plank: plaats([1196, 588], [658, 1010], 1.0),
         kolf: plaats([1290, 775], [764, 1180], 1.05),
         tafel: plaats([60, 945], [-30, 1300], 0.75),
         knikkers: plaats([918, 880], [470, 1250], 0.85),
         kat: plaats([1390, 925], [720, 1265], 0.8),
         koek: plaats([1290, -10], [640, -10], 1.0),
-        schoen: plaats([1056, 783], [604, 1188], 0.85)
-      }
+        schoen: plaats([1006.7, 789.5], [578, 1192], 0.85)
+      },
+      schouw: { X: -14, hb: 92, top: 300, kolommen: 4, diep: 40, maat: 0.9 }
     }
   };
   Object.values(INDELINGEN).forEach((L) => { L.P = (X, Y, Z) => [L.VX + F * X / Z, L.VY + F * Y / Z]; });
@@ -159,6 +162,136 @@
     }
     const scherm = (lijst) => (lijst.length >= 3 ? omhulsel(lijst.map((p) => L.P(p[0], p[1], p[2]))) : []);
     return { wand: scherm(wand), vloer: scherm(vloer) };
+  }
+
+  // ---------- De schouw ----------
+  // Een open haard tegen de achterwand, onder het ganzenbord: een eikenhouten kroonlijst op twee zuiltjes,
+  // een schoorsteenkleed met franje, een haardsteen van rode plavuizen en een gietijzeren haardplaat.
+  // In de 17e eeuw werd de haardwand over de volle breedte betegeld, met de haardplaat in het midden.
+  // Vóór de klus "Tegels zetten" is de wand kaal en beroet en ligt er koude as; daarna tegels en vuur.
+  function bouwSchouw(ouder, L, defs, voor, na) {
+    const Q = L.P, hh = L.HH, s = L.schouw, m = s.maat;
+    const W = (X, Y, Z) => Q(s.X + X, Y, Z === undefined ? ZB : Z);
+    const lijn = (a, b, attrs, o) => el('line', Object.assign({ x1: a[0].toFixed(1), y1: a[1].toFixed(1), x2: b[0].toFixed(1), y2: b[1].toFixed(1) }, attrs), o);
+    const hb = s.hb, top = s.top, kw = Math.round(hb * 0.12), binnen = hb - kw;
+    const ts = (2 * binnen) / s.kolommen, rijen = Math.floor((hh - top) / ts);
+    const lijst = 24 * m, kleed = 20 * m, sh = 5, zv = ZB - s.diep, kb = hb + 12 * m, Zf = ZB - s.diep * 0.65, Zk = ZB - 8;
+    verloop(defs, 'h-roet', 'radialGradient', { cx: '50%', cy: '92%', r: '80%' }, [[0, '#120B06', 0.92], [0.5, '#2A1C12', 0.55], [1, '#2A1C12', 0]]);
+    verloop(defs, 'h-haardgloed', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#FFB45A', 0.62], [0.55, '#FF8A2E', 0.22], [1, '#FF8A2E', 0]]);
+    verloop(defs, 'h-haardvlam', 'linearGradient', { x1: 0, y1: 1, x2: 0, y2: 0 }, [[0, '#FFF3B0'], [0.35, '#FFC444'], [0.75, '#FF7A22', 0.9], [1, '#D8401C', 0.15]]);
+    verloop(defs, 'h-zuil', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, '#2E1D10'], [0.35, '#7A5534'], [0.6, '#5A3B22'], [1, '#24170C']]);
+    verloop(defs, 'h-kroonlijst', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#7E5A38'], [0.5, '#5A3B22'], [1, '#3A2514']]);
+    verloop(defs, 'h-schoorsteenkleed', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#46663F'], [1, '#22361F']]);
+    const g = el('g', { class: 'schouw', 'data-doel': 'plint', 'pointer-events': 'none' }, ouder);
+
+    // de haardwand: kaal en beroet, met hier en daar de baksteen; of betegeld
+    const wandVak = [W(-binnen, top), W(binnen, top), W(binnen, hh), W(-binnen, hh)];
+    const kaal = voor('plint', g);
+    veelhoek(wandVak, { fill: '#BBAA8C' }, kaal);
+    [[-0.78, 0.5, 3], [0.42, 0.3, 2], [0.55, 0.72, 3], [-0.4, 0.8, 2]].forEach(([fx, fy, n]) => {
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < 2; j++) {
+          const [x, y] = W(binnen * fx + j * ts * 0.5 + (i % 2) * ts * 0.25, top + (hh - top) * fy + i * ts * 0.18);
+          el('rect', { x: x.toFixed(1), y: y.toFixed(1), width: (ts * 0.46).toFixed(1), height: (ts * 0.16).toFixed(1), fill: '#8A4B33', stroke: '#6E3A26', 'stroke-width': 0.6 }, kaal);
+        }
+      }
+    });
+    veelhoek(wandVak, { fill: 'url(#h-roet)' }, kaal);
+    const tegels = na('plint', g, { 'data-vonk': 'plint' });
+    const motieven = ['ill-gans', 'ill-tol', 'ill-hoepel', 'ill-knikkers', 'ill-kolf', 'ill-uil', 'ill-koek', 'ill-kaarten', 'ill-sjoelbak', 'ill-molen', 'ill-dammen'];
+    veelhoek(wandVak, { fill: '#E9E3D3' }, tegels);
+    for (let r = 0; r < rijen; r++) {
+      for (let c = 0; c < s.kolommen; c++) {
+        const [x, y] = W(-binnen + c * ts, hh - (r + 1) * ts);
+        el('rect', { x: x.toFixed(1), y: y.toFixed(1), width: ts.toFixed(1), height: ts.toFixed(1), fill: '#F4F1E8', stroke: '#B7B09E', 'stroke-width': 1 }, tegels);
+        el('use', { href: '#hoeken', x: x.toFixed(1), y: y.toFixed(1), width: ts.toFixed(1), height: ts.toFixed(1), style: 'color:' + BLAUW, opacity: 0.85 }, tegels);
+        el('use', { href: '#' + motieven[(r * 3 + c * 7) % motieven.length], x: (x + ts * 0.2).toFixed(1), y: (y + ts * 0.17).toFixed(1), width: (ts * 0.6).toFixed(1), height: (ts * 0.6).toFixed(1), style: 'color:' + BLAUW, stroke: BLAUW, 'stroke-width': 3.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' }, tegels);
+      }
+    }
+
+    // de haardplaat van gietijzer, met een scheepje in reliëf
+    const pb = ts * 1.05, phh = ts * 2.35, boog = pb * 0.55;
+    const [ax, ay] = W(-pb, hh), [bx] = W(pb, hh), [, ty] = W(0, hh - phh), mx = (ax + bx) / 2;
+    el('path', { d: `M${ax.toFixed(1)} ${ay.toFixed(1)} L${ax.toFixed(1)} ${(ty + boog).toFixed(1)} Q${ax.toFixed(1)} ${ty.toFixed(1)} ${mx.toFixed(1)} ${ty.toFixed(1)} Q${bx.toFixed(1)} ${ty.toFixed(1)} ${bx.toFixed(1)} ${(ty + boog).toFixed(1)} L${bx.toFixed(1)} ${ay.toFixed(1)} Z`, fill: '#2B2521', stroke: '#141110', 'stroke-width': 1.2 }, g);
+    const ins = 4 * m;
+    el('path', { d: `M${(ax + ins).toFixed(1)} ${ay.toFixed(1)} L${(ax + ins).toFixed(1)} ${(ty + boog + ins * 0.4).toFixed(1)} Q${(ax + ins).toFixed(1)} ${(ty + ins).toFixed(1)} ${mx.toFixed(1)} ${(ty + ins).toFixed(1)} Q${(bx - ins).toFixed(1)} ${(ty + ins).toFixed(1)} ${(bx - ins).toFixed(1)} ${(ty + boog + ins * 0.4).toFixed(1)} L${(bx - ins).toFixed(1)} ${ay.toFixed(1)}`, fill: 'none', stroke: 'rgba(255,236,210,.13)', 'stroke-width': 1.4 }, g);
+    const schip = el('g', { transform: `translate(${mx.toFixed(1)} ${(ty + phh * 0.4).toFixed(1)}) scale(${(pb / 40).toFixed(3)})`, fill: '#3E3631', stroke: 'rgba(255,236,210,.18)', 'stroke-width': 1.6, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, g);
+    el('path', { d: 'M-26 8 Q0 18 26 8 L22 16 Q0 22 -22 16 Z' }, schip);
+    el('path', { d: 'M-12 8 V-22 M2 8 V-28 M15 8 V-18', fill: 'none' }, schip);
+    el('path', { d: 'M-12 -19 Q-3 -12 -12 -4 Z M2 -25 Q12 -16 2 -6 Z M15 -15 Q21 -10 15 -4 Z' }, schip);
+    el('path', { d: 'M-30 25 q 6 -4 12 0 t 12 0 t 12 0 t 12 0 t 12 0', fill: 'none' }, schip);
+
+    // de haardsteen van rode plavuizen
+    const sb = hb + 10 * m;
+    veelhoek([W(-sb, hh - sh, ZB), W(sb, hh - sh, ZB), W(sb, hh - sh, zv), W(-sb, hh - sh, zv)], { fill: '#8E4A33' }, g);
+    for (let i = 1; i < 7; i++) {
+      const X = -sb + 2 * sb * i / 7;
+      lijn(W(X, hh - sh, ZB), W(X, hh - sh, zv), { stroke: 'rgba(40,14,6,.45)', 'stroke-width': 1 }, g);
+    }
+    lijn(W(-sb, hh - sh, (ZB + zv) / 2), W(sb, hh - sh, (ZB + zv) / 2), { stroke: 'rgba(40,14,6,.45)', 'stroke-width': 1 }, g);
+    veelhoek([W(-sb, hh - sh, zv), W(sb, hh - sh, zv), W(sb, hh, zv), W(-sb, hh, zv)], { fill: '#5C2C1C' }, g);
+    lijn(W(-sb, hh - sh, zv), W(sb, hh - sh, zv), { stroke: 'rgba(255,210,170,.28)', 'stroke-width': 1 }, g);
+
+    // koude as, of een knapperend vuur
+    const voet = W(0, hh - sh, ZB - s.diep * 0.4);
+    const blok = (o, x1, y1, x2, y2, dik, kleur) => {
+      el('line', { x1: x1.toFixed(1), y1: y1.toFixed(1), x2: x2.toFixed(1), y2: y2.toFixed(1), stroke: kleur, 'stroke-width': dik.toFixed(1), 'stroke-linecap': 'round' }, o);
+      el('line', { x1: x1.toFixed(1), y1: (y1 - dik * 0.22).toFixed(1), x2: x2.toFixed(1), y2: (y2 - dik * 0.22).toFixed(1), stroke: 'rgba(255,220,170,.18)', 'stroke-width': (dik * 0.25).toFixed(1), 'stroke-linecap': 'round' }, o);
+    };
+    const as = voor('plint', g);
+    el('ellipse', { cx: voet[0].toFixed(1), cy: (voet[1] - 2).toFixed(1), rx: (ts * 1.05).toFixed(1), ry: (ts * 0.2).toFixed(1), fill: '#8F8A82' }, as);
+    el('ellipse', { cx: (voet[0] - ts * 0.3).toFixed(1), cy: (voet[1] - 4).toFixed(1), rx: (ts * 0.45).toFixed(1), ry: (ts * 0.12).toFixed(1), fill: '#6F6A63' }, as);
+    blok(as, voet[0] - ts * 0.7, voet[1] - ts * 0.18, voet[0] + ts * 0.55, voet[1] - ts * 0.26, ts * 0.22, '#2A1E16');
+    const vuur = na('plint', g);
+    el('ellipse', { cx: voet[0].toFixed(1), cy: W(0, hh - ts * 0.9)[1].toFixed(1), rx: (binnen * 0.95).toFixed(1), ry: (ts * 1.7).toFixed(1), fill: 'url(#h-haardgloed)', class: 'haardgloed' }, vuur);
+    el('ellipse', { cx: voet[0].toFixed(1), cy: (voet[1] - 3).toFixed(1), rx: (ts * 0.8).toFixed(1), ry: (ts * 0.15).toFixed(1), fill: '#FF8A2E', opacity: 0.85, class: 'gloeit' }, vuur);
+    blok(vuur, voet[0] - ts * 0.78, voet[1] - ts * 0.2, voet[0] + ts * 0.62, voet[1] - ts * 0.3, ts * 0.24, '#4E3220');
+    blok(vuur, voet[0] - ts * 0.55, voet[1] - ts * 0.42, voet[0] + ts * 0.8, voet[1] - ts * 0.24, ts * 0.22, '#5E3D24');
+    [[-0.45, 0.95, 0.5, 'a'], [0.4, 1.05, 0.5, 'b'], [-0.04, 1.55, 0.64, 'c'], [0.18, 0.8, 0.38, 'a'], [-0.26, 0.72, 0.34, 'b']].forEach(([fx, fh, fw, k]) => {
+      const x0 = voet[0] + fx * ts, y0 = voet[1] - ts * 0.3, h = ts * fh, w = ts * fw;
+      el('path', { d: `M${(x0 - w / 2).toFixed(1)} ${y0.toFixed(1)} C${(x0 - w / 2).toFixed(1)} ${(y0 - h * 0.45).toFixed(1)} ${(x0 - w * 0.12).toFixed(1)} ${(y0 - h * 0.6).toFixed(1)} ${x0.toFixed(1)} ${(y0 - h).toFixed(1)} C${(x0 + w * 0.14).toFixed(1)} ${(y0 - h * 0.58).toFixed(1)} ${(x0 + w / 2).toFixed(1)} ${(y0 - h * 0.42).toFixed(1)} ${(x0 + w / 2).toFixed(1)} ${y0.toFixed(1)} Z`, fill: 'url(#h-haardvlam)', class: 'haardvlam ' + k }, vuur);
+    });
+    // twee vuurbokken met een koperen knop
+    [-1, 1].forEach((sx) => {
+      const p = W(sx * ts * 0.98, hh - sh, ZB - s.diep * 0.25), h = ts * 0.7;
+      el('path', { d: `M${(p[0] - 7 * m).toFixed(1)} ${p[1].toFixed(1)} L${p[0].toFixed(1)} ${(p[1] - 7 * m).toFixed(1)} L${(p[0] + 7 * m).toFixed(1)} ${p[1].toFixed(1)} Z`, fill: '#26201C' }, g);
+      el('rect', { x: (p[0] - 2.2 * m).toFixed(1), y: (p[1] - h).toFixed(1), width: (4.4 * m).toFixed(1), height: h.toFixed(1), fill: '#26201C' }, g);
+      el('circle', { cx: p[0].toFixed(1), cy: (p[1] - h - 3 * m).toFixed(1), r: (4.4 * m).toFixed(1), fill: 'url(#h-messing)' }, g);
+    });
+    const vg = W(0, hh, zv - 10);
+    el('ellipse', { cx: vg[0].toFixed(1), cy: vg[1].toFixed(1), rx: (hb * 1.25).toFixed(1), ry: (16 * m).toFixed(1), fill: 'url(#h-haardgloed)', class: 'haardgloed', opacity: 0.8 }, vuur);
+
+    // de zuiltjes onder de kroonlijst
+    const voetH = 11 * m, kapH = 8 * m;
+    [-1, 1].forEach((sx) => {
+      const xl = sx < 0 ? -hb : hb - kw, xr = xl + kw;
+      veelhoek([W(xl - 2, hh - sh - voetH, Zk), W(xr + 2, hh - sh - voetH, Zk), W(xr + 2, hh - sh, Zk), W(xl - 2, hh - sh, Zk)], { fill: '#3A2514' }, g);
+      veelhoek([W(xl + 1, top + lijst + kleed + kapH, Zk), W(xr - 1, top + lijst + kleed + kapH, Zk), W(xr - 1, hh - sh - voetH, Zk), W(xl + 1, hh - sh - voetH, Zk)], { fill: 'url(#h-zuil)' }, g);
+      [0.35, 0.65].forEach((f) => lijn(W(xl + kw * f, top + lijst + kleed + kapH + 4, Zk), W(xl + kw * f, hh - sh - voetH - 4, Zk), { stroke: 'rgba(0,0,0,.28)', 'stroke-width': 1 }, g));
+      veelhoek([W(xl - 3, top + lijst + kleed, Zk), W(xr + 3, top + lijst + kleed, Zk), W(xr + 3, top + lijst + kleed + kapH, Zk), W(xl - 3, top + lijst + kleed + kapH, Zk)], { fill: '#4A3020' }, g);
+    });
+
+    // de kroonlijst: bovenkant en voorkant met profiellijsten
+    veelhoek([W(-kb, top, Zf), W(kb, top, Zf), W(kb, top, ZB), W(-kb, top, ZB)], { fill: '#8A6542' }, g);
+    veelhoek([W(-kb, top, Zf), W(kb, top, Zf), W(kb, top + lijst, Zf), W(-kb, top + lijst, Zf)], { fill: 'url(#h-kroonlijst)' }, g);
+    [[0.2, 'rgba(255,225,180,.32)'], [0.56, 'rgba(0,0,0,.35)'], [0.62, 'rgba(255,225,180,.18)']].forEach(([f, kleur]) => lijn(W(-kb, top + lijst * f, Zf), W(kb, top + lijst * f, Zf), { stroke: kleur, 'stroke-width': 1.4 }, g));
+
+    // het schoorsteenkleed: groen, geplooid, met een gouden franje
+    const Zv = Zf - 1;
+    const [kx0, ky0] = W(-kb + 2, top + lijst, Zv), [kx1] = W(kb - 2, top + lijst, Zv), [, ky1] = W(0, top + lijst + kleed, Zv);
+    const n = Math.max(6, Math.round((kx1 - kx0) / (22 * m)));
+    let rand = `M${kx1.toFixed(1)} ${ky1.toFixed(1)}`;
+    for (let i = n; i > 0; i--) {
+      const xa = kx0 + (kx1 - kx0) * i / n, xb = kx0 + (kx1 - kx0) * (i - 1) / n;
+      rand += ` Q${((xa + xb) / 2).toFixed(1)} ${(ky1 + 9 * m).toFixed(1)} ${xb.toFixed(1)} ${ky1.toFixed(1)}`;
+    }
+    el('path', { d: `M${kx0.toFixed(1)} ${ky0.toFixed(1)} L${kx1.toFixed(1)} ${ky0.toFixed(1)} L` + rand.slice(1) + ' Z', fill: 'url(#h-schoorsteenkleed)' }, g);
+    for (let i = 1; i < n * 2; i++) {
+      const x = kx0 + (kx1 - kx0) * i / (n * 2);
+      el('line', { x1: x.toFixed(1), y1: (ky0 + 1).toFixed(1), x2: x.toFixed(1), y2: (ky1 + (i % 2 ? 7 : 2) * m).toFixed(1), stroke: i % 2 ? 'rgba(0,0,0,.28)' : 'rgba(255,255,255,.12)', 'stroke-width': (2.2 * m).toFixed(1) }, g);
+    }
+    lijn([kx0, ky0 + 3 * m], [kx1, ky0 + 3 * m], { stroke: '#C9973F', 'stroke-width': (2 * m).toFixed(1) }, g);
+    el('path', { d: rand, fill: 'none', stroke: '#D9B05A', 'stroke-width': (4.5 * m).toFixed(1), 'stroke-dasharray': '1.2 2.4' }, g);
   }
 
   function bouwVoorkamer(L) {
@@ -311,36 +444,19 @@
     el('circle', { cx: knop[0], cy: knop[1], r: 5, fill: 'url(#h-messing)' }, blad);
     bouwTrapDeur(rechts, L, D, dr, hw, hh, defs);
 
-    // ---------- Plint: eerst een versleten houten plint, later Delftse tegels ----------
+    // ---------- Plint: een houten plint langs de muren (de Delftse tegels gaan in de schouw) ----------
     const plint = el('g', {}, svg);
-    const ts = (2 * hw) / Math.round((2 * hw) / 65);
-    const tegels = na('plint', plint, { 'data-vonk': 'plint' });
-    const motieven = ['ill-gans', 'ill-tol', 'ill-hoepel', 'ill-knikkers', 'ill-kolf', 'ill-uil', 'ill-koek', 'ill-kaarten', 'ill-sjoelbak', 'ill-molen'];
-    const [px0, py0] = Q(-hw, hh - ts, ZB);
-    for (let i = 0; i < Math.round((2 * hw) / ts); i++) {
-      const x = px0 + i * ts, y = py0;
-      el('rect', { x, y, width: ts, height: ts, fill: '#F4F1E8', stroke: '#B7B09E', 'stroke-width': 1 }, tegels);
-      el('use', { href: '#hoeken', x, y, width: ts, height: ts, style: 'color:' + BLAUW, opacity: 0.85 }, tegels);
-      el('use', { href: '#' + motieven[i % motieven.length], x: x + ts * 0.2, y: y + ts * 0.17, width: ts * 0.6, height: ts * 0.6, style: 'color:' + BLAUW, stroke: BLAUW, 'stroke-width': 3.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' }, tegels);
-    }
-    for (let Z = ZB; Z > zv; Z -= ts) {
-      veelhoek([Q(-hw, hh - ts, Z), Q(-hw, hh - ts, Z - ts), Q(-hw, hh, Z - ts), Q(-hw, hh, Z)], { fill: '#D9D3C3', stroke: '#9D9684', 'stroke-width': 1 }, tegels);
-      const m = Q(-hw, hh - ts / 2, Z - ts / 2);
-      el('circle', { cx: m[0], cy: m[1], r: 4 * 1000 / Z, fill: 'none', stroke: BLAUW, 'stroke-width': 1.5, opacity: 0.7 }, tegels);
-      if (Z - ts >= dr.z1 || Z <= dr.z0) {
-        veelhoek([Q(hw, hh - ts, Z), Q(hw, hh - ts, Z - ts), Q(hw, hh, Z - ts), Q(hw, hh, Z)], { fill: '#EAE5D7', stroke: '#B0A996', 'stroke-width': 1 }, tegels);
-      }
-    }
-    const houtenPlint = voor('plint', plint);
     const ph = 26;
-    veelhoek([Q(-hw, hh - ph, ZB), Q(hw, hh - ph, ZB), Q(hw, hh, ZB), Q(-hw, hh, ZB)], { fill: '#5A4330' }, houtenPlint);
-    veelhoek([Q(-hw, hh - ph, ZB), Q(hw, hh - ph, ZB), Q(hw, hh - ph + 4, ZB), Q(-hw, hh - ph + 4, ZB)], { fill: '#7C6047' }, houtenPlint);
-    veelhoek([Q(-hw, hh - ph, ZB), Q(-hw, hh - ph, zv), Q(-hw, hh, zv), Q(-hw, hh, ZB)], { fill: '#46331F' }, houtenPlint);
-    veelhoek([Q(hw, hh - ph, ZB), Q(hw, hh - ph, dr.z1), Q(hw, hh, dr.z1), Q(hw, hh, ZB)], { fill: '#46331F' }, houtenPlint);
+    veelhoek([Q(-hw, hh - ph, ZB), Q(hw, hh - ph, ZB), Q(hw, hh, ZB), Q(-hw, hh, ZB)], { fill: '#5A4330' }, plint);
+    veelhoek([Q(-hw, hh - ph, ZB), Q(hw, hh - ph, ZB), Q(hw, hh - ph + 4, ZB), Q(-hw, hh - ph + 4, ZB)], { fill: '#7C6047' }, plint);
+    veelhoek([Q(-hw, hh - ph, ZB), Q(-hw, hh - ph, zv), Q(-hw, hh, zv), Q(-hw, hh, ZB)], { fill: '#46331F' }, plint);
+    veelhoek([Q(hw, hh - ph, ZB), Q(hw, hh - ph, dr.z1), Q(hw, hh, dr.z1), Q(hw, hh, ZB)], { fill: '#46331F' }, plint);
+    const krassen = voor('plint', plint);
     for (let i = 0; i < 7; i++) {
       const x = -hw + 40 + rnd() * (2 * hw - 80), a = Q(x, hh - ph + 8 + rnd() * 10, ZB);
-      el('path', { d: `M${pt(a)} l ${10 + rnd() * 30} ${rnd() * 4 - 2}`, stroke: '#2E2114', 'stroke-width': 1.4, opacity: 0.6 }, houtenPlint);
+      el('path', { d: `M${pt(a)} l ${10 + rnd() * 30} ${rnd() * 4 - 2}`, stroke: '#2E2114', 'stroke-width': 1.4, opacity: 0.6 }, krassen);
     }
+    const [px0] = Q(-hw, hh, ZB);
     el('line', { x1: px0, y1: Q(0, hh, ZB)[1], x2: px0 + 2 * hw, y2: Q(0, hh, ZB)[1], stroke: '#2B1E14', 'stroke-width': 4 }, plint);
 
     // ---------- Marmeren vloer ----------
@@ -377,6 +493,9 @@
       const p = Q(-hw * 0.8 + rnd() * hw * 1.6, hh, zv + 80 + rnd() * (ZB - zv - 120));
       el('path', { d: `M${p[0]} ${p[1] - 9} L${p[0] + 2} ${p[1] - 2} L${p[0] + 9} ${p[1]} L${p[0] + 2} ${p[1] + 2} L${p[0]} ${p[1] + 9} L${p[0] - 2} ${p[1] + 2} L${p[0] - 9} ${p[1]} L${p[0] - 2} ${p[1] - 2} Z`, fill: '#FFFFFF', class: 'glim', style: `animation-delay:-${(rnd() * 4).toFixed(1)}s` }, glim);
     }
+
+    // ---------- De schouw met de Delftse tegels ----------
+    bouwSchouw(svg, L, defs, voor, na);
 
     // ---------- Aan de muur ----------
     const wand = el('g', { class: 'wand' }, svg);
@@ -925,7 +1044,7 @@
   function bouwSeizoenVoorkamer(svg, L, glas, defs) {
     const Q = L.P, hw = L.HW, hh = L.HH, zv = L.ZV;
     const plek = (sleutel, ouder) => (L.plaats[sleutel] ? el('g', { transform: L.plaats[sleutel] }, ouder) : ouder);
-    // Sinterklaas: een klomp bij de plint (zet je schoen!) en een chocoladeletter op tafel
+    // Sinterklaas: een klomp bij de haard (zet je schoen!) en een chocoladeletter op tafel
     const sint = el('g', { class: 'alleen-sinterklaas' }, svg);
     bouwTafelSint(plek('tafel', sint));
     bouwKlomp(plek('schoen', sint));
@@ -970,7 +1089,8 @@
 
   // De klomp voor Sinterklaas: tik om hem te zetten, de volgende dag zit er iets in.
   function bouwKlomp(ouder) {
-    const b = P(250, 330, 975);
+    // naast de haard: daar komt Sinterklaas door de schoorsteen
+    const b = P(198, 330, 958);
     const g = el('g', { class: 'schoen', tabindex: 0, role: 'button', 'data-stand': 'leeg', 'aria-label': 'Zet je klomp', transform: `translate(${b[0].toFixed(1)} ${b[1].toFixed(1)})` }, ouder);
     const vw = el('g', { class: 'vw' }, g);
     el('ellipse', { cx: 4, cy: 2, rx: 46, ry: 7, fill: '#000', opacity: 0.3 }, vw);
