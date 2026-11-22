@@ -1430,120 +1430,424 @@
   }
 
   // ============================================================
-  // DE GEVEL AAN DE GRACHT (viewBox 1600 x 1000)
+  // DE STRAAT AAN DE GRACHT (viewBox 1600 x 1000; op een staand scherm een hogere uitsnede met meer gracht)
+  // Overgenomen van succesvolle spellen:
+  // - aan de buitenkant zie je hoe ver je binnen bent (Homescapes, Gardenscapes): schone ramen, een geverfde deur,
+  //   bloembakken, een vergulde gevelsteen, een open hijsluik met lantaarn, duiven op de top en de kat op de vensterbank;
+  // - dag en nacht volgen de echte klok (Animal Crossing): 's avonds gaan de lichten aan, 's nachts twinkelen de sterren;
+  // - kleine bewegingen die altijd doorgaan maken er een levende wereld van: wolken, vogels, molens, rook, eendjes,
+  //   een roeibootje en wuivende bomen;
+  // - de bewoners doen hun eigen ding als jij niet speelt (Hay Day): Jantje hoepelt, de burgemeester wandelt,
+  //   Molenaar Kees rookt een pijpje op het bankje en Grietje zwaait uit het raam van de herberg.
   // ============================================================
+  const STRAAT_ONDER = 1300;
+  const VORM = {
+    links: 'M-40 905 V330 H20 V290 H60 V250 H100 V905 Z',
+    rechts: 'M1500 905 V300 Q1560 240 1640 300 V905 Z',
+    herberg: 'M100 905 V360 H196 Q214 332 232 300 V206 Q320 150 408 206 V300 Q426 332 444 360 H540 V905 Z',
+    klok: 'M1060 905 V380 H1146 C1146 300 1188 250 1228 232 V204 Q1280 172 1332 204 V232 C1372 250 1414 300 1414 380 H1500 V905 Z',
+    trap: 'M530 905 V400 H584 V338 H638 V276 H692 V214 H746 V152 H854 V214 H908 V276 H962 V338 H1016 V400 H1070 V905 Z'
+  };
+  const BOMEN = [[34, 1], [1568, -1]];
+  const KRUIN = [[-10, -160, 92], [60, -128, 78], [-80, -118, 68], [20, -250, 72], [-62, -212, 60], [92, -200, 58], [112, -108, 54],
+    [-112, -170, 50], [40, -58, 60], [-40, -62, 56], [132, -58, 44], [-122, -82, 44], [0, -302, 50], [72, -282, 48], [-72, -280, 44]];
+  const LANTAARNS = [240, 562, 1038, 1440];
+
+  // bakstenen met kleurverschil: een tegel van vier lagen
+  function steenPatroon(defs, id, kleuren, voeg) {
+    const p = el('pattern', { id, width: 144, height: 64, patternUnits: 'userSpaceOnUse' }, defs);
+    el('rect', { width: 144, height: 64, fill: voeg }, p);
+    for (let r = 0; r < 4; r++) {
+      for (let k = -1; k < 4; k++) {
+        const x = k * 36 + (r % 2 ? 18 : 0);
+        el('rect', { x: x + 1, y: r * 16 + 1, width: 34, height: 14, fill: kleuren[Math.floor(rnd() * kleuren.length)] }, p);
+      }
+    }
+    el('rect', { width: 144, height: 1.2, fill: '#fff', opacity: 0.08 }, p);
+    return p;
+  }
+
+  // Een venster met kozijn, roeden, glas-in-lood boven en een vensterbank. 's Avonds komt het licht in een aparte laag.
+  const VENSTERS = [];
+  function venster(ouder, cx, top, b, h, o) {
+    o = o || {};
+    const x = cx - b / 2;
+    if (o.boog) {
+      const d = `M${x - 6} ${top - 2} A${b / 2 + 6} ${(b / 2 + 6) * 0.42} 0 0 1 ${x + b + 6} ${top - 2}`;
+      el('path', { d, fill: 'none', stroke: '#E4D8BD', 'stroke-width': 10 }, ouder);
+      el('path', { d, fill: 'none', stroke: '#A8452E', 'stroke-width': 10, 'stroke-dasharray': '8 9' }, ouder);
+    }
+    el('rect', { x: x + 3, y: top + 4, width: b, height: h, fill: '#1A0F08', opacity: 0.3 }, ouder);
+    el('rect', { x, y: top, width: b, height: h, fill: '#EFEADF' }, ouder);
+    el('rect', { x: x + 6, y: top + 6, width: b - 12, height: h - 12, fill: 'url(#g-ruit)' }, ouder);
+    if (o.gloed) el('rect', { x: x + 6, y: top + 6, width: b - 12, height: (h - 12) * 0.44, fill: 'url(#g-binnen)', class: 'raam-gloed' }, ouder);
+    el('rect', { x: x + 6, y: top + 6, width: b - 12, height: (h - 12) * 0.42, fill: 'url(#g-lood)' }, ouder);
+    const ty = top + h * 0.44;
+    if (!o.luiken) {
+      const oy = ty + 3, oh = top + h - 6 - oy, gb = b - 12;
+      el('path', { d: `M${x + 6 + gb / 4} ${oy} V${oy + oh} M${x + 6 + gb * 0.75} ${oy} V${oy + oh} M${x + 6} ${oy + oh / 2} H${x + b - 6}`, stroke: '#EFEADF', 'stroke-width': 2.2 }, ouder);
+    }
+    el('path', { d: `M${x + 10} ${top + h - 10} L${x + b * 0.55} ${top + 10} L${x + b * 0.75} ${top + 10} L${x + 22} ${top + h - 10} Z`, fill: '#fff', opacity: 0.13 }, ouder);
+    el('rect', { x: cx - 3, y: top, width: 6, height: h, fill: '#EFEADF' }, ouder);
+    el('rect', { x, y: ty - 3, width: b, height: 6, fill: '#EFEADF' }, ouder);
+    if (o.luiken) {
+      // dichte onderluiken met zandlopermotief
+      const ly = ty + 3, lh = h - (h * 0.44 + 3) - 4;
+      [[x + 5, b / 2 - 7], [cx + 2, b / 2 - 7]].forEach(([lx, lb]) => {
+        el('rect', { x: lx, y: ly, width: lb, height: lh, fill: '#B23B27' }, ouder);
+        el('path', { d: `M${lx} ${ly} L${lx + lb} ${ly} L${lx + lb / 2} ${ly + lh / 2} Z M${lx} ${ly + lh} L${lx + lb} ${ly + lh} L${lx + lb / 2} ${ly + lh / 2} Z`, fill: '#F2EADA' }, ouder);
+        el('rect', { x: lx, y: ly, width: lb, height: lh, fill: 'none', stroke: '#2B3A2E', 'stroke-width': 1.6 }, ouder);
+      });
+    }
+    el('rect', { x: x - 6, y: top + h, width: b + 12, height: 6, fill: '#D9CCAE' }, ouder);
+    el('rect', { x: x - 6, y: top + h + 6, width: b + 12, height: 3, fill: '#000', opacity: 0.2 }, ouder);
+    if (o.licht) VENSTERS.push({ cx, top, b, h, luiken: !!o.luiken, licht: o.licht });
+  }
+
+  // Het licht achter een venster: warm glas, de roeden als donkere lijnen en een zachte gloed op de muur
+  function raamLicht(ouder, v, i) {
+    const g = el('g', { class: 'licht-raam ' + v.licht }, ouder);
+    const gx = v.cx - v.b / 2 + 6, gy = v.top + 6, gb = v.b - 12;
+    const gh = v.luiken ? (v.h - 12) * 0.44 : v.h - 12;
+    el('rect', { x: gx - gb * 0.55, y: gy - gh * 0.35, width: gb * 2.1, height: gh * 1.7, fill: 'url(#g-schijnsel)', opacity: 0.5 }, g);
+    el('rect', Object.assign({ x: gx, y: gy, width: gb, height: gh, fill: 'url(#g-raamlicht)' }, i % 3 === 1 ? { class: 'flakker', style: `animation-delay:-${((i * 1.3) % 5).toFixed(1)}s` } : {}), g);
+    el('rect', { x: gx, y: gy, width: gb, height: Math.min(gh, (v.h - 12) * 0.42), fill: 'url(#g-lood-donker)' }, g);
+    const ty = v.top + v.h * 0.44, donker = '#3A2414';
+    el('rect', { x: v.cx - 1.6, y: gy, width: 3.2, height: gh, fill: donker, opacity: 0.85 }, g);
+    if (ty < gy + gh) el('rect', { x: gx, y: ty - 1.6, width: gb, height: 3.2, fill: donker, opacity: 0.85 }, g);
+    if (!v.luiken) {
+      const oy = ty + 3, oh = gy + gh - oy;
+      el('path', { d: `M${gx + gb / 4} ${oy} V${oy + oh} M${gx + gb * 0.75} ${oy} V${oy + oh} M${gx} ${oy + oh / 2} H${gx + gb}`, stroke: donker, 'stroke-width': 1.6, opacity: 0.7 }, g);
+    }
+  }
+
+  // Een klauwstuk: een stenen krul langs een trede van de trapgevel
+  function klauw(ouder, x, y, spiegel) {
+    const g = el('g', { transform: `translate(${x} ${y}) scale(${spiegel ? -1 : 1} 1)` }, ouder);
+    el('path', { d: 'M0 0 C-14 0 -22 10 -18 22 C-15 30 -6 30 -5 23 C-4 17 -11 15 -12 20', fill: 'none', stroke: '#E4D8BD', 'stroke-width': 5.5, 'stroke-linecap': 'round' }, g);
+    el('path', { d: 'M0 0 C-14 0 -22 10 -18 22 C-15 30 -6 30 -5 23', fill: 'none', stroke: '#B9A988', 'stroke-width': 1.2, 'stroke-linecap': 'round' }, g);
+  }
+
+  // Een lantaarnpaal op de kade
+  function lantaarn(ouder, x, y) {
+    const g = el('g', {}, ouder);
+    el('ellipse', { cx: x + 4, cy: y, rx: 14, ry: 3, fill: '#000', opacity: 0.25 }, g);
+    el('rect', { x: x - 9, y: y - 14, width: 18, height: 14, rx: 2, fill: '#1E1A16' }, g);
+    el('rect', { x: x - 4, y: y - 152, width: 8, height: 140, fill: '#1E1A16' }, g);
+    el('rect', { x: x - 3, y: y - 152, width: 2, height: 140, fill: '#fff', opacity: 0.12 }, g);
+    el('rect', { x: x - 7, y: y - 158, width: 14, height: 7, rx: 2, fill: '#1E1A16' }, g);
+    el('path', { d: `M${x - 10} ${y - 158} L${x + 10} ${y - 158} L${x + 15} ${y - 192} L${x - 15} ${y - 192} Z`, fill: '#F6E6B4', opacity: 0.8 }, g);
+    el('path', { d: `M${x - 10} ${y - 158} L${x + 10} ${y - 158} L${x + 15} ${y - 192} L${x - 15} ${y - 192} Z M${x} ${y - 158} V${y - 192}`, fill: 'none', stroke: '#1E1A16', 'stroke-width': 2.4, 'stroke-linejoin': 'round' }, g);
+    el('path', { d: `M${x - 20} ${y - 192} L${x} ${y - 209} L${x + 20} ${y - 192} Z`, fill: '#1E1A16' }, g);
+    el('circle', { cx: x, cy: y - 212, r: 3.2, fill: '#1E1A16' }, g);
+  }
+
+  // Een been dat vanuit de heup heen en weer zwaait
+  function been(ouder, x, heup, lengte, kleur, dik, klasse) {
+    const g = el('g', { class: 'been ' + klasse, style: `transform-origin:${x}px ${heup}px` }, ouder);
+    el('path', { d: `M${x} ${heup} L${x} ${heup + lengte - 1}`, stroke: kleur, 'stroke-width': dik, 'stroke-linecap': 'round' }, g);
+    el('ellipse', { cx: x + 2.5, cy: heup + lengte - 1, rx: dik * 0.85, ry: dik * 0.45, fill: '#1E1814' }, g);
+  }
+
+  // Een bewoner als klein figuurtje; de voeten staan op (0, 0)
+  function bewoner(ouder, soort) {
+    const g = el('g', {}, ouder);
+    const huid = '#F1C9A5';
+    if (soort === 'jantje') {
+      been(g, -4, -24, 24, '#3A3A48', 4.6, 'been-a');
+      been(g, 4, -24, 24, '#3A3A48', 4.6, 'been-b');
+      el('path', { d: 'M-7 -42 L-14 -31', stroke: '#9A3A24', 'stroke-width': 4.2, 'stroke-linecap': 'round' }, g);
+      el('path', { d: 'M-9 -46 Q0 -50 9 -46 L10 -22 H-10 Z', fill: '#B6452C' }, g);
+      el('path', { d: 'M-10 -26 H10', stroke: '#7A2A1A', 'stroke-width': 2 }, g);
+      el('path', { d: 'M7 -42 L18 -31', stroke: '#B6452C', 'stroke-width': 4.4, 'stroke-linecap': 'round' }, g);
+      el('circle', { cx: 18.5, cy: -30.5, r: 2.6, fill: huid }, g);
+      el('rect', { x: -3, y: -50, width: 6, height: 4, fill: huid }, g);
+      el('circle', { cx: 0, cy: -56, r: 8, fill: huid }, g);
+      el('circle', { cx: 3.6, cy: -56.5, r: 1.1, fill: '#2A1A0C' }, g);
+      el('circle', { cx: 5, cy: -53, r: 1.8, fill: '#E8907A', opacity: 0.6 }, g);
+      el('path', { d: 'M-9 -58 Q-8 -67 1 -67 Q9 -67 10 -59 Z', fill: '#2C4A7C' }, g);
+      el('path', { d: 'M-11 -58.5 H14', stroke: '#1E3358', 'stroke-width': 2.4, 'stroke-linecap': 'round' }, g);
+      el('circle', { cx: 0.5, cy: -67, r: 1.8, fill: '#B6452C' }, g);
+    } else if (soort === 'burgemeester') {
+      been(g, -4, -27, 27, '#1E1A16', 5, 'been-a');
+      been(g, 4, -27, 27, '#1E1A16', 5, 'been-b');
+      el('path', { d: 'M-12 -52 Q0 -58 12 -52 L15 -24 Q0 -20 -15 -24 Z', fill: '#1E1A16' }, g);
+      el('path', { d: 'M0 -52 V-26', stroke: '#3A342C', 'stroke-width': 1 }, g);
+      [-46, -40, -34].forEach((y) => el('circle', { cx: 2.5, cy: y, r: 1, fill: '#E7C36A' }, g));
+      el('path', { d: 'M-10 -48 L-19 -26', stroke: '#1E1A16', 'stroke-width': 4.6, 'stroke-linecap': 'round' }, g);
+      el('path', { d: 'M-19 -28 L-23 0', stroke: '#6B4423', 'stroke-width': 2.4, 'stroke-linecap': 'round' }, g);
+      el('circle', { cx: -23, cy: -30, r: 2.6, fill: '#E7C36A' }, g);
+      el('ellipse', { cx: 0, cy: -54, rx: 12.5, ry: 4.6, fill: '#FBF8F0', stroke: '#CFC7B4', 'stroke-width': 1 }, g);
+      el('circle', { cx: 0, cy: -63, r: 7.5, fill: huid }, g);
+      el('path', { d: 'M-5 -60 Q0 -53 5 -60 Q2 -58 0 -58 Q-2 -58 -5 -60 Z', fill: '#7A5A3A' }, g);
+      el('circle', { cx: -3, cy: -64, r: 1, fill: '#2A1A0C' }, g);
+      el('ellipse', { cx: 0, cy: -69.5, rx: 13.5, ry: 3.2, fill: '#1E1A16' }, g);
+      el('path', { d: 'M-7.5 -69 Q-8 -84 0 -84 Q8 -84 7.5 -69 Z', fill: '#1E1A16' }, g);
+      el('path', { d: 'M-7.6 -72.5 H7.6', stroke: '#E7C36A', 'stroke-width': 1.6 }, g);
+    } else if (soort === 'kees') {
+      el('path', { d: 'M-12 -18 H6', stroke: '#E3DCCB', 'stroke-width': 7, 'stroke-linecap': 'round' }, g);
+      el('path', { d: 'M5 -18 L6 0', stroke: '#E3DCCB', 'stroke-width': 5.5, 'stroke-linecap': 'round' }, g);
+      el('ellipse', { cx: 9, cy: -1, rx: 5, ry: 2.4, fill: '#1E1814' }, g);
+      el('path', { d: 'M-13 -44 Q-3 -49 7 -44 L9 -16 H-15 Z', fill: '#F1ECE0', stroke: '#D8D1C0', 'stroke-width': 1 }, g);
+      el('path', { d: 'M3 -40 L12 -30 L14 -42', fill: 'none', stroke: '#E3DCCB', 'stroke-width': 4.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+      el('circle', { cx: -3, cy: -52, r: 7.5, fill: huid }, g);
+      el('path', { d: 'M-11 -55 Q-9 -66 1 -66 Q10 -65 8 -56 Q2 -59 -11 -55 Z', fill: '#F7F4EC', stroke: '#D8D1C0', 'stroke-width': 1 }, g);
+      el('path', { d: 'M-7 -48 Q-3 -45 1 -48', fill: 'none', stroke: '#BDB7AB', 'stroke-width': 2.4, 'stroke-linecap': 'round' }, g);
+      el('circle', { cx: 1, cy: -53, r: 1, fill: '#2A1A0C' }, g);
+      el('path', { d: 'M2 -48 L11 -46 L12.5 -50', fill: 'none', stroke: '#5A3A1E', 'stroke-width': 1.8, 'stroke-linecap': 'round' }, g);
+      el('rect', { x: 10.5, y: -53, width: 4.4, height: 4.4, rx: 1, fill: '#5A3A1E' }, g);
+    } else if (soort === 'grietje') {
+      el('path', { d: 'M-13 0 Q-13 -16 0 -18 Q13 -16 13 0 Z', fill: '#2C2A3A' }, g);
+      el('path', { d: 'M-8 -6 Q0 -2 8 -6', stroke: '#C23A2A', 'stroke-width': 2, fill: 'none', 'stroke-dasharray': '2 2.4' }, g);
+      el('circle', { cx: 0, cy: -26, r: 8, fill: huid }, g);
+      el('circle', { cx: -2.6, cy: -26.5, r: 1, fill: '#2A1A0C' }, g);
+      el('circle', { cx: 2.6, cy: -26.5, r: 1, fill: '#2A1A0C' }, g);
+      el('path', { d: 'M-2 -22.5 q2 1.6 4 0', stroke: '#9A3A2A', 'stroke-width': 1.2, fill: 'none' }, g);
+      el('path', { d: 'M-11 -27 Q-11 -38 0 -38 Q11 -38 11 -27 L15 -31 Q16 -24 10 -22 Q9 -33 0 -33 Q-9 -33 -10 -22 Q-16 -24 -15 -31 Z', fill: '#FBF8F0', stroke: '#CFC7B4', 'stroke-width': 0.8 }, g);
+      const arm = el('g', { class: 'zwaaiarm', style: 'transform-origin:9px -10px' }, g);
+      el('path', { d: 'M9 -10 L17 -25', stroke: '#2C2A3A', 'stroke-width': 4.5, 'stroke-linecap': 'round' }, arm);
+      el('circle', { cx: 18, cy: -27.5, r: 3.2, fill: huid }, arm);
+    }
+    return g;
+  }
+
   function bouwGevel() {
     zaad = 99;
-    const svg = el('svg', { viewBox: '0 0 1600 1000', class: 'gevel-svg', preserveAspectRatio: 'xMidYMax slice', role: 'group', 'aria-label': 'Het Speelhuys: een grachtenpand met een trapgevel' });
+    VENSTERS.length = 0;
+    const svg = el('svg', { viewBox: '0 0 1600 1000', class: 'gevel-svg', preserveAspectRatio: 'xMidYMax slice', role: 'group', 'aria-label': 'Het Speelhuys aan de gracht' });
     const defs = el('defs', {}, svg);
-    verloop(defs, 'g-lucht', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#7F9CB8'], [0.55, '#B9C6CC'], [1, '#E9E2CF']]);
+    const omlaag = { x1: 0, y1: 0, x2: 0, y2: 1 };
+    verloop(defs, 'g-lucht-dag', 'linearGradient', omlaag, [[0, '#5E8CC0'], [0.55, '#A6C2D8'], [1, '#EDE4CF']]);
+    verloop(defs, 'g-lucht-ochtend', 'linearGradient', omlaag, [[0, '#7F92C4'], [0.5, '#E4B6AA'], [1, '#F8DFB6']]);
+    verloop(defs, 'g-lucht-avond', 'linearGradient', omlaag, [[0, '#2C376A'], [0.42, '#A45A80'], [0.75, '#E88F58'], [1, '#F5C36E']]);
+    verloop(defs, 'g-lucht-nacht', 'linearGradient', omlaag, [[0, '#050A1E'], [0.6, '#121D44'], [1, '#26335E']]);
+    verloop(defs, 'g-zon', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#FFFDF0'], [0.22, '#FFF6CC'], [0.3, '#FFE9A0', 0.6], [1, '#FFD27A', 0]]);
+    verloop(defs, 'g-zon-laag', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#FFF3D6'], [0.2, '#FFC27E'], [0.32, '#FFA060', 0.55], [1, '#FF8A50', 0]]);
+    verloop(defs, 'g-maangloed', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#F4EFD8', 0.45], [1, '#F4EFD8', 0]]);
     verloop(defs, 'g-wolk', 'radialGradient', { cx: '45%', cy: '35%', r: '70%' }, [[0, '#FFFFFF'], [0.7, '#F1F0EA'], [1, '#C9CDD0']]);
-    verloop(defs, 'g-ruit', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#7E95A3'], [0.5, '#34434D'], [1, '#22303A']]);
-    verloop(defs, 'g-water', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#55665F'], [1, '#26332F']]);
+    verloop(defs, 'g-ruit', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#8EA6B4'], [0.5, '#3A4A55'], [1, '#22303A']]);
+    verloop(defs, 'g-water', 'linearGradient', omlaag, [[0, '#56685F'], [0.4, '#3A4A45'], [1, '#1A2522']]);
     verloop(defs, 'g-binnen', 'radialGradient', { cx: '50%', cy: '60%', r: '70%' }, [[0, '#FFE6AE'], [0.6, '#E0A55A'], [1, '#7A4A20']]);
+    verloop(defs, 'g-raamlicht', 'linearGradient', omlaag, [[0, '#FFF0C2'], [0.6, '#FFD27E'], [1, '#E9963E']]);
+    verloop(defs, 'g-schijnsel', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#FFD98A', 0.6], [0.5, '#FFC870', 0.22], [1, '#FFC870', 0]]);
     verloop(defs, 'g-messing', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#F6DC97'], [0.5, '#C9973F'], [1, '#71501E']]);
+    verloop(defs, 'g-goud', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#FFF2B8'], [0.45, '#E7C36A'], [1, '#9A6A1E']]);
+    verloop(defs, 'g-zonlicht', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#FFF0C8', 0.2], [0.5, '#FFF0C8', 0], [1, '#1A0F08', 0.22]]);
     verloop(defs, 'g-schaduw', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, '#000', 0.25], [0.08, '#000', 0], [0.92, '#000', 0], [1, '#000', 0.3]]);
-    [['g-steen', '#9B4631', '#8A3C29'], ['g-steen2', '#6E3326', '#5F2A20'], ['g-steen3', '#8B5138', '#7A4430']].forEach(([id, a, b]) => {
-      const p = el('pattern', { id, width: 36, height: 16, patternUnits: 'userSpaceOnUse' }, defs);
-      el('rect', { width: 36, height: 16, fill: a }, p);
-      el('rect', { x: 18, y: 8, width: 18, height: 8, fill: b }, p);
-      el('rect', { x: 0, y: 0, width: 9, height: 8, fill: b, opacity: 0.5 }, p);
-      el('path', { d: 'M0 0 H36 M0 8 H36 M0 0 V8 M18 8 V16', stroke: '#CDBDA2', 'stroke-width': 1.2, opacity: 0.75 }, p);
-    });
+    verloop(defs, 'g-nevel', 'linearGradient', omlaag, [[0, '#F4E9DA', 0.5], [1, '#F4E9DA', 0]]);
+    verloop(defs, 'g-boomblad', 'radialGradient', { cx: '38%', cy: '32%', r: '72%' }, [[0, '#93BC6C'], [0.6, '#5E8C42'], [1, '#365E2A']]);
+    verloop(defs, 'g-boomdonker', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#2C4A22'], [1, '#22381A']]);
+    verloop(defs, 'g-boomlicht', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#D8EFA8', 0.45], [1, '#D8EFA8', 0]]);
+    verloop(defs, 'g-rook', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#F2EFE8', 0.9], [0.55, '#E9E6DE', 0.55], [1, '#E9E6DE', 0]]);
+    verloop(defs, 'g-straal', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0.6 }, [[0, '#FFF4D8', 0.34], [0.7, '#FFF4D8', 0.06], [1, '#FFF4D8', 0]]);
+    steenPatroon(defs, 'g-steen', ['#9B4631', '#8E3E2B', '#A3503A', '#94432F', '#86392A', '#A04A34'], '#CDBDA2');
+    steenPatroon(defs, 'g-steen2', ['#6E3326', '#62291F', '#764032', '#5A271D'], '#B9AA90');
+    steenPatroon(defs, 'g-steen3', ['#8B5138', '#7E4630', '#956048', '#7A432E'], '#C9B89A');
+    patroonUitTextuur(defs, 'g-korrel', textuur('gevelkorrel', 256, 256, korrel([50, 28, 18], 0.18)), 256, 256);
     const kp = el('pattern', { id: 'g-kei', width: 26, height: 14, patternUnits: 'userSpaceOnUse' }, defs);
     el('rect', { width: 26, height: 14, fill: '#6F675E' }, kp);
-    el('ellipse', { cx: 6, cy: 4, rx: 6, ry: 3.4, fill: '#9A9187' }, kp);
-    el('ellipse', { cx: 19, cy: 4, rx: 6, ry: 3.4, fill: '#8C8379' }, kp);
-    el('ellipse', { cx: 0, cy: 11, rx: 6, ry: 3.4, fill: '#8E857B' }, kp);
-    el('ellipse', { cx: 13, cy: 11, rx: 6, ry: 3.4, fill: '#A19890' }, kp);
-    el('ellipse', { cx: 26, cy: 11, rx: 6, ry: 3.4, fill: '#8E857B' }, kp);
+    [[6, 4, '#9A9187'], [19, 4, '#8C8379'], [0, 11, '#8E857B'], [13, 11, '#A19890'], [26, 11, '#8E857B']].forEach(([cx, cy, f]) => {
+      el('ellipse', { cx, cy, rx: 6, ry: 3.4, fill: f }, kp);
+      el('ellipse', { cx: cx - 1.5, cy: cy - 1.2, rx: 3, ry: 1.2, fill: '#fff', opacity: 0.12 }, kp);
+    });
     const lp = el('pattern', { id: 'g-lood', width: 10, height: 14, patternUnits: 'userSpaceOnUse' }, defs);
     el('path', { d: 'M0 7 L5 0 L10 7 L5 14 Z', fill: 'none', stroke: '#C9D2D6', 'stroke-width': 0.6, opacity: 0.6 }, lp);
+    const lpd = el('pattern', { id: 'g-lood-donker', width: 10, height: 14, patternUnits: 'userSpaceOnUse' }, defs);
+    el('path', { d: 'M0 7 L5 0 L10 7 L5 14 Z', fill: 'none', stroke: '#5A3414', 'stroke-width': 0.8, opacity: 0.55 }, lpd);
+    // de avondtint valt alleen over de huizen, de straat, de gracht en de bomen; de lucht heeft eigen kleuren
+    const tintClip = el('clipPath', { id: 'g-tintclip' }, defs);
+    Object.values(VORM).forEach((d) => el('path', { d }, tintClip));
+    el('rect', { x: -40, y: 880, width: 1680, height: STRAAT_ONDER - 880 + 10 }, tintClip);
+    const waterClip = el('clipPath', { id: 'g-waterclip' }, defs);
+    el('rect', { x: -40, y: 958, width: 1680, height: STRAAT_ONDER - 958 }, waterClip);
+    const rimpel = el('pattern', { id: 'g-rimpel', width: 120, height: 14, patternUnits: 'userSpaceOnUse' }, defs);
+    [[0, 4, 46], [58, 4, 40], [20, 11, 52], [86, 11, 26]].forEach(([x, y, b]) => el('rect', { x, y, width: b, height: 2.4, rx: 1.2, fill: '#22302C' }, rimpel));
 
-    el('rect', { width: 1600, height: 960, fill: 'url(#g-lucht)' }, svg);
-    // wolken
-    const wolken = el('g', {}, svg);
+    // ---------- de lucht voor elke tijd van de dag ----------
+    ['dag', 'ochtend', 'avond', 'nacht'].forEach((t) => el('rect', { x: -40, y: 0, width: 1680, height: 960, fill: `url(#g-lucht-${t})`, class: 'lucht lucht-' + t }, svg));
+    const sterren = el('g', { class: 'sterren' }, svg);
+    for (let i = 0; i < 80; i++) {
+      el('circle', { cx: (rnd() * 1600).toFixed(1), cy: (rnd() * 520).toFixed(1), r: (0.7 + rnd() * 1.5).toFixed(2), fill: '#FFF8E0', class: 'ster', style: `animation-delay:-${(rnd() * 4).toFixed(1)}s;animation-duration:${(2.5 + rnd() * 3).toFixed(1)}s` }, sterren);
+    }
+    const maan = el('g', { class: 'maan' }, svg);
+    el('circle', { cx: 1004, cy: 104, r: 92, fill: 'url(#g-maangloed)' }, maan);
+    // een maansikkel: de buitenrand van de maan en de binnenrand van de schaduw
+    el('path', { d: 'M1002.27 76.06 A28 28 0 1 0 1029.53 115.46 A24 24 0 0 1 1002.27 76.06 Z', fill: '#F6F0D6' }, maan);
+    el('circle', { cx: 1004, cy: 108, r: 210, fill: 'url(#g-zon)', class: 'zon zon-dag' }, svg);
+    el('circle', { cx: 150, cy: 236, r: 300, fill: 'url(#g-zon-laag)', class: 'zon zon-ochtend' }, svg);
+    el('circle', { cx: 1470, cy: 300, r: 330, fill: 'url(#g-zon-laag)', class: 'zon zon-avond' }, svg);
+    const wolken = el('g', { class: 'wolken' }, svg);
     [[120, 150, 1.3, 140], [760, 70, 1.0, 190], [1250, 190, 1.5, 160], [460, 260, 0.8, 220]].forEach(([x, y, sch, duur], i) => {
       const w = el('g', { class: 'wolk', style: `animation-duration:${duur}s;animation-delay:-${(i * 37) % duur}s` }, wolken);
       const binnen = el('g', { transform: `translate(${x} ${y}) scale(${sch})` }, w);
-      el('ellipse', { cx: 70, cy: 26, rx: 110, ry: 20, fill: '#B9C0C5', opacity: 0.6 }, binnen);
+      el('ellipse', { cx: 70, cy: 26, rx: 110, ry: 20, fill: '#B9C0C5', opacity: 0.6, class: 'wolk-onder' }, binnen);
       [[0, 0, 60, 34], [50, -22, 60, 42], [108, -6, 58, 36], [150, 10, 48, 26], [36, 14, 90, 24]].forEach(([cx, cy, rx, ry]) => el('ellipse', { cx, cy, rx, ry, fill: 'url(#g-wolk)' }, binnen));
     });
-    // vogels
-    const vogels = el('g', { class: 'vogels' }, svg);
-    [[0, 0], [34, 14], [70, -6]].forEach(([dx, dy]) => el('path', { d: `M${dx} ${dy} q 7 -7 14 0 q 7 -7 14 0`, fill: 'none', stroke: '#2E3538', 'stroke-width': 2.2, 'stroke-linecap': 'round' }, vogels));
+    const vogels = el('g', { class: 'vogels overdag' }, svg);
+    [[0, 0], [34, 14], [70, -6]].forEach(([dx, dy], i) => {
+      const v = el('g', { transform: `translate(${dx} ${dy})` }, vogels);
+      el('path', { d: 'M0 0 q 7 -7 14 0 q 7 -7 14 0', fill: 'none', stroke: '#2E3538', 'stroke-width': 2.2, 'stroke-linecap': 'round', class: 'vleugel', style: `animation-delay:-${i * 0.21}s` }, v);
+    });
 
+    // ---------- in de verte: een kerktoren en twee molens ----------
+    const verte = el('g', { class: 'verte' }, svg);
+    el('path', { d: 'M1024 400 V262 h6 V244 h22 v18 h6 V400 Z', fill: 'currentColor' }, verte);
+    el('path', { d: 'M1029 244 L1041 196 L1053 244 Z', fill: 'currentColor' }, verte);
+    el('path', { d: 'M1041 196 V172 M1036 180 h10', stroke: 'currentColor', 'stroke-width': 2 }, verte);
+    el('rect', { x: 1036, y: 274, width: 10, height: 14, rx: 5, fill: '#000', opacity: 0.18 }, verte);
+    el('circle', { cx: 1041, cy: 170, r: 3, fill: '#C9A24A' }, verte);
+    [[522, 318, 0.62, 11], [150, 250, 0.9, 16]].forEach(([x, y, sch, duur]) => {
+      const m = el('g', { transform: `translate(${x} ${y}) scale(${sch})` }, verte);
+      el('path', { d: 'M-16 120 L-10 10 H10 L16 120 Z', fill: 'currentColor' }, m);
+      el('path', { d: 'M-13 12 L0 -3 L13 12 Z', fill: 'currentColor' }, m);
+      el('path', { d: 'M-13 12 L0 -3 L13 12 Z', fill: '#000', opacity: 0.15 }, m);
+      const wiek = el('g', { class: 'wieken', style: `animation-duration:${duur}s` }, m);
+      [0, 90, 180, 270].forEach((a) => {
+        const w = el('g', { transform: `rotate(${a})` }, wiek);
+        el('rect', { x: -3, y: -66, width: 13, height: 60, fill: 'currentColor', opacity: 0.85 }, w);
+        el('path', { d: 'M3.5 -66 V-4', stroke: 'currentColor', 'stroke-width': 2.6 }, w);
+      });
+      el('circle', { r: 4, fill: 'currentColor' }, m);
+    });
+
+    // ---------- schoorstenen met rook, achter de gevels ----------
+    [[244, 160, 22, 48], [1182, 236, 22, 34]].forEach(([x, y, b, h], i) => {
+      el('rect', { x, y, width: b, height: h, fill: '#5A2A20' }, svg);
+      el('rect', { x: x - 3, y: y - 5, width: b + 6, height: 7, fill: '#3E1E16' }, svg);
+      const rook = el('g', { class: 'schoorsteenrook', transform: `translate(${x + b / 2} ${y - 6})` }, svg);
+      [0, 1, 2, 3].forEach((k) => el('circle', { r: 11 + k * 2, fill: 'url(#g-rook)', style: `animation-delay:-${(k * 1.4 + i * 0.7).toFixed(1)}s` }, rook));
+    });
+
+    // ---------- de gevels (ook gespiegeld in het water) ----------
     const gevelGroep = el('g', { id: 'g-gevels' }, svg);
-    // verre panden
-    el('path', { d: 'M-20 905 V330 H20 V290 H60 V250 H100 V905 Z', fill: '#5B3A2E' }, gevelGroep);
-    el('path', { d: 'M1500 905 V300 Q1560 240 1620 300 V905 Z', fill: '#5E4033' }, gevelGroep);
-    // linkerbuur: halsgevel
-    const hals = el('path', { d: 'M100 905 V360 H196 Q214 332 232 300 V206 Q320 150 408 206 V300 Q426 332 444 360 H540 V905 Z', fill: 'url(#g-steen2)' }, gevelGroep);
-    hals.setAttribute('stroke', '#E2D6BA'); hals.setAttribute('stroke-width', 0);
+    el('path', { d: VORM.links, fill: '#5B3A2E' }, gevelGroep);
+    el('path', { d: VORM.rechts, fill: '#5E4033' }, gevelGroep);
+    [400, 560, 720].forEach((y, i) => venster(gevelGroep, 40, y, 40, 62, { licht: i === 1 ? 'aan' : (i === 2 ? 'vroeg' : '') }));
+    [420, 580, 740].forEach((y, i) => venster(gevelGroep, 1560, y, 40, 62, { licht: i === 0 ? 'aan' : (i === 2 ? 'vroeg' : '') }));
+    // linkerbuur: de herberg met een halsgevel
+    el('path', { d: VORM.herberg, fill: 'url(#g-steen2)' }, gevelGroep);
+    el('path', { d: VORM.herberg, fill: 'url(#g-korrel)', opacity: 0.6 }, gevelGroep);
     el('path', { d: 'M196 360 Q214 332 232 300 V206 Q320 150 408 206 V300 Q426 332 444 360', fill: 'none', stroke: '#E2D6BA', 'stroke-width': 8 }, gevelGroep);
     el('rect', { x: 96, y: 356, width: 448, height: 12, fill: '#E2D6BA' }, gevelGroep);
     el('circle', { cx: 320, cy: 166, r: 9, fill: '#E2D6BA' }, gevelGroep);
-    [[190, 420], [320, 420], [450, 420], [190, 580], [320, 580], [450, 580], [190, 745], [450, 745]].forEach(([cx, y]) => raam(gevelGroep, cx, y, 70, 104, false));
+    el('path', { d: 'M232 300 Q206 300 196 322 M408 300 Q434 300 444 322', fill: 'none', stroke: '#E2D6BA', 'stroke-width': 6, 'stroke-linecap': 'round' }, gevelGroep);
+    [[190, 420, 'aan'], [320, 420, ''], [450, 420, 'aan'], [190, 580, 'vroeg'], [320, 580, 'aan'], [450, 580, ''], [190, 745, 'aan'], [450, 745, 'aan']].forEach(([cx, y, l]) => venster(gevelGroep, cx, y, 70, 104, { licht: l }));
+    venster(gevelGroep, 320, 222, 56, 70, { licht: 'aan' });
     bouwHerberg(gevelGroep);
-    raam(gevelGroep, 320, 222, 56, 70, false);
-    // rechterbuur: klokgevel
-    el('path', { d: 'M1060 905 V380 H1146 C1146 300 1188 250 1228 232 V204 Q1280 172 1332 204 V232 C1372 250 1414 300 1414 380 H1500 V905 Z', fill: 'url(#g-steen3)' }, gevelGroep);
+    el('path', { d: VORM.herberg, fill: 'url(#g-zonlicht)', 'pointer-events': 'none' }, gevelGroep);
+    // rechterbuur: een klokgevel
+    el('path', { d: VORM.klok, fill: 'url(#g-steen3)' }, gevelGroep);
+    el('path', { d: VORM.klok, fill: 'url(#g-korrel)', opacity: 0.6 }, gevelGroep);
     el('path', { d: 'M1146 380 C1146 300 1188 250 1228 232 V204 Q1280 172 1332 204 V232 C1372 250 1414 300 1414 380', fill: 'none', stroke: '#EDE4D0', 'stroke-width': 9 }, gevelGroep);
+    el('path', { d: 'M1228 232 C1250 222 1310 222 1332 232', fill: 'none', stroke: '#EDE4D0', 'stroke-width': 5 }, gevelGroep);
+    el('circle', { cx: 1280, cy: 176, r: 8, fill: '#EDE4D0' }, gevelGroep);
     el('rect', { x: 1056, y: 376, width: 448, height: 12, fill: '#EDE4D0' }, gevelGroep);
-    [[1170, 430], [1280, 430], [1390, 430], [1170, 590], [1280, 590], [1390, 590], [1170, 752], [1390, 752]].forEach(([cx, y]) => raam(gevelGroep, cx, y, 70, 104, false));
+    [[1170, 430, ''], [1280, 430, 'aan'], [1390, 430, 'aan'], [1170, 590, ''], [1280, 590, 'vroeg'], [1390, 590, 'aan'], [1170, 752, 'vroeg'], [1390, 752, 'aan']].forEach(([cx, y, l]) => venster(gevelGroep, cx, y, 70, 104, { licht: l }));
     deurtje(gevelGroep, 1280, 760);
-    raam(gevelGroep, 1280, 262, 60, 84, false);
+    venster(gevelGroep, 1280, 262, 60, 84, {});
+    el('path', { d: VORM.klok, fill: 'url(#g-zonlicht)', 'pointer-events': 'none' }, gevelGroep);
 
-    // ---------- Het Speelhuys: trapgevel ----------
+    // ---------- Het Speelhuys: de trapgevel ----------
     const huis = el('g', { class: 'speelhuys-gevel' }, gevelGroep);
-    const trap = 'M530 905 V400 H584 V338 H638 V276 H692 V214 H746 V152 H854 V214 H908 V276 H962 V338 H1016 V400 H1070 V905 Z';
+    const trap = VORM.trap;
     const huisClip = el('clipPath', { id: 'g-huisclip' }, defs);
     el('path', { d: trap }, huisClip);
     el('path', { d: trap, fill: 'url(#g-steen)' }, huis);
+    el('path', { d: trap, fill: 'url(#g-korrel)', opacity: 0.55 }, huis);
+    // vuile plekken en groene aanslag op de gevel: weg na het witten van de muren
+    const vuil = el('g', { class: 'weg-bij-muren', 'clip-path': 'url(#g-huisclip)' }, huis);
+    [[586, 870, 74, 46], [1014, 850, 62, 56], [700, 520, 50, 30], [930, 646, 42, 26], [560, 420, 40, 60]].forEach(([cx, cy, rx, ry]) => el('ellipse', { cx, cy, rx, ry, fill: '#3B3122', opacity: 0.3 }, vuil));
+    [[548, 880, 22, 26], [1050, 870, 20, 34]].forEach(([cx, cy, rx, ry]) => el('ellipse', { cx, cy, rx, ry, fill: '#4F6A34', opacity: 0.35 }, vuil));
     const banden = el('g', { 'clip-path': 'url(#g-huisclip)', fill: '#E4D8BD' }, huis);
     [338, 276, 214, 556, 712].forEach((y) => el('rect', { x: 520, y, width: 560, height: 9 }, banden));
     el('rect', { x: 524, y: 396, width: 552, height: 16, fill: '#E4D8BD' }, huis);
-    // dekstenen op de trappen
+    el('rect', { x: 524, y: 410, width: 552, height: 4, fill: '#000', opacity: 0.15 }, huis);
     [[584, 400], [638, 338], [692, 276], [746, 214], [854, 214], [908, 276], [962, 338], [1016, 400]].forEach(([x, y], i) => {
       el('rect', { x: (i < 4 ? x - 58 : x - 4), y: y - 8, width: 62, height: 9, fill: '#E4D8BD' }, huis);
+      el('rect', { x: (i < 4 ? x - 58 : x - 4), y: y + 1, width: 62, height: 3, fill: '#000', opacity: 0.15 }, huis);
+      if (i !== 3 && i !== 4) klauw(huis, i < 4 ? x - 54 : x + 54, y + 1, i >= 4);
     });
     el('rect', { x: 740, y: 144, width: 120, height: 10, fill: '#E4D8BD' }, huis);
     el('path', { d: 'M760 144 L800 112 L840 144 Z', fill: '#E4D8BD' }, huis);
     el('circle', { cx: 800, cy: 106, r: 8, fill: '#E4D8BD' }, huis);
+    el('path', { d: 'M790 136 Q800 120 810 136', fill: 'none', stroke: '#B9A988', 'stroke-width': 2 }, huis);
+    // jaartal in muurankers
+    tekst('16', { x: 612, y: 384, 'text-anchor': 'middle', 'font-family': 'IM Fell English, Georgia, serif', 'font-size': 26, fill: '#1E1814', opacity: 0.85 }, huis);
+    tekst('48', { x: 988, y: 384, 'text-anchor': 'middle', 'font-family': 'IM Fell English, Georgia, serif', 'font-size': 26, fill: '#1E1814', opacity: 0.85 }, huis);
+    el('path', { d: trap, fill: 'url(#g-zonlicht)', 'pointer-events': 'none' }, huis);
     // hijsbalk met touw en haak
     el('rect', { x: 790, y: 160, width: 20, height: 16, fill: '#3A2A1C' }, huis);
     el('line', { x1: 800, y1: 176, x2: 800, y2: 204, stroke: '#4A3A28', 'stroke-width': 2 }, huis);
     el('path', { d: 'M800 204 q -6 4 0 10 q 6 2 4 -4', fill: 'none', stroke: '#2B2B2B', 'stroke-width': 2.4 }, huis);
-    // hijsluik en gevelraampjes
+    // het hijsluik van de zolder: dicht, of open met licht
     el('rect', { x: 772, y: 226, width: 56, height: 82, fill: '#E9E2D2' }, huis);
     const luikDicht = el('g', { class: 'luik-dicht' }, huis);
     el('rect', { x: 777, y: 231, width: 22, height: 72, fill: '#2C4A35' }, luikDicht);
     el('rect', { x: 801, y: 231, width: 22, height: 72, fill: '#2C4A35' }, luikDicht);
+    el('path', { d: 'M780 242 h16 M780 292 h16 M804 242 h16 M804 292 h16', stroke: '#1E3326', 'stroke-width': 2 }, luikDicht);
+    el('path', { d: 'M780 242 L796 292 M820 242 L804 292', stroke: '#1E3326', 'stroke-width': 1.6 }, luikDicht);
     const luikOpen = el('g', { class: 'luik-open' }, huis);
-    el('rect', { x: 777, y: 231, width: 46, height: 72, fill: 'url(#g-binnen)', class: 'raam-gloed' }, luikOpen);
+    el('rect', { x: 777, y: 231, width: 46, height: 72, fill: 'url(#g-binnen)' }, luikOpen);
     el('rect', { x: 748, y: 229, width: 22, height: 74, fill: '#2C4A35', stroke: '#1E3326', 'stroke-width': 1.5 }, luikOpen);
     el('rect', { x: 830, y: 229, width: 22, height: 74, fill: '#2C4A35', stroke: '#1E3326', 'stroke-width': 1.5 }, luikOpen);
     el('path', { d: 'M800 231 v 20 M793 251 h 14 l -3 14 h -8 Z', stroke: '#3A2614', 'stroke-width': 1.5, fill: '#FFE3A0' }, luikOpen);
     el('rect', { x: 769, y: 223, width: 62, height: 88, fill: 'none', stroke: '#FFD98A', 'stroke-width': 3, class: 'luik-wenk', rx: 2 }, huis);
-    raam(huis, 690, 300, 54, 70, false);
-    raam(huis, 910, 300, 54, 70, false);
-    plekKlik(huis, { x: 766, y: 220, width: 68, height: 94, class: 'plek-klik luik-klik' }, 'zolder', 'Naar de zolder');
-    slotje(huis, 800, 268, 'zolder');
+    VENSTERS.push({ cx: 800, top: 225, b: 58, h: 84, luiken: false, licht: 'zolder' });
+    // lantaarn naast het luik (na de lantaarn op de zolder)
+    const zl = el('g', { class: 'toon-bij-lantaarn' }, huis);
+    el('path', { d: 'M748 236 h-10 v6', fill: 'none', stroke: '#1E1814', 'stroke-width': 2 }, zl);
+    el('path', { d: 'M732 242 l6 -5 l6 5 Z', fill: '#1E1814' }, zl);
+    el('rect', { x: 732.5, y: 242, width: 11, height: 15, fill: '#FFE3A0' }, zl);
+    el('rect', { x: 732.5, y: 242, width: 11, height: 15, fill: 'none', stroke: '#1E1814', 'stroke-width': 1.6 }, zl);
     // vensters
-    [640, 800, 960].forEach((cx) => raam(huis, cx, 432, 86, 108, false, true));
-    [640, 960].forEach((cx) => raam(huis, cx, 588, 86, 108, false, true));
-    [640, 960].forEach((cx) => raam(huis, cx, 742, 92, 120, true, true, true));
+    venster(huis, 690, 300, 54, 70, { licht: 'zolderraam' });
+    venster(huis, 910, 300, 54, 70, { licht: 'zolderraam' });
+    [640, 800, 960].forEach((cx) => venster(huis, cx, 432, 86, 108, { boog: true, gloed: true, licht: 'boven' }));
+    [640, 960].forEach((cx) => venster(huis, cx, 588, 86, 108, { gloed: true, licht: 'boven' }));
+    [640, 960].forEach((cx) => venster(huis, cx, 742, 92, 120, { luiken: true, boog: true, gloed: true, licht: 'voorkamer' }));
+    // vuile benedenramen, tot je binnen de ramen lapt
+    const vuilRaam = el('g', { class: 'weg-bij-ramen' }, huis);
+    [640, 960].forEach((cx) => {
+      el('rect', { x: cx - 40, y: 748, width: 80, height: 48, fill: '#6F664D', opacity: 0.78 }, vuilRaam);
+      el('path', { d: `M${cx - 32} 752 l 14 18 l -6 10 M${cx + 18} 756 l -8 22 M${cx - 10} 784 q 10 -6 22 2`, stroke: '#E8E2D0', 'stroke-width': 1.2, opacity: 0.6, fill: 'none' }, vuilRaam);
+      el('path', { d: `M${cx - 40} 748 l 18 0 l -18 14 Z`, fill: '#E9E2D2', opacity: 0.5 }, vuilRaam);
+    });
+    // een scheef hangend luik tot de deur geverfd is
+    const kapot = el('g', { class: 'weg-bij-deur' }, huis);
+    el('rect', { x: 599, y: 798, width: 39, height: 60, fill: '#22303A' }, kapot);
+    const scheef = el('g', { transform: 'rotate(16 600 800)' }, kapot);
+    el('rect', { x: 600, y: 800, width: 38, height: 56, fill: '#8E5A4A' }, scheef);
+    el('path', { d: 'M600 800 L638 800 L619 828 Z M600 856 L638 856 L619 828 Z', fill: '#CFC3AC' }, scheef);
+    el('rect', { x: 600, y: 800, width: 38, height: 56, fill: 'none', stroke: '#3B3A2E', 'stroke-width': 1.4 }, scheef);
+    // bloembakken met geraniums
+    const bloemen = el('g', { class: 'toon-bij-bloemen' }, huis);
+    [640, 960].forEach((cx) => {
+      for (let i = 0; i < 10; i++) {
+        const x = cx - 42 + i * 9.4;
+        el('circle', { cx: x, cy: 700 - (i % 2) * 4, r: 6, fill: i % 2 ? '#4F7A3A' : '#3F6A30' }, bloemen);
+      }
+      for (let i = 0; i < 7; i++) {
+        const x = cx - 36 + i * 12;
+        el('circle', { cx: x, cy: 693 - (i % 3) * 3, r: 4, fill: i % 3 ? '#D23A2A' : '#E8604E' }, bloemen);
+        el('circle', { cx: x - 1, cy: 692 - (i % 3) * 3, r: 1.4, fill: '#FFD0C0', opacity: 0.8 }, bloemen);
+      }
+      el('rect', { x: cx - 47, y: 703, width: 94, height: 15, rx: 2, fill: '#6B4423', stroke: '#3B2412', 'stroke-width': 1 }, bloemen);
+      el('path', { d: `M${cx - 40} 710 h80`, stroke: '#8A5A2E', 'stroke-width': 1.2 }, bloemen);
+    });
     // muurankers
     [[558, 556], [1042, 556], [558, 712], [1042, 712]].forEach(([x, y]) => {
       el('path', { d: `M${x - 9} ${y + 4} H${x + 9} M${x} ${y - 5} V${y + 13}`, stroke: '#1E1814', 'stroke-width': 3.4, 'stroke-linecap': 'round' }, huis);
     });
-    // gevelsteen met gans
+    // gevelsteen met de gans; verguld als de voorkamer bijna klaar is
     el('rect', { x: 748, y: 594, width: 104, height: 92, fill: '#E4D8BD' }, huis);
     el('rect', { x: 756, y: 602, width: 88, height: 62, fill: '#2C4A7C' }, huis);
     el('use', { href: '#ill-gans', x: 768, y: 600, width: 64, height: 64, style: 'color:#E8B94E', stroke: '#E8B94E', 'stroke-width': 3.6, fill: 'none', 'stroke-linecap': 'round' }, huis);
+    const goud = el('g', { class: 'toon-bij-steen' }, huis);
+    el('rect', { x: 750, y: 596, width: 100, height: 88, fill: 'none', stroke: 'url(#g-goud)', 'stroke-width': 5 }, goud);
+    el('path', { d: 'M758 606 L796 606 L758 640 Z', fill: '#fff', opacity: 0.22, class: 'glans' }, goud);
     el('rect', { x: 756, y: 666, width: 88, height: 14, fill: '#A8402E' }, huis);
     tekst("'t Speelhuys", { x: 800, y: 677, 'text-anchor': 'middle', 'font-family': 'IM Fell English SC, Georgia, serif', 'font-size': 10.5, fill: '#F6EBD2' }, huis);
-    // voordeur met bovenlicht
+    // voordeur met bovenlicht; eerst verveloos, na het opknappen glanzend groen
     el('rect', { x: 748, y: 712, width: 104, height: 193, fill: '#E4D8BD' }, huis);
     el('path', { d: 'M758 762 A42 42 0 0 1 842 762 Z', fill: 'url(#g-ruit)' }, huis);
     for (let i = 1; i < 6; i++) {
@@ -1552,17 +1856,44 @@
     }
     el('rect', { x: 758, y: 762, width: 84, height: 143, fill: 'url(#g-binnen)', class: 'deur-licht' }, huis);
     const deur = el('g', { class: 'deur-blad', id: 'deur-blad' }, huis);
-    el('rect', { x: 758, y: 762, width: 84, height: 143, fill: '#22392B' }, deur);
+    const deurOud = el('g', { class: 'weg-bij-deur' }, deur);
+    el('rect', { x: 758, y: 762, width: 84, height: 143, fill: '#6E826A' }, deurOud);
+    [[766, 772, 30, 56], [804, 772, 30, 56], [766, 840, 30, 56], [804, 840, 30, 56]].forEach(([x, y, b, h]) => el('rect', { x, y, width: b, height: h, fill: 'none', stroke: '#56684F', 'stroke-width': 2 }, deurOud));
+    [[772, 792, 9], [820, 852, 12], [792, 884, 7], [812, 786, 5]].forEach(([x, y, r]) => el('ellipse', { cx: x, cy: y, rx: r, ry: r * 0.6, fill: '#B9A68A', opacity: 0.85 }, deurOud));
+    el('circle', { cx: 832, cy: 840, r: 3, fill: '#6E6A5A' }, deurOud);
+    const deurNieuw = el('g', { class: 'toon-bij-deur' }, deur);
+    el('rect', { x: 758, y: 762, width: 84, height: 143, fill: '#22392B' }, deurNieuw);
     [[766, 772, 30, 56], [804, 772, 30, 56], [766, 840, 30, 56], [804, 840, 30, 56]].forEach(([x, y, b, h]) => {
-      el('rect', { x, y, width: b, height: h, fill: 'none', stroke: '#3D5C46', 'stroke-width': 2.2 }, deur);
-      el('rect', { x: x + 2, y: y + 2, width: b - 4, height: h - 4, fill: 'none', stroke: '#14231A', 'stroke-width': 1 }, deur);
+      el('rect', { x, y, width: b, height: h, fill: 'none', stroke: '#3D5C46', 'stroke-width': 2.2 }, deurNieuw);
+      el('rect', { x: x + 2, y: y + 2, width: b - 4, height: h - 4, fill: 'none', stroke: '#14231A', 'stroke-width': 1 }, deurNieuw);
     });
-    el('circle', { cx: 800, cy: 828, r: 7, fill: 'none', stroke: 'url(#g-messing)', 'stroke-width': 2.4 }, deur);
-    el('circle', { cx: 832, cy: 840, r: 3, fill: 'url(#g-messing)' }, deur);
+    el('rect', { x: 760, y: 764, width: 6, height: 139, fill: '#fff', opacity: 0.07 }, deurNieuw);
+    el('circle', { cx: 800, cy: 828, r: 7, fill: 'none', stroke: 'url(#g-messing)', 'stroke-width': 2.4 }, deurNieuw);
+    el('circle', { cx: 832, cy: 840, r: 3, fill: 'url(#g-messing)' }, deurNieuw);
     el('rect', { x: 754, y: 758, width: 92, height: 151, fill: 'none', stroke: '#FFD98A', 'stroke-width': 3, class: 'deur-wenk', rx: 2 }, huis);
     el('rect', { x: 758, y: 762, width: 84, height: 143, fill: 'transparent', class: 'deur-klik plek-klik', 'data-plek': 'voorkamer', role: 'button', tabindex: 0, 'aria-label': 'Naar de voorkamer' }, huis);
-    // schaduw langs de randen van het pand
+    plekKlik(huis, { x: 766, y: 220, width: 68, height: 94, class: 'plek-klik luik-klik' }, 'zolder', 'Naar de zolder');
+    slotje(huis, 800, 268, 'zolder');
+    // muurlantaarn naast de deur, als de voorkamer klaar is
+    const deurlamp = el('g', { class: 'toon-bij-klaar' }, huis);
+    el('path', { d: 'M746 772 h-14 v6', fill: 'none', stroke: '#1E1814', 'stroke-width': 2.4 }, deurlamp);
+    el('path', { d: 'M724 778 l8 -6 l8 6 Z', fill: '#1E1814' }, deurlamp);
+    el('rect', { x: 724.5, y: 778, width: 15, height: 20, fill: '#FFE3A0' }, deurlamp);
+    el('rect', { x: 724.5, y: 778, width: 15, height: 20, fill: 'none', stroke: '#1E1814', 'stroke-width': 1.8 }, deurlamp);
     el('path', { d: trap, fill: 'url(#g-schaduw)', 'pointer-events': 'none' }, huis);
+    // duiven op de top (na de duiven op de zolder)
+    const duiven = el('g', { class: 'toon-bij-duiven' }, huis);
+    [[772, 145, 1], [830, 145, -1]].forEach(([x, y, r], i) => {
+      const p = el('g', { transform: `translate(${x} ${y}) scale(${0.55 * r} 0.55)` }, duiven);
+      const d = el('g', { class: 'duif', style: `animation-delay:-${i * 1.4}s` }, p);
+      el('path', { d: 'M-22 -10 L-34 -4 L-22 -2 Z', fill: '#6D7682' }, d);
+      el('ellipse', { cx: 0, cy: -12, rx: 20, ry: 11, fill: '#8E97A3' }, d);
+      el('path', { d: 'M-14 -16 Q2 -22 12 -12 Q0 -6 -14 -8 Z', fill: '#727C88' }, d);
+      el('circle', { cx: 16, cy: -22, r: 7.5, fill: '#7D8794' }, d);
+      el('path', { d: 'M10 -16 Q16 -12 22 -16 L20 -10 Q15 -8 10 -10 Z', fill: '#5E8A7A', opacity: 0.8 }, d);
+      el('path', { d: 'M22 -23 l6 2 l-6 1.5 Z', fill: '#E7C9A8' }, d);
+      el('circle', { cx: 18, cy: -24, r: 1.6, fill: '#B6452C' }, d);
+    });
 
     // uithangbord
     const bord = el('g', {}, gevelGroep);
@@ -1576,51 +1907,313 @@
     tekst('Speelhuys', { x: 1127, y: 684, 'text-anchor': 'middle', 'font-family': 'IM Fell English, Georgia, serif', 'font-size': 18, fill: '#F2D78E' }, zwaai);
     el('path', { d: 'M1102 698 H1152', stroke: '#C9973F', 'stroke-width': 1.2 }, zwaai);
 
-    // stoep en kade
-    el('rect', { x: 0, y: 905, width: 1600, height: 44, fill: 'url(#g-kei)' }, svg);
-    el('rect', { x: 0, y: 905, width: 1600, height: 44, fill: '#000', opacity: 0.12 }, svg);
-    el('rect', { x: 738, y: 905, width: 124, height: 12, fill: '#CFC3A8' }, svg);
-    el('rect', { x: 728, y: 917, width: 144, height: 12, fill: '#BDB196' }, svg);
-    el('rect', { x: 0, y: 946, width: 1600, height: 12, fill: '#5E5A54' }, svg);
-    // water met spiegeling
-    const waterClip = el('clipPath', { id: 'g-waterclip' }, defs);
-    el('rect', { x: 0, y: 958, width: 1600, height: 42 }, waterClip);
-    el('rect', { x: 0, y: 958, width: 1600, height: 42, fill: 'url(#g-water)' }, svg);
-    const spiegel = el('g', { 'clip-path': 'url(#g-waterclip)', opacity: 0.32 }, svg);
-    el('use', { href: '#g-gevels', transform: 'matrix(1 0 0 -0.35 0 1275)' }, spiegel);
+    // ---------- de straat: keien, stoep, palen, lantaarns, een bankje en bomen ----------
+    const straat = el('g', {}, svg);
+    el('rect', { x: -40, y: 905, width: 1680, height: 44, fill: 'url(#g-kei)' }, straat);
+    el('rect', { x: -40, y: 905, width: 1680, height: 44, fill: '#000', opacity: 0.1 }, straat);
+    el('rect', { x: -40, y: 905, width: 1680, height: 6, fill: '#000', opacity: 0.2 }, straat);
+    const onkruid = el('g', { class: 'weg-bij-muren' }, straat);
+    [[546, 905], [1054, 905], [732, 905], [868, 905]].forEach(([x, y]) => el('path', { d: `M${x} ${y} q -4 -12 -9 -16 M${x} ${y} q 1 -14 4 -18 M${x} ${y} q 6 -10 11 -12`, fill: 'none', stroke: '#5E7A3A', 'stroke-width': 2, 'stroke-linecap': 'round' }, onkruid));
+    // stoep met trapje en hekjes
+    el('rect', { x: 738, y: 905, width: 124, height: 12, fill: '#CFC3A8' }, straat);
+    el('rect', { x: 728, y: 917, width: 144, height: 12, fill: '#BDB196' }, straat);
+    el('rect', { x: 728, y: 927, width: 144, height: 2, fill: '#000', opacity: 0.2 }, straat);
+    [[720, 1], [880, -1]].forEach(([x, r]) => {
+      el('path', { d: `M${x} 929 V888 M${x + r * 16} 929 V900 M${x} 896 L${x + r * 16} 902`, stroke: '#1E1814', 'stroke-width': 2.4, fill: 'none' }, straat);
+      el('circle', { cx: x, cy: 886, r: 3.4, fill: 'url(#g-messing)' }, straat);
+    });
+    el('rect', { x: -40, y: 946, width: 1680, height: 12, fill: '#5E5A54' }, straat);
+    el('rect', { x: -40, y: 946, width: 1680, height: 2, fill: '#8A857C' }, straat);
+    // biertonnetjes bij de herberg
+    [[150, 0], [184, 0], [167, -30]].forEach(([x, dy]) => {
+      const t = el('g', { transform: `translate(${x} ${905 + dy})` }, straat);
+      el('path', { d: 'M-14 0 Q-17 -15 -14 -30 H14 Q17 -15 14 0 Z', fill: '#7A4E2A', stroke: '#3B2412', 'stroke-width': 1.2 }, t);
+      el('path', { d: 'M-15.5 -7 H15.5 M-15.5 -23 H15.5', stroke: '#2E2620', 'stroke-width': 2.4 }, t);
+      el('path', { d: 'M-6 -29 Q-8 -15 -6 -1', stroke: '#9A6A3A', 'stroke-width': 1.4, fill: 'none', opacity: 0.6 }, t);
+    });
+    // stokrozen tegen de gevel (een geveltuintje, na flink wat opknapwerk)
+    const tuin = el('g', { class: 'toon-bij-tuin' }, straat);
+    [[540, 150, '#E07AA0'], [582, 118, '#F2B6C8'], [1018, 140, '#D9587E'], [1060, 112, '#F2B6C8']].forEach(([x, h, kleur], i) => {
+      el('path', { d: `M${x} 905 Q${x + (i % 2 ? 4 : -3)} ${905 - h / 2} ${x + (i % 2 ? -2 : 2)} ${905 - h}`, stroke: '#4F7A3A', 'stroke-width': 3, fill: 'none' }, tuin);
+      for (let k = 0; k < 6; k++) {
+        const y = 905 - h + k * (h * 0.11) + 6, dx = (k % 2 ? 5 : -5);
+        el('ellipse', { cx: x + dx * 0.6, cy: y + 18, rx: 7, ry: 4.5, fill: '#4F7A3A', opacity: 0.9 }, tuin);
+        el('circle', { cx: x + dx * 0.3, cy: y, r: 6.2 - k * 0.3, fill: kleur }, tuin);
+        el('circle', { cx: x + dx * 0.3, cy: y, r: 1.8, fill: '#F6E27A' }, tuin);
+      }
+    });
+
+    // ijzeren ringen in de kademuur
+    [330, 900, 1300].forEach((x) => el('circle', { cx: x, cy: 953, r: 4, fill: 'none', stroke: '#2A2622', 'stroke-width': 1.8 }, straat));
+    // Amsterdammertjes langs de kant
+    [70, 180, 420, 610, 690, 910, 990, 1110, 1350, 1490].forEach((x) => {
+      el('rect', { x: x - 5, y: 920, width: 10, height: 28, rx: 2, fill: '#5A2A1E' }, straat);
+      el('rect', { x: x - 5, y: 920, width: 3, height: 28, fill: '#fff', opacity: 0.14 }, straat);
+      [927, 934, 941].forEach((y) => el('path', { d: `M${x - 2.5} ${y - 2.5} l5 5 M${x + 2.5} ${y - 2.5} l-5 5`, stroke: '#E9E2D2', 'stroke-width': 1 }, straat));
+    });
+    LANTAARNS.forEach((x) => lantaarn(straat, x, 956));
+    // het bankje van Molenaar Kees
+    el('ellipse', { cx: 1198, cy: 946, rx: 52, ry: 4, fill: '#000', opacity: 0.22 }, straat);
+    el('rect', { x: 1152, y: 896, width: 92, height: 7, rx: 2, fill: '#7A532E' }, straat);
+    el('rect', { x: 1150, y: 912, width: 96, height: 9, rx: 2, fill: '#6B4423' }, straat);
+    el('path', { d: 'M1158 921 V944 M1238 921 V944 M1158 896 V912 M1238 896 V912', stroke: '#3B2412', 'stroke-width': 4 }, straat);
+    BOMEN.forEach(([x]) => el('ellipse', { cx: x, cy: 950, rx: 40, ry: 5, fill: '#000', opacity: 0.25 }, straat));
+
+    // ---------- de gracht ----------
+    el('rect', { x: -40, y: 958, width: 1680, height: STRAAT_ONDER - 958, fill: 'url(#g-water)' }, svg);
+    const spiegel = el('g', { 'clip-path': 'url(#g-waterclip)', opacity: 0.4 }, svg);
+    el('use', { href: '#g-gevels', transform: 'matrix(1 0 0 -0.4 0 1320)' }, spiegel);
+    el('rect', { x: -40, y: 958, width: 1680, height: STRAAT_ONDER - 958, fill: 'url(#g-rimpel)', opacity: 0.7 }, svg);
+    el('rect', { x: -40, y: 958, width: 1680, height: 10, fill: '#000', opacity: 0.25 }, svg);
     const glans = el('g', { class: 'water-glans', stroke: '#E9F0EC', 'stroke-linecap': 'round' }, svg);
-    for (let i = 0; i < 26; i++) {
-      const x = rnd() * 1600, y = 966 + rnd() * 30, l = 20 + rnd() * 60;
-      el('line', { x1: x, y1: y, x2: x + l, y2: y, 'stroke-width': 1.4, opacity: (0.15 + rnd() * 0.3).toFixed(2), style: `animation-delay:-${(rnd() * 6).toFixed(1)}s` }, glans);
+    for (let i = 0; i < 20; i++) {
+      const x = rnd() * 1600, y = 964 + Math.pow(rnd(), 1.6) * (STRAAT_ONDER - 972), l = 24 + rnd() * 60;
+      el('line', { x1: x.toFixed(1), y1: y.toFixed(1), x2: (x + l).toFixed(1), y2: y.toFixed(1), 'stroke-width': 1.4, opacity: (0.15 + rnd() * 0.3).toFixed(2), style: `animation-delay:-${(rnd() * 6).toFixed(1)}s` }, glans);
     }
+    el('rect', { x: -40, y: 958, width: 1680, height: 70, fill: 'url(#g-nevel)', class: 'nevel', 'pointer-events': 'none' }, svg);
+    // eendjes (tik erop)
+    const eenden = el('g', { class: 'eenden geen-winter' }, svg);
+    [[640, 990, 0], [700, 999, 1]].forEach(([x, y, i]) => {
+      const e = el('g', { class: 'eend tikbaar', 'data-bewoner': 'eend', transform: `translate(${x} ${y})` }, eenden);
+      const hop = el('g', { class: 'hop' }, e);
+      const zwem = el('g', { class: 'zwem', style: `animation-delay:-${i * 9}s` }, hop);
+      el('ellipse', { cx: 0, cy: 6, rx: 17, ry: 2.2, fill: '#E9F0EC', opacity: 0.3, class: 'kring' }, zwem);
+      const b = el('g', { class: 'eend-lijf', style: `animation-delay:-${i * 0.8}s` }, zwem);
+      el('path', { d: 'M-14 -2 Q-16 -8 -10 -8 Q0 -10 8 -6 L12 0 Q0 6 -12 3 Z', fill: i ? '#8A6A4A' : '#7A6A52' }, b);
+      el('path', { d: 'M-6 -6 Q2 -9 8 -5', stroke: i ? '#6A4E34' : '#5A4A38', 'stroke-width': 1.6, fill: 'none' }, b);
+      el('circle', { cx: 10, cy: -9, r: 5.2, fill: i ? '#8A6A4A' : '#2E6A3A' }, b);
+      if (!i) el('path', { d: 'M6 -5 h8', stroke: '#F2EEE4', 'stroke-width': 1.4 }, b);
+      el('path', { d: 'M14.5 -9.5 l6.5 1.6 l-6.5 1.8 Z', fill: '#E0A030' }, b);
+      el('circle', { cx: 11.5, cy: -10.5, r: 1, fill: '#1A140E' }, b);
+      el('path', { d: 'M-14 -2 l-5 -4', stroke: i ? '#8A6A4A' : '#7A6A52', 'stroke-width': 3, 'stroke-linecap': 'round' }, b);
+      el('rect', { x: -26, y: -24, width: 54, height: 34, fill: 'transparent' }, zwem);
+    });
+    // een roeibootje dat af en toe voorbij komt
+    const boot = el('g', { class: 'geen-winter', transform: 'translate(0 994)' }, svg);
+    const vaar = el('g', { class: 'roeiboot' }, boot);
+    const bb = el('g', { class: 'deinen' }, vaar);
+    el('path', { d: 'M-50 -8 H50 L38 7 H-40 Z', fill: '#6B4423', stroke: '#3B2412', 'stroke-width': 1.5 }, bb);
+    el('path', { d: 'M-50 -8 H50', stroke: '#B07A4A', 'stroke-width': 2.4 }, bb);
+    el('path', { d: 'M-40 -2 H40', stroke: '#2C4A7C', 'stroke-width': 2 }, bb);
+    el('path', { d: 'M-6 -10 Q0 -32 6 -10 Z', fill: '#2C4A7C' }, bb);
+    el('circle', { cx: 0, cy: -35, r: 6, fill: '#F1C9A5' }, bb);
+    el('path', { d: 'M-8 -38 Q0 -47 8 -38 Z', fill: '#B6452C' }, bb);
+    const riem = el('g', { class: 'riem' }, bb);
+    el('path', { d: 'M0 -20 L-34 6', stroke: '#8A5A2E', 'stroke-width': 2.2, 'stroke-linecap': 'round' }, riem);
+    el('ellipse', { cx: -35, cy: 7, rx: 6, ry: 2, fill: '#8A5A2E' }, riem);
+    el('ellipse', { cx: 0, cy: 8, rx: 58, ry: 3, fill: '#E9F0EC', opacity: 0.25 }, vaar);
+
+    // ---------- de bewoners: overdag op straat ----------
+    const mensen = el('g', { class: 'mensen overdag' }, svg);
+    // Jantje met zijn hoepel
+    const jantje = el('g', { class: 'bewoner hoepelaar tikbaar', 'data-bewoner': 'jantje', transform: 'translate(600 946)' }, mensen);
+    const jHop = el('g', { class: 'hop' }, jantje);
+    const jLoop = el('g', { class: 'loopt' }, jHop);
+    el('ellipse', { cx: 14, cy: 0, rx: 30, ry: 3, fill: '#000', opacity: 0.2 }, jLoop);
+    const jBob = el('g', { class: 'huppel' }, jLoop);
+    bewoner(jBob, 'jantje');
+    el('line', { x1: 18, y1: -30, x2: 29, y2: -14, stroke: '#5A3A1E', 'stroke-width': 2, 'stroke-linecap': 'round' }, jBob);
+    const hoep = el('g', { transform: 'translate(36 -20)' }, jLoop);
+    const draai = el('g', { class: 'hoepel-draai' }, hoep);
+    el('circle', { r: 19, fill: 'none', stroke: '#8A5A2E', 'stroke-width': 3.4 }, draai);
+    el('circle', { r: 17.4, fill: 'none', stroke: '#C9975A', 'stroke-width': 0.8 }, draai);
+    el('path', { d: 'M0 -19 v4 M0 19 v-4 M-19 0 h4 M19 0 h-4', stroke: '#5A3A1E', 'stroke-width': 2 }, draai);
+    el('rect', { x: -16, y: -74, width: 76, height: 76, fill: 'transparent' }, jLoop);
+    // de burgemeester op zijn wandeling
+    const burg = el('g', { class: 'bewoner wandelaar tikbaar', 'data-bewoner': 'burgemeester', transform: 'translate(1340 946)' }, mensen);
+    const bHop = el('g', { class: 'hop' }, burg);
+    const bLoop = el('g', { class: 'loopt' }, bHop);
+    el('ellipse', { cx: 0, cy: 0, rx: 18, ry: 3, fill: '#000', opacity: 0.2 }, bLoop);
+    const bBob = el('g', { class: 'stap' }, bLoop);
+    bewoner(bBob, 'burgemeester');
+    el('rect', { x: -26, y: -88, width: 52, height: 90, fill: 'transparent' }, bLoop);
+    // Molenaar Kees met zijn pijpje op het bankje
+    const kees = el('g', { class: 'bewoner zit tikbaar', 'data-bewoner': 'kees', transform: 'translate(1206 930) scale(-1 1)' }, mensen);
+    const kHop = el('g', { class: 'hop' }, kees);
+    bewoner(kHop, 'kees');
+    const pijp = el('g', { class: 'pijprook', transform: 'translate(13 -55)' }, kHop);
+    [0, 1, 2].forEach((i) => el('circle', { r: 4 + i * 0.8, fill: 'url(#g-rook)', style: `animation-delay:-${(i * 1.1).toFixed(1)}s` }, pijp));
+    el('rect', { x: -18, y: -70, width: 38, height: 72, fill: 'transparent' }, kHop);
+    // Grietje zwaait uit het raam van de herberg
+    const grietje = el('g', { class: 'bewoner raam tikbaar', 'data-bewoner': 'grietje', transform: 'translate(450 516)' }, mensen);
+    const gHop = el('g', { class: 'hop' }, grietje);
+    bewoner(gHop, 'grietje');
+    el('rect', { x: -26, y: -46, width: 52, height: 50, fill: 'transparent' }, gHop);
+    // de kat op de vensterbank (na het kussen voor de kat)
+    const kat = el('g', { class: 'bewoner straatkat toon-bij-kat tikbaar', 'data-bewoner': 'kat', transform: 'translate(986 862)' }, svg);
+    const katHop = el('g', { class: 'hop' }, kat);
+    el('path', { d: 'M12 -4 C 26 -6, 22 -26, 30 -30', fill: 'none', stroke: '#B46A2E', 'stroke-width': 4.5, 'stroke-linecap': 'round', class: 'straatkat-staart', style: 'transform-origin:12px -4px' }, katHop);
+    el('ellipse', { cx: 0, cy: -10, rx: 14, ry: 10.5, fill: '#C97A3A' }, katHop);
+    el('path', { d: 'M-6 -16 q 4 4 0 10 M2 -18 q 4 4 0 12', stroke: '#A85E28', 'stroke-width': 2, fill: 'none' }, katHop);
+    el('circle', { cx: -10, cy: -21, r: 8, fill: '#C97A3A' }, katHop);
+    el('path', { d: 'M-16 -26 L-16 -35 L-10 -28 Z M-7 -28 L-3 -36 L-1 -27 Z', fill: '#B46A2E' }, katHop);
+    el('path', { d: 'M-14.5 -21.5 q1.5 1 3 0 M-8.5 -21.5 q1.5 1 3 0', stroke: '#2A1A0C', 'stroke-width': 1.2, fill: 'none' }, katHop);
+    el('rect', { x: -22, y: -40, width: 56, height: 42, fill: 'transparent' }, katHop);
+    // vallende blaadjes in de herfst
+    const blaadjes = el('g', { class: 'blaadjes', 'pointer-events': 'none' }, svg);
+    for (let i = 0; i < 9; i++) {
+      const b = el('g', { class: 'blaadje', style: `animation-delay:-${(i * 2.7).toFixed(1)}s;animation-duration:${(16 + (i % 4) * 3)}s` }, blaadjes);
+      el('path', { d: 'M0 -5 Q5 0 0 5 Q-5 0 0 -5 Z', fill: ['#D08A2E', '#B6452C', '#E0A848'][i % 3], transform: `translate(${(rnd() * 1500).toFixed(0)} ${(rnd() * 300 + 300).toFixed(0)})` }, b);
+    }
+
+    // ---------- Sinterklaas, winter en Koningsdag ----------
     bouwGevelSeizoen(svg, defs);
+
+    // ---------- avond en nacht: een tint over huizen, straat, gracht en bomen ----------
+    const tint = el('g', { 'clip-path': 'url(#g-tintclip)', 'pointer-events': 'none' }, svg);
+    el('rect', { x: -40, y: 0, width: 1680, height: STRAAT_ONDER + 10, fill: '#F6B48C', class: 'tint tint-ochtend' }, tint);
+    el('rect', { x: -40, y: 0, width: 1680, height: STRAAT_ONDER + 10, fill: '#5A3A78', class: 'tint tint-avond' }, tint);
+    el('rect', { x: -40, y: 0, width: 1680, height: STRAAT_ONDER + 10, fill: '#0B1434', class: 'tint tint-nacht' }, tint);
+    // zonnestralen in de ochtend
+    const stralen = el('g', { class: 'zonnestralen', 'pointer-events': 'none' }, svg);
+    [[0, 0.16, 0.05], [1, 0.3, 0.07], [2, 0.44, 0.05]].forEach(([i, hoek, breed]) => {
+      const p = (a) => `${(150 + Math.cos(a) * 1800).toFixed(0)} ${(236 + Math.sin(a) * 1800).toFixed(0)}`;
+      el('path', { d: `M150 236 L${p(hoek - breed / 2)} L${p(hoek + breed / 2)} Z`, fill: 'url(#g-straal)', class: 'straal', style: `animation-delay:-${i * 2.5}s` }, stralen);
+    });
+
+    const sneeuw = svg.querySelector('.sneeuwval');
+    if (sneeuw) el('g', { class: 'alleen-winter', 'pointer-events': 'none' }, svg).appendChild(sneeuw);
+
+    // ---------- lichten: ramen, lantaarns en hun spiegeling in de gracht ----------
+    const lichten = el('g', { class: 'lichten', 'pointer-events': 'none' }, svg);
+    LANTAARNS.forEach((x) => el('ellipse', { cx: x, cy: 950, rx: 120, ry: 22, fill: 'url(#g-schijnsel)', class: 'lantaarnlicht' }, lichten));
+    const bronnen = el('g', { id: 'g-lichtbron' }, lichten);
+    VENSTERS.forEach((v, i) => raamLicht(bronnen, v, i));
+    LANTAARNS.forEach((x, i) => {
+      const g = el('g', { class: 'lantaarnlicht' }, bronnen);
+      el('circle', { cx: x, cy: 780, r: 66, fill: 'url(#g-schijnsel)', class: 'flakker', style: `animation-delay:-${i * 0.9}s` }, g);
+      el('path', { d: `M${x - 9} 798 L${x + 9} 798 L${x + 13.5} 765 L${x - 13.5} 765 Z`, fill: '#FFF1C8' }, g);
+      el('path', { d: `M${x} 798 V765`, stroke: '#3A2414', 'stroke-width': 2 }, g);
+    });
+    const herbergLamp = el('g', { class: 'lantaarnlicht' }, bronnen);
+    el('circle', { cx: 390, cy: 790, r: 36, fill: 'url(#g-schijnsel)', class: 'flakker' }, herbergLamp);
+    const deurlicht = el('g', { class: 'lantaarnlicht toon-bij-klaar' }, bronnen);
+    el('circle', { cx: 732, cy: 788, r: 34, fill: 'url(#g-schijnsel)', class: 'flakker' }, deurlicht);
+    el('rect', { x: 726, y: 780, width: 12, height: 16, fill: '#FFF1C8' }, deurlicht);
+    const luiklicht = el('g', { class: 'lantaarnlicht toon-bij-lantaarn' }, bronnen);
+    el('circle', { cx: 738, cy: 250, r: 26, fill: 'url(#g-schijnsel)', class: 'flakker' }, luiklicht);
+    el('rect', { x: 734, y: 244, width: 8, height: 11, fill: '#FFF1C8' }, luiklicht);
+    const spiegelLicht = el('g', { 'clip-path': 'url(#g-waterclip)', class: 'licht-spiegel' }, lichten);
+    el('use', { href: '#g-lichtbron', transform: 'matrix(1 0 0 -0.4 0 1320)' }, spiegelLicht);
+    el('rect', { x: -40, y: 958, width: 1680, height: STRAAT_ONDER - 958, fill: 'url(#g-rimpel)' }, spiegelLicht);
+    // bomen aan de randen, vóór de verlichte ramen; blad en stam kleuren mee met seizoen en tijd van de dag
+    BOMEN.forEach(([x, r], i) => {
+      const boom = el('g', { class: 'boom', 'pointer-events': 'none' }, svg);
+      el('path', { d: `M${x - 10} 958 C${x - 6} 820 ${x - 12} 720 ${x - 4} 600 L${x + 6} 600 C${x + 10} 720 ${x + 8} 820 ${x + 12} 958 Z`, fill: '#4A3426', class: 'stam' }, boom);
+      el('path', { d: `M${x - 6} 900 C${x - 4} 800 ${x - 6} 720 ${x - 2} 620`, stroke: '#2E2018', 'stroke-width': 2, fill: 'none', opacity: 0.6 }, boom);
+      const tak = { stroke: '#4A3426', fill: 'none', 'stroke-linecap': 'round', class: 'tak' };
+      el('path', Object.assign({ d: `M${x} 640 C${x + r * 30} 600 ${x + r * 60} 560 ${x + r * 74} 516 M${x + r * 50} 578 C${x + r * 70} 570 ${x + r * 96} 560 ${x + r * 110} 540`, 'stroke-width': 7 }, tak), boom);
+      el('path', Object.assign({ d: `M${x} 660 C${x - r * 30} 620 ${x - r * 50} 580 ${x - r * 64} 548 M${x - r * 4} 610 C${x - r * 2} 560 ${x + r * 8} 500 ${x + r * 4} 430 M${x + r * 4} 500 C${x + r * 24} 470 ${x + r * 30} 440 ${x + r * 44} 420`, 'stroke-width': 5 }, tak), boom);
+      const kruin = el('g', { class: 'kruin', style: `animation-delay:-${i * 2.2}s;transform-origin:${x}px 958px` }, boom);
+      KRUIN.forEach(([dx, dy, rr]) => el('circle', { cx: x + dx * r + 5, cy: 640 + dy + 9, r: rr, fill: 'url(#g-boomdonker)', class: 'blad' }, kruin));
+      KRUIN.forEach(([dx, dy, rr]) => el('circle', { cx: x + dx * r, cy: 640 + dy, r: rr * 0.94, fill: 'url(#g-boomblad)', class: 'blad' }, kruin));
+      KRUIN.forEach(([dx, dy, rr], k) => { if (k % 3 !== 1) el('circle', { cx: x + dx * r - rr * 0.32, cy: 640 + dy - rr * 0.36, r: rr * 0.42, fill: 'url(#g-boomlicht)', class: 'blad' }, kruin); });
+    });
+
+    // kattenogen in het donker
+    const ogen = el('g', { class: 'kattenogen toon-bij-kat' }, lichten);
+    [[975.5, 840.5], [981.5, 840.5]].forEach(([cx, cy]) => el('ellipse', { cx, cy, rx: 1.8, ry: 1.3, fill: '#E6F27A' }, ogen));
+
+    // ---------- wijzers bij de deur en het luik: voortgang en "er kan een klus" ----------
+    [['voorkamer', 'deur', 880, 716], ['zolder', 'luik', 884, 246]].forEach(([plek, ik, x, y]) => {
+      const g = el('g', { class: 'plek-wijzer', 'data-wijzer': plek, transform: `translate(${x} ${y})` }, svg);
+      const zweef = el('g', { class: 'zweef' }, g);
+      el('circle', { r: 26, fill: '#1A0F06', opacity: 0.35, transform: 'translate(2 4)' }, zweef);
+      el('circle', { r: 25, fill: '#2A1A0C', opacity: 0.55 }, zweef);
+      el('circle', { r: 25, fill: 'none', stroke: 'rgba(255,240,200,.3)', 'stroke-width': 4 }, zweef);
+      el('circle', { r: 25, fill: 'none', stroke: '#F6D77E', 'stroke-width': 4.2, 'stroke-linecap': 'round', 'stroke-dasharray': '0 157.1', transform: 'rotate(-90)', class: 'ring' }, zweef);
+      el('circle', { r: 19.5, fill: 'url(#g-goud)', stroke: '#6A4A14', 'stroke-width': 1.2 }, zweef);
+      el('circle', { cx: -6, cy: -7, r: 6, fill: '#fff', opacity: 0.25 }, zweef);
+      el('use', { href: '#i-' + ik, x: -11, y: -11, width: 22, height: 22, style: 'color:#2A1A08' }, zweef);
+      const roept = el('g', { class: 'roept', transform: 'translate(18 -18)' }, zweef);
+      const puls = el('g', { class: 'puls' }, roept);
+      el('circle', { r: 10.5, fill: '#B6452C', stroke: '#FBF3DC', 'stroke-width': 2 }, puls);
+      el('use', { href: '#i-hamer', x: -6.5, y: -6.5, width: 13, height: 13, style: 'color:#FBF3DC' }, puls);
+      const af = el('g', { class: 'af-teken', transform: 'translate(18 -18)' }, zweef);
+      el('circle', { r: 10.5, fill: '#2C4A35', stroke: '#FBF3DC', 'stroke-width': 2 }, af);
+      el('use', { href: '#i-vink', x: -6.5, y: -6.5, width: 13, height: 13, style: 'color:#FBF3DC' }, af);
+      el('circle', { r: 31, fill: 'transparent', class: 'plek-klik', 'data-plek': plek, role: 'button', tabindex: 0, 'aria-label': plek === 'voorkamer' ? 'Naar de voorkamer' : 'Naar de zolder' }, g);
+    });
+
+    svg.setAttribute('data-tijd', tijdNu());
+    svg.setAttribute('data-boom', boomNu());
+    kleurTijd(svg);
     return svg;
   }
 
-  function raam(ouder, cx, top, b, h, luiken, boog, gloed) {
-    const x = cx - b / 2;
-    if (boog) {
-      el('path', { d: `M${x - 6} ${top - 2} A${b / 2 + 6} ${(b / 2 + 6) * 0.42} 0 0 1 ${x + b + 6} ${top - 2}`, fill: 'none', stroke: '#E4D8BD', 'stroke-width': 10 }, ouder);
-      el('path', { d: `M${x - 6} ${top - 2} A${b / 2 + 6} ${(b / 2 + 6) * 0.42} 0 0 1 ${x + b + 6} ${top - 2}`, fill: 'none', stroke: '#A8452E', 'stroke-width': 10, 'stroke-dasharray': '8 9' }, ouder);
-    }
-    el('rect', { x, y: top, width: b, height: h, fill: '#EFEADF' }, ouder);
-    el('rect', { x: x + 6, y: top + 6, width: b - 12, height: h - 12, fill: 'url(#g-ruit)' }, ouder);
-    if (gloed) el('rect', { x: x + 6, y: top + 6, width: b - 12, height: (h - 12) * 0.44, fill: 'url(#g-binnen)', class: 'raam-gloed' }, ouder);
-    el('rect', { x: x + 6, y: top + 6, width: b - 12, height: (h - 12) * 0.42, fill: 'url(#g-lood)' }, ouder);
-    el('path', { d: `M${x + 10} ${top + h - 10} L${x + b * 0.55} ${top + 10} L${x + b * 0.75} ${top + 10} L${x + 22} ${top + h - 10} Z`, fill: '#fff', opacity: 0.12 }, ouder);
-    el('rect', { x: cx - 3, y: top, width: 6, height: h, fill: '#EFEADF' }, ouder);
-    el('rect', { x, y: top + h * 0.44 - 3, width: b, height: 6, fill: '#EFEADF' }, ouder);
-    if (luiken) {
-      // dichte onderluiken met zandlopermotief
-      const ly = top + h * 0.44 + 3, lh = h - (h * 0.44 + 3) - 4;
-      [[x + 5, b / 2 - 7], [cx + 2, b / 2 - 7]].forEach(([lx, lb]) => {
-        el('rect', { x: lx, y: ly, width: lb, height: lh, fill: '#B23B27' }, ouder);
-        el('path', { d: `M${lx} ${ly} L${lx + lb} ${ly} L${lx + lb / 2} ${ly + lh / 2} Z M${lx} ${ly + lh} L${lx + lb} ${ly + lh} L${lx + lb / 2} ${ly + lh / 2} Z`, fill: '#F2EADA' }, ouder);
-        el('rect', { x: lx, y: ly, width: lb, height: lh, fill: 'none', stroke: '#2B3A2E', 'stroke-width': 1.6 }, ouder);
-      });
-    }
-    el('rect', { x: x - 6, y: top + h, width: b + 12, height: 6, fill: '#D9CCAE' }, ouder);
+  // ---------- Tijd van de dag en het blad aan de bomen ----------
+  // zonsopkomst en -ondergang in Nederland per maand (plaatselijke kloktijd, in uren)
+  const ZON = [[8.8, 16.9], [8.0, 17.8], [7.0, 18.7], [6.9, 20.6], [6.0, 21.4], [5.3, 22.0], [5.6, 21.9], [6.4, 21.0], [7.3, 19.9], [8.1, 18.7], [8.0, 16.9], [8.7, 16.5]];
+  const TIJDEN = ['ochtend', 'dag', 'avond', 'nacht'];
+  function tijdKeuze() {
+    let k = '';
+    try { k = sessionStorage.getItem('speelhuys.tijd') || ''; } catch (e) { /* */ }
+    return TIJDEN.includes(k) ? k : 'auto';
   }
+  function tijdNu(nu) {
+    const k = tijdKeuze();
+    if (k !== 'auto') return k;
+    const d = nu || new Date();
+    const u = d.getHours() + d.getMinutes() / 60;
+    const [op, onder] = ZON[d.getMonth()];
+    if (u < op - 0.75 || u > onder + 1) return 'nacht';
+    if (u < op + 1) return 'ochtend';
+    if (u > onder - 1.2) return 'avond';
+    return 'dag';
+  }
+  function boomNu() {
+    const s = window.Seizoen ? Seizoen.huidig : 'gewoon';
+    if (s === 'winter') return 'kaal';
+    if (s === 'koningsdag') return 'lente';
+    if (s === 'sinterklaas') return 'herfst';
+    const m = new Date().getMonth();
+    if (m === 11 || m <= 1) return 'kaal';
+    if (m <= 4) return 'lente';
+    if (m <= 7) return 'zomer';
+    return 'herfst';
+  }
+  const WOLK_KLEUR = {
+    dag: [['#FFFFFF', 1], ['#F1F0EA', 1], ['#C9CDD0', 1]],
+    ochtend: [['#FFF7EC', 1], ['#F7DED2', 1], ['#C9AAB6', 1]],
+    avond: [['#FFE4CC', 1], ['#EDA9A0', 1], ['#875F86', 1]],
+    nacht: [['#4E5A86', 0.75], ['#323C68', 0.7], ['#1E2648', 0.6]]
+  };
+  const BLAD_KLEUR = {
+    lente: ['#B6D88A', '#7FB056', '#4E7E36'],
+    zomer: ['#93BC6C', '#5E8C42', '#365E2A'],
+    herfst: ['#E2A852', '#C0702C', '#84391C'],
+    kaal: ['#93BC6C', '#5E8C42', '#365E2A']
+  };
+  function kleurStops(svg, id, kleuren) {
+    const stops = svg.querySelectorAll(`#${id} stop`);
+    kleuren.forEach((k, i) => {
+      if (!stops[i]) return;
+      const [kleur, dekking] = Array.isArray(k) ? k : [k, 1];
+      stops[i].setAttribute('stop-color', kleur);
+      stops[i].setAttribute('stop-opacity', dekking);
+    });
+  }
+  const BLAD_DONKER = { lente: ['#3E6A2C', '#2E5222'], zomer: ['#2C4A22', '#22381A'], herfst: ['#7A3418', '#5A240F'], kaal: ['#2C4A22', '#22381A'] };
+  const BLAD_LICHT = { lente: [['#EEF9C8', 0.5], ['#EEF9C8', 0]], zomer: [['#D8EFA8', 0.45], ['#D8EFA8', 0]], herfst: [['#FFE6A6', 0.5], ['#FFE6A6', 0]], kaal: [['#D8EFA8', 0.45], ['#D8EFA8', 0]] };
+  // dezelfde tint als over de huizen (zie de CSS), hier vooraf gemengd voor wat vóór de lichtjes staat
+  const TINT = { ochtend: ['#F6B48C', 0.14], avond: ['#5A3A78', 0.36], nacht: ['#0B1434', 0.64] };
+  function meng(kleur, tint) {
+    if (!tint) return kleur;
+    const a = parseInt(kleur.slice(1), 16), b = parseInt(tint[0].slice(1), 16), f = tint[1];
+    const kanaal = (k) => Math.round(((a >> k) & 255) * (1 - f) + ((b >> k) & 255) * f);
+    return '#' + ((1 << 24) | (kanaal(16) << 16) | (kanaal(8) << 8) | kanaal(0)).toString(16).slice(1);
+  }
+  function kleurTijd(svg) {
+    const boom = svg.getAttribute('data-boom'), tint = TINT[svg.getAttribute('data-tijd')];
+    const getint = (lijst) => lijst.map((k) => (Array.isArray(k) ? [meng(k[0], tint), k[1]] : meng(k, tint)));
+    kleurStops(svg, 'g-wolk', WOLK_KLEUR[svg.getAttribute('data-tijd')] || WOLK_KLEUR.dag);
+    kleurStops(svg, 'g-boomblad', getint(BLAD_KLEUR[boom] || BLAD_KLEUR.zomer));
+    kleurStops(svg, 'g-boomdonker', getint(BLAD_DONKER[boom] || BLAD_DONKER.zomer));
+    kleurStops(svg, 'g-boomlicht', getint(BLAD_LICHT[boom] || BLAD_LICHT.zomer));
+    svg.querySelectorAll('.boom .stam').forEach((e) => e.setAttribute('fill', meng('#4A3426', tint)));
+    svg.querySelectorAll('.boom .tak').forEach((e) => e.setAttribute('stroke', meng('#4A3426', tint)));
+  }
+
   function deurtje(ouder, cx, top) {
     el('rect', { x: cx - 40, y: top - 6, width: 80, height: 151, fill: '#EDE4D0' }, ouder);
     el('rect', { x: cx - 32, y: top, width: 64, height: 145, fill: '#5A2A20' }, ouder);
@@ -1702,9 +2295,9 @@
     });
     el('rect', { x: 0, y: 899, width: 1600, height: 8, fill: '#FBFBF7', opacity: 0.9 }, winter);
     const ijs = el('g', {}, winter);
-    el('rect', { x: 0, y: 958, width: 1600, height: 42, fill: '#CFE0E8' }, ijs);
+    el('rect', { x: -40, y: 958, width: 1680, height: STRAAT_ONDER - 958, fill: '#CFE0E8' }, ijs);
     for (let i = 0; i < 22; i++) {
-      const x = rnd() * 1600, y = 962 + rnd() * 34, l = 30 + rnd() * 90;
+      const x = rnd() * 1600, y = 962 + rnd() * (STRAAT_ONDER - 975), l = 30 + rnd() * 90;
       el('path', { d: `M${x.toFixed(1)} ${y.toFixed(1)} q ${(l / 2).toFixed(1)} ${(rnd() * 4 - 2).toFixed(1)} ${l.toFixed(1)} 0`, fill: 'none', stroke: '#FFFFFF', 'stroke-width': 1.2, opacity: 0.7 }, ijs);
     }
     [[0, 1, 46], [1, 0.85, 62]].forEach(([i, s, duur]) => {
@@ -1719,7 +2312,7 @@
       el('path', { d: 'M-3 -57 q 5 -8 11 -1', fill: i ? '#B6452C' : '#2A2A30' }, lijf);
       el('path', { d: 'M4 -48 q -10 2 -16 8', fill: 'none', stroke: '#B6452C', 'stroke-width': 3, 'stroke-linecap': 'round' }, lijf);
     });
-    plekKlik(winter, { x: 0, y: 958, width: 1600, height: 42 }, 'ijsbaan', 'IJsbaan, binnenkort');
+    plekKlik(winter, { x: 0, y: 958, width: 1600, height: STRAAT_ONDER - 958 }, 'ijsbaan', 'IJsbaan, binnenkort');
     const sneeuw = el('g', { class: 'sneeuwval', 'pointer-events': 'none' }, winter);
     for (let i = 0; i < 70; i++) {
       el('circle', { cx: (rnd() * 1640 - 20).toFixed(1), cy: (-30 - rnd() * 40).toFixed(1), r: (1.6 + rnd() * 3).toFixed(1), fill: '#FFFFFF', opacity: (0.6 + rnd() * 0.4).toFixed(2), class: 'vlok', style: `animation-delay:-${(rnd() * 14).toFixed(1)}s;animation-duration:${(9 + rnd() * 8).toFixed(1)}s` }, sneeuw);
@@ -1819,7 +2412,16 @@
 
     gevelSvg = bouwGevel();
     gevel.insertBefore(gevelSvg, gevel.firstChild);
+    pasGevelBeeld();
     maakKamer(gewensteIndeling());
+
+    // de bewoners en de eendjes zeggen iets als je erop tikt
+    gevelSvg.querySelectorAll('[data-bewoner]').forEach((b) => {
+      b.addEventListener('click', (e) => { e.preventDefault(); tikBewoner(b); });
+    });
+    // de tijd van de dag volgt de klok
+    setInterval(werkTijdBij, 60000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) werkTijdBij(); });
 
     // plekken aan de gracht: in de tekening en in de balk eronder
     gevel.querySelectorAll('[data-plek]').forEach((p) => {
@@ -1840,10 +2442,10 @@
     klusknop.addEventListener('click', doeKlus);
     window.addEventListener('resize', () => {
       clearTimeout(maatTimer);
-      maatTimer = setTimeout(pasMaatAan, 160);
+      maatTimer = setTimeout(() => { pasGevelBeeld(); pasMaatAan(); }, 160);
     });
     if (window.Duiten) window.Duiten.opWijziging(() => { werkHudBij(); werkGevelBij(); });
-    if (window.Seizoen) window.Seizoen.opWijziging(() => { if (kamerSvg) zetSchoen(kamerSvg); });
+    if (window.Seizoen) window.Seizoen.opWijziging(() => { if (kamerSvg) zetSchoen(kamerSvg); werkTijdBij(); });
     werkHudBij();
     werkGevelBij();
 
@@ -2042,12 +2644,30 @@
     if (kamerSvg) zetSchoen(kamerSvg);
   }
 
-  // De straat: welke plekken zijn open?
+  // De straat: welke plekken zijn open, en hoe ver is het huis opgeknapt?
   function werkGevelBij() {
     if (!gevelSvg || !window.Duiten) return;
     const zolder = Duiten.kamerOpen('zolder');
     gevelSvg.classList.toggle('zolder-open', zolder);
     gevelSvg.classList.toggle('kamer-klaar', Duiten.kamerKlaar('voorkamer'));
+    const klaar = (id) => Duiten.klusKlaar(id);
+    const n = Duiten.aantalKlaar('voorkamer');
+    const stand = {
+      'st-ramen': klaar('ramen'), 'st-muren': klaar('muren'), 'st-deur': n >= 5, 'st-kroon': klaar('kroon'),
+      'st-bloemen': n >= 7, 'st-tuin': n >= 8, 'st-steen': n >= 9, 'st-kat': klaar('kat'),
+      'st-luik': zolder && klaar('z-luik'), 'st-lantaarn': zolder && klaar('z-lantaarn'), 'st-duiven': zolder && klaar('z-duiven')
+    };
+    Object.keys(stand).forEach((k) => gevelSvg.classList.toggle(k, !!stand[k]));
+    // de wijzers bij de deur en het luik: een ring voor de voortgang en een hamertje als er een klus kan
+    ['voorkamer', 'zolder'].forEach((k) => {
+      const w = gevelSvg.querySelector(`[data-wijzer="${k}"]`);
+      if (!w) return;
+      const tot = Duiten.klussenVan(k).length, gedaan = Duiten.aantalKlaar(k);
+      w.querySelector('.ring').setAttribute('stroke-dasharray', `${(157.1 * gedaan / tot).toFixed(1)} 157.1`);
+      const v = Duiten.volgendeKlus(k);
+      w.classList.toggle('kan', !!v && Duiten.saldo >= v.prijs);
+      w.classList.toggle('af', !v);
+    });
     document.querySelectorAll('.plek-knop').forEach((k) => {
       const p = k.getAttribute('data-plek');
       const open = p === 'voorkamer' || (p === 'zolder' && zolder);
@@ -2205,6 +2825,7 @@
   function toonLabel(v, tekst) {
     if (!label || bezig || !v) return;
     const r = v.getBoundingClientRect(), t = toneel.getBoundingClientRect();
+    label.classList.remove('met-gezicht');
     label.textContent = tekst || v.getAttribute('data-label') || v.getAttribute('aria-label') || '';
     if (!label.textContent) return;
     label.hidden = false;
@@ -2371,7 +2992,118 @@
     gevelSvg.getAnimations().forEach((a) => a.cancel());
     const blad = gevelSvg.querySelector('#deur-blad');
     blad.getAnimations().forEach((a) => a.cancel());
+    pasGevelBeeld();
+    werkTijdBij();
     werkGevelBij();
+    vierVoortgang();
+  }
+
+  // ---------- De straat: uitsnede, tijd van de dag, bewoners en nieuwe opknapklussen ----------
+  // Op een staand scherm laat de tekening meer gracht zien en snijdt ze minder van het huis af.
+  function pasGevelBeeld() {
+    if (!gevelSvg || !toneel) return;
+    const b = toneel.clientWidth || window.innerWidth, h = toneel.clientHeight || window.innerHeight;
+    const a = b / Math.max(1, h);
+    const dok = a >= 1.45 && h >= 520;
+    gevel.classList.toggle('dok', dok);
+    let hoog = 1000;
+    if (a < 1.45) {
+      // de knoppenbalk onderin bedekt een stukje; daarboven moet nog gracht te zien zijn
+      const balk = document.getElementById('plekken');
+      const bh = balk && balk.offsetHeight ? balk.offsetHeight + 20 : 90;
+      hoog = Math.round(Math.min(STRAAT_ONDER, Math.max(1060, 1070 / Math.max(0.5, 1 - bh / h))));
+    }
+    const breed = Math.max(600, Math.min(1600, hoog * a));
+    const vb = `${(800 - breed / 2).toFixed(1)} 0 ${breed.toFixed(1)} ${hoog}`;
+    if (gevelSvg.getAttribute('viewBox') !== vb) gevelSvg.setAttribute('viewBox', vb);
+  }
+
+  function werkTijdBij() {
+    if (!gevelSvg) return;
+    const t = tijdNu(), boom = boomNu();
+    if (gevelSvg.getAttribute('data-tijd') === t && gevelSvg.getAttribute('data-boom') === boom) return;
+    gevelSvg.setAttribute('data-tijd', t);
+    gevelSvg.setAttribute('data-boom', boom);
+    kleurTijd(gevelSvg);
+  }
+
+  const ZEGT = {
+    jantje: ['Kijk mij eens hoepelen!', 'Speel je straks mee?', 'Ik ben de snelste van de gracht!'],
+    burgemeester: ['Goedendag!', 'Wat wordt dat pand mooi.', 'Op naar het stadhuis.'],
+    kees: ['De wind zit goed vandaag.', 'Zin in een potje molen?', 'Rustig aan, jong.'],
+    grietje: ['Hallo daar!', 'De herberg gaat bijna open!', 'Kom je een spelletje doen?'],
+    kat: ['Miauw.', 'Prrr…'],
+    eend: ['Kwak!', 'Kwak kwak!']
+  };
+  const KLANK = { jantje: 'fluit', grietje: 'fluit', kat: 'miauw', eend: 'kwak', burgemeester: 'tik', kees: 'tik' };
+  let zegTeller = 0;
+  function tikBewoner(b) {
+    if (bezig) return;
+    const wie = b.getAttribute('data-bewoner');
+    const lijst = ZEGT[wie] || ['Hallo!'];
+    const tekst = lijst[zegTeller++ % lijst.length];
+    const klank = KLANK[wie];
+    if (klank && Geluid[klank]) Geluid[klank]();
+    if (window.Tril) Tril.klik();
+    const hop = b.querySelector('.hop');
+    if (hop && !rustig()) {
+      hop.animate(wie === 'eend'
+        ? [{ transform: 'translateY(0)' }, { transform: 'translateY(7px)', offset: 0.35 }, { transform: 'translateY(0)' }]
+        : [{ transform: 'translateY(0)' }, { transform: 'translateY(-14px)', offset: 0.4 }, { transform: 'translateY(0)' }],
+      { duration: 520, easing: 'cubic-bezier(.3,.7,.4,1)' });
+    }
+    toonLabel(b, tekst);
+    if (label && !label.hidden && window.Personen && Personen.gezicht[wie]) {
+      const gezicht = document.createElement('span');
+      gezicht.className = 'label-gezicht';
+      gezicht.innerHTML = Personen.gezicht[wie];
+      const zin = document.createElement('span');
+      zin.textContent = tekst;
+      label.textContent = '';
+      label.append(gezicht, zin);
+      label.classList.add('met-gezicht');
+    }
+  }
+
+  // Wat is er buiten veranderd sinds je de straat het laatst zag? Daar komen vonkjes.
+  const VOORTGANG_PLEK = {
+    'st-ramen': [[594, 742, 92, 120], [914, 742, 92, 120]],
+    'st-muren': [[540, 420, 520, 470]],
+    'st-deur': [[758, 762, 84, 143], [594, 790, 50, 70]],
+    'st-kroon': [[594, 742, 92, 60], [914, 742, 92, 60]],
+    'st-bloemen': [[594, 686, 92, 34], [914, 686, 92, 34]],
+    'st-tuin': [[530, 750, 44, 155], [1026, 760, 44, 145]],
+    'st-steen': [[748, 594, 104, 92]],
+    'st-kat': [[962, 820, 56, 44]],
+    'kamer-klaar': [[716, 770, 32, 32], [594, 432, 412, 110]],
+    'zolder-open': [[766, 220, 68, 94]],
+    'st-luik': [[748, 226, 104, 82]],
+    'st-lantaarn': [[726, 232, 24, 30]],
+    'st-duiven': [[756, 118, 88, 30]]
+  };
+  function svgVak(x, y, b, h) {
+    const m = gevelSvg.getScreenCTM();
+    if (!m) return null;
+    const p = gevelSvg.createSVGPoint();
+    p.x = x; p.y = y; const a = p.matrixTransform(m);
+    p.x = x + b; p.y = y + h; const c = p.matrixTransform(m);
+    return new DOMRect(Math.min(a.x, c.x), Math.min(a.y, c.y), Math.abs(c.x - a.x), Math.abs(c.y - a.y));
+  }
+  function vierVoortgang() {
+    if (!gevelSvg || !window.Duiten) return;
+    const nu = Object.keys(VOORTGANG_PLEK).filter((k) => gevelSvg.classList.contains(k));
+    const eerder = Duiten.veld('gevel-gezien', null);
+    const nieuw = Array.isArray(eerder) ? nu.filter((k) => !eerder.includes(k)) : [];
+    if (!Array.isArray(eerder) || nieuw.length || eerder.length !== nu.length) Duiten.zetVeld('gevel-gezien', nu);
+    if (!nieuw.length) return;
+    setTimeout(() => {
+      if (gevel.hidden) return;
+      if (Geluid.cadeau) Geluid.cadeau();
+      nieuw.forEach((k, i) => setTimeout(() => {
+        if (gevel.hidden) return;
+        VOORTGANG_PLEK[k].forEach(([x, y, b, h]) => { const r = svgVak(x, y, b, h); if (r) vonkenOp(r, 14); });
+      }, i * 450));
+    }, 650);
   }
 
   function binnengaan(naar) {
@@ -2440,6 +3172,15 @@
     naarBuiten,
     gaNaarKamer(k) { bouw(); gaNaarKamer(k); },
     get kamer() { return kamerNaam; },
+    get tijd() { return gevelSvg ? gevelSvg.getAttribute('data-tijd') : tijdNu(); },
+    get tijdKeuze() { return tijdKeuze(); },
+    kiesTijd(k) {
+      try {
+        if (TIJDEN.includes(k)) sessionStorage.setItem('speelhuys.tijd', k);
+        else sessionStorage.removeItem('speelhuys.tijd');
+      } catch (e) { /* geen opslag */ }
+      werkTijdBij();
+    },
     werkBij() {
       if (!gebouwd) return;
       if (kamerNaam !== 'voorkamer' && !kamerOpen(kamerNaam)) { zetKamerNaam('voorkamer'); maakKamer(gewensteIndeling()); }

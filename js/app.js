@@ -57,6 +57,7 @@
     document.getElementById('menu-duiten').textContent = window.Duiten ? Duiten.saldo : 0;
     document.getElementById('menu-klussen').textContent = klussenTekst();
     tekenSeizoenen();
+    tekenTijden();
     trilStand();
     document.getElementById('wis-vraag').hidden = true;
     document.getElementById('installeer').hidden = true;
@@ -126,6 +127,24 @@
       b.setAttribute('aria-pressed', String(Seizoen.keuze === k));
       b.textContent = Seizoen.namen[k];
       b.addEventListener('click', () => { Seizoen.kies(k); tekenSeizoenen(); });
+      vak.appendChild(b);
+    });
+  }
+
+  // ---------- Tijd van de dag: volgt de klok, of kies er zelf een ----------
+  const TIJD_NAMEN = { auto: 'Klok', ochtend: 'Ochtend', dag: 'Dag', avond: 'Avond', nacht: 'Nacht' };
+  function tekenTijden() {
+    const vak = document.getElementById('tijd-keuze');
+    if (!vak || !window.Huis) return;
+    vak.innerHTML = '';
+    const keuze = Huis.tijdKeuze;
+    Object.keys(TIJD_NAMEN).forEach((k) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'seizoen-chip';
+      b.setAttribute('aria-pressed', String(keuze === k));
+      b.textContent = TIJD_NAMEN[k];
+      b.addEventListener('click', () => { Huis.kiesTijd(k); tekenTijden(); });
       vak.appendChild(b);
     });
   }

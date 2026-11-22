@@ -197,6 +197,26 @@
     val() { ruis(0.18, 600, 1.2, 0.4); toon(120, 0.25, 0.12, 'triangle'); },
     cadeau() { [784, 988, 1175, 1568].forEach((f, i) => toon(f, 0.35, 0.08, 'sine', i * 0.08)); ruis(0.3, 6000, 1, 0.08, 0.05); },
     koer() { [0, 0.28].forEach((w) => { toon(420, 0.22, 0.1, 'sine', w); toon(380, 0.2, 0.06, 'sine', w + 0.12); }); },
+    // een eend die twee keer kwaakt
+    kwak() {
+      const c = context(); if (!c) return;
+      [0, 0.2].forEach((w, i) => {
+        const t = c.currentTime + w;
+        const o = c.createOscillator(); o.type = 'sawtooth';
+        o.frequency.setValueAtTime(340 - i * 30, t);
+        o.frequency.linearRampToValueAtTime(250 - i * 20, t + 0.14);
+        const f = c.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 3.2;
+        f.frequency.setValueAtTime(1400, t); f.frequency.linearRampToValueAtTime(900, t + 0.14);
+        const g = c.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.24, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+        o.connect(f); f.connect(g); g.connect(c.destination);
+        o.start(t); o.stop(t + 0.18);
+      });
+    },
+    // een vrolijk fluitje van een bewoner
+    fluit() { [0, 0.16].forEach((w, i) => toon(1180 + i * 400, 0.14, 0.06, 'sine', w)); },
     miauw() {
       const c = context(); if (!c) return;
       const t = c.currentTime;

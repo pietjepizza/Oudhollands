@@ -2,8 +2,22 @@
 
 Oud-Hollandse spellen om digitaal te spelen, in de sfeer van Delfts blauw en 17e-eeuwse prentborden.
 
-**Het huis.** Je begint aan de gracht, voor een pand met een trapgevel, een gevelsteen met een gans en een uithangbord.
-Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
+**De straat.** Je begint aan de gracht, voor een pand met een trapgevel, een gevelsteen met een gans en een uithangbord,
+tussen een herberg met een halsgevel en een buurhuis met een klokgevel. In de verte draaien molens en staat een kerktoren.
+De straat leeft: Jantje hoepelt over de keien, de burgemeester maakt zijn wandeling, Molenaar Kees rookt een pijpje op
+het bankje, Grietje zwaait uit het raam van de herberg, er dobberen eendjes in de gracht en af en toe roeit er iemand
+voorbij. Tik op iemand en hij of zij zegt iets. Dag en nacht volgen de klok: 's ochtends staat de zon laag met mist op
+het water, 's avonds kleurt de lucht roze, 's nachts twinkelen de sterren en spiegelen de verlichte ramen in de gracht.
+In het menu kun je zelf een tijd van de dag kiezen.
+
+**Je ziet buiten hoe ver je binnen bent.** Het pand begint verwaarloosd: vuile ramen, een verveloze deur, een scheef
+luik, aanslag en onkruid. Met de klussen binnen worden de ramen schoon, krijgt de deur een glanzende groene verf,
+komen er geraniums in de bloembakken, stokrozen tegen de gevel en wordt de gevelsteen verguld; 's avonds gaan de lichten
+aan. Op de zolder gaan het hijsluik en de lantaarn mee, en duiven op de top. Wat sinds je laatste bezoek veranderd is,
+fonkelt even. Gouden wijzers bij de deur en het luik tonen met een ring hoe ver een kamer is en met een hamertje dat er
+een klus klaarstaat.
+
+**Het huis.** Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
 marmeren vloer, tegelplint, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
 in naar het spel. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
 
@@ -74,7 +88,7 @@ Nog "in de oven": dammen, klaverjassen (herberg), kolf op het ijs (ijsbaan), de 
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=11`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=12`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

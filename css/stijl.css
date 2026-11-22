@@ -149,6 +149,9 @@ svg.duit { width: 22px; height: 22px; flex: none; }
   isolation: isolate;
 }
 .gevel, .kamer { position: absolute; inset: 0; }
+/* een zachte vignet rond de straat geeft diepte */
+.gevel::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(130% 95% at 50% 42%, transparent 62%, rgba(22, 13, 6, .32)); }
+.gevel-tekst { z-index: 2; }
 .gevel-svg, .kamer-svg { display: block; width: 100%; height: 100%; transform-origin: 0 0; }
 .zoomt { will-change: transform; }
 .kamer-scroll { position: absolute; inset: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; overscroll-behavior-x: contain; }
@@ -618,10 +621,140 @@ select {
 .plek-klik { cursor: pointer; outline: none; }
 .plek-klik:focus-visible { stroke: #F2C14E; stroke-width: 4px; }
 .gevel-svg .luik-open, .gevel-svg .luik-wenk { display: none; }
-.gevel-svg.zolder-open .luik-open { display: inline; }
-.gevel-svg.zolder-open .luik-dicht, .gevel-svg.zolder-open .plek-slot[data-slot="zolder"] { display: none; }
+.gevel-svg.st-luik .luik-open { display: inline; }
+.gevel-svg.st-luik .luik-dicht, .gevel-svg.zolder-open .plek-slot[data-slot="zolder"] { display: none; }
 .gevel-svg.zolder-open .luik-wenk { display: inline; animation: wenk 2.4s ease-in-out infinite; pointer-events: none; }
 .lamp-glas { animation: gloei 3s ease-in-out infinite alternate; }
+
+/* ---------- De straat: tijd van de dag ---------- */
+.gevel-svg .lucht, .gevel-svg .zon, .gevel-svg .tint, .gevel-svg .sterren, .gevel-svg .maan, .gevel-svg .zonnestralen,
+.gevel-svg .licht-raam, .gevel-svg .lantaarnlicht, .gevel-svg .licht-spiegel, .gevel-svg .kattenogen { opacity: 0; transition: opacity 1.8s ease; }
+.gevel-svg .lucht-dag,
+.gevel-svg[data-tijd="ochtend"] .lucht-ochtend, .gevel-svg[data-tijd="avond"] .lucht-avond, .gevel-svg[data-tijd="nacht"] .lucht-nacht,
+.gevel-svg[data-tijd="dag"] .zon-dag, .gevel-svg[data-tijd="ochtend"] .zon-ochtend, .gevel-svg[data-tijd="avond"] .zon-avond,
+.gevel-svg[data-tijd="nacht"] .sterren, .gevel-svg[data-tijd="nacht"] .maan, .gevel-svg[data-tijd="ochtend"] .zonnestralen { opacity: 1; }
+.gevel-svg[data-tijd="avond"] .sterren { opacity: .3; }
+.gevel-svg[data-tijd="ochtend"] .tint-ochtend { opacity: .14; }
+.gevel-svg[data-tijd="avond"] .tint-avond { opacity: .36; }
+.gevel-svg[data-tijd="nacht"] .tint-nacht { opacity: .64; }
+.gevel-svg[data-tijd="nacht"] .ster { animation: twinkel 3s steps(5) infinite alternate; }
+@keyframes twinkel { from { opacity: .2; } to { opacity: 1; } }
+.gevel-svg[data-tijd="ochtend"] .straal { animation: straal 7s ease-in-out infinite alternate; }
+@keyframes straal { from { opacity: .35; } to { opacity: 1; } }
+/* lichten: buren hebben hun eigen ritme, het Speelhuys gaat aan naarmate je het opknapt */
+.gevel-svg:is([data-tijd="avond"], [data-tijd="nacht"]) .licht-raam.aan,
+.gevel-svg[data-tijd="nacht"] .licht-raam.vroeg,
+.gevel-svg:is([data-tijd="avond"], [data-tijd="nacht"]).st-kroon .licht-raam.voorkamer,
+.gevel-svg:is([data-tijd="avond"], [data-tijd="nacht"]).kamer-klaar .licht-raam.boven,
+.gevel-svg:is([data-tijd="avond"], [data-tijd="nacht"]).st-luik .licht-raam.zolder,
+.gevel-svg:is([data-tijd="avond"], [data-tijd="nacht"]).st-lantaarn .licht-raam.zolderraam,
+.gevel-svg[data-tijd="nacht"] .lantaarnlicht, .gevel-svg[data-tijd="nacht"] .kattenogen { opacity: 1; }
+.gevel-svg[data-tijd="ochtend"] .licht-raam.vroeg { opacity: .7; }
+.gevel-svg[data-tijd="avond"] .lantaarnlicht { opacity: .7; }
+.gevel-svg[data-tijd="nacht"] .licht-spiegel { opacity: .55; }
+.gevel-svg[data-tijd="avond"] .licht-spiegel { opacity: .3; }
+.gevel-svg:is([data-tijd="avond"], [data-tijd="nacht"]) .flakker { animation: licht-flakker 4.6s steps(12) infinite; }
+@keyframes licht-flakker { 0%, 100% { opacity: 1; } 35% { opacity: .84; } 55% { opacity: .96; } 78% { opacity: .8; } }
+.gevel-svg .verte { color: #8C9BB4; transition: color 1.8s ease; }
+.gevel-svg[data-tijd="ochtend"] .verte { color: #A495AD; }
+.gevel-svg[data-tijd="avond"] .verte { color: #6C5880; }
+.gevel-svg[data-tijd="nacht"] .verte { color: #1B2446; }
+.gevel-svg .wolk-onder, .gevel-svg .schoorsteenrook, .gevel-svg .nevel { transition: opacity 1.8s ease; }
+.gevel-svg[data-tijd="nacht"] .wolk-onder { opacity: .1; }
+.gevel-svg[data-tijd="nacht"] .schoorsteenrook { opacity: .25; }
+.gevel-svg .nevel { opacity: .35; }
+.gevel-svg[data-tijd="ochtend"] .nevel { opacity: 1; }
+.gevel-svg[data-tijd="nacht"] .nevel { opacity: .12; }
+.gevel-svg[data-tijd="nacht"] .overdag { display: none; }
+
+/* ---------- De straat: zo ver is het huis opgeknapt ---------- */
+.gevel-svg [class*="toon-bij-"] { display: none; }
+.gevel-svg.st-deur .toon-bij-deur, .gevel-svg.st-bloemen .toon-bij-bloemen, .gevel-svg.st-steen .toon-bij-steen,
+.gevel-svg.kamer-klaar .toon-bij-klaar, .gevel-svg.st-lantaarn .toon-bij-lantaarn, .gevel-svg.st-duiven .toon-bij-duiven,
+.gevel-svg.st-kat .toon-bij-kat, .gevel-svg.st-tuin .toon-bij-tuin { display: inline; }
+.gevel-svg.st-ramen .weg-bij-ramen, .gevel-svg.st-muren .weg-bij-muren, .gevel-svg.st-deur .weg-bij-deur { display: none; }
+.gevel-svg .glans { animation: glans 5s ease-in-out infinite; }
+@keyframes glans { 0%, 70%, 100% { opacity: 0; } 80% { opacity: .5; } }
+.plek-wijzer .zweef { animation: zweef 3.2s ease-in-out infinite; }
+@keyframes zweef { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.gevel-svg:not(.zolder-open) .plek-wijzer[data-wijzer="zolder"] { display: none; }
+.plek-wijzer .roept, .plek-wijzer .af-teken { display: none; }
+.plek-wijzer.kan .roept, .plek-wijzer.af .af-teken { display: inline; }
+.plek-wijzer.kan .puls { animation: puls 1.3s ease-in-out infinite; }
+@keyframes puls { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+.plek-wijzer .ring { transition: stroke-dasharray .9s ease; }
+
+/* ---------- De straat: bewoners, dieren en wat er beweegt ---------- */
+.gevel-svg .tikbaar { cursor: pointer; }
+.hoepelaar .loopt { animation: hoepel-loop 16s linear infinite; }
+@keyframes hoepel-loop {
+  0% { transform: translateX(0) scaleX(1); }
+  45% { transform: translateX(400px) scaleX(1); }
+  50% { transform: translateX(400px) scaleX(-1); }
+  95% { transform: translateX(0) scaleX(-1); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+.hoepelaar .huppel { animation: huppel .4s ease-in-out infinite; }
+@keyframes huppel { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+.hoepel-draai { animation: hoepel-rol 2s linear infinite; }
+@keyframes hoepel-rol { to { transform: rotate(360deg); } }
+.hoepelaar .been { animation: been-ren .4s ease-in-out infinite alternate; }
+.wandelaar .been { animation: been-loop .62s ease-in-out infinite alternate; }
+.hoepelaar .been-b, .wandelaar .been-b { animation-direction: alternate-reverse; }
+@keyframes been-ren { from { transform: rotate(-24deg); } to { transform: rotate(24deg); } }
+@keyframes been-loop { from { transform: rotate(-13deg); } to { transform: rotate(13deg); } }
+.wandelaar .loopt { animation: wandel 64s linear infinite; }
+@keyframes wandel { 0% { transform: translateX(380px); } 75%, 100% { transform: translateX(-1560px); } }
+.wandelaar .stap { animation: stap .62s ease-in-out infinite; }
+@keyframes stap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+.pijprook circle { transform-box: fill-box; transform-origin: center; animation: pijprook 3.3s ease-out infinite; }
+@keyframes pijprook { from { transform: translate(0, 0) scale(.5); opacity: .85; } to { transform: translate(8px, -30px) scale(1.9); opacity: 0; } }
+.schoorsteenrook circle { transform-box: fill-box; transform-origin: center; animation: schoorsteen 5.6s ease-out infinite; }
+@keyframes schoorsteen { from { transform: translate(0, 0) scale(.4); opacity: .75; } to { transform: translate(-46px, -110px) scale(2.4); opacity: 0; } }
+.zwaaiarm { animation: zwaai-arm 4.6s ease-in-out infinite; }
+@keyframes zwaai-arm { 0%, 42%, 100% { transform: rotate(0); } 8%, 24% { transform: rotate(-30deg); } 16%, 32% { transform: rotate(8deg); } }
+.straatkat-staart { animation: straatkat 3.6s ease-in-out infinite; }
+@keyframes straatkat { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-16deg); } }
+.zwem { animation: zwem 52s linear infinite; }
+@keyframes zwem {
+  0% { transform: translateX(0) scaleX(-1); }
+  46% { transform: translateX(-320px) scaleX(-1); }
+  50% { transform: translateX(-320px) scaleX(1); }
+  96% { transform: translateX(0) scaleX(1); }
+  100% { transform: translateX(0) scaleX(-1); }
+}
+.eend-lijf { transform-box: fill-box; transform-origin: 50% 100%; animation: dobber 2.4s ease-in-out infinite; }
+@keyframes dobber { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(1.5px) rotate(-4deg); } }
+.roeiboot { animation: roeien 72s linear infinite; }
+@keyframes roeien { 0% { transform: translateX(-160px); } 70%, 100% { transform: translateX(1780px); } }
+.riem { transform-origin: 0 -20px; animation: riem 1.7s ease-in-out infinite; }
+@keyframes riem { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(26deg); } }
+.kruin { animation: wuif 7s steps(18) infinite alternate; }
+@keyframes wuif { from { transform: rotate(-.7deg); } to { transform: rotate(.7deg); } }
+.gevel-svg[data-boom="kaal"] .blad { display: none; }
+.gevel-svg .blaadjes { display: none; }
+.gevel-svg[data-boom="herfst"] .blaadjes { display: inline; }
+.blaadje { transform-box: fill-box; transform-origin: center; animation: blaadje 18s linear infinite; }
+@keyframes blaadje { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 8% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translate(260px, 640px) rotate(720deg); opacity: 0; } }
+.vleugel { transform-box: fill-box; transform-origin: center; animation: vleugel .45s ease-in-out infinite alternate; }
+@keyframes vleugel { from { transform: scaleY(1); } to { transform: scaleY(-.35); } }
+.wieken { animation: wiekdraai 11s linear infinite; }
+@keyframes wiekdraai { to { transform: rotate(360deg); } }
+html[data-seizoen="winter"] .geen-winter { display: none; }
+/* wat niet te zien is, hoeft ook niet te bewegen */
+html:not([data-seizoen="winter"]) .alleen-winter *, html:not([data-seizoen="sinterklaas"]) .alleen-sinterklaas *,
+html:not([data-seizoen="koningsdag"]) .alleen-koningsdag *, html[data-seizoen="winter"] .geen-winter *,
+.gevel-svg[data-tijd="nacht"] .overdag *, .gevel-svg:not([data-boom="herfst"]) .blaadje { animation: none !important; }
+.huis-label[hidden] { display: none !important; }
+/* op een breed scherm staan de plekken opzij, zodat de straat en de gracht vrij blijven */
+.gevel.dok .plekken {
+  left: auto; right: max(14px, env(safe-area-inset-right, 0px)); top: 50%; bottom: auto;
+  transform: translateY(-50%); flex-direction: column; gap: 2px; max-width: none;
+}
+.gevel.dok .plek-knop { min-width: 74px; padding: 8px 6px 7px; }
+.huis-label.met-gezicht { display: flex; align-items: center; gap: 8px; padding: 4px 14px 4px 4px; border-radius: 999px; }
+.label-gezicht { width: 32px; height: 32px; flex: none; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 2px #C9973F; }
+.label-gezicht svg { display: block; width: 100%; height: 100%; }
 
 /* ---------- Seizoenen ---------- */
 .alleen-sinterklaas, .alleen-winter, .alleen-koningsdag { display: none; }
@@ -1236,6 +1369,11 @@ button.mo-kaart { cursor: pointer; }
   .mo-molenlijn { animation: none !important; stroke-dashoffset: 0; }
   .gb-beker.klaar, .gb-beker.schudt svg, .gb-beker.gooit svg, .gb-kaartje.in, .gb-pion-binnen.gewonnen { animation: none !important; }
   .sj-pop, .sj-banier, .sj-kaart.in { animation: none !important; }
+  .gevel-svg .ster, .gevel-svg .straal, .gevel-svg .flakker, .gevel-svg .glans, .plek-wijzer .zweef, .plek-wijzer.kan .puls,
+  .hoepelaar .loopt, .hoepelaar .huppel, .hoepel-draai, .gevel-svg .been, .wandelaar .loopt, .wandelaar .stap,
+  .pijprook circle, .schoorsteenrook circle, .zwaaiarm, .straatkat-staart, .zwem, .eend-lijf, .riem, .kruin, .vleugel, .wieken { animation: none !important; }
+  .roeiboot { animation: none !important; transform: translateX(1250px); }
+  .gevel-svg .blaadjes { display: none !important; }
   .les-licht { transition: none; }
   .tafel, .diepte { transform: none; }
   .voorwerp .vw, .gordijn, .kamer-svg [data-na], .kamer-svg [data-voor], .schemer { transition: none; }
