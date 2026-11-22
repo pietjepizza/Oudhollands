@@ -4,7 +4,7 @@
   const SOORTEN = [
     { id: 'schijven', naam: 'Sjoelschijven' },
     { id: 'dobbels', naam: 'Dobbelstenen' },
-    { id: 'stenen', naam: 'Molenstenen' },
+    { id: 'stenen', naam: 'Molen- en damstenen' },
     { id: 'knikkers', naam: 'Knikkers' },
     { id: 'tollen', naam: 'Tollen' }
   ];

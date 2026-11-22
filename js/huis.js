@@ -738,21 +738,60 @@
     el('path', { d: 'M-12 -22 Q0 -14 12 -22 M-14 -10 Q0 -2 14 -10 M-6 -36 q6 -6 12 0', fill: 'none', stroke: BLAUW, 'stroke-width': 1.6 }, kan);
     el('circle', { cx: -2, cy: -30, r: 3, fill: BLAUW, opacity: 0.7 }, kan);
 
-    // dambord (binnenkort)
-    const dam = voorwerp(g, { label: 'Dammen · komt binnenkort' });
-    const x0 = -340, x1 = -228, z0 = 712, z1 = 800, n = 10;
-    veelhoek([T(x0 - 6, z1 + 6), T(x1 + 6, z1 + 6), T(x1 + 6, z0 - 6), T(x0 - 6, z0 - 6)], { fill: '#3A2614' }, dam);
-    for (let i = 0; i < n; i++) {
-      for (let j = 0; j < n; j++) {
-        const xa = x0 + (x1 - x0) * i / n, xb = x0 + (x1 - x0) * (i + 1) / n;
-        const za = z0 + (z1 - z0) * j / n, zb = z0 + (z1 - z0) * (j + 1) / n;
-        veelhoek([T(xa, zb), T(xb, zb), T(xb, za), T(xa, za)], { fill: (i + j) % 2 ? '#3E2A18' : '#E8D3A8' }, dam);
+    // het dambord: speelbaar, en net als in het spel: een notenhouten lijst met een biesje,
+    // velden van palmhout en notenhout, gedraaide stenen en een dam van twee stenen op elkaar
+    const dam = voorwerp(g, { spel: 'dammen', label: 'Speel dammen' });
+    const x0 = -346, x1 = -226, z0 = 698, z1 = 814, n = 10, lijstB = 8;
+    const BV = (X, Z) => T(X, Z);
+    const vlak = (xa, xb, za, zb) => [BV(xa, za), BV(xb, za), BV(xb, zb), BV(xa, zb)];
+    // ruim raakvlak (het bord ligt plat en is dus maar dun)
+    const rl = BV(x0 - lijstB - 10, z0 - lijstB - 4), rr = BV(x1 + lijstB + 10, z0 - lijstB - 4), rb = BV(x0, z1 + lijstB);
+    el('rect', { x: rl[0], y: rb[1] - 16, width: rr[0] - rl[0], height: rl[1] - rb[1] + 26, fill: 'transparent' }, dam);
+    // schaduw, dikte en lijst
+    veelhoek(vlak(x0 - lijstB + 5, x1 + lijstB + 7, z0 - lijstB - 3, z1 + lijstB - 2), { fill: '#1A0F06', opacity: 0.32 }, dam);
+    const v1 = BV(x0 - lijstB, z0 - lijstB), v2 = BV(x1 + lijstB, z0 - lijstB);
+    veelhoek([v1, v2, [v2[0], v2[1] + 4.5], [v1[0], v1[1] + 4.5]], { fill: '#24150A' }, dam);
+    veelhoek(vlak(x0 - lijstB, x1 + lijstB, z0 - lijstB, z1 + lijstB), { fill: '#4B2E16', stroke: '#2A190B', 'stroke-width': 0.6 }, dam);
+    veelhoek(vlak(x0 - lijstB, x1 + lijstB, z1 + lijstB * 0.35, z1 + lijstB), { fill: '#5E3C20' }, dam);
+    veelhoek(vlak(x0 - lijstB * 0.5, x1 + lijstB * 0.5, z0 - lijstB * 0.5, z1 + lijstB * 0.5), { fill: 'none', stroke: '#CBA767', 'stroke-width': 0.8 }, dam);
+    // de velden: rij 0 ligt aan de overkant (zwart), rij 9 aan deze kant (wit); linksonder is donker, zoals het hoort
+    const kolX = (c) => x0 + (x1 - x0) * c / n, rijZ = (r) => z1 - (z1 - z0) * r / n;
+    for (let r = 0; r < n; r++) {
+      for (let c = 0; c < n; c++) {
+        const donker = (r + c) % 2 === 1;
+        veelhoek(vlak(kolX(c), kolX(c + 1), rijZ(r + 1), rijZ(r)), { fill: donker ? ((r * 7 + c * 3) % 5 ? '#4E3220' : '#583822') : ((r * 5 + c) % 4 ? '#E7D1A3' : '#DEC593') }, dam);
       }
     }
-    [[1, 2, '#F2EAD8'], [3, 2, '#F2EAD8'], [6, 7, '#1E1714'], [4, 6, '#1E1714'], [8, 7, '#1E1714']].forEach(([i, j, kl]) => {
-      const m = T(x0 + (x1 - x0) * (i + 0.5) / n, z0 + (z1 - z0) * (j + 0.5) / n);
-      el('ellipse', { cx: m[0], cy: m[1] - 1.5, rx: 5.5, ry: 2.6, fill: kl, stroke: '#000', 'stroke-opacity': 0.4, 'stroke-width': 0.6 }, dam);
-    });
+    veelhoek(vlak(x0, x1, z0, z1), { fill: 'none', stroke: '#1C1009', 'stroke-width': 0.7 }, dam);
+    // een partij halverwege, met een witte dam diep bij zwart
+    const steen = (c, r, wit, isDam) => {
+      const m = BV(kolX(c + 0.5), rijZ(r + 0.5));
+      const breed = BV(kolX(c + 1), rijZ(r + 0.5))[0] - BV(kolX(c), rijZ(r + 0.5))[0];
+      const rx = breed * 0.37, ry = rx * 0.42, h = rx * 0.36;
+      const top = wit ? '#F6EEDC' : '#3B322C', zij = wit ? '#B9AD92' : '#0F0B09', rand = wit ? '#8D8167' : '#000';
+      const laag = (dy) => {
+        const y = m[1] - dy;
+        el('path', { d: `M${(m[0] - rx).toFixed(2)} ${(y - h).toFixed(2)} L${(m[0] - rx).toFixed(2)} ${y.toFixed(2)} A${rx.toFixed(2)} ${ry.toFixed(2)} 0 0 0 ${(m[0] + rx).toFixed(2)} ${y.toFixed(2)} L${(m[0] + rx).toFixed(2)} ${(y - h).toFixed(2)} Z`, fill: zij, stroke: rand, 'stroke-width': 0.35 }, dam);
+        el('ellipse', { cx: m[0], cy: y - h, rx, ry, fill: top, stroke: rand, 'stroke-width': 0.35 }, dam);
+        el('ellipse', { cx: m[0], cy: y - h, rx: rx * 0.6, ry: ry * 0.6, fill: 'none', stroke: wit ? 'rgba(110,80,40,.45)' : 'rgba(255,240,220,.25)', 'stroke-width': 0.45 }, dam);
+        el('ellipse', { cx: m[0] - rx * 0.32, cy: y - h - ry * 0.35, rx: rx * 0.3, ry: ry * 0.22, fill: '#fff', opacity: wit ? 0.6 : 0.18 }, dam);
+      };
+      el('ellipse', { cx: m[0] + rx * 0.2, cy: m[1] + ry * 0.35, rx: rx * 1.05, ry: ry * 0.9, fill: '#000', opacity: 0.35 }, dam);
+      laag(0);
+      if (isDam) {
+        laag(h + 0.3);
+        el('path', { d: `M${(m[0] - rx * 0.32).toFixed(2)} ${(m[1] - 2 * h - 0.3).toFixed(2)} l${(rx * 0.1).toFixed(2)} ${(-ry * 0.55).toFixed(2)} l${(rx * 0.12).toFixed(2)} ${(ry * 0.3).toFixed(2)} l${(rx * 0.1).toFixed(2)} ${(-ry * 0.45).toFixed(2)} l${(rx * 0.1).toFixed(2)} ${(ry * 0.45).toFixed(2)} l${(rx * 0.12).toFixed(2)} ${(-ry * 0.3).toFixed(2)} l${(rx * 0.1).toFixed(2)} ${(ry * 0.55).toFixed(2)} Z`, fill: '#E2B14C', stroke: '#7A5212', 'stroke-width': 0.3 }, dam);
+      }
+    };
+    // van achter naar voor tekenen, zodat de stenen voor elkaar staan
+    const stukken = [
+      [3, 0, 0], [7, 0, 0], [0, 1, 0], [4, 1, 0], [8, 1, 0], [6, 1, 1, 1], [1, 2, 0], [5, 2, 0], [2, 3, 0], [6, 3, 0], [3, 4, 0],
+      [4, 5, 1], [3, 6, 1], [7, 6, 1], [0, 7, 1], [4, 7, 1], [8, 7, 1], [1, 8, 1], [5, 8, 1], [9, 8, 1], [2, 9, 1], [6, 9, 1]
+    ];
+    stukken.sort((a, b) => a[1] - b[1]).forEach(([c, r, wit, isDam]) => steen(c, r, !!wit, !!isDam));
+    // een messing naambordje aan de voorkant van de tafel, zoals bij de spellen aan de muur
+    const voor = T((x0 + x1) / 2, 640);
+    naambordje(dam, voor[0], voor[1] + 7, 'Dammen');
 
     // speelkaarten (binnenkort)
     const kaarten = voorwerp(g, { label: 'Klaverjassen · komt binnenkort' });

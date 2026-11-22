@@ -19,7 +19,7 @@ een klus klaarstaat.
 
 **Het huis.** Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
 marmeren vloer, tegelplint, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
-in naar het spel. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
+in naar het spel. Op tafel ligt het dambord. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
 
 **Duiten verdienen en het huis opknappen.** De voorkamer begint stoffig: spinnenwebben, vuile ruiten, vochtige muren,
 een doffe vloer. Met elk potje verdien je duiten (winnen 40, verliezen 10 à 15, sjoelen 10 plus een kwart van je score).
@@ -37,7 +37,7 @@ lappendeken, een hobbelpaard en duiven op de hanenbalk. De straat is het knooppu
 werkt: een lichtcirkel wijst de plek aan, een vinger tikt of veegt, en een ballonnetje zegt het in een paar woorden.
 Daarna kan het opnieuw via het vraagteken.
 
-**Pronkkast.** Verzamel sjoelschijven, dobbelstenen, molenstenen, knikkers en tollen (kersenhout, Delfts blauw, goud,
+**Pronkkast.** Verzamel sjoelschijven, dobbelstenen, molen- en damstenen, knikkers en tollen (kersenhout, Delfts blauw, goud,
 agaat...). Alleen voor de sier: ze spelen nooit beter dan de gewone.
 
 **Seizoenen.** Rond Sinterklaas (12 november tot 5 december) ligt de stoomboot in de gracht, staat het paard op het dak
@@ -68,6 +68,16 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   (Jantje, Grietje, Molenaar Kees en de burgemeester; versla er een en de volgende komt vrij) of met z'n tweeën.
   Je ziet waar je kunt zetten en wat de ander net deed, je kunt tikken of slepen, onbeperkt terugnemen en een tip
   vragen. Een molen wordt gevierd, een zwikmolen nog meer.
+- **Dammen** (schermvullend): het damspel op honderd velden zoals de KNDB het speelt, op een houten dambord met
+  velden van palmhout en notenhout en gedraaide damstenen. Slaan is verplicht en je slaat zoveel mogelijk (een dam
+  telt als één); geslagen stenen blijven staan tot de slag klaar is (de Turkse slag). Een schijf die de overkant
+  haalt, wordt dam: er komt een tweede steen bovenop, en een dam vliegt over de hele lijn. Remise bij drie keer
+  dezelfde stand, na 25 zetten met alleen dammen, en volgens de eindspelregels (één dam tegen hooguit drie stukken).
+  Een meerslag tik je stap voor stap of je tikt meteen het eindveld; de stenen die moeten slaan lichten op. Tegen
+  Jantje, Grietje, Molenaar Kees en de burgemeester (versla er een en de volgende komt vrij) of met z'n tweeën; met
+  terugnemen, een tip, en de partij blijft bewaard als je weggaat. Op de tafel in de voorkamer ligt hetzelfde bord.
+  De computer denkt in een achtergrondwerker (alfa-bèta met een opzoektabel), dus het scherm blijft vloeiend; de
+  zettengenerator is gecontroleerd met de bekende telgetallen (perft) van de beginstand, tot 6.483.961 standen.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -89,17 +99,17 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 | Het huis | Engels Nachtegaeltje | blokfluit |
 | Ganzenbord | Malle Symen | blokfluit en trom |
 | Sjoelen | Onder de Linde groene | luit |
-| Molenspel | Doen Daphne d'over schoone Maeght | luit |
+| Molenspel en dammen | Doen Daphne d'over schoone Maeght | luit |
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": dammen, klaverjassen (herberg), kolf op het ijs (ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen.
+Nog "in de oven": klaverjassen (herberg), kolf op het ijs (ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=14`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=15`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
