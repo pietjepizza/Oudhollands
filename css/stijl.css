@@ -1018,6 +1018,92 @@ button.mo-kaart { cursor: pointer; }
   .mo-onder .mo-ballon { bottom: auto; top: calc(100% + 8px); }
 }
 
+/* ---------- Ganzenbord ---------- */
+.gb-bordvak .gb-prent { display: block; width: 100%; height: 100%; border-radius: 4px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .4), 0 18px 30px rgba(0, 0, 0, .5); }
+.gb-pionlaag { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.gb-pion-binnen.gewonnen { transform-box: fill-box; transform-origin: 50% 100%; animation: pion-feest .5s ease-in-out infinite alternate; }
+@keyframes pion-feest { from { transform: translateY(0) scale(1); } to { transform: translateY(-14px) scale(1.08); } }
+.gb-teller circle { fill: #F4E9CF; stroke: #2B2118; stroke-width: 2; }
+.gb-teller text { font: 600 19px var(--f-tekst); fill: #2B2118; }
+.gb-spelers { flex: 1 1 auto; display: flex; justify-content: center; align-items: center; gap: 10px; min-width: 0; }
+.gb-chip { position: relative; flex: none; width: 46px; height: 46px; border-radius: 50%; box-shadow: 0 0 0 3px var(--pion), 0 3px 8px rgba(0, 0, 0, .45); transition: transform .25s ease, box-shadow .25s ease; }
+.gb-chip-gezicht, .gb-chip-gezicht > svg { display: block; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; background: #E9DFC8; }
+.gb-chip.aan { transform: scale(1.14); box-shadow: 0 0 0 3px var(--pion), 0 0 0 6px #E7C36A, 0 0 20px rgba(231, 195, 106, .6); }
+.gb-chip-vak { position: absolute; right: -8px; bottom: -6px; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; background: #F4E9CF; color: #2A1A08; font: 600 .84rem/22px var(--f-tekst); text-align: center; font-variant-numeric: lining-nums tabular-nums; box-shadow: 0 1px 3px rgba(0, 0, 0, .45); }
+.gb-chip-status { position: absolute; left: -7px; top: -6px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #2A1A0C; color: #F4E9CF; box-shadow: 0 0 0 1.5px #E7C36A; }
+.gb-chip-status[hidden] { display: none; }
+.gb-chip-status svg { width: 14px; height: 14px; }
+.gb-chip .mo-ballon { left: -10px; top: calc(100% + 12px); }
+.gb-zelf-pion > svg { background: #E9DFC8; }
+.gb-zelf .mo-gezicht { grid-row: 1 / span 2; }
+.gb-zelf .mo-doe { grid-column: 2; }
+.gb-beker {
+  position: relative; flex: none; width: 86px; height: 86px; padding: 0 0 12px; border: 0; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; touch-action: none; -webkit-user-select: none; user-select: none;
+  background: radial-gradient(circle at 40% 30%, #6A4A2E, #3A2414 75%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .45), inset 0 0 0 2px rgba(255, 236, 200, .2);
+}
+.gb-beker svg { width: 54px; height: 54px; transform-origin: 50% 85%; }
+.gb-beker-tekst { position: absolute; bottom: 9px; left: 0; right: 0; text-align: center; font-family: var(--f-kapitaal); font-size: .8rem; letter-spacing: .08em; color: #F2D78E; }
+.gb-beker:disabled { opacity: .4; cursor: default; }
+.gb-beker:focus-visible { outline: 3px solid #F2C14E; outline-offset: 3px; }
+.gb-beker.klaar { animation: beker-roep 1.6s ease-in-out infinite; box-shadow: 0 0 0 3px #E7C36A, 0 0 24px rgba(231, 195, 106, .6), 0 6px 16px rgba(0, 0, 0, .45); }
+@keyframes beker-roep { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+.gb-beker.schudt { animation: none; transform: scale(1.06); }
+.gb-beker.schudt svg { animation: schudden .12s linear infinite alternate; }
+@keyframes schudden { from { transform: rotate(-16deg) translate(-2px, -2px); } to { transform: rotate(16deg) translate(2px, 2px); } }
+.gb-beker.gooit svg { animation: gooien .5s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes gooien { 0% { transform: rotate(0); } 40% { transform: rotate(-70deg) translate(-6px, -12px); } 100% { transform: rotate(0); } }
+/* de dobbelstenen: echte kubusjes */
+.gb-dobbels { --d: 54px; --dob-a: #FFFEF8; --dob-b: #EDE4CC; --dob-c: #D9CCA8; --dob-pip: #2A1F18; position: absolute; inset: 0; z-index: 4; pointer-events: none; visibility: hidden; }
+.gb-dobbels.zichtbaar { visibility: visible; }
+.gb-dob { position: absolute; left: 0; top: 0; width: var(--d); height: var(--d); perspective: calc(var(--d) * 7); filter: drop-shadow(0 9px 6px rgba(0, 0, 0, .38)); }
+.gb-kubus { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(-24deg) rotateY(26deg); }
+.gb-zijde {
+  position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); padding: 11%;
+  border-radius: 17%; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  background: radial-gradient(circle at 30% 25%, var(--dob-a), var(--dob-b) 70%, var(--dob-c));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .14), inset 0 -3px 6px rgba(0, 0, 0, .12);
+}
+.gb-zijde b { margin: 15%; border-radius: 50%; background: var(--dob-pip); box-shadow: inset 0 1px 1px rgba(255, 255, 255, .25); }
+.gb-zijde.z1 { transform: translateZ(calc(var(--d) / 2)); }
+.gb-zijde.z6 { transform: rotateY(180deg) translateZ(calc(var(--d) / 2)); }
+.gb-zijde.z3 { transform: rotateY(90deg) translateZ(calc(var(--d) / 2)); }
+.gb-zijde.z4 { transform: rotateY(-90deg) translateZ(calc(var(--d) / 2)); }
+.gb-zijde.z5 { transform: rotateX(90deg) translateZ(calc(var(--d) / 2)); }
+.gb-zijde.z2 { transform: rotateX(-90deg) translateZ(calc(var(--d) / 2)); }
+/* een kaartje bij een bijzonder veld */
+.gb-kaartje {
+  position: absolute; z-index: 5; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  display: grid; justify-items: center; gap: 2px; min-width: 156px; padding: 10px 18px 12px; border-radius: 14px; pointer-events: none; text-align: center;
+  background: #F4E9CF; color: #22392B; box-shadow: 0 16px 40px rgba(0, 0, 0, .5), inset 0 0 0 2px #C9973F;
+}
+.gb-kaartje[hidden] { display: none; }
+.gb-kaartje-beeld svg { display: block; width: 66px; height: 66px; }
+.gb-kaartje-titel { font-family: var(--f-sier); font-weight: normal; font-size: 1.55rem; line-height: 1.05; }
+.gb-kaartje-sub { font-family: var(--f-sier); font-style: italic; font-size: 1.08rem; color: #5A4630; }
+.gb-kaartje.dood { background: #3A302A; color: #F1E6C8; }
+.gb-kaartje.dood .gb-kaartje-sub { color: #D9CCB0; }
+.gb-kaartje.gans, .gb-kaartje.doel, .gb-kaartje.worp26, .gb-kaartje.worp53 { background: linear-gradient(#FFF3C8, #F2D78E); }
+.gb-kaartje.in { animation: kaartje .9s ease forwards; }
+@keyframes kaartje { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.5) rotate(-4deg); } 25% { opacity: 1; transform: translate(-50%, -50%) scale(1.06) rotate(1deg); } 38%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+/* wie spelen er mee? */
+.gb-keuzes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.gb-keuzes .mo-keuze:last-child { grid-column: auto; grid-template-columns: none; }
+.gb-keuzes .mo-keuze .mo-gezicht, .gb-keuzes .mo-keuze .mo-gezicht > svg { width: 56px; height: 56px; }
+.gb-keuzes .mo-keuze.vol { opacity: .45; }
+.gb-keuzes .mo-keuze .mo-keuze-naam { font-size: .98rem; }
+.gb-vriend { display: block; width: 56px; height: 56px; border-radius: 50%; overflow: hidden; background: #E9DFC8; box-shadow: 0 0 0 2px rgba(255, 236, 200, .55); }
+.gb-vriend svg { width: 56px; height: 56px; }
+.knop.gb-spelen { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-size: 1.15rem; background: radial-gradient(circle at 35% 30%, #E8B651, #B07A1F 70%); color: #2A1A08; }
+.knop.gb-spelen svg { width: 20px; height: 20px; }
+@media (max-width: 420px) {
+  .gb-chip, .gb-chip-gezicht, .gb-chip-gezicht > svg { width: 40px; height: 40px; }
+  .gb-spelers { gap: 9px; }
+  .gb-beker { width: 78px; height: 78px; }
+  .gb-beker svg { width: 48px; height: 48px; }
+}
+
 /* ---------- Telefoon: de kamer vult het scherm, weinig tekst ---------- */
 @media (max-width: 760px) {
   .toneel { height: calc(100svh - var(--kop-h, 60px)); min-height: 460px; }
@@ -1073,6 +1159,7 @@ button.mo-kaart { cursor: pointer; }
   .kast-vak.schud-vak, .luik-wenk, .lamp-glas, .klusknop.ga,
   .mo-plek, .mo-doel, .mo-pakbaar, .mo-tip-ring, .mo-steen.in-molen .mo-binnen, .mo-banier.in, .mo-ballon.in, .mo-menu.open .mo-menu-kaart, .mo-denk i, .mo-doe.schud { animation: none !important; }
   .mo-molenlijn { animation: none !important; stroke-dashoffset: 0; }
+  .gb-beker.klaar, .gb-beker.schudt svg, .gb-beker.gooit svg, .gb-kaartje.in, .gb-pion-binnen.gewonnen { animation: none !important; }
   .les-licht { transition: none; }
   .tafel, .diepte { transform: none; }
   .voorwerp .vw, .gordijn, .kamer-svg [data-na], .kamer-svg [data-voor], .schemer { transition: none; }

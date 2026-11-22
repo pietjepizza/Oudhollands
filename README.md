@@ -39,7 +39,12 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 
 **Speelbaar**
 
-- **Ganzenbord**: handgekleurd prentbord, 2 tot 4 spelers (mens of computer), met gans, brug, herberg, put, doolhof, gevangenis en dood.
+- **Ganzenbord** (schermvullend): een handgekleurd prentbord naar 17e-eeuwse Hollandse ganzenborden, met 63 velden in
+  een spiraal naar de ganzenhof. Je schudt de beker en laat los; twee echte dobbelstenen tuimelen over het bord en je
+  pion huppelt de velden af, met een tellertje erboven. Gans, brug, herberg, put, doolhof, gevangenis en dood hebben elk
+  een kaartje en een geluid. Kom je op een bezet veld, dan moet de ander terug naar waar jij vandaan kwam. Speel met
+  Jantje, Grietje, Molenaar Kees en de burgemeester, of met vrienden op hetzelfde toestel (tot vier spelers).
+  Hetzelfde bord hangt als prent aan de muur van de voorkamer.
 - **Sjoelen**: houten sjoelbak met natuurkunde. 30 schijven, 3 beurten, de echte telling (20 per volle reeks, verder 2-3-4-1).
 - **Molenspel** (schermvullend): op een ingekraste steen, tegen vier tegenstanders met een eigen gezicht en karakter
   (Jantje, Grietje, Molenaar Kees en de burgemeester; versla er een en de volgende komt vrij) of met z'n tweeën.
@@ -65,7 +70,7 @@ Nog "in de oven": dammen, klaverjassen (herberg), kolf op het ijs (ijsbaan), de 
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=9`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=10`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

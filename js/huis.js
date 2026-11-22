@@ -175,6 +175,7 @@
     verloop(defs, 'h-goud', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#F3D88F'], [0.5, '#B4832E'], [1, '#6A4716']]);
     verloop(defs, 'h-eik', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#C4955E'], [1, '#7A532E']]);
     verloop(defs, 'h-beuk', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, '#E2BE88'], [0.5, '#D7AF75'], [1, '#C39558']]);
+    verloop(defs, 'h-steenplaat', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#C9C3B6'], [1, '#9C968A']]);
     verloop(defs, 'h-licht', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0.7 }, [[0, '#FFF6DA', 0.6], [0.7, '#FFF6DA', 0.12], [1, '#FFF6DA', 0]]);
     verloop(defs, 'h-vloerglans', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#24170C', 0.4], [1, '#24170C', 0]]);
     verloop(defs, 'h-vignet', 'radialGradient', { cx: '50%', cy: '46%', r: '75%' }, [[0.55, '#000', 0], [1, '#0B0703', 0.6]]);
@@ -543,24 +544,31 @@
   }
 
   function bouwMolenspel(ouder) {
+    // dezelfde ingekraste stenen plaat als in het spel
     const g = voorwerp(ouder, { spel: 'molenspel', label: 'Speel molenspel' });
-    const x = 470, y = 334, b = 160;
+    const x = 470, y = 334, b = 160, k = b / 704;
     spijker(g, 550, 292, [[480, 338], [620, 338]]);
     schaduw(g, x, y, b, b, { rx: 8 });
-    el('rect', { x, y, width: b, height: b, rx: 8, fill: 'url(#h-eik)' }, g);
-    for (let i = 0; i < 9; i++) {
-      const yy = y + 8 + i * 18 + rnd() * 6;
-      el('path', { d: `M${x + 4} ${yy} q ${b / 3} ${rnd() * 6 - 3} ${b / 1.5} ${rnd() * 4 - 2} t ${b / 3 - 8} ${rnd() * 4 - 2}`, fill: 'none', stroke: '#5E3E1E', 'stroke-opacity': 0.25, 'stroke-width': 1 }, g);
-    }
-    const lijn = { fill: 'none', stroke: '#2E1E10', 'stroke-width': 2.6 };
-    [16, 42, 66].forEach((m) => el('rect', Object.assign({ x: x + m, y: y + m, width: b - 2 * m, height: b - 2 * m }, lijn), g));
-    const c = x + b / 2;
-    el('path', Object.assign({ d: `M${c} ${y + 16} V${y + 66} M${c} ${y + b - 66} V${y + b - 16} M${x + 16} ${y + b / 2} H${x + 66} M${x + b - 66} ${y + b / 2} H${x + b - 16}` }, lijn), g);
-    const stenen = [[16, 16, 'w'], [80, 16, 'z'], [144, 16, 'w'], [42, 80, 'z'], [118, 42, 'w'], [66, 94, 'w'], [144, 144, 'z'], [94, 118, 'z']];
-    stenen.forEach(([sx, sy, k]) => {
-      el('circle', { cx: x + sx + 1.5, cy: y + sy + 2.5, r: 8, fill: '#000', opacity: 0.3 }, g);
-      el('circle', { cx: x + sx, cy: y + sy, r: 8, fill: k === 'w' ? '#EFE6D2' : '#2A2320', stroke: k === 'w' ? '#8D8167' : '#000', 'stroke-width': 1 }, g);
-      el('circle', { cx: x + sx - 2.5, cy: y + sy - 2.5, r: 2.2, fill: '#fff', opacity: k === 'w' ? 0.7 : 0.18 }, g);
+    el('rect', { x, y, width: b, height: b, rx: 6, fill: '#7E786C' }, g);
+    el('rect', { x: x + 2.5, y: y + 2.5, width: b - 5, height: b - 5, rx: 5, fill: 'url(#h-steenplaat)' }, g);
+    for (let i = 0; i < 26; i++) el('circle', { cx: x + 6 + rnd() * (b - 12), cy: y + 6 + rnd() * (b - 12), r: 0.6 + rnd() * 1.1, fill: rnd() > 0.5 ? '#6A645A' : '#E6E1D6', opacity: 0.5 }, g);
+    const P = (c, r) => [x + (64 + c * 96) * k, y + (64 + r * 96) * k];
+    const [a0] = P(0, 0), [a1] = P(1, 0), [a2] = P(2, 0), [a3] = P(3, 0), [a4] = P(4, 0), [a5] = P(5, 0), [a6] = P(6, 0);
+    const yy = (r) => P(0, r)[1];
+    const d = `M${a0} ${yy(0)} H${a6} V${yy(6)} H${a0} Z M${a1} ${yy(1)} H${a5} V${yy(5)} H${a1} Z M${a2} ${yy(2)} H${a4} V${yy(4)} H${a2} Z M${a3} ${yy(0)} V${yy(2)} M${a3} ${yy(4)} V${yy(6)} M${a0} ${yy(3)} H${a2} M${a4} ${yy(3)} H${a6}`;
+    el('path', { d, fill: 'none', stroke: 'rgba(255,250,235,.55)', 'stroke-width': 1.6, transform: 'translate(.4 .5)' }, g);
+    el('path', { d, fill: 'none', stroke: '#3C3833', 'stroke-width': 1.2, 'stroke-linejoin': 'round' }, g);
+    [[0, 0], [3, 0], [6, 0], [1, 1], [3, 1], [5, 1], [2, 2], [3, 2], [4, 2], [0, 3], [1, 3], [2, 3], [4, 3], [5, 3], [6, 3], [2, 4], [3, 4], [4, 4], [1, 5], [3, 5], [5, 5], [0, 6], [3, 6], [6, 6]].forEach(([c, r]) => {
+      const [px, py] = P(c, r);
+      el('circle', { cx: px, cy: py, r: 2.2, fill: '#3C3833' }, g);
+    });
+    const stenen = [[0, 0, 'w'], [3, 0, 'z'], [6, 0, 'w'], [1, 3, 'z'], [3, 1, 'w'], [2, 4, 'w'], [6, 6, 'z'], [4, 3, 'z'], [5, 5, 'w'], [3, 6, 'z']];
+    stenen.forEach(([c, r, kl]) => {
+      const [sx, sy] = P(c, r);
+      el('ellipse', { cx: sx + 1.2, cy: sy + 1.8, rx: 8, ry: 7.4, fill: '#000', opacity: 0.32 }, g);
+      el('circle', { cx: sx, cy: sy, r: 7.6, fill: kl === 'w' ? '#F2EADA' : '#2C2522', stroke: kl === 'w' ? '#8D8167' : '#000', 'stroke-width': 0.8 }, g);
+      el('circle', { cx: sx, cy: sy, r: 5, fill: 'none', stroke: kl === 'w' ? 'rgba(120,100,60,.35)' : 'rgba(255,255,255,.13)', 'stroke-width': 0.6 }, g);
+      el('ellipse', { cx: sx - 2.4, cy: sy - 2.8, rx: 2.4, ry: 1.4, fill: '#fff', opacity: kl === 'w' ? 0.6 : 0.2, transform: `rotate(-35 ${(sx - 2.4).toFixed(1)} ${(sy - 2.8).toFixed(1)})` }, g);
     });
     naambordje(g, 550, 508, 'Molenspel');
   }
