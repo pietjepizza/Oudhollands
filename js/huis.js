@@ -613,6 +613,8 @@
     let buiten;
     if (opties.spel) {
       buiten = el('a', { href: '#' + opties.spel, class: 'voorwerp speelbaar', 'data-spel': opties.spel, 'data-label': opties.label, 'aria-label': opties.label }, ouder);
+      // speelgoed van de zolder dat beneden ligt: speelbaar zodra de zolder open is
+      if (opties.slot) { buiten.setAttribute('data-slot', opties.slot); buiten.setAttribute('data-open', opties.label); }
     } else if (opties.kamer) {
       buiten = el('g', { class: 'voorwerp naar-kamer', tabindex: 0, role: 'button', 'data-kamer': opties.kamer, 'data-label': opties.label, 'aria-label': opties.label }, ouder);
     } else {
@@ -780,7 +782,7 @@
     for (let i = 0; i < 6; i++) {
       el('ellipse', { cx: 1276, cy: 584 - i * 4.5, rx: 11, ry: 3.6, fill: i % 2 ? '#E0B77D' : '#D4A86C', stroke: '#8A5B2A', 'stroke-width': 0.7 }, ouder);
     }
-    const g = voorwerp(ouder, { label: 'Tollen · komt binnenkort' });
+    const g = voorwerp(ouder, { spel: 'tollen', label: 'Speel tollen', slot: 'Tollen · koop eerst de trap naar de zolder' });
     el('rect', { x: 1120, y: 534, width: 90, height: 56, fill: 'transparent' }, g);
     el('path', { d: 'M1131 559 Q1148 549 1165 559 L1150 586 L1146 586 Z', fill: '#B6452C', stroke: '#5A2215', 'stroke-width': 1 }, g);
     el('path', { d: 'M1134 564 Q1148 558 1162 564 L1159 570 Q1148 566 1137 570 Z', fill: BLAUW }, g);
@@ -924,7 +926,7 @@
   }
 
   function bouwKnikkers(ouder) {
-    const g = voorwerp(ouder, { kamer: 'zolder', label: 'Knikkeren · op de zolder' });
+    const g = voorwerp(ouder, { spel: 'knikkeren', label: 'Speel knikkeren', slot: 'Knikkeren · koop eerst de trap naar de zolder' });
     const K = (X, Z) => P(X, HH, Z);
     const zak = K(40, 760);
     const verst = K(165, 690);
@@ -2739,6 +2741,22 @@
     e.classList.remove('schud'); void e.getBoundingClientRect(); e.classList.add('schud');
   }
 
+  // Hoort het spel in een kamer die nog dicht is?
+  function spelOpSlot(v) {
+    if (!v.hasAttribute('data-slot') || !window.Duiten) return false;
+    return !kamerOpen(Duiten.kamerVanSpel(v.getAttribute('data-spel')));
+  }
+  function werkSlotenBij() {
+    if (!kamerSvg) return;
+    kamerSvg.querySelectorAll('.speelbaar[data-slot]').forEach((v) => {
+      const dicht = spelOpSlot(v);
+      v.classList.toggle('dicht', dicht);
+      const label = dicht ? v.getAttribute('data-slot') : v.getAttribute('data-open');
+      v.setAttribute('data-label', label);
+      v.setAttribute('aria-label', label);
+    });
+  }
+
   function koppelVoorwerpen(svg) {
     const viaToetsen = (v) => { try { return v.matches(':focus-visible'); } catch (e) { return false; } };
     svg.querySelectorAll('.voorwerp').forEach((v) => {
@@ -2751,6 +2769,14 @@
       v.addEventListener('click', (e) => {
         if (v.classList.contains('speelbaar')) {
           e.preventDefault();
+          if (spelOpSlot(v)) {
+            toonLabel(v);
+            schud(v);
+            Geluid.pak();
+            if (window.Tril) Tril.fout();
+            toonWenk('Koop eerst de trap naar de zolder');
+            return;
+          }
           zoomNaar(v);
         } else if (v.hasAttribute('data-kamer')) {
           gaNaarKamer(v.getAttribute('data-kamer'), v);
@@ -2841,6 +2867,7 @@
 
   // De knop onderin: de volgende klus, of door naar de volgende kamer.
   function werkHudBij() {
+    werkSlotenBij();
     if (!klusknop || !window.Duiten) return;
     const k = kamerNaam, lijst = Duiten.klussenVan(k), v = Duiten.volgendeKlus(k), n = Duiten.aantalKlaar(k);
     voortgang.innerHTML = lijst.map((x) => `<i class="${Duiten.klusKlaar(x.id) ? 'af' : ''}"></i>`).join('');
@@ -2981,7 +3008,7 @@
       schud(klusknop);
       if (window.Tril) Tril.fout();
       toonWenk('Speel een spel en verdien duiten');
-      kamerSvg.querySelectorAll('.speelbaar').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
+      kamerSvg.querySelectorAll('.speelbaar:not(.dicht)').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
       Geluid.pak();
       return;
     }
@@ -3101,9 +3128,11 @@
     return `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) scale(${s.toFixed(3)})`;
   }
 
+  let laatsteStart = null; // { spel, kamer }: daar ga je na het spel weer naartoe
   function zoomNaar(v) {
     if (bezig) return;
     const spel = v.getAttribute('data-spel');
+    laatsteStart = { spel, kamer: kamerNaam };
     verbergLabel();
     verbergWenk();
     if (rustig()) { location.hash = '#' + spel; return; }
@@ -3182,7 +3211,7 @@
     bezig = false;
     if (hint) hint.classList.remove('weg');
     if (omhoog) {
-      kamerSvg.querySelectorAll('.speelbaar').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
+      kamerSvg.querySelectorAll('.speelbaar:not(.dicht)').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
     }
   }
 
@@ -3190,6 +3219,7 @@
     bouw();
     if (gevel.hidden === false) return;
     let k = window.Duiten ? Duiten.kamerVanSpel(spel) : 'voorkamer';
+    if (laatsteStart && laatsteStart.spel === spel && kamerOpen(laatsteStart.kamer)) k = laatsteStart.kamer;
     if (!kamerOpen(k)) k = 'voorkamer';
     if (k !== kamerNaam) zetKamerNaam(k);
     if (kamer.hidden) { zetBinnen(true); toonKamer(); }
