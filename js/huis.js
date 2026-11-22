@@ -612,8 +612,6 @@
     let buiten;
     if (opties.spel) {
       buiten = el('a', { href: '#' + opties.spel, class: 'voorwerp speelbaar', 'data-spel': opties.spel, 'data-label': opties.label, 'aria-label': opties.label }, ouder);
-      // speelgoed van de zolder dat beneden ligt: speelbaar zodra de zolder open is
-      if (opties.slot) { buiten.setAttribute('data-slot', opties.slot); buiten.setAttribute('data-open', opties.label); }
     } else if (opties.kamer) {
       buiten = el('g', { class: 'voorwerp naar-kamer', tabindex: 0, role: 'button', 'data-kamer': opties.kamer, 'data-label': opties.label, 'aria-label': opties.label }, ouder);
     } else {
@@ -772,7 +770,7 @@
   }
 
   function bouwPlank(ouder) {
-    // plank met een tol, een Delfts bord en een stapeltje sjoelschijven
+    // plank met een triktrakbord, een Delfts bord en een stapeltje sjoelschijven
     el('rect', { x: 1104, y: 598, width: 194, height: 10, fill: '#2A1A0C', opacity: 0.3, filter: 'url(#h-zacht)' }, ouder);
     el('rect', { x: 1098, y: 588, width: 196, height: 12, fill: 'url(#h-eik)' }, ouder);
     el('path', { d: 'M1116 600 l0 18 l14 -18 Z M1276 600 l0 18 l-14 -18 Z', fill: '#6B4726' }, ouder);
@@ -781,14 +779,46 @@
     for (let i = 0; i < 6; i++) {
       el('ellipse', { cx: 1276, cy: 584 - i * 4.5, rx: 11, ry: 3.6, fill: i % 2 ? '#E0B77D' : '#D4A86C', stroke: '#8A5B2A', 'stroke-width': 0.7 }, ouder);
     }
-    const g = voorwerp(ouder, { spel: 'tollen', label: 'Speel tollen', slot: 'Tollen · koop eerst de trap naar de zolder' });
-    el('rect', { x: 1120, y: 534, width: 90, height: 56, fill: 'transparent' }, g);
-    el('path', { d: 'M1131 559 Q1148 549 1165 559 L1150 586 L1146 586 Z', fill: '#B6452C', stroke: '#5A2215', 'stroke-width': 1 }, g);
-    el('path', { d: 'M1134 564 Q1148 558 1162 564 L1159 570 Q1148 566 1137 570 Z', fill: BLAUW }, g);
-    el('path', { d: 'M1141 574 Q1148 572 1155 574 L1152 580 L1144 580 Z', fill: '#E7C36A' }, g);
-    el('ellipse', { cx: 1148, cy: 558, rx: 17, ry: 4, fill: '#D45A3C' }, g);
-    el('rect', { x: 1146, y: 546, width: 4, height: 11, fill: '#6B4423' }, g);
-    el('path', { d: 'M1170 586 q 14 -3 22 -16 M1192 570 q 6 10 -6 16', fill: 'none', stroke: '#4A3018', 'stroke-width': 1.8, 'stroke-linecap': 'round' }, g);
+    // Triktrak (verkeren): in de 17e eeuw een geliefd spel met twee dobbelstenen, vaak geschilderd,
+    // o.a. door Duyster en Jan Steen. Het bord staat open tegen de muur, met de beker en de stenen ervoor.
+    const g = voorwerp(ouder, { label: 'Triktrak · komt binnenkort' });
+    el('rect', { x: 1110, y: 538, width: 100, height: 56, fill: 'transparent' }, g);
+    const bx = 1116, by = 545, bb = 60, bh = 43;
+    el('rect', { x: bx + 3, y: by + 3, width: bb, height: bh, rx: 2, fill: '#2A1A0C', opacity: 0.32, filter: 'url(#h-zacht)' }, g);
+    el('rect', { x: bx, y: by, width: bb, height: bh, rx: 2, fill: '#4A2E16', stroke: '#26170A', 'stroke-width': 0.8 }, g);
+    el('rect', { x: bx + 1, y: by + 1, width: bb - 2, height: 1.2, fill: '#7A5230', opacity: 0.8 }, g);
+    // twee speelvelden van licht palmhout, met in het midden de scharnierlat
+    const vx = [bx + 3, bx + bb / 2 + 1.5], vb = bb / 2 - 4.5, vy = by + 3, vh = bh - 6;
+    vx.forEach((x) => el('rect', { x, y: vy, width: vb, height: vh, fill: '#EADBB8' }, g));
+    el('rect', { x: bx + bb / 2 - 1.5, y: by + 2, width: 3, height: bh - 4, fill: '#3A2312' }, g);
+    // de punten: zes per kant, om en om ebben en rood, boven en onder
+    vx.forEach((x) => {
+      for (let i = 0; i < 6; i++) {
+        const l = x + i * vb / 6, r = l + vb / 6, mid = (l + r) / 2, kleur = i % 2 ? '#9A2B1F' : '#2B231D';
+        el('path', { d: `M${l.toFixed(2)} ${vy} L${r.toFixed(2)} ${vy} L${mid.toFixed(2)} ${(vy + vh * 0.42).toFixed(2)} Z`, fill: kleur }, g);
+        el('path', { d: `M${l.toFixed(2)} ${vy + vh} L${r.toFixed(2)} ${vy + vh} L${mid.toFixed(2)} ${(vy + vh * 0.58).toFixed(2)} Z`, fill: i % 2 ? '#2B231D' : '#9A2B1F' }, g);
+      }
+    });
+    // een paar schijven op de punten, wit en zwart
+    const schijf = (x, y, wit) => el('circle', { cx: x, cy: y, r: 1.9, fill: wit ? '#F6F0E0' : '#221C17', stroke: wit ? '#9C8F74' : '#000', 'stroke-width': 0.4 }, g);
+    [[vx[0] + vb / 12, vy + 2.2, 1], [vx[0] + vb / 12, vy + 5.6, 1], [vx[0] + vb / 12 * 9, vy + vh - 2.2, 0], [vx[0] + vb / 12 * 9, vy + vh - 5.6, 0],
+      [vx[1] + vb / 12 * 3, vy + 2.2, 0], [vx[1] + vb / 12 * 11, vy + vh - 2.2, 1], [vx[1] + vb / 12 * 11, vy + vh - 5.6, 1]].forEach(([x, y, w]) => schijf(x, y, !!w));
+    // de leren dobbelbeker
+    el('ellipse', { cx: 1191, cy: 588, rx: 10, ry: 2, fill: '#000', opacity: 0.25 }, g);
+    el('path', { d: 'M1182 566 L1200 566 L1198 588 L1184 588 Z', fill: '#7A4520', stroke: '#3E200C', 'stroke-width': 0.8 }, g);
+    el('path', { d: 'M1185 568 L1187 586', stroke: '#A8693A', 'stroke-width': 1.6, opacity: 0.7 }, g);
+    el('path', { d: 'M1183 571 L1199 571 M1184 583 L1198 583', stroke: '#E8C994', 'stroke-width': 0.7, 'stroke-dasharray': '1.4 1.2', opacity: 0.8 }, g);
+    el('ellipse', { cx: 1191, cy: 566, rx: 9, ry: 2.2, fill: '#2E170A', stroke: '#5A3216', 'stroke-width': 0.8 }, g);
+    // twee dobbelstenen voor het bord
+    const steen = (x, y, ogen) => {
+      el('path', { d: `M${x} ${y} l3 -2.4 h7 l-3 2.4 Z`, fill: '#FFFDF6', stroke: '#8C8167', 'stroke-width': 0.5 }, g);
+      el('path', { d: `M${x + 7} ${y} l3 -2.4 v7 l-3 2.4 Z`, fill: '#D9CFB8', stroke: '#8C8167', 'stroke-width': 0.5 }, g);
+      el('rect', { x, y, width: 7, height: 7, fill: '#F4EEDD', stroke: '#8C8167', 'stroke-width': 0.5 }, g);
+      ogen.forEach(([dx, dy]) => el('circle', { cx: x + dx, cy: y + dy, r: 0.75, fill: '#1F1A15' }, g));
+      el('circle', { cx: x + 5, cy: y - 1.2, r: 0.6, fill: '#1F1A15' }, g);
+    };
+    steen(1166, 581, [[1.8, 1.8], [3.5, 3.5], [5.2, 5.2]]);
+    steen(1201, 581, [[1.8, 1.8], [5.2, 1.8], [1.8, 5.2], [5.2, 5.2]]);
   }
 
   function bouwKolf(ouder) {
@@ -917,8 +947,9 @@
     // de speelkaarten: speelbaar, en net als in het spel: ivoren kaarten met een rood of zwart teken,
     // en een stapeltje met de Delfts blauwe rug
     const kaarten = voorwerp(g, { spel: 'klaverjassen', label: 'Speel klaverjassen' });
-    const ka = T(-468, 748), kb2 = T(-352, 748), kc = T(-352, 672);
-    el('rect', { x: ka[0] - 4, y: kc[1] - 16, width: kb2[0] - ka[0] + 8, height: ka[1] - kc[1] + 22, fill: 'transparent' }, kaarten);
+    // ruim raakvlak: van achter de kaarten tot aan het naambordje, en links van het dambord
+    const kLinks = T(-462, 690)[0] - 8, kBoven = T(-400, 775)[1] - 6, kOnder = T(-358, 640)[1] + 7;
+    el('rect', { x: kLinks, y: kBoven, width: rl[0] - 1 - kLinks, height: kOnder - kBoven, fill: 'transparent' }, kaarten);
     const kaart = (cx, cz, hoek, rug, kleur, teken) => {
       const hb = 17, hl = 25, co = Math.cos(hoek), si = Math.sin(hoek);
       const hp = (dx, dz) => T(cx + dx * co - dz * si, cz + dx * si + dz * co);
@@ -2792,21 +2823,6 @@
   }
 
   // Hoort het spel in een kamer die nog dicht is?
-  function spelOpSlot(v) {
-    if (!v.hasAttribute('data-slot') || !window.Duiten) return false;
-    return !kamerOpen(Duiten.kamerVanSpel(v.getAttribute('data-spel')));
-  }
-  function werkSlotenBij() {
-    if (!kamerSvg) return;
-    kamerSvg.querySelectorAll('.speelbaar[data-slot]').forEach((v) => {
-      const dicht = spelOpSlot(v);
-      v.classList.toggle('dicht', dicht);
-      const label = dicht ? v.getAttribute('data-slot') : v.getAttribute('data-open');
-      v.setAttribute('data-label', label);
-      v.setAttribute('aria-label', label);
-    });
-  }
-
   function koppelVoorwerpen(svg) {
     const viaToetsen = (v) => { try { return v.matches(':focus-visible'); } catch (e) { return false; } };
     svg.querySelectorAll('.voorwerp').forEach((v) => {
@@ -2819,14 +2835,6 @@
       v.addEventListener('click', (e) => {
         if (v.classList.contains('speelbaar')) {
           e.preventDefault();
-          if (spelOpSlot(v)) {
-            toonLabel(v);
-            schud(v);
-            Geluid.pak();
-            if (window.Tril) Tril.fout();
-            toonWenk('Koop eerst de trap naar de zolder');
-            return;
-          }
           zoomNaar(v);
         } else if (v.hasAttribute('data-kamer')) {
           gaNaarKamer(v.getAttribute('data-kamer'), v);
@@ -2917,7 +2925,6 @@
 
   // De knop onderin: de volgende klus, of door naar de volgende kamer.
   function werkHudBij() {
-    werkSlotenBij();
     if (!klusknop || !window.Duiten) return;
     const k = kamerNaam, lijst = Duiten.klussenVan(k), v = Duiten.volgendeKlus(k), n = Duiten.aantalKlaar(k);
     voortgang.innerHTML = lijst.map((x) => `<i class="${Duiten.klusKlaar(x.id) ? 'af' : ''}"></i>`).join('');
@@ -3058,7 +3065,7 @@
       schud(klusknop);
       if (window.Tril) Tril.fout();
       toonWenk('Speel een spel en verdien duiten');
-      kamerSvg.querySelectorAll('.speelbaar:not(.dicht)').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
+      kamerSvg.querySelectorAll('.speelbaar').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
       Geluid.pak();
       return;
     }
@@ -3261,7 +3268,7 @@
     bezig = false;
     if (hint) hint.classList.remove('weg');
     if (omhoog) {
-      kamerSvg.querySelectorAll('.speelbaar:not(.dicht)').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
+      kamerSvg.querySelectorAll('.speelbaar').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
     }
   }
 
