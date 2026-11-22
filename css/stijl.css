@@ -1453,13 +1453,17 @@ button.mo-kaart { cursor: pointer; }
 .kj-stand b { font-family: var(--f-tekst); font-size: 1.3rem; font-weight: 600; color: #F2D78E; font-variant-numeric: lining-nums tabular-nums; }
 .kj-teller { font-size: .8rem; opacity: .72; font-variant-numeric: lining-nums tabular-nums; }
 .kj-troef {
-  flex: none; height: 48px; padding: 0 9px 0 8px; border-radius: 24px; display: inline-flex; align-items: center; gap: 5px;
-  background: #F7F0DE; color: #2A1A08; box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
+  position: absolute; left: 22px; top: 22px; z-index: 6; height: 42px; padding: 0 7px 0 8px; border-radius: 21px;
+  display: inline-flex; align-items: center; gap: 5px; pointer-events: none;
+  background: #F7F0DE; color: #2A1A08; box-shadow: 0 0 0 1px rgba(120, 84, 30, .35), 0 4px 12px rgba(0, 0, 0, .4);
 }
+.kj-troef.in { animation: kj-troef-in .45s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes kj-troef-in { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
 .kj-troef[hidden] { display: none; }
-.kj-troef.wij { box-shadow: 0 0 0 2.5px #E7C36A, 0 4px 12px rgba(0, 0, 0, .35); }
+.kj-troef.wij { box-shadow: 0 0 0 2.5px #E7C36A, 0 4px 12px rgba(0, 0, 0, .4); }
 .kj-wie { display: inline-grid; place-items: center; }
-.kj-wie svg { display: block; width: 30px; height: 30px; border-radius: 50%; }
+.kj-wie svg { display: block; width: 28px; height: 28px; border-radius: 50%; }
+.kj-wie b { font-family: var(--f-sier); font-weight: 400; font-size: .98rem; padding-right: 3px; }
 .kj-wie b { font-family: var(--f-sier); font-size: .95rem; font-weight: 600; }
 
 /* de tafel met het Perzische kleed, zoals op de voorkamertafel */
@@ -1499,11 +1503,15 @@ button.mo-kaart { cursor: pointer; }
 .kj-zit.maat .kj-naam { color: #F2D78E; }
 .kj-zit .mo-denk { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); padding: 3px 6px; border-radius: 10px; background: rgba(20, 12, 6, .7); }
 .kj-zit .mo-denk[hidden] { display: none; }
-.kj-zit .mo-ballon { top: calc(100% + 6px); left: 50%; transform: translateX(-50%); max-width: 210px; white-space: normal; text-align: center; }
+/* Opoe zit tegen de bovenrand: haar denkpuntjes staan naast haar in plaats van erboven */
+.kj-zit[data-zit="2"] .mo-denk { top: 14px; left: calc(50% + 32px); transform: none; }
+.kj-zit .mo-ballon { top: calc(100% + 6px); left: 50%; transform: translateX(-50%); width: max-content; max-width: 200px; white-space: normal; text-align: center; }
 .kj-zit .mo-ballon::before { left: calc(50% - 8px); }
 .kj-zit .mo-ballon.in { animation: kj-ballon .3s cubic-bezier(.3, 1.4, .5, 1); }
 @keyframes kj-ballon { from { transform: translateX(-50%) scale(.86); opacity: 0; } to { transform: translateX(-50%); opacity: 1; } }
+.kj-zit[data-zit="1"] .mo-ballon, .kj-zit[data-zit="3"] .mo-ballon { max-width: min(200px, 28vw); }
 .kj-zit[data-zit="1"] .mo-ballon { left: -12px; transform: none; }
+.kj-tafel.kiest .kj-zit[data-zit="1"] .mo-ballon, .kj-tafel.kiest .kj-zit[data-zit="3"] .mo-ballon { visibility: hidden; }
 .kj-zit[data-zit="1"] .mo-ballon::before { left: 26px; }
 .kj-zit[data-zit="3"] .mo-ballon { left: auto; right: -12px; transform: none; }
 .kj-zit[data-zit="3"] .mo-ballon::before { left: auto; right: 26px; }
@@ -1576,12 +1584,15 @@ button.mo-kaart { cursor: pointer; }
 @media (min-width: 900px) and (min-height: 640px) {
   .kj-gezicht svg { width: 64px; height: 64px; }
   .kj-zit .kj-naam, .kj-jij .kj-naam { font-size: 1.1rem; }
+  .kj-zit[data-zit="2"] .mo-denk { top: 20px; left: calc(50% + 38px); }
 }
 @media (max-width: 420px) {
   .kj-gezicht svg { width: 44px; height: 44px; }
+  .kj-zit .kj-naam { font-size: .9rem; }
+  .kj-zit .mo-ballon { padding: 6px 10px; font-size: .95rem; }
+  .kj-zit[data-zit="2"] .mo-denk { top: 11px; left: calc(50% + 28px); }
   .kj-kleuren { grid-template-columns: repeat(2, auto); }
   .kj-stand { gap: 8px; padding: 0 10px; height: 44px; }
-  .kj-troef { height: 44px; }
   .kj-stand b { font-size: 1.2rem; }
   .kj-wij, .kj-zij { font-size: .95rem; }
   .kj-kleur { width: 62px; }
@@ -1595,6 +1606,13 @@ button.mo-kaart { cursor: pointer; }
 .kj-podium.kort .kj-zit .kj-naam { font-size: .88rem; }
 .kj-podium.kort .kj-melding { top: 24%; font-size: 1rem; }
 .kj-podium.kort .kj-jij { transform: none; }
+.kj-podium.kort .kj-troef { left: 20px; top: 18px; height: 38px; }
+@media (max-width: 360px) {
+  .kj-stand { gap: 6px; padding: 0 8px; }
+  .kj-stand b { font-size: 1.08rem; }
+  .kj-wij, .kj-zij { gap: 4px; font-size: .88rem; }
+}
+@media (max-width: 340px) { .kj-teller { display: none; } .kj-zit .kj-naam { font-size: .84rem; } }
 @media (orientation: landscape) and (max-height: 620px) {
   .kj-podium { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "balk" "tafel"; }
   .kj-balk { flex-direction: row; height: auto; }

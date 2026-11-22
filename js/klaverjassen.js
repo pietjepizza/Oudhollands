@@ -38,6 +38,9 @@
   const willekeurig = (l) => l[Math.floor(Math.random() * l.length)];
   const gezichtVan = (id) => (window.Personen && Personen.gezicht[id]) || '';
   const naamVan = (id) => (window.Personen && Personen.namen[id]) || id;
+  // aan tafel noem je elkaar kort
+  const TAFELNAAM = { kees: 'Kees', burgemeester: 'Burgemeester' };
+  const tafelNaam = (id) => TAFELNAAM[id] || naamVan(id);
   const klein = (naam) => (naam.startsWith('De ') ? 'de ' + naam.slice(3) : naam);
   const paarNaam = (p) => `${naamVan(p.wie[0])} en ${klein(naamVan(p.wie[1]))}`;
 
@@ -139,12 +142,12 @@
     const balk = html(`<div class="kj-balk">
       <a class="mo-knop" href="#" aria-label="Naar het huis" title="Naar het huis">${icoon('huis')}</a>
       <button class="kj-stand" type="button" aria-label="Het klaverjasboekje"><span class="kj-wij">Wij <b>0</b></span><span class="kj-zij"><b>0</b> Zij</span><small class="kj-teller"></small></button>
-      <div class="kj-troef" hidden></div>
       <button class="mo-knop mo-vraag" type="button" aria-label="Gijs laat zien hoe het werkt" title="Hoe werkt het?">${icoon('vraag')}</button>
       <button class="mo-knop mo-meer" type="button" aria-label="Kies je tegenstanders" title="Kies je tegenstanders" aria-haspopup="dialog">${icoon('menu')}</button>
     </div>`);
     const tafelEl = html(`<div class="kj-tafel">
       <div class="kj-medaillon" aria-hidden="true"></div>
+      <div class="kj-troef" role="img" hidden></div>
       <div class="kj-kaarten"></div>
       ${[1, 2, 3].map((z) => `<div class="kj-zit" data-zit="${z}"><span class="kj-gezicht"></span><span class="kj-naam"></span><span class="mo-denk" hidden><i></i><i></i><i></i></span><span class="mo-ballon" hidden></span></div>`).join('')}
       <div class="kj-jij"><span class="kj-naam">Jij</span><span class="kj-doe"></span></div>
@@ -185,7 +188,7 @@
     tafel = tafelEl;
     laag = tafelEl.querySelector('.kj-kaarten');
     ui = {
-      balk, stand: balk.querySelector('.kj-stand'), troef: balk.querySelector('.kj-troef'),
+      balk, stand: balk.querySelector('.kj-stand'), troef: tafelEl.querySelector('.kj-troef'),
       zit: [null, ...[1, 2, 3].map((z) => tafelEl.querySelector(`.kj-zit[data-zit="${z}"]`))], jij: tafelEl.querySelector('.kj-jij'),
       melding: tafelEl.querySelector('.kj-melding'), troefkeuze: tafelEl.querySelector('.kj-troefkeuze'), tip: tafelEl.querySelector('.kj-tipknop'),
       banier: tafelEl.querySelector('.mo-banier'), vonken: tafelEl.querySelector('.mo-vonken'),
@@ -233,6 +236,7 @@
       if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tikKaart(+el.dataset.k); }
     });
     if ('ResizeObserver' in window) new ResizeObserver(() => pasMaatAan()).observe(tafel);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => pasMaatAan());
     window.addEventListener('resize', pasMaatAan);
     for (let k = 0; k < 32; k++) kaartEl(k);
     gebouwd = true;
@@ -286,7 +290,16 @@
     podium.style.setProperty('--kb', m.kb + 'px');
     podium.style.setProperty('--kh', m.kh + 'px');
     podium.classList.toggle('kort', m.kort);
-    const zitPlek = m.kort ? [null, [44, m.cy], [m.cx, 30], [m.W - 44, m.cy]] : [null, [46, m.cy - 6], [m.cx, 40], [m.W - 46, m.cy - 6]];
+    // de zijspelers schuiven naar binnen als hun naam anders over de rand zou lopen
+    const naamBreed = (z) => { const n = ui.zit[z].querySelector('.kj-naam'); return n ? n.offsetWidth : 0; };
+    const rand = m.kort ? 44 : 46;
+    m.zx = [null, Math.max(rand, Math.ceil(20 + naamBreed(1) / 2)), m.cx, m.W - Math.max(rand, Math.ceil(20 + naamBreed(3) / 2))];
+    // staand zitten de buren iets onder het midden: hun naam valt dan onder de slag in plaats van erdoor
+    m.zy = m.kort ? m.cy : m.cy + m.kh * 0.36;
+    // Opoe zo hoog als het kan, maar met haar hele gezicht binnen de rand
+    const opoeH = ui.zit[2].offsetHeight || 64;
+    m.zy2 = Math.max(m.kort ? 30 : 40, Math.ceil(opoeH / 2 + (m.kort ? 10 : 14)));
+    const zitPlek = [null, [m.zx[1], m.zy], [m.cx, m.zy2], [m.zx[3], m.zy]];
     for (let z = 1; z <= 3; z++) { ui.zit[z].style.left = zitPlek[z][0] + 'px'; ui.zit[z].style.top = zitPlek[z][1] + 'px'; }
     zetJij(spel ? K.aantal(spel.handen[0]) : 8);
     plaatsAlles(false);
@@ -325,10 +338,11 @@
           const op = (k === gekozen ? 18 : 0) + (k === tipKaart ? 10 : 0);
           uit.set(k, { x: x0 + i * stap, y: (m.kort ? m.H - m.kh * 0.62 : m.H - m.kh - 8) + t * t * m.kh * 0.28 - op, r: t * 9, s: 1, dicht: !omgedraaid, z: 300 + i });
         } else if (z === 2) {
-          uit.set(k, { x: m.cx - m.kb / 2 + t * m.kb * 1.1, y: (m.kort ? 30 : 40) - m.kh / 2 - m.kh * 0.12 + t * t * 8, r: -t * 14, s: sb, dicht: true, z: 50 + i });
+          uit.set(k, { x: m.cx - m.kb / 2 + t * m.kb * 1.1, y: (m.zy2 || (m.kort ? 30 : 40)) - m.kh / 2 - m.kh * 0.12 + t * t * 8, r: -t * 14, s: sb, dicht: true, z: 50 + i });
         } else {
-          const x = z === 1 ? 44 - m.kb / 2 : m.W - 44 - m.kb / 2;
-          uit.set(k, { x, y: m.cy - 6 - m.kh * 0.32 - m.kh / 2 + t * m.kh * 0.3, r: (z === 1 ? 90 : -90) + t * 8, s: sb, dicht: true, z: 50 + i });
+          const x = (m.zx ? m.zx[z] : z === 1 ? 44 : m.W - 44) - m.kb / 2;
+          const zy = m.zy === undefined ? m.cy - 6 : m.kort ? m.cy - 6 : m.zy;
+          uit.set(k, { x, y: zy - m.kh * 0.32 - m.kh / 2 + t * m.kh * 0.3, r: (z === 1 ? 90 : -90) + t * 8, s: sb, dicht: true, z: 50 + i });
         }
       });
     }
@@ -403,7 +417,9 @@
     ui.stand.setAttribute('aria-label', `Stand: wij ${wij}, zij ${zij}. Spel ${Math.max(1, nr)} van ${lengte}. Tik voor het klaverjasboekje`);
     // troef en wie er speelt
     if (spel && spel.troef >= 0) {
+      const nieuw = ui.troef.hidden;
       ui.troef.hidden = false;
+      if (nieuw && !rustig()) { ui.troef.classList.remove('in'); void ui.troef.offsetWidth; ui.troef.classList.add('in'); }
       ui.troef.innerHTML = `${kleurSvg(spel.troef, 24)}<span class="kj-wie">${gezichtVan(spel.voorhand === 0 ? '' : wieZit(spel.voorhand)) || '<b>Jij</b>'}</span>`;
       ui.troef.setAttribute('aria-label', `${KLEURNAAM[spel.troef]} is troef. ${spel.voorhand === 0 ? 'Jij speelt' : naamVan(wieZit(spel.voorhand)) + ' speelt'}`);
       ui.troef.classList.toggle('wij', spel.spelend === 0);
@@ -417,14 +433,17 @@
     ui.jij.classList.toggle('zegt', !!doe.textContent);
     ui.tip.hidden = !(mijnBeurt || (fase === 'troef' && spel && spel.voorhand === 0));
     ui.troefkeuze.hidden = !(fase === 'troef' && spel && spel.voorhand === 0);
+    // terwijl jij troef kiest, praten de buren even niet (hun ballonnen zouden onder de keuze vallen)
+    tafel.classList.toggle('kiest', !ui.troefkeuze.hidden);
   }
   function zetGezichten() {
     for (let z = 1; z <= 3; z++) {
       const id = wieZit(z);
       ui.zit[z].querySelector('.kj-gezicht').innerHTML = gezichtVan(id);
-      ui.zit[z].querySelector('.kj-naam').textContent = naamVan(id);
+      ui.zit[z].querySelector('.kj-naam').textContent = tafelNaam(id);
       ui.zit[z].classList.toggle('maat', z === 2);
     }
+    pasMaatAan();
   }
   function denkt(zit, aan) { if (zit > 0) ui.zit[zit].querySelector('.mo-denk').hidden = !aan; }
   function zeg(zit, tekst) {
@@ -438,9 +457,11 @@
   }
   const zegSoort = (zit, soort) => { const id = wieZit(zit); if (ZEGT[id] && ZEGT[id][soort]) zeg(zit, willekeurig(ZEGT[id][soort])); };
   function meld(t) { if (ui.meld) ui.meld.textContent = t; }
-  function melding(tekst, duur) {
+  function melding(tekst, duur, midden) {
     const m = ui.melding;
     m.textContent = tekst;
+    // midden op de tafel als daar nog niets ligt, anders boven de slag
+    m.style.top = midden && M ? Math.round(M.cy) + 'px' : '';
     m.hidden = false;
     m.classList.remove('in'); void m.offsetWidth; m.classList.add('in');
     clearTimeout(m._t);
@@ -536,8 +557,7 @@
     fase = 'spelen';
     tipKaart = -1;
     const wie = vh === 0 ? 'Jij speelt' : `${naamVan(wieZit(vh))} speelt`;
-    if (vh > 0) zeg(vh, `${KLEURNAAM[t]} is troef!`);
-    melding(`${KLEURNAAM[t]} is troef`, 1500);
+    melding(`${KLEURNAAM[t]} is troef`, 1500, true);
     meld(`${KLEURNAAM[t]} is troef. ${wie}.`);
     if (Geluid.kling) Geluid.kling();
     plaatsAlles(true);
@@ -586,6 +606,8 @@
     const mijnId = spelId, voor = spel, zit = spel.aan;
     spel = K.speel(spel, k);
     gekozen = -1; tipKaart = -1;
+    // de troefmelding staat midden op tafel: weg zodra er een kaart op komt
+    if (ui.melding.style.top && !ui.melding.hidden) ui.melding.hidden = true;
     if (Geluid.kaart) Geluid.kaart();
     if (window.Tril) Tril.tik();
     const af = spel.slagen.length > voor.slagen.length;
