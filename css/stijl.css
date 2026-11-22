@@ -1104,6 +1104,81 @@ button.mo-kaart { cursor: pointer; }
   .gb-beker svg { width: 48px; height: 48px; }
 }
 
+/* ---------- Sjoelen ---------- */
+.sj-bakvak { position: relative; width: var(--bak, 300px); height: calc(var(--bak, 300px) * 2); }
+.sj-bak { display: block; width: 100%; height: 100%; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .5)); }
+.sj-doek { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; outline: none; }
+.sj-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E; border-radius: 16px; }
+.sj-pops { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 3; }
+.sj-pop {
+  position: absolute; transform: translate(-50%, -50%); pointer-events: none; white-space: nowrap;
+  font-family: var(--f-tekst); font-weight: 600; font-size: 1.35rem; color: #FFF4D6;
+  text-shadow: 0 2px 6px rgba(40, 20, 5, .8), 0 0 1px #000;
+  animation: sj-pop 1s ease-out forwards;
+}
+.sj-pop.serie { font-family: var(--f-sier); font-weight: normal; font-size: 1.9rem; color: #FFE29A; animation-duration: 1.5s; }
+@keyframes sj-pop { 0% { opacity: 0; transform: translate(-50%, -30%) scale(.6); } 20% { opacity: 1; transform: translate(-50%, -60%) scale(1.15); } 100% { opacity: 0; transform: translate(-50%, -160%) scale(1); } }
+.sj-banier {
+  position: absolute; z-index: 4; left: 50%; top: 42%; transform: translate(-50%, -50%);
+  display: grid; justify-items: center; gap: 2px; padding: 10px 22px 12px; border-radius: 14px; pointer-events: none; white-space: nowrap;
+  background: #F4E9CF; color: #22392B; box-shadow: 0 16px 40px rgba(0, 0, 0, .5), inset 0 0 0 2px #C9973F;
+  animation: banier 1.8s ease forwards;
+}
+.sj-banier b { font-family: var(--f-sier); font-weight: normal; font-size: 1.9rem; line-height: 1.05; }
+.sj-banier span { font-family: var(--f-sier); font-style: italic; font-size: 1.05rem; color: #5A4630; }
+.sj-banier span:empty { display: none; }
+.sj-kaart {
+  position: absolute; z-index: 5; left: 50%; top: 45%; transform: translate(-50%, -50%);
+  display: grid; justify-items: center; gap: 6px; min-width: 190px; padding: 16px 22px 18px; border-radius: 16px; text-align: center;
+  background: #F4E9CF; color: #22392B; box-shadow: 0 18px 44px rgba(0, 0, 0, .55), inset 0 0 0 2px #C9973F;
+}
+.sj-kaart[hidden] { display: none; }
+.sj-kaart.in { animation: kaartje .5s ease forwards; }
+.sj-kaart b { font-family: var(--f-sier); font-weight: normal; font-size: 1.5rem; }
+.sj-kaart span { font-family: var(--f-sier); font-style: italic; font-size: 1.15rem; color: #5A4630; }
+.sj-kaart-gezicht svg { display: block; width: 64px; height: 64px; border-radius: 50%; box-shadow: 0 0 0 2px #C9973F; }
+.sj-kaart .knop { display: inline-flex; align-items: center; gap: 8px; background: var(--groen-deur); color: #F6EBD2; }
+.sj-kaart .knop svg { width: 18px; height: 18px; }
+/* de stand bovenin */
+.sj-stand {
+  flex: 1 1 auto; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 5px 10px; border: 0; border-radius: 18px; cursor: pointer; color: inherit; font: inherit;
+  background: rgba(20, 12, 6, .5); box-shadow: 0 4px 14px rgba(0, 0, 0, .3), inset 0 0 0 1px rgba(255, 236, 200, .16);
+}
+.sj-stand:focus-visible { outline: 3px solid #F2C14E; outline-offset: 2px; }
+.sj-speler { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; column-gap: 7px; align-items: center; padding: 3px 8px 3px 3px; border-radius: 14px; transition: background .3s ease, box-shadow .3s ease; }
+.sj-speler.aan { background: rgba(60, 38, 14, .72); box-shadow: 0 0 0 2px #E7C36A; }
+.sj-speler-beeld { grid-row: 1 / span 2; width: 36px; height: 36px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: #E9DFC8; box-shadow: 0 0 0 1.5px rgba(255, 236, 200, .55); }
+.sj-speler-beeld svg { width: 36px; height: 36px; display: block; }
+.sj-record .sj-speler-beeld { background: radial-gradient(circle at 35% 30%, #FFE7A0, #C9973F 70%); color: #6A3E0C; }
+.sj-record .sj-speler-beeld svg { width: 20px; height: 20px; }
+.sj-speler-naam { font-family: var(--f-sier); font-size: .92rem; line-height: 1; white-space: nowrap; max-width: 92px; overflow: hidden; text-overflow: ellipsis; color: #E9DCC0; }
+.sj-speler-score { font-family: var(--f-tekst); font-weight: 600; font-size: 1.35rem; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #FFF4D6; }
+.sj-tegen { font-style: normal; color: rgba(244, 233, 207, .5); font-size: 1.2rem; }
+/* onderkaart: wie gooit, hoeveel schijven, welke beurt */
+.sj-zelf .mo-gezicht > svg { background: #E9DFC8; }
+.sj-zelf .mo-doe { grid-column: 2; }
+.sj-beurten { display: inline-flex; gap: 5px; align-items: center; }
+.sj-beurten i { width: 10px; height: 10px; border-radius: 50%; background: rgba(244, 233, 207, .2); box-shadow: inset 0 0 0 1px rgba(244, 233, 207, .45); }
+.sj-beurten i.klaar { background: #C2892A; box-shadow: none; }
+.sj-beurten i.nu { background: #F2D78E; box-shadow: 0 0 0 2px rgba(242, 215, 142, .35); }
+.sj-omhoog { transform: rotate(-90deg); }
+.sj-snel { background: radial-gradient(circle at 35% 30%, #E8B651, #B07A1F 70%) !important; color: #2A1A08 !important; }
+.sj-snel[hidden] { display: none; }
+.sj-keuzes .sj-breed { grid-column: 1 / -1; grid-template-columns: auto auto; justify-content: center; align-items: center; column-gap: 12px; }
+.sj-keuzes .mo-keuze:last-child { grid-column: 1 / -1; }
+.sj-twee { display: flex !important; width: auto !important; height: 44px !important; }
+.sj-keuzes .sj-twee > svg { width: 40px; height: 40px; border-radius: 50%; box-shadow: none; overflow: visible; }
+.sj-keuzes .sj-twee > svg + svg { margin-left: -12px; }
+.sj-keuzes .sj-breed .mo-keuze-naam { text-align: left; }
+@media (max-width: 420px) {
+  .sj-speler-beeld, .sj-speler-beeld svg { width: 30px; height: 30px; }
+  .sj-speler-naam { font-size: .8rem; max-width: 70px; }
+  .sj-speler-score { font-size: 1.15rem; }
+  .sj-stand { gap: 3px; padding: 4px 6px; }
+  .sj-speler { padding: 2px 6px 2px 2px; column-gap: 5px; }
+}
+
 /* ---------- Telefoon: de kamer vult het scherm, weinig tekst ---------- */
 @media (max-width: 760px) {
   .toneel { height: calc(100svh - var(--kop-h, 60px)); min-height: 460px; }
@@ -1160,6 +1235,7 @@ button.mo-kaart { cursor: pointer; }
   .mo-plek, .mo-doel, .mo-pakbaar, .mo-tip-ring, .mo-steen.in-molen .mo-binnen, .mo-banier.in, .mo-ballon.in, .mo-menu.open .mo-menu-kaart, .mo-denk i, .mo-doe.schud { animation: none !important; }
   .mo-molenlijn { animation: none !important; stroke-dashoffset: 0; }
   .gb-beker.klaar, .gb-beker.schudt svg, .gb-beker.gooit svg, .gb-kaartje.in, .gb-pion-binnen.gewonnen { animation: none !important; }
+  .sj-pop, .sj-banier, .sj-kaart.in { animation: none !important; }
   .les-licht { transition: none; }
   .tafel, .diepte { transform: none; }
   .voorwerp .vw, .gordijn, .kamer-svg [data-na], .kamer-svg [data-voor], .schemer { transition: none; }

@@ -574,23 +574,23 @@
   }
 
   function bouwSjoelbak(ouder) {
+    // dezelfde sjoelbak als in het spel, maar lang en smal zoals een echte bak aan de muur
     const g = voorwerp(ouder, { spel: 'sjoelen', label: 'Speel sjoelen' });
-    const x = 985, y = 192, b = 80, h = 410;
+    const x = 985, y = 192, b = 80, h = 410, k = b / 360;
     schaduw(g, x, y, b, h, { rx: 4 });
-    el('rect', { x, y, width: b, height: h, rx: 4, fill: '#5A361B' }, g);
-    el('rect', { x: x + 7, y: y + 7, width: b - 14, height: h - 14, fill: 'url(#h-beuk)' }, g);
-    for (let i = 0; i < 8; i++) {
-      const xx = x + 10 + rnd() * (b - 20);
-      el('path', { d: `M${xx} ${y + 8} q ${rnd() * 6 - 3} ${h / 2} ${rnd() * 4 - 2} ${h - 16}`, fill: 'none', stroke: '#8A5B2A', 'stroke-opacity': 0.18 }, g);
+    if (window.Spellen && window.Spellen.sjoelen && window.Spellen.sjoelen.maakBak) {
+      const bak = window.Spellen.sjoelen.maakBak(Math.round(360 * h / b));
+      bak.setAttribute('class', 'sj-muur');
+      bak.setAttribute('x', x); bak.setAttribute('y', y); bak.setAttribute('width', b); bak.setAttribute('height', h);
+      g.appendChild(bak);
+    } else {
+      el('rect', { x, y, width: b, height: h, rx: 4, fill: '#5A361B' }, g);
     }
-    el('rect', { x: x + 7, y: y + 7, width: b - 14, height: 64, fill: '#5A361B', opacity: 0.12 }, g);
-    for (let k = 1; k < 4; k++) el('rect', { x: x + 7 + k * 16.5 - 1, y: y + 7, width: 2, height: 64, fill: '#4A2C14' }, g);
-    ['2', '3', '4', '1'].forEach((n, k) => tekst(n, { x: x + 15.25 + k * 16.5, y: y + 30, 'text-anchor': 'middle', 'font-family': 'IM Fell English, Georgia, serif', 'font-size': 12, fill: '#FFF2D6', opacity: 0.85 }, g));
-    el('rect', { x: x + 7, y: y + 71, width: b - 14, height: 6, fill: '#4A2C14' }, g);
-    for (let k = 0; k < 4; k++) el('rect', { x: x + 11 + k * 16.5, y: y + 71, width: 8, height: 6, fill: '#E0BA82' }, g);
-    el('line', { x1: x + 9, y1: y + 350, x2: x + b - 9, y2: y + 350, stroke: '#4A2C14', 'stroke-dasharray': '3 3', 'stroke-width': 1.2 }, g);
-    [[x + 15, y + 46], [x + 48, y + 56], [x + 31, y + 40]].forEach(([cx, cy]) => {
-      el('circle', { cx, cy, r: 6, fill: '#E9C48A', stroke: '#8A5B2A', 'stroke-width': 0.8 }, g);
+    // een paar schijven in de vakken en op de bak
+    [[65, 58], [143, 104], [221, 70], [299, 120], [196, 940], [118, 1480]].forEach(([bx, by]) => {
+      const cx = x + bx * k, cy = y + by * k;
+      el('circle', { cx: cx + 0.6, cy: cy + 0.8, r: 3, fill: '#000', opacity: 0.3 }, g);
+      el('circle', { cx, cy, r: 2.9, fill: '#E2B477', stroke: '#7A4B22', 'stroke-width': 0.5 }, g);
     });
     [[x + 12, y - 2], [x + b - 12, y - 2]].forEach(([cx, cy]) => {
       el('circle', { cx: cx + 1, cy: cy + 2, r: 5, fill: '#000', opacity: 0.3 }, g);

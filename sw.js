@@ -1,10 +1,10 @@
 /* Service worker: bewaart de site op het toestel, zodat Het Speelhuys ook zonder internet werkt.
    - De pagina zelf komt eerst van internet (dan zie je meteen de nieuwste versie), zonder internet uit de opslag.
-   - Stijl en scripts hebben een versienummer in hun adres (?v=10) en veranderen dus nooit: die komen uit de opslag.
+   - Stijl en scripts hebben een versienummer in hun adres (?v=11) en veranderen dus nooit: die komen uit de opslag.
      Zo kan een nieuwe pagina nooit met oude scripts worden gecombineerd.
    - Letters van Google Fonts: één keer ophalen en daarna uit de opslag.
    Bij een nieuwe versie: verhoog V hier en het ?v= nummer in index.html. */
-const V = '10';
+const V = '11';
 const VERSIE = 'speelhuys-v' + V;
 const LETTERS = 'speelhuys-letters-v1';
 const BESTANDEN = [

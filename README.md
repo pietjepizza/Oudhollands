@@ -45,7 +45,11 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   een kaartje en een geluid. Kom je op een bezet veld, dan moet de ander terug naar waar jij vandaan kwam. Speel met
   Jantje, Grietje, Molenaar Kees en de burgemeester, of met vrienden op hetzelfde toestel (tot vier spelers).
   Hetzelfde bord hangt als prent aan de muur van de voorkamer.
-- **Sjoelen**: houten sjoelbak met natuurkunde. 30 schijven, 3 beurten, de echte telling (20 per volle reeks, verder 2-3-4-1).
+- **Sjoelen** (schermvullend): een beukenhouten sjoelbak met Hindelooper versiering en echte natuurkunde. Druk op de
+  schijf en veeg omhoog; een richtlijn laat zien op welk poortje je afgaat. 30 schijven, 3 beurten, de telling van de
+  sjoelbond (een serie van 2-3-4-1 is 20, hoogstens 148). Na jou gooien Jantje, Grietje, Molenaar Kees of de burgemeester
+  zichtbaar hun eigen ronde (doorspoelen kan); versla er een en de volgende komt vrij. Ook met z'n tweeën of alleen
+  oefenen voor je record. Dezelfde bak hangt, lang en smal, aan de muur van de voorkamer.
 - **Molenspel** (schermvullend): op een ingekraste steen, tegen vier tegenstanders met een eigen gezicht en karakter
   (Jantje, Grietje, Molenaar Kees en de burgemeester; versla er een en de volgende komt vrij) of met z'n tweeën.
   Je ziet waar je kunt zetten en wat de ander net deed, je kunt tikken of slepen, onbeperkt terugnemen en een tip
@@ -70,7 +74,7 @@ Nog "in de oven": dammen, klaverjassen (herberg), kolf op het ijs (ijsbaan), de 
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=10`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=11`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

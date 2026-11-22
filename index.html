@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=10">
+<link rel="stylesheet" href="css/stijl.css?v=11">
 </head>
 <body>
 
@@ -284,7 +284,11 @@
       <path d="M8 13q1.2 1 2.4 0M13.6 13q1.2 1 2.4 0" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
       <path d="M11 16h2l-1 1.1z" fill="#fff"/>
     </symbol>
-      <!-- ganzenbord -->
+      <!-- sjoelen -->
+    <symbol id="i-snel" viewBox="0 0 24 24">
+      <path d="M3.5 6l8 6-8 6zM12.5 6l8 6-8 6z" fill="currentColor"/>
+    </symbol>
+    <!-- ganzenbord -->
     <symbol id="i-dobbel" viewBox="0 0 24 24">
       <rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
       <circle cx="8.4" cy="8.4" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="15.6" cy="15.6" r="1.7" fill="currentColor"/>
@@ -511,18 +515,10 @@
     <div class="mo-podium gb-podium" id="gb-podium"></div>
   </section>
 
-  <!-- SJOELEN -->
-  <section id="scherm-sjoelen" class="weergave spel" aria-labelledby="sj-titel" hidden>
-    <div class="spel-kop">
-      <a class="terug" href="#"><svg aria-hidden="true"><use href="#i-huis"/></svg><span>Naar het huis</span></a>
-      <h1 id="sj-titel">Sjoelen</h1>
-      <p class="spel-ondertitel">Dertig schijven, drie beurten. Schuif ze door de poortjes in de vakken 2, 3, 4 en 1.</p>
-      <button class="les-knop" type="button" data-les="sjoelen" aria-label="Gijs laat zien hoe het werkt" title="Hoe werkt het?"><svg aria-hidden="true"><use href="#i-vraag"/></svg></button>
-    </div>
-    <div class="spel-indeling">
-      <div class="speelveld speelveld--sjoel" id="sj-veld"></div>
-      <aside class="paneel" id="sj-paneel"></aside>
-    </div>
+  <!-- SJOELEN (schermvullend: alles zit in het speelveld) -->
+  <section id="scherm-sjoelen" class="weergave spel volscherm" aria-labelledby="sj-titel" hidden>
+    <h1 id="sj-titel" class="sr-only">Sjoelen</h1>
+    <div class="mo-podium sj-podium" id="sj-podium"></div>
   </section>
 
   <!-- MOLENSPEL (schermvullend: alles zit in het speelveld) -->
@@ -692,19 +688,19 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=10"></script>
-<script src="js/muziek.js?v=10"></script>
-<script src="js/duiten.js?v=10"></script>
-<script src="js/pronk.js?v=10"></script>
-<script src="js/seizoen.js?v=10"></script>
-<script src="js/les.js?v=10"></script>
-<script src="js/personen.js?v=10"></script>
-<script src="js/ganzenbord.js?v=10"></script>
-<script src="js/sjoelen.js?v=10"></script>
-<script src="js/molenspel.js?v=10"></script>
-<script src="js/knikkeren.js?v=10"></script>
-<script src="js/tollen.js?v=10"></script>
-<script src="js/huis.js?v=10"></script>
-<script src="js/app.js?v=10"></script>
+<script src="js/geluid.js?v=11"></script>
+<script src="js/muziek.js?v=11"></script>
+<script src="js/duiten.js?v=11"></script>
+<script src="js/pronk.js?v=11"></script>
+<script src="js/seizoen.js?v=11"></script>
+<script src="js/les.js?v=11"></script>
+<script src="js/personen.js?v=11"></script>
+<script src="js/ganzenbord.js?v=11"></script>
+<script src="js/sjoelen.js?v=11"></script>
+<script src="js/molenspel.js?v=11"></script>
+<script src="js/knikkeren.js?v=11"></script>
+<script src="js/tollen.js?v=11"></script>
+<script src="js/huis.js?v=11"></script>
+<script src="js/app.js?v=11"></script>
 </body>
 </html>
