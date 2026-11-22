@@ -264,6 +264,20 @@
     const cy = kort ? (72 + (H - kh * 0.62)) / 2 : H * 0.45;
     return { W, H, kb, kh, cx: W / 2, cy, kort };
   }
+  // de waaier van je hand: de stap tussen de kaarten en waar de eerste kaart ligt
+  function handMaat(m, n) {
+    const stap = n > 1 ? Math.min(m.kb * 0.68, (m.W - 16 - m.kb) / (n - 1)) : 0;
+    return { stap, x0: (m.W - (m.kb + stap * Math.max(0, n - 1))) / 2 };
+  }
+  // jouw naam: boven je hand, of op een lage tafel links naast je kaarten
+  function zetJij(n) {
+    const m = M;
+    if (!m || !ui.jij) return;
+    if (!m.kort) { ui.jij.style.left = ''; ui.jij.style.right = ''; ui.jij.style.top = (m.H - m.kh - 40) + 'px'; return; }
+    ui.jij.style.left = 'auto';
+    ui.jij.style.right = Math.round(m.W - handMaat(m, Math.max(1, n)).x0 + 14) + 'px';
+    ui.jij.style.top = Math.round(m.H - m.kh * 0.62 + m.kh * 0.06) + 'px';
+  }
   function pasMaatAan() {
     if (!tafel) return;
     const m = maten();
@@ -274,7 +288,7 @@
     podium.classList.toggle('kort', m.kort);
     const zitPlek = m.kort ? [null, [44, m.cy], [m.cx, 30], [m.W - 44, m.cy]] : [null, [46, m.cy - 6], [m.cx, 40], [m.W - 46, m.cy - 6]];
     for (let z = 1; z <= 3; z++) { ui.zit[z].style.left = zitPlek[z][0] + 'px'; ui.zit[z].style.top = zitPlek[z][1] + 'px'; }
-    ui.jij.style.top = (m.kort ? m.H - m.kh * 0.75 - 30 : m.H - m.kh - 40) + 'px';
+    zetJij(spel ? K.aantal(spel.handen[0]) : 8);
     plaatsAlles(false);
   }
   // de volgorde in je hand: troef vooraan, dan om en om rood en zwart; hoog naar laag
@@ -307,8 +321,7 @@
         if (!gedeeldSet.has(k)) return;
         const t = n > 1 ? i / (n - 1) - 0.5 : 0;
         if (z === 0) {
-          const stap = n > 1 ? Math.min(m.kb * 0.68, (m.W - 16 - m.kb) / (n - 1)) : 0;
-          const x0 = (m.W - (m.kb + stap * (n - 1))) / 2;
+          const { stap, x0 } = handMaat(m, n);
           const op = (k === gekozen ? 18 : 0) + (k === tipKaart ? 10 : 0);
           uit.set(k, { x: x0 + i * stap, y: (m.kort ? m.H - m.kh * 0.62 : m.H - m.kh - 8) + t * t * m.kh * 0.28 - op, r: t * 9, s: 1, dicht: !omgedraaid, z: 300 + i });
         } else if (z === 2) {
@@ -345,6 +358,7 @@
   const transformVan = (p) => `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px) rotate(${p.r.toFixed(1)}deg) scale(${p.s})`;
   function plaatsAlles(anim, duur) {
     if (!M || !spel) return;
+    zetJij(K.aantal(spel.handen[0]));
     const uit = doelen();
     const mag = fase === 'spelen' && spel.aan === 0 && !spel.klaar ? K.magNu(spel) : 0;
     for (let k = 0; k < 32; k++) {
@@ -399,7 +413,8 @@
     const mijnBeurt = !!spel && !spel.klaar && spel.aan === 0 && fase === 'spelen';
     ui.jij.classList.toggle('aan', mijnBeurt || (fase === 'troef' && spel && spel.voorhand === 0));
     const doe = ui.jij.querySelector('.kj-doe');
-    doe.textContent = fase === 'troef' && spel && spel.voorhand === 0 ? 'Kies troef' : mijnBeurt ? (spel.slag.length ? 'Jouw beurt' : 'Jij komt uit') : '';
+    doe.textContent = fase === 'troef' && spel && spel.voorhand === 0 ? 'Kies troef' : mijnBeurt ? (spel.slag.length ? 'Jouw beurt' : 'Kom uit') : '';
+    ui.jij.classList.toggle('zegt', !!doe.textContent);
     ui.tip.hidden = !(mijnBeurt || (fase === 'troef' && spel && spel.voorhand === 0));
     ui.troefkeuze.hidden = !(fase === 'troef' && spel && spel.voorhand === 0);
   }
