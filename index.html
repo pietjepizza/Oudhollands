@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Het Speelhuys</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Oud-Hollandse spellen om te spelen in een 17e-eeuws grachtenpand: ganzenbord, sjoelen, molenspel, dammen, klaverjassen, triktrak, bikkelen, kolf op het ijs en meer.">
+<meta name="description" content="Oud-Hollandse spellen om te spelen in een 17e-eeuws grachtenpand: ganzenbord, sjoelen, molenspel, dammen, klaverjassen, triktrak, bikkelen, kolf op het ijs, koekhappen en meer.">
 <meta name="theme-color" content="#1C3473">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,7 +17,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=30">
+<link rel="stylesheet" href="css/stijl.css?v=31">
+<script>
+  /* de opening (het doek gaat op) alleen als je bij het huis begint, één keer per bezoek; meteen zetten, zodat de straat niet eerst even flitst */
+  (function () {
+    var thuis = !location.hash || location.hash === '#', proef = location.search.indexOf('opening') >= 0, gezien = false;
+    try { gezien = sessionStorage.getItem('speelhuys.opening') === '1'; } catch (e) { /* geen opslag: dan gewoon tonen */ }
+    if (proef || (thuis && !gezien && !navigator.webdriver)) document.documentElement.classList.add('met-opening');
+  })();
+</script>
 </head>
 <body>
 
@@ -323,6 +331,18 @@
       <path d="M9.7 16.2 L5 19.3 Q3.5 20.4 4.8 21.2 L10.7 20.2 Q11.7 19.9 11.5 18.8 Z" fill="currentColor"/>
       <circle cx="17" cy="19.2" r="2.7" fill="currentColor"/>
     </symbol>
+    <!-- koekhappen: een plak koek aan een touwtje, met een hap eruit -->
+    <symbol id="i-koek" viewBox="0 0 24 24">
+      <path d="M12 1.4 V6.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <path d="M6 8.4 Q12 5.8 18 8.4 V14.6 A3.4 3.4 0 0 0 13.8 21.6 H7.6 Q6 21.6 6 20 Z" fill="currentColor"/>
+      <circle cx="12" cy="8.9" r="1.05" fill="#000" fill-opacity=".35"/>
+    </symbol>
+    <!-- een veer: indrukken en loslaten -->
+    <symbol id="i-veer" viewBox="0 0 24 24">
+      <path d="M6 4.5 H18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M12 4.5 V7 L7.5 9.2 L16.5 11.6 L7.5 14 L16.5 16.4 L12 18.6 V20.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8.5 20.5 H15.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
     <!-- bikkelen: een bikkel, en de vier kanten bol, hol, rug en S -->
     <symbol id="i-bikkel" viewBox="0 0 24 24">
       <g transform="translate(12 12.6) rotate(-18) scale(10.4)"><path d="M-1 -0.12 C-1.04 -0.52 -0.62 -0.7 -0.3 -0.56 C-0.1 -0.47 0.1 -0.47 0.3 -0.56 C0.64 -0.72 1.04 -0.5 1 -0.08 C0.97 0.3 0.74 0.62 0.36 0.58 C0.16 0.56 0.07 0.42 -0.04 0.42 C-0.17 0.42 -0.26 0.61 -0.5 0.6 C-0.84 0.59 -0.97 0.26 -1 -0.12 Z" fill="currentColor"/></g>
@@ -506,13 +526,14 @@
           <p class="gevel-uitleg">Oud-Hollandse spellen in een 17e-eeuws grachtenpand. Speel, verdien duiten en knap het huis op.</p>
           <button class="knop knop-binnen" id="naar-binnen" type="button">Ga naar binnen</button>
         </div>
+        <button class="hud-knop gevel-vraag" id="knop-uitleg" type="button" aria-label="Hoe werkt het huis? Gijs leidt je rond" title="Hoe werkt het huis?"><svg aria-hidden="true"><use href="#i-vraag"/></svg></button>
         <nav class="plekken" id="plekken" aria-label="Plekken aan de gracht">
           <button class="plek-knop" type="button" data-plek="voorkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-deur"/></svg></span><span class="plek-naam">Voorkamer</span></button>
           <button class="plek-knop" type="button" data-plek="zolder"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-luik"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">Zolder</span></button>
-          <button class="plek-knop plek-lezen" type="button" data-plek="kunstkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-boek"/></svg></span><span class="plek-naam">Kunstkamer</span></button>
           <button class="plek-knop" type="button" data-plek="herberg"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-kroes"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">Herberg</span></button>
           <button class="plek-knop" type="button" data-plek="kermis"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-vlag"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">Kermis</span></button>
           <button class="plek-knop" type="button" data-plek="ijsbaan"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-schaats"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">IJsbaan</span></button>
+          <button class="plek-knop plek-lezen" type="button" data-plek="kunstkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-boek"/></svg></span><span class="plek-naam">Kunstkamer</span></button>
         </nav>
       </div>
       <div class="kamer" id="kamer" hidden>
@@ -532,6 +553,7 @@
         </button>
         <p class="veeg-hint" id="veeg-hint">Veeg om rond te kijken</p>
         <div class="hud-knoppen">
+          <button class="hud-knop" id="knop-uitleg-kamer" type="button" aria-label="Hoe werkt het huis? Gijs leidt je rond" title="Hoe werkt het huis?"><svg aria-hidden="true"><use href="#i-vraag"/></svg></button>
           <button class="hud-knop" id="knop-kast" type="button" aria-label="Pronkkast" title="Pronkkast"><svg aria-hidden="true"><use href="#i-kast"/></svg></button>
           <button class="hud-knop" id="knop-kamer" type="button" aria-label="Naar de zolder" title="Naar de zolder" hidden><svg aria-hidden="true"><use id="knop-kamer-use" href="#i-trap"/></svg></button>
           <button class="hud-knop" id="knop-straat" type="button" aria-label="Naar buiten" title="Naar buiten"><svg aria-hidden="true"><use href="#i-huis"/></svg></button>
@@ -546,7 +568,7 @@
       <div class="intro">
         <p class="bovenregel">Oud-Hollandse spellen</p>
         <h2 class="intro-kop">Speel, verdien duiten en knap het huis op</h2>
-        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel, het dambord, de speelkaarten, het triktrakbord, de bikkels of de kolf om te spelen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
+        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel, het dambord, de speelkaarten, het triktrakbord, de bikkels, de kolf of de koek aan het plafond om te spelen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
         <ul class="spellijst">
           <li><a href="#ganzenbord">Ganzenbord</a></li>
           <li><a href="#sjoelen">Sjoelen</a></li>
@@ -556,8 +578,9 @@
           <li><a href="#triktrak">Triktrak</a></li>
           <li><a href="#bikkelen">Bikkelen</a></li>
           <li><a href="#kolf">Kolf op het ijs</a></li>
+          <li><a href="#koekhappen">Koekhappen</a></li>
           <li class="later">Op de zolder: knikkeren en tollen</li>
-          <li class="later">Binnenkort: de herberg met kaartspellen, de kermis en kolf op het ijs</li>
+          <li class="later">Binnenkort: de kermis, hoepelen, kop van Jut en vliegeren</li>
         </ul>
         <p><a href="#" id="naar-buiten">Bekijk het huis van buiten</a></p>
       </div>
@@ -624,6 +647,11 @@
     <h1 id="ko-titel" class="sr-only">Kolf op het ijs</h1>
     <div class="mo-podium ko-podium" id="ko-podium"></div>
   </section>
+  <!-- KOEKHAPPEN (schermvullend) -->
+  <section id="scherm-koekhappen" class="weergave spel volscherm" aria-labelledby="kh-titel" hidden>
+    <h1 id="kh-titel" class="sr-only">Koekhappen</h1>
+    <div class="mo-podium kh-podium" id="kh-podium"></div>
+  </section>
   <!-- DE KUNSTKAMER: lezen en kijken, geen spel -->
   <section id="scherm-kunstkamer" class="weergave volscherm kunstkamer" aria-labelledby="kk-titel" hidden>
     <h1 id="kk-titel" class="sr-only">De Kunstkamer</h1>
@@ -689,6 +717,21 @@
   </div>
 </div>
 
+<!-- De opening: het rode doek gaat op voor Het Speelhuys (tik om over te slaan) -->
+<div class="opening" id="opening">
+  <div class="opening-licht" aria-hidden="true"></div>
+  <div class="opening-doek opening-links" aria-hidden="true"><i class="opening-koord"></i></div>
+  <div class="opening-doek opening-rechts" aria-hidden="true"><i class="opening-koord"></i></div>
+  <div class="opening-val" aria-hidden="true"></div>
+  <div class="opening-kaart" role="img" aria-label="Het Speelhuys. Oud-Hollandse spellen, anno 1648">
+    <svg class="opening-tegel" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" class="merk-grond"/><use href="#hoeken" class="merk-hoeken"/><use href="#ill-gans" x="12" y="10" width="76" height="76" class="tekening opening-gans"/></svg>
+    <p class="opening-titel" aria-hidden="true">Het Speelhuys</p>
+    <svg class="opening-krul" viewBox="0 0 260 26" aria-hidden="true"><path d="M6 15 C 38 3, 70 25, 104 13 C 118 8, 124 6, 130 13 C 136 6, 142 8, 156 13 C 190 25, 222 3, 254 15"/><circle cx="130" cy="13" r="3.2"/></svg>
+    <p class="opening-onder" aria-hidden="true">Oud-Hollandse spellen &middot; anno 1648</p>
+  </div>
+  <p class="opening-tik" aria-hidden="true">tik om verder te gaan</p>
+</div>
+
 <!-- Gijs de gans doet voor hoe een spel werkt -->
 <div class="les" id="les" role="dialog" aria-modal="true" aria-label="Gijs de gans laat zien hoe het werkt" hidden>
   <div class="les-licht" id="les-licht"></div>
@@ -734,6 +777,7 @@
     </div>
     <button class="menu-knop" id="menu-buiten" type="button"><svg aria-hidden="true"><use href="#i-huis"/></svg>Huis van buiten</button>
     <button class="menu-knop" id="menu-kast" type="button"><svg aria-hidden="true"><use href="#i-kast"/></svg>Pronkkast</button>
+    <button class="menu-knop" id="menu-uitleg" type="button"><svg aria-hidden="true"><use href="#i-vraag"/></svg>Hoe werkt het huis?</button>
     <button class="menu-knop menu-schakel" id="menu-tril" type="button" role="switch" aria-checked="true"><svg aria-hidden="true"><use href="#i-tril"/></svg>Trillen<span class="schakel" aria-hidden="true"><i></i></span></button>
     <div class="menu-seizoen" role="group" aria-labelledby="seizoen-kop">
       <p class="menu-klein" id="seizoen-kop"><svg aria-hidden="true"><use href="#i-kalender"/></svg>Seizoen</p>
@@ -779,28 +823,31 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=30"></script>
-<script src="js/muziek.js?v=30"></script>
-<script src="js/duiten.js?v=30"></script>
-<script src="js/pronk.js?v=30"></script>
-<script src="js/seizoen.js?v=30"></script>
-<script src="js/les.js?v=30"></script>
-<script src="js/personen.js?v=30"></script>
-<script src="js/ganzenbord.js?v=30"></script>
-<script src="js/sjoelen.js?v=30"></script>
-<script src="js/molenspel.js?v=30"></script>
-<script src="js/damregels.js?v=30"></script>
-<script src="js/dammen.js?v=30"></script>
-<script src="js/klaverregels.js?v=30"></script>
-<script src="js/klaverjassen.js?v=30"></script>
-<script src="js/triktrakregels.js?v=30"></script>
-<script src="js/triktrak.js?v=30"></script>
-<script src="js/bikkelen.js?v=30"></script>
-<script src="js/kolf.js?v=30"></script>
-<script src="js/kunstkamer.js?v=30"></script>
-<script src="js/knikkeren.js?v=30"></script>
-<script src="js/tollen.js?v=30"></script>
-<script src="js/huis.js?v=30"></script>
-<script src="js/app.js?v=30"></script>
+<script src="js/geluid.js?v=31"></script>
+<script src="js/muziek.js?v=31"></script>
+<script src="js/duiten.js?v=31"></script>
+<script src="js/pronk.js?v=31"></script>
+<script src="js/seizoen.js?v=31"></script>
+<script src="js/les.js?v=31"></script>
+<script src="js/personen.js?v=31"></script>
+<script src="js/ganzenbord.js?v=31"></script>
+<script src="js/sjoelen.js?v=31"></script>
+<script src="js/molenspel.js?v=31"></script>
+<script src="js/damregels.js?v=31"></script>
+<script src="js/dammen.js?v=31"></script>
+<script src="js/klaverregels.js?v=31"></script>
+<script src="js/klaverjassen.js?v=31"></script>
+<script src="js/triktrakregels.js?v=31"></script>
+<script src="js/triktrak.js?v=31"></script>
+<script src="js/bikkelen.js?v=31"></script>
+<script src="js/kolf.js?v=31"></script>
+<script src="js/koekhappen.js?v=31"></script>
+<script src="js/kunstkamer.js?v=31"></script>
+<script src="js/knikkeren.js?v=31"></script>
+<script src="js/tollen.js?v=31"></script>
+<script src="js/huis.js?v=31"></script>
+<script src="js/app.js?v=31"></script>
+<script src="js/rondleiding.js?v=31"></script>
+<script src="js/opening.js?v=31"></script>
 </body>
 </html>

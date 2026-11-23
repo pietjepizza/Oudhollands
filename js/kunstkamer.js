@@ -147,6 +147,26 @@
       ]
     },
     {
+      id: 'koekhappen', naam: 'Koekhappen', tegel: 'ill-koek', tijd: 'Negentiende eeuw tot nu', kort: 'Een koek aan een touwtje, je handen op je rug',
+      herkomst: [
+        'Koek was lang een feestelijke lekkernij, en op de kermis kon je er ook mee spelen. Jan ter Gouw noemt in zijn boek De volksvermaken (1871) vier spellen met koek: koekhakken, koekhappen, koekknuppelen en koekgooien.',
+        'Koekhappen gaat natuurlijk met de mond, schrijft hij. Hij zag het zelf in 1869 nog in de Diemermeer, bij de Tolbrug.',
+        'Later werd koekhappen een spel voor kinderfeestjes en voor Koninginnedag, nu Koningsdag. Er hangen plakjes ontbijtkoek aan touwtjes aan een lijn.'
+      ],
+      spelen: ['Aan een lijn hangen koeken aan touwtjes, net boven je mond.', 'Je staat eronder met je handen op je rug. Drie, twee, één: happen maar!', 'Raak je de koek met je neus, dan zwaait hij weg.', 'Wie zijn koek het eerst op heeft, wint.'],
+      weetjes: ['Ter Gouw dacht dat je het steeds minder zag omdat de jongens het wat vies begonnen te vinden.', 'Soms was de koek met boter besmeerd. Dan zat je gezicht er helemaal onder.', 'Op Koningsdag 2018 tekende Google koekhappende kinderen op zijn zoekpagina.'],
+      kunst: [
+        { titel: 'Koekhappen (a Dutch party game)', maker: 'Petrus van der Velden, 1876', url: 'https://collections.tepapa.govt.nz/object/42816', waar: 'Te Papa, Nieuw-Zeeland' }
+      ],
+      bronnen: [
+        { tekst: 'Jan ter Gouw, De volksvermaken (1871), DBNL', url: 'https://www.dbnl.org/tekst/gouw002volk01_01/gouw002volk01_01_0037.php' },
+        { tekst: 'Koekhappen in Traditie (Kenniscentrum Immaterieel Erfgoed)', url: 'https://www.immaterieelerfgoed.nl/image/2018/9/19/traditie_2005_2_spread.pdf' },
+        { tekst: 'Regula Ysewijn, Dark Rye and Honey Cake: koek als vermaak', url: 'https://app.ckbk.com/section/dark51814c19s001ss007/koek-as-entertainment' },
+        { tekst: 'Koekhappen wordt bij het erfgoedvuil gezet (NOS)', url: 'https://nos.nl/artikel/2026580-koekhappen-wordt-bij-het-erfgoedvuil-gezet' },
+        { tekst: 'Koningsdag 2018 (Google Doodle)', url: 'https://doodles.google/doodle/kings-day-2018/' }
+      ]
+    },
+    {
       id: 'knikkeren', naam: 'Knikkeren', tegel: 'ill-knikkers', tijd: 'Eeuwenoud', kort: 'Een potje in het zand',
       herkomst: [
         'Kinderen speelden al in de oudheid met noten, steentjes en balletjes. Knikkers waren vaak van gebakken klei; die waren goedkoop. Wie meer geld had, kon knikkers van steen of glas kopen.',

@@ -187,6 +187,12 @@
     // de ijzeren kop van een kolf tegen een leren bal, en een bal tegen de houten paal
     kolf(kracht) { const v = Math.min(0.9, 0.25 + (kracht || 0.5) * 0.7); ruis(0.04, 1500, 2.2, v * 0.6); toon(320, 0.06, v * 0.16, 'triangle'); toon(1900, 0.03, v * 0.04, 'sine'); },
     paal(kracht) { const v = Math.min(0.9, 0.3 + (kracht || 0.5) * 0.6); toon(210, 0.16, v * 0.22, 'triangle'); ruis(0.06, 700, 2, v * 0.5); toon(420, 0.1, v * 0.06, 'sine', 0.02); },
+    // koekhappen: een hap in de koek, tanden op elkaar in de lucht, de koek tegen je neus, aftellen en happen maar
+    hap() { ruis(0.07, 2200, 2.5, 0.42); ruis(0.05, 900, 1.6, 0.3, 0.035); toon(170, 0.06, 0.06, 'triangle', 0.01); },
+    klap() { toon(1100, 0.025, 0.06, 'square'); ruis(0.02, 3200, 5, 0.16); },
+    boing() { toon(300, 0.09, 0.12, 'sine'); toon(220, 0.14, 0.09, 'sine', 0.06); ruis(0.04, 600, 1.4, 0.22); },
+    tel() { toon(740, 0.09, 0.09, 'sine'); },
+    start() { toon(988, 0.12, 0.1, 'sine'); toon(1319, 0.3, 0.1, 'sine', 0.1); },
     // een gans die gakt
     gak() { [0, 0.17].forEach((w, i) => { toon(560 - i * 50, 0.12, 0.08, 'sawtooth', w); toon(840 - i * 70, 0.1, 0.035, 'square', w + 0.01); ruis(0.08, 900, 2, 0.12, w); }); },
     // een glas in de herberg

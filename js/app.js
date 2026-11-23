@@ -1,9 +1,9 @@
 /* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel, #dammen, #klaverjassen, #triktrak, #knikkeren, #tollen),
    de knoppen in de kop, het menu, tikgeluid en trilling, en het installeren als app. */
 (function () {
-  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'knikkeren', 'tollen'];
+  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'koekhappen', 'knikkeren', 'tollen'];
   // muziek per spel; de zolderspellen lenen een vrolijk stuk, dammen het rustige molenstuk
-  const MUZIEK = { knikkeren: 'ganzenbord', tollen: 'sjoelen', dammen: 'molenspel', klaverjassen: 'sjoelen', triktrak: 'molenspel', bikkelen: 'ganzenbord', kolf: 'sjoelen' };
+  const MUZIEK = { knikkeren: 'ganzenbord', tollen: 'sjoelen', dammen: 'molenspel', klaverjassen: 'sjoelen', triktrak: 'molenspel', bikkelen: 'ganzenbord', kolf: 'sjoelen', koekhappen: 'ganzenbord' };
   // plekken om te lezen en te kijken; geen spel
   const PAGINAS = ['kunstkamer'];
   let huidig; // undefined = er is nog niets getoond

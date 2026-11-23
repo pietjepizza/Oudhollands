@@ -128,7 +128,7 @@
         tafel: plaats([60, 945], [-30, 1300], 0.75),
         bikkels: plaats([918, 880], [470, 1250], 0.85),
         kat: plaats([1390, 925], [720, 1265], 0.8),
-        koek: plaats([1290, -10], [640, -10], 1.0),
+        koek: plaats([1290, -10], [610, -10], 0.85),
         schoen: plaats([1006.7, 789.5], [578, 1192], 0.85)
       },
       schouw: { X: -14, hb: 92, top: 300, kolommen: 4, diep: 40, maat: 0.9 }
@@ -1062,16 +1062,22 @@
     el('path', { class: 'kat-staart', d: 'M1450 926 C 1470 948, 1430 960, 1372 952', fill: 'none', stroke: '#B46A2E', 'stroke-width': 10, 'stroke-linecap': 'round' }, g);
   }
 
+  // koekhappen: een plak ontbijtkoek aan een touwtje uit de balk, net als in het spel (met al een hap eruit)
   function bouwKoek(ouder) {
-    const g = voorwerp(ouder, { label: 'Koekhappen · komt binnenkort' });
+    const g = voorwerp(ouder, { spel: 'koekhappen', label: 'Speel koekhappen' });
+    el('rect', { x: 1240, y: 110, width: 100, height: 200, fill: 'transparent' }, g);
+    naambordje(g, 1292, 268, 'Koekhappen');
     const t = el('g', { class: 'koek-touw' }, g);
-    el('rect', { x: 1258, y: 150, width: 64, height: 100, fill: 'transparent' }, t);
-    el('line', { x1: 1290, y1: -10, x2: 1290, y2: 212, stroke: '#D8CBB0', 'stroke-width': 1.6 }, t);
-    el('rect', { x: 1268, y: 214, width: 52, height: 32, rx: 5, fill: '#1A0F06', opacity: 0.3, filter: 'url(#h-zacht)', transform: 'translate(6 6)' }, t);
-    el('rect', { x: 1264, y: 210, width: 52, height: 32, rx: 5, fill: '#7A4519' }, t);
-    el('rect', { x: 1268, y: 214, width: 44, height: 24, rx: 3, fill: '#A86A2C' }, t);
-    for (let i = 0; i < 7; i++) el('circle', { cx: 1272 + rnd() * 36, cy: 218 + rnd() * 16, r: 1.2, fill: '#6A3A12' }, t);
-    el('circle', { cx: 1290, cy: 211, r: 2.5, fill: '#D8CBB0' }, t);
+    el('line', { x1: 1290, y1: -10, x2: 1290, y2: 200, stroke: '#E4D7BC', 'stroke-width': 1.6 }, t);
+    // de plak met een hap uit de hoek (en zijn schaduw op de muur)
+    const plak = 'M1271 203 Q1290 195 1309 203 L1309 236 A8.5 8.5 0 0 0 1296 250 L1274 250 Q1271 250 1271 247 Z';
+    el('path', { d: plak, fill: '#1A0F06', opacity: 0.3, filter: 'url(#h-zacht)', transform: 'translate(7 8)' }, t);
+    el('path', { d: plak, fill: '#93511F', stroke: '#5A2C10', 'stroke-width': 1.2 }, t);
+    el('path', { d: 'M1271 203 Q1290 195 1309 203 L1309 208 Q1290 200.5 1271 208 Z', fill: '#4A220C' }, t);
+    el('path', { d: 'M1275 202 Q1284 198.6 1292 199', fill: 'none', stroke: '#F2CFA0', 'stroke-width': 0.9, opacity: 0.6 }, t);
+    for (let i = 0; i < 16; i++) el('circle', { cx: 1274 + rnd() * 32, cy: 211 + rnd() * 36, r: 0.6 + rnd() * 0.8, fill: rnd() < 0.6 ? '#5E2E12' : '#C38A4E', opacity: 0.8 }, t);
+    el('path', { d: 'M1309 236 A8.5 8.5 0 0 0 1296 250', fill: 'none', stroke: '#D9A066', 'stroke-width': 1.4 }, t);
+    el('circle', { cx: 1290, cy: 205, r: 1.8, fill: '#2A1206' }, t);
   }
 
   function bouwKroon(ouder) {

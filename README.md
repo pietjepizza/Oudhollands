@@ -120,6 +120,17 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   koek-en-zopie); een partij is drie of vijf banen, en bij gelijkspel volgt een beslissende baan. Tegen Jantje,
   Grietje, Molenaar Kees en de burgemeester (die rekenen hun slagen door, maar hun hand trilt; afgesteld met
   nagespeelde partijen) of met z'n tweeën. De kolf tegen de muur van de voorkamer opent het spel.
+- **Koekhappen** (schermvullend): een zomermiddag op het dorpsplein, met in de verte de witte tolbrug (Jan ter Gouw zag
+  het spel in 1869 nog "in de Diemermeer bij de Tolbrug"). Aan een lijn met vlaggetjes hangen twee plakken ontbijtkoek
+  aan een touwtje; twee kinderen in kiel en op klompen staan eronder, met de handen op de rug. Houd je vinger op het
+  veld: je zakt door je knieën, en hoe langer je drukt, hoe hoger je springt (een stippellijntje laat zien tot waar).
+  Laat los: je springt met je mond open, en komt de koek ertussen, dan hap je. De koek slingert echt (een slinger aan
+  een touwtje, aan een lijn die meeveert en de andere koek meeneemt); raak je hem met je neus, dan schiet hij weg.
+  Rustig happen op het hoogste punt geeft een flinke hap, een voorbijzwiepende koek alleen een hapje. Na elke hap schuif
+  je een stapje naar de koek toe. Wie het eerst zijn koek op heeft, wint de ronde; een partij is één koek, of wie er het
+  eerst twee op heeft. Tegen Jantje, Mieke, Trijntje en Bakkersjongen Teun (die rekenen de slinger vooruit, maar niet
+  allemaal even vlug; afgesteld met duizenden nagespeelde races) of met z'n tweeën op één scherm (links en rechts, of
+  de toetsen A en L). De koek aan het plafond van de voorkamer opent het spel.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -135,31 +146,39 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   Op de zolder ligt dezelfde krijtkring voor de tolkist.
 
 **De Kunstkamer** (geen spel): het buurhuis rechts van Het Speelhuys, met een gevelsteen "Kunstkamer, lezen en
-kijken" boven de deur, en een eigen knop met een boekje in het rijtje plekken aan de gracht. Binnen hangt goudleer aan de
+kijken" boven de deur, en een eigen knop met een boekje helemaal rechts in de knoppenbalk aan de gracht. Binnen hangt goudleer aan de
 muur en staat per spel een vitrine met een Delfts tegeltje. Wie een vitrine opent, leest waar het spel vandaan komt, hoe
 je het speelt, op welke schilderijen en prenten het staat (met links naar de musea), een weetje en de bronnen; onderaan
 staat een knop om het spel zelf te spelen. Een kunstkamer was in de zeventiende eeuw de verzameling waarmee een
 welgestelde burger liet zien wat hij wist en had.
+
+**De opening en de rondleiding.** Wie Het Speelhuys opent, ziet eerst een rood toneeldoek met een gouden lambrekijn. In
+het midden tekent een gans zich op een Delfts tegeltje, en de naam verschijnt letter voor letter in goud, met "anno 1648"
+(het jaartal op de gevel). Dan gaat het doek op en sta je aan de gracht. Tik om meteen verder te gaan; de opening komt
+één keer per bezoek, en met "minder beweging" alleen als stil titelbord. De eerste keer leidt Gijs de gans je daarna
+rond: de deur naar de spellen, de duiten, het opknappen, de zolder, de plekken die nog komen, de Kunstkamer en het menu.
+Binnen in de kamer wijst hij een spel, de klussen, de voortgang, de pronkkast en de weg naar buiten aan. Later start je
+de rondleiding met het vraagteken op de straat, in de kamer of in het menu ("Hoe werkt het huis?").
 
 **Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), die de browser zelf speelt met Web Audio, op blokfluit en luit. Elke plek heeft een eigen stuk:
 
 | Plek | Stuk | Klank |
 |---|---|---|
 | Het huis | Engels Nachtegaeltje | blokfluit |
-| Ganzenbord en bikkelen | Malle Symen | blokfluit en trom |
+| Ganzenbord, bikkelen en koekhappen | Malle Symen | blokfluit en trom |
 | Sjoelen, klaverjassen en kolf | Onder de Linde groene | luit |
 | Molenspel, dammen en triktrak | Doen Daphne d'over schoone Maeght | luit |
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
+Nog "in de oven": de kermis, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
 je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=30`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=31`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
