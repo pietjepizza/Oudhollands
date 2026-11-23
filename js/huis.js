@@ -784,9 +784,12 @@
       el('ellipse', { cx: 1276, cy: 584 - i * 4.5, rx: 11, ry: 3.6, fill: i % 2 ? '#E0B77D' : '#D4A86C', stroke: '#8A5B2A', 'stroke-width': 0.7 }, ouder);
     }
     // Triktrak (verkeren): in de 17e eeuw een geliefd spel met twee dobbelstenen, vaak geschilderd,
-    // o.a. door Duyster en Jan Steen. Het bord staat open tegen de muur, met de beker en de stenen ervoor.
-    const g = voorwerp(ouder, { label: 'Triktrak · komt binnenkort' });
+    // o.a. door Duyster en Jan Steen. Het bord staat open tegen de muur, met de beker en de stenen ervoor;
+    // tik erop om te spelen.
+    const g = voorwerp(ouder, { spel: 'triktrak', label: 'Speel triktrak' });
     el('rect', { x: 1110, y: 538, width: 100, height: 56, fill: 'transparent' }, g);
+    // het naambordje hangt onder de plank, tussen de steunen
+    naambordje(g, 1196, 606, 'Triktrak');
     const bx = 1116, by = 545, bb = 60, bh = 43;
     el('rect', { x: bx + 3, y: by + 3, width: bb, height: bh, rx: 2, fill: '#2A1A0C', opacity: 0.32, filter: 'url(#h-zacht)' }, g);
     el('rect', { x: bx, y: by, width: bb, height: bh, rx: 2, fill: '#4A2E16', stroke: '#26170A', 'stroke-width': 0.8 }, g);

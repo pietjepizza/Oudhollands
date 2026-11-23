@@ -91,6 +91,18 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   haalt; nat en pit worden gevierd of betreurd, en de stand staat in een gelinieerd klaverjasboekje. De tafelgenoten
   rekenen vanaf de derde slag met Monte Carlo en open-kaarten-zoeken in een achtergrondwerker; de regels zijn getest
   met handgemaakte gevallen en duizenden hele spellen. De speelkaarten op de voorkamertafel openen het spel.
+- **Triktrak** (schermvullend): het spel met vijftien schijven en twee dobbelstenen dat in de 17e eeuw in Holland
+  geliefd was (Duyster en Jan Steen schilderden het), met de regels van het backgammon. Een opengeklapte kist van
+  notenhout met ingelegde punten van ebben en rood, ivoren en ebben schijven, een leren beker (ingedrukt houden is
+  schudden, loslaten is gooien) en echte dobbelstenen. Tik een schijf en je ziet meteen waar hij heen mag, ook met
+  beide ogen tegelijk; tik de plek of sleep. Alleen wat mag, licht op (zoveel mogelijk ogen gebruiken, en anders het
+  hoogste), gebruikte stenen worden grijs, en terugnemen kan tot je beurt voorbij is. Slaan, de bar, uitnemen, dubbel
+  en driedubbel. Een partij tot 3 of 5 punten, gewoon of in de Hollandse opzet (alle schijven beginnen naast het bord;
+  slaan mag pas met een schijf thuis). Tegen Jantje, Grietje, Molenaar Kees en de burgemeester (die een worp
+  vooruitkijkt; versla er een en de volgende komt vrij) of met z'n tweeën. Op een staande telefoon draait het bord een
+  kwartslag, zodat de schijven groot genoeg zijn om te tikken. De regels zijn getest met handgemaakte gevallen en
+  duizenden standen tegen een los geschreven tweede zettengenerator; de waardering is afgesteld met partijen tegen
+  zichzelf. Het bord op de plank in de voorkamer opent het spel.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -112,19 +124,19 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 | Het huis | Engels Nachtegaeltje | blokfluit |
 | Ganzenbord | Malle Symen | blokfluit en trom |
 | Sjoelen en klaverjassen | Onder de Linde groene | luit |
-| Molenspel en dammen | Doen Daphne d'over schoone Maeght | luit |
+| Molenspel, dammen en triktrak | Doen Daphne d'over schoone Maeght | luit |
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": bikkelen (de bikkels en het balletje liggen al op de vloer van de voorkamer), triktrak (het
-open bord, de dobbelbeker en de stenen staan al op de plank in de voorkamer), kolf op het ijs (ijsbaan), de kermis,
-koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel je alleen op de zolder.
+Nog "in de oven": bikkelen (de bikkels en het balletje liggen al op de vloer van de voorkamer), kolf op het ijs
+(ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
+je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=25`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=26`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

@@ -1668,6 +1668,77 @@ button.mo-kaart { cursor: pointer; }
 }
 .als-app .voet { display: none; }
 
+/* ---------- Triktrak ---------- */
+.tt-bordvak { position: relative; width: var(--tt-b, 360px); height: var(--tt-h, 260px); border-radius: 22px; box-shadow: 0 22px 40px rgba(0, 0, 0, .55); }
+.tt-podium.tt-staand .tt-bordvak { border-radius: 22px; }
+.tt-hout { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; display: block; }
+.tt-bord { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; touch-action: none; outline: none; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+.tt-punt { fill: transparent; }
+.tt-schaduw { fill: rgba(0, 0, 0, .4); }
+.tt-binnen { transition: transform .16s ease; }
+.tt-groef { fill: none; stroke-width: 1.5; }
+.tt-schijf.wit .tt-groef { stroke: rgba(110, 80, 40, .36); }
+.tt-schijf.zwart .tt-groef { stroke: rgba(255, 240, 220, .18); }
+.tt-glans { fill: #fff; }
+.tt-schijf.wit .tt-glans { opacity: .55; }
+.tt-schijf.zwart .tt-glans { opacity: .18; }
+.tt-plak { display: none; stroke-width: 1; }
+.tt-schijf.wit .tt-plak { fill: #E6DCC6; stroke: #8D8167; }
+.tt-schijf.zwart .tt-plak { fill: #2C2522; stroke: #000; }
+.tt-schijf.plak .tt-binnen, .tt-schijf.plak .tt-schaduw { display: none; }
+.tt-schijf.plak .tt-plak { display: block; }
+.tt-schijf.zweeft .tt-binnen { transform: translateY(-8px) scale(1.14); }
+.tt-schijf.zweeft .tt-schaduw { transform: translate(8px, 14px); opacity: .5; }
+.tt-kan { fill: none; stroke: #F2C14E; stroke-width: 4; stroke-dasharray: 10 7; transform-box: fill-box; transform-origin: center; animation: pakbaar 2.4s linear infinite; pointer-events: none; }
+.tt-kan.moet { stroke: #F08A3C; stroke-width: 5; }
+.tt-merk.flits .tt-kan { animation: pakbaar 2.4s linear infinite, dm-flits .45s ease 3; }
+.tt-gekozen { fill: none; stroke: #F2C14E; stroke-width: 5; pointer-events: none; }
+.tt-doelpunt { fill: rgba(242, 215, 142, .34); stroke: rgba(255, 236, 170, .7); stroke-width: 2; pointer-events: none; }
+.tt-doelpunt.ver { fill: rgba(242, 215, 142, .2); }
+.tt-doelpunt.slaat { fill: rgba(240, 138, 60, .38); stroke: rgba(255, 190, 140, .8); }
+.tt-doel { fill: rgba(242, 215, 142, .92); stroke: #FFF6DA; stroke-width: 3; transform-box: fill-box; transform-origin: center; animation: doel .9s ease-in-out infinite alternate; pointer-events: none; }
+.tt-doel.slaat { fill: #F08A3C; }
+.tt-doelbak { fill: rgba(242, 215, 142, .3); stroke: #F2D78E; stroke-width: 3; pointer-events: none; animation: tt-bak 1s ease-in-out infinite alternate; }
+@keyframes tt-bak { to { fill: rgba(242, 215, 142, .5); } }
+.tt-tiplijn { stroke: #7FD0A2; stroke-width: 6; stroke-dasharray: 2 12; stroke-linecap: round; pointer-events: none; }
+.tt-dobbels { --d: 40px; --dob-a: #FFFEF8; --dob-b: #EDE4CC; --dob-c: #D9CCA8; --dob-pip: #2A1F18; position: absolute; inset: 0; z-index: 4; pointer-events: none; visibility: hidden; }
+.tt-dobbels.zichtbaar { visibility: visible; }
+.tt-dob { transition: opacity .25s ease, filter .25s ease; }
+.tt-dob.gebruikt { opacity: .38; filter: grayscale(.7) drop-shadow(0 4px 3px rgba(0, 0, 0, .3)); }
+.tt-stand { display: flex; align-items: baseline; gap: 7px; margin-left: auto; padding-right: 4px; }
+.tt-punten { font: 600 1.25rem/1 var(--f-tekst); color: #F2D78E; font-variant-numeric: lining-nums tabular-nums; }
+.tt-pips { font: .78rem/1 var(--f-tekst); color: rgba(244, 233, 207, .6); font-variant-numeric: lining-nums tabular-nums; }
+.tt-beker { width: 72px; height: 72px; }
+.tt-beker svg { width: 46px; height: 46px; }
+.tt-beker .gb-beker-tekst { bottom: 6px; font-size: .72rem; }
+.tt-uitslag {
+  position: absolute; z-index: 6; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  display: grid; justify-items: center; gap: 6px; width: max-content; max-width: calc(100% - 24px); padding: 16px 22px 18px; border-radius: 16px; text-align: center;
+  background: #F4E9CF; color: #2A1A08; box-shadow: 0 18px 44px rgba(0, 0, 0, .55), inset 0 0 0 2px #C9973F;
+}
+.tt-uitslag[hidden] { display: none; }
+.tt-uitslag.in { animation: kj-melding .35s cubic-bezier(.3, 1.4, .5, 1); }
+.tt-uitslag p { margin: 0; }
+.tt-uitslag-kop { font-family: var(--f-sier); font-size: 1.6rem; line-height: 1.1; }
+.tt-uitslag-sub { font-size: 1rem; color: #6A4A2A; }
+.tt-uitslag-stand { display: flex; align-items: baseline; gap: 12px; margin-top: 4px !important; font: 600 1.15rem/1 var(--f-tekst); font-variant-numeric: lining-nums tabular-nums; }
+.tt-s-tot { font: .8rem/1 var(--f-tekst); color: #8A6A44; }
+.knop.tt-volgend { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; padding: 10px 22px; border-radius: 10px; font-size: 1.05rem; background: radial-gradient(circle at 35% 30%, #E8B651, #B07A1F 70%); color: #2A1A08; }
+.knop.tt-volgend svg { width: 20px; height: 20px; }
+.tt-keuzes { display: grid; gap: 8px; margin: 12px 0 4px; }
+.tt-keuzerij { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 420px) {
+  .tt-beker { width: 64px; height: 64px; }
+  .tt-beker svg { width: 40px; height: 40px; }
+  .tt-pips { display: none; }
+}
+@media (orientation: landscape) and (max-height: 620px) {
+  .tt-podium { grid-template-columns: minmax(0, 1fr) calc(var(--tt-b) + 4px) minmax(0, 1fr); }
+  .tt-podium .mo-onder { gap: 6px; }
+  .tt-podium .tt-beker { width: 60px; height: 60px; }
+  .tt-podium .tt-beker svg { width: 38px; height: 38px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .kroon, .vlam, .gloed, .haardvlam, .haardgloed, .gloeit, .kj-kaarten.wijs .kj-kaart .kj-voor, .kj-melding.in, .kj-troefkeuze, .stofje, .lichtbundel, .zonvlek, .koek-touw, .hoepel-hang, .kat-lijf, .kat-staart, .gangLicht, .glim,
   .wolk, .uithangbord, .vogels, .water-glans line, .deur-licht, .deur-wenk, .spel:not([hidden]), .schud .vw,
@@ -1677,6 +1748,7 @@ button.mo-kaart { cursor: pointer; }
   .hobbel, .duif, .lantaarn-zwaai, .les-gans, .les-gans.praat .gans-snavel, .les-vinger.tikt svg, .les-vinger.tikt::before,
   .les-ballon.in, .les.open .les-licht, .cad-stralen, .cadeau-vel.open .cad-beeld, .kast-vak.nieuw, .plek-knop.schud,
   .kast-vak.schud-vak, .luik-wenk, .lamp-glas, .klusknop.ga,
+  .tt-kan, .tt-doel, .tt-doelbak, .tt-uitslag.in,
   .mo-plek, .mo-doel, .mo-pakbaar, .mo-tip-ring, .dm-moet, .dm-doel, .dm-tip-ring, .mo-steen.in-molen .mo-binnen, .mo-banier.in, .mo-ballon.in, .mo-menu.open .mo-menu-kaart, .mo-denk i, .mo-doe.schud { animation: none !important; }
   .mo-molenlijn { animation: none !important; stroke-dashoffset: 0; }
   .gb-beker.klaar, .gb-beker.schudt svg, .gb-beker.gooit svg, .gb-kaartje.in, .gb-pion-binnen.gewonnen { animation: none !important; }
