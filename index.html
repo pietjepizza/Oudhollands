@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Het Speelhuys</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Oud-Hollandse spellen om te spelen in een 17e-eeuws grachtenpand: ganzenbord, sjoelen, molenspel, dammen, klaverjassen, triktrak, bikkelen en meer.">
+<meta name="description" content="Oud-Hollandse spellen om te spelen in een 17e-eeuws grachtenpand: ganzenbord, sjoelen, molenspel, dammen, klaverjassen, triktrak, bikkelen, kolf op het ijs en meer.">
 <meta name="theme-color" content="#1C3473">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=27">
+<link rel="stylesheet" href="css/stijl.css?v=28">
 </head>
 <body>
 
@@ -293,6 +293,12 @@
       <rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
       <circle cx="8.4" cy="8.4" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="15.6" cy="15.6" r="1.7" fill="currentColor"/>
     </symbol>
+    <!-- kolf op het ijs: een kolf en een bal -->
+    <symbol id="i-kolf" viewBox="0 0 24 24">
+      <path d="M17.6 2.4 L9.9 17.4" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+      <path d="M9.7 16.2 L5 19.3 Q3.5 20.4 4.8 21.2 L10.7 20.2 Q11.7 19.9 11.5 18.8 Z" fill="currentColor"/>
+      <circle cx="17" cy="19.2" r="2.7" fill="currentColor"/>
+    </symbol>
     <!-- bikkelen: een bikkel, en de vier kanten bol, hol, rug en S -->
     <symbol id="i-bikkel" viewBox="0 0 24 24">
       <g transform="translate(12 12.6) rotate(-18) scale(10.4)"><path d="M-1 -0.12 C-1.04 -0.52 -0.62 -0.7 -0.3 -0.56 C-0.1 -0.47 0.1 -0.47 0.3 -0.56 C0.64 -0.72 1.04 -0.5 1 -0.08 C0.97 0.3 0.74 0.62 0.36 0.58 C0.16 0.56 0.07 0.42 -0.04 0.42 C-0.17 0.42 -0.26 0.61 -0.5 0.6 C-0.84 0.59 -0.97 0.26 -1 -0.12 Z" fill="currentColor"/></g>
@@ -515,7 +521,7 @@
       <div class="intro">
         <p class="bovenregel">Oud-Hollandse spellen</p>
         <h2 class="intro-kop">Speel, verdien duiten en knap het huis op</h2>
-        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel, het dambord, de speelkaarten, het triktrakbord of de bikkels om te spelen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
+        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel, het dambord, de speelkaarten, het triktrakbord, de bikkels of de kolf om te spelen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
         <ul class="spellijst">
           <li><a href="#ganzenbord">Ganzenbord</a></li>
           <li><a href="#sjoelen">Sjoelen</a></li>
@@ -524,6 +530,7 @@
           <li><a href="#klaverjassen">Klaverjassen</a></li>
           <li><a href="#triktrak">Triktrak</a></li>
           <li><a href="#bikkelen">Bikkelen</a></li>
+          <li><a href="#kolf">Kolf op het ijs</a></li>
           <li class="later">Op de zolder: knikkeren en tollen</li>
           <li class="later">Binnenkort: de herberg met kaartspellen, de kermis en kolf op het ijs</li>
         </ul>
@@ -586,6 +593,11 @@
   <section id="scherm-bikkelen" class="weergave spel volscherm" aria-labelledby="bk-titel" hidden>
     <h1 id="bk-titel" class="sr-only">Bikkelen</h1>
     <div class="mo-podium bk-podium" id="bk-podium"></div>
+  </section>
+  <!-- KOLF OP HET IJS (schermvullend) -->
+  <section id="scherm-kolf" class="weergave spel volscherm" aria-labelledby="ko-titel" hidden>
+    <h1 id="ko-titel" class="sr-only">Kolf op het ijs</h1>
+    <div class="mo-podium ko-podium" id="ko-podium"></div>
   </section>
   <!-- KNIKKEREN (zolder) -->
   <section id="scherm-knikkeren" class="weergave spel volscherm" aria-labelledby="kn-titel" hidden>
@@ -737,26 +749,27 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=27"></script>
-<script src="js/muziek.js?v=27"></script>
-<script src="js/duiten.js?v=27"></script>
-<script src="js/pronk.js?v=27"></script>
-<script src="js/seizoen.js?v=27"></script>
-<script src="js/les.js?v=27"></script>
-<script src="js/personen.js?v=27"></script>
-<script src="js/ganzenbord.js?v=27"></script>
-<script src="js/sjoelen.js?v=27"></script>
-<script src="js/molenspel.js?v=27"></script>
-<script src="js/damregels.js?v=27"></script>
-<script src="js/dammen.js?v=27"></script>
-<script src="js/klaverregels.js?v=27"></script>
-<script src="js/klaverjassen.js?v=27"></script>
-<script src="js/triktrakregels.js?v=27"></script>
-<script src="js/triktrak.js?v=27"></script>
-<script src="js/bikkelen.js?v=27"></script>
-<script src="js/knikkeren.js?v=27"></script>
-<script src="js/tollen.js?v=27"></script>
-<script src="js/huis.js?v=27"></script>
-<script src="js/app.js?v=27"></script>
+<script src="js/geluid.js?v=28"></script>
+<script src="js/muziek.js?v=28"></script>
+<script src="js/duiten.js?v=28"></script>
+<script src="js/pronk.js?v=28"></script>
+<script src="js/seizoen.js?v=28"></script>
+<script src="js/les.js?v=28"></script>
+<script src="js/personen.js?v=28"></script>
+<script src="js/ganzenbord.js?v=28"></script>
+<script src="js/sjoelen.js?v=28"></script>
+<script src="js/molenspel.js?v=28"></script>
+<script src="js/damregels.js?v=28"></script>
+<script src="js/dammen.js?v=28"></script>
+<script src="js/klaverregels.js?v=28"></script>
+<script src="js/klaverjassen.js?v=28"></script>
+<script src="js/triktrakregels.js?v=28"></script>
+<script src="js/triktrak.js?v=28"></script>
+<script src="js/bikkelen.js?v=28"></script>
+<script src="js/kolf.js?v=28"></script>
+<script src="js/knikkeren.js?v=28"></script>
+<script src="js/tollen.js?v=28"></script>
+<script src="js/huis.js?v=28"></script>
+<script src="js/app.js?v=28"></script>
 </body>
 </html>

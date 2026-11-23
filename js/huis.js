@@ -829,9 +829,10 @@
   }
 
   function bouwKolf(ouder) {
-    // kolf en bal, tegen de achterwand in de rechterhoek
-    const g = voorwerp(ouder, { label: 'Kolf op het ijs · komt binnenkort' });
-    el('rect', { x: 1236, y: 500, width: 92, height: 290, fill: 'transparent' }, g);
+    // kolf en bal, tegen de achterwand in de rechterhoek, met het naambordje erboven aan de muur
+    const g = voorwerp(ouder, { spel: 'kolf', label: 'Speel kolf op het ijs' });
+    el('rect', { x: 1236, y: 478, width: 116, height: 312, fill: 'transparent' }, g);
+    naambordje(g, 1306, 480, 'Kolf');
     el('line', { x1: 1306, y1: 512, x2: 1290, y2: 766, stroke: '#2A1A0C', 'stroke-opacity': 0.25, 'stroke-width': 7, transform: 'translate(7 3)' }, g);
     el('line', { x1: 1306, y1: 512, x2: 1290, y2: 762, stroke: '#6E4A26', 'stroke-width': 6.5, 'stroke-linecap': 'round' }, g);
     el('line', { x1: 1306, y1: 512, x2: 1303, y2: 556, stroke: '#3A2614', 'stroke-width': 8, 'stroke-linecap': 'round' }, g);

@@ -1780,6 +1780,32 @@ button.mo-kaart { cursor: pointer; }
   .bk-rij { gap: 2px; }
 }
 
+/* ---------- Kolf op het ijs ---------- */
+.ko-veldvak { position: relative; width: var(--ko-b, 320px); height: var(--ko-h, 520px); }
+.ko-doek { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 16px; touch-action: none; outline: none; cursor: crosshair; -webkit-tap-highlight-color: transparent; box-shadow: 0 20px 38px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); }
+.ko-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E, 0 20px 38px rgba(0, 0, 0, .55); }
+.ko-baan { position: absolute; left: 10px; top: 9px; z-index: 2; display: grid; gap: 0; padding: 4px 10px 5px; border-radius: 10px; pointer-events: none;
+  background: rgba(244, 233, 207, .88); color: #2A1A08; box-shadow: 0 3px 10px rgba(0, 0, 0, .25), inset 0 0 0 1px rgba(150, 110, 50, .35); }
+.ko-baan b { font-family: var(--f-sier); font-weight: normal; font-size: 1.02rem; line-height: 1.05; }
+.ko-baan b small { font-size: .8rem; color: #7A5A30; }
+.ko-baan span { font-family: var(--f-sier); font-style: italic; font-size: .82rem; line-height: 1.1; color: #5A4630; }
+.ko-baan:empty { display: none; }
+.ko-stand { display: flex; align-items: baseline; gap: 8px; margin-left: auto; padding-right: 4px; grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+.ko-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr) auto; }
+.ko-totaal { font: 600 1.4rem/1 var(--f-tekst); color: #F2D78E; font-variant-numeric: lining-nums tabular-nums; }
+.ko-deze { display: inline-flex; align-items: center; gap: 2px; font: .86rem/1 var(--f-tekst); color: rgba(244, 233, 207, .7); font-variant-numeric: lining-nums tabular-nums; }
+.ko-deze svg { width: 13px; height: 13px; }
+.ko-podium .mo-doe .ko-terug { transform: rotate(90deg); }
+.ko-pop.fout { color: #CFE6F2; font-family: var(--f-sier); font-weight: normal; font-size: 1.6rem; }
+.ko-pop.zacht { font-size: 1rem; font-weight: normal; font-family: var(--f-sier); font-style: italic; }
+.ko-kaart .knop { margin-top: 4px; }
+.mo-kaart.ko-winnaar { box-shadow: 0 0 0 2.5px #E7C36A, 0 0 26px rgba(231, 195, 106, .6), 0 4px 14px rgba(0, 0, 0, .3); }
+@media (orientation: landscape) and (max-height: 620px) {
+  .ko-podium { grid-template-columns: minmax(0, 1fr) calc(var(--ko-b, 300px) + 4px) minmax(0, 1fr); }
+  .ko-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr); }
+  .ko-stand { grid-column: 1 / -1; grid-row: 3; margin: 6px 0 0; justify-content: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .kroon, .vlam, .gloed, .haardvlam, .haardgloed, .gloeit, .kj-kaarten.wijs .kj-kaart .kj-voor, .kj-melding.in, .kj-troefkeuze, .stofje, .lichtbundel, .zonvlek, .koek-touw, .hoepel-hang, .kat-lijf, .kat-staart, .gangLicht, .glim,
   .wolk, .uithangbord, .vogels, .water-glans line, .deur-licht, .deur-wenk, .spel:not([hidden]), .schud .vw,

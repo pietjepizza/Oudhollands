@@ -184,6 +184,9 @@
     bikkel(kracht) { const v = Math.min(0.8, 0.2 + (kracht || 0.5) * 0.6); ruis(0.03, 2500 + Math.random() * 900, 5, v * 0.55); toon(1500 + Math.random() * 500, 0.035, v * 0.07, 'triangle'); },
     stuit(kracht) { const v = Math.min(0.9, 0.25 + (kracht || 0.6) * 0.6); toon(150, 0.1, v * 0.28, 'sine'); ruis(0.05, 650, 1.4, v * 0.45); },
     vang() { ruis(0.06, 1000, 1.2, 0.32); toon(230, 0.07, 0.07, 'sine'); },
+    // de ijzeren kop van een kolf tegen een leren bal, en een bal tegen de houten paal
+    kolf(kracht) { const v = Math.min(0.9, 0.25 + (kracht || 0.5) * 0.7); ruis(0.04, 1500, 2.2, v * 0.6); toon(320, 0.06, v * 0.16, 'triangle'); toon(1900, 0.03, v * 0.04, 'sine'); },
+    paal(kracht) { const v = Math.min(0.9, 0.3 + (kracht || 0.5) * 0.6); toon(210, 0.16, v * 0.22, 'triangle'); ruis(0.06, 700, 2, v * 0.5); toon(420, 0.1, v * 0.06, 'sine', 0.02); },
     // een gans die gakt
     gak() { [0, 0.17].forEach((w, i) => { toon(560 - i * 50, 0.12, 0.08, 'sawtooth', w); toon(840 - i * 70, 0.1, 0.035, 'square', w + 0.01); ruis(0.08, 900, 2, 0.12, w); }); },
     // een glas in de herberg
