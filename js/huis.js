@@ -2103,6 +2103,8 @@
     el('rect', { x: 1056, y: 376, width: 448, height: 12, fill: '#EDE4D0' }, gevelGroep);
     [[1170, 430, ''], [1280, 430, 'aan'], [1390, 430, 'aan'], [1170, 590, ''], [1280, 590, 'vroeg'], [1390, 590, 'aan'], [1170, 752, 'vroeg'], [1390, 752, 'aan']].forEach(([cx, y, l]) => venster(gevelGroep, cx, y, 70, 104, { licht: l }));
     deurtje(gevelGroep, 1280, 760);
+    gevelsteen(gevelGroep, 1280, 700);
+    plekKlik(gevelGroep, { x: 1240, y: 696, width: 80, height: 210 }, 'kunstkamer', 'Naar de kunstkamer: lezen en kijken over de oude spellen');
     venster(gevelGroep, 1280, 262, 60, 84, {});
     el('path', { d: VORM.klok, fill: 'url(#g-zonlicht)', 'pointer-events': 'none' }, gevelGroep);
 
@@ -2573,6 +2575,19 @@
     svg.querySelectorAll('.boom .tak').forEach((e) => e.setAttribute('stroke', meng('#4A3426', tint)));
   }
 
+  // de gevelsteen van de kunstkamer: een stenen bord met een opengeslagen boek, boven de deur van de buren
+  function gevelsteen(ouder, cx, top) {
+    const g = el('g', { class: 'gevelsteen', 'pointer-events': 'none' }, ouder);
+    el('rect', { x: cx - 64 + 3, y: top + 4, width: 128, height: 46, rx: 3, fill: '#2A1A0C', opacity: 0.35 }, g);
+    el('rect', { x: cx - 64, y: top, width: 128, height: 46, rx: 3, fill: '#E6DCC2', stroke: '#9C8B66', 'stroke-width': 1.4 }, g);
+    el('rect', { x: cx - 59, y: top + 5, width: 118, height: 36, rx: 2, fill: 'none', stroke: '#B8A57E', 'stroke-width': 1 }, g);
+    // het boekje in reliëf
+    const b = el('g', { transform: `translate(${cx - 52} ${top + 11}) scale(1.05)` }, g);
+    el('path', { d: 'M12 6.4 C9.6 4.8 6.4 4.4 3 5 V18.6 C6.4 18 9.6 18.4 12 20 C14.4 18.4 17.6 18 21 18.6 V5 C17.6 4.4 14.4 4.8 12 6.4 Z', fill: '#F4EDDA', stroke: '#6E5E40', 'stroke-width': 1.4, 'stroke-linejoin': 'round' }, b);
+    el('path', { d: 'M12 6.4 V20', stroke: '#6E5E40', 'stroke-width': 1.2 }, b);
+    tekst('Kunstkamer', { x: cx + 12, y: top + 24, 'text-anchor': 'middle', 'font-family': 'IM Fell English SC, Georgia, serif', 'font-size': 17, fill: '#3A2E1E' }, g);
+    tekst('lezen en kijken', { x: cx + 12, y: top + 37, 'text-anchor': 'middle', 'font-family': 'IM Fell English, Georgia, serif', 'font-style': 'italic', 'font-size': 10.5, fill: '#5A4A30' }, g);
+  }
   function deurtje(ouder, cx, top) {
     el('rect', { x: cx - 40, y: top - 6, width: 80, height: 151, fill: '#EDE4D0' }, ouder);
     el('rect', { x: cx - 32, y: top, width: 64, height: 145, fill: '#5A2A20' }, ouder);
@@ -3048,7 +3063,7 @@
     });
     document.querySelectorAll('.plek-knop').forEach((k) => {
       const p = k.getAttribute('data-plek');
-      const open = p === 'voorkamer' || (p === 'zolder' && zolder);
+      const open = p === 'voorkamer' || p === 'kunstkamer' || (p === 'zolder' && zolder);
       k.classList.toggle('dicht', !open);
       const naam = k.querySelector('.plek-naam') ? k.querySelector('.plek-naam').textContent : p;
       k.setAttribute('aria-label', open ? naam : `${naam}, nog op slot`);
@@ -3059,6 +3074,7 @@
 
   function kiesPlek(plek, bron) {
     if (bezig) return;
+    if (plek === 'kunstkamer') { Geluid.deur(); location.hash = '#kunstkamer'; return; }
     if (plek === 'voorkamer' || plek === 'zolder') {
       if (!kamerOpen(plek)) {
         schud(bron);

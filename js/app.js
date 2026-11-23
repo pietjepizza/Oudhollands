@@ -4,32 +4,44 @@
   const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'knikkeren', 'tollen'];
   // muziek per spel; de zolderspellen lenen een vrolijk stuk, dammen het rustige molenstuk
   const MUZIEK = { knikkeren: 'ganzenbord', tollen: 'sjoelen', dammen: 'molenspel', klaverjassen: 'sjoelen', triktrak: 'molenspel', bikkelen: 'ganzenbord', kolf: 'sjoelen' };
+  // plekken om te lezen en te kijken; geen spel
+  const PAGINAS = ['kunstkamer'];
   let huidig; // undefined = er is nog niets getoond
 
   function toon() {
     const naam = (location.hash || '').replace('#', '');
     const spel = SPELLEN.includes(naam) ? naam : null;
+    const pagina = PAGINAS.includes(naam) ? naam : null;
+    const wie = spel || pagina;
     const vorige = huidig;
-    if (vorige && vorige !== spel && window.Spellen[vorige]) window.Spellen[vorige].stop();
-    document.getElementById('thuis').hidden = !!spel;
-    SPELLEN.forEach((s) => { document.getElementById('scherm-' + s).hidden = s !== spel; });
-    document.body.classList.toggle('in-spel', !!spel);
-    // sommige spellen vullen het hele scherm: dan verdwijnen de kop en de tekst eronder
-    document.body.classList.toggle('volscherm', !!spel && document.getElementById('scherm-' + spel).classList.contains('volscherm'));
-    if (spel && vorige !== spel) {
-      window.scrollTo(0, 0);
-      window.Spellen[spel].start();
+    if (vorige && vorige !== wie) {
+      if (window.Spellen[vorige]) window.Spellen[vorige].stop();
+      if (vorige === 'kunstkamer' && window.Kunstkamer) window.Kunstkamer.stop();
     }
-    if (!spel && window.Huis) {
-      if (vorige) {
+    document.getElementById('thuis').hidden = !!wie;
+    SPELLEN.concat(PAGINAS).forEach((s) => { document.getElementById('scherm-' + s).hidden = s !== wie; });
+    document.body.classList.toggle('in-spel', !!spel);
+    // sommige spellen (en de kunstkamer) vullen het hele scherm: dan verdwijnen de kop en de tekst eronder
+    document.body.classList.toggle('volscherm', !!wie && document.getElementById('scherm-' + wie).classList.contains('volscherm'));
+    if (wie && vorige !== wie) {
+      window.scrollTo(0, 0);
+      if (spel) window.Spellen[spel].start();
+      else if (window.Kunstkamer) window.Kunstkamer.start();
+    }
+    if (!wie && window.Huis) {
+      if (vorige && PAGINAS.includes(vorige)) {
+        // uit de kunstkamer stap je weer op de gracht
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => window.Huis.naarBuiten());
+      } else if (vorige) {
         window.scrollTo(0, 0);
         requestAnimationFrame(() => window.Huis.terugUit(vorige));
       } else if (vorige === undefined) {
         window.Huis.toon();
       }
     }
-    document.title = spel ? `${document.getElementById('scherm-' + spel).querySelector('h1').textContent} · Het Speelhuys` : 'Het Speelhuys';
-    huidig = spel;
+    document.title = wie ? `${document.getElementById('scherm-' + wie).querySelector('h1').textContent} · Het Speelhuys` : 'Het Speelhuys';
+    huidig = wie;
     if (window.Muziek) window.Muziek.kies(spel ? (MUZIEK[spel] || spel) : 'thuis');
   }
 

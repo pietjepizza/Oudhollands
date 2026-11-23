@@ -134,6 +134,13 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   manier van zwepen; versla er een en de volgende komt vrij), met z'n tweeën op één scherm, of oefenen voor je record.
   Op de zolder ligt dezelfde krijtkring voor de tolkist.
 
+**De Kunstkamer** (geen spel): het buurhuis rechts van Het Speelhuys, met een gevelsteen "Kunstkamer, lezen en
+kijken" boven de deur, en een eigen knop met een boekje in het rijtje plekken aan de gracht. Binnen hangt goudleer aan de
+muur en staat per spel een vitrine met een Delfts tegeltje. Wie een vitrine opent, leest waar het spel vandaan komt, hoe
+je het speelt, op welke schilderijen en prenten het staat (met links naar de musea), een weetje en de bronnen; onderaan
+staat een knop om het spel zelf te spelen. Een kunstkamer was in de zeventiende eeuw de verzameling waarmee een
+welgestelde burger liet zien wat hij wist en had.
+
 **Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), die de browser zelf speelt met Web Audio, op blokfluit en luit. Elke plek heeft een eigen stuk:
 
 | Plek | Stuk | Klank |
@@ -152,7 +159,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=29`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=30`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
