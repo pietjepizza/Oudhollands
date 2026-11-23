@@ -537,6 +537,7 @@
     if (mijnId !== spelId) return;
     bewaar();
     troefKiezen();
+    if (lesWacht) { lesWacht = false; if (window.Les) Les.eersteKeer('klaverjassen'); }
   }
 
   async function troefKiezen() {
@@ -901,20 +902,86 @@
   // ============================================================
   // UITLEG DOOR GIJS DE GANS
   // ============================================================
+  // Voorbeeldslagen voor de uitleg: Gijs legt kaarten midden op tafel om te laten zien hoe het gaat.
+  // Zolang hij dat doet, gaan het troefpaneel en de echte kaarten op tafel even opzij.
+  let lesSoort = null, lesWacht = false;
+  function lesTafel(soort) {
+    if (!tafel || (!soort && !lesSoort)) return;
+    lesSoort = soort;
+    if (ui.lesLaag) ui.lesLaag.innerHTML = '';
+    tafel.classList.toggle('les-demo', !!soort);
+    if (!soort || !M) return;
+    if (!ui.lesLaag) { ui.lesLaag = document.createElement('div'); ui.lesLaag.className = 'kj-les-laag'; tafel.appendChild(ui.lesLaag); }
+    const m = M, troefS = spel && spel.troef >= 0 ? spel.troef : 0;
+    const anders = (n) => [0, 1, 2, 3].filter((x) => x !== troefS)[n];
+    const kaart = (kleur, rang) => kleur * 8 + rang; // rang: 0 zeven, 1 acht, 2 negen, 3 tien, 4 boer, 5 vrouw, 6 heer, 7 aas
+    const leg = (k, x, y, hoek, wint) => {
+      const e = document.createElement('div');
+      e.className = 'kj-kaart les-kaart' + (wint ? ' wint' : '');
+      e.innerHTML = `<div class="kj-binnen"><div class="kj-voor">${voorkant(k)}</div><div class="kj-achter">${ACHTER}</div></div>`;
+      e.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${hoek.toFixed(1)}deg)`;
+      e.style.zIndex = 260 + ui.lesLaag.children.length;
+      ui.lesLaag.appendChild(e);
+    };
+    const d = m.kb * (m.kort ? 0.95 : 0.78), dy = m.kh * (m.kort ? 0.36 : 0.46);
+    const PLEK = [[0, dy, -4], [-d, 0, 6], [0, -dy, 3], [d, 0, -7]];
+    const inSlag = (zit, k, wint) => { const [dx, ddy, r] = PLEK[zit]; leg(k, m.cx - m.kb / 2 + dx, m.cy - m.kh / 2 + ddy, r, wint); };
+    if (soort === 'bekennen') {
+      // links komt uit met de aas; Opoe en jij bekennen; rechts heeft die kleur niet en troeft, en troef wint
+      const s = anders(1);
+      inSlag(1, kaart(s, 7)); inSlag(2, kaart(s, 3)); inSlag(3, kaart(troefS, 0), true); inSlag(0, kaart(s, 5));
+    } else if (soort === 'volgorde') {
+      // de troefkleur van hoog naar laag: boer, negen, aas, tien, heer, vrouw, acht, zeven
+      // (smal genoeg om tussen de buren links en rechts te passen)
+      const ruimte = m.zx ? m.zx[3] - m.zx[1] - 64 : m.W * 0.6;
+      const orde = [4, 2, 7, 3, 6, 5, 1, 0], stap = Math.min(m.kb * (m.kort ? 0.5 : 0.42), (ruimte - m.kb) / 7), x0 = m.cx - (m.kb + stap * 7) / 2;
+      orde.forEach((r, i) => { const t = i / 7 - 0.5; leg(kaart(troefS, r), x0 + i * stap, m.cy - m.kh / 2 + t * t * m.kh * 0.2, t * 10, i < 2); });
+    } else if (soort === 'roem') {
+      // negen, tien en boer van één kleur in één slag: drie op een rij
+      const s = anders(2);
+      inSlag(1, kaart(s, 2), true); inSlag(2, kaart(s, 3), true); inSlag(3, kaart(s, 4), true); inSlag(0, kaart(anders(0), 0));
+    }
+  }
+  // als Gijs klaar is, komt de echte tafel terug
+  if (typeof MutationObserver !== 'undefined') {
+    const les = document.getElementById('les');
+    if (les) new MutationObserver(() => { if (les.hidden && lesSoort) lesTafel(null); }).observe(les, { attributes: true, attributeFilter: ['hidden'] });
+  }
+
+  // ============================================================
+  // UITLEG DOOR GIJS DE GANS
+  // ============================================================
   if (window.Les) {
     const vakVan = (el) => el && el.getBoundingClientRect();
-    const handVak = () => { const ks = Array.from(laag.querySelectorAll('.kj-kaart.mijn')).map((e) => e.getBoundingClientRect()); if (!ks.length) return null; const l = Math.min(...ks.map((r) => r.left)), t = Math.min(...ks.map((r) => r.top)), rr = Math.max(...ks.map((r) => r.right)), b = Math.max(...ks.map((r) => r.bottom)); return { left: l, top: t, width: rr - l, height: b - t }; };
-    const midVak = () => { const r = tafel.getBoundingClientRect(); return { left: r.left + M.cx - M.kb * 1.3, top: r.top + M.cy - M.kh * 0.95, width: M.kb * 2.6, height: M.kh * 1.9 }; };
-    Les.zet('klaverjassen', () => [
-      { doel: handVak, gebaar: 'wijs', tekst: 'Dit zijn jouw kaarten' },
-      { doel: () => vakVan(ui.zit[2]), vorm: 'rond', gebaar: 'wijs', tekst: 'Opoe is je maat: jullie spelen samen' },
-      { doel: () => vakVan(!ui.troefkeuze.hidden ? ui.troefkeuze : ui.troef.hidden ? ui.stand : ui.troef), gebaar: 'wijs', tekst: 'Wie uitkomt, kiest troef' },
-      { doel: midVak, gebaar: 'wijs', tekst: 'Speel dezelfde kleur. Heb je die niet? Dan troeven' },
-      { doel: midVak, gebaar: 'wijs', tekst: 'Troefboer en troefnegen zijn het sterkst' },
-      { doel: midVak, gebaar: 'wijs', tekst: 'Kaarten op een rij in één slag zijn roem' },
-      { doel: () => vakVan(ui.stand), gebaar: 'wijs', tekst: 'Wie speelt, moet meer dan de helft halen. Anders nat' },
-      { doel: () => vakVan(ui.balk.querySelector('.mo-meer')), vorm: 'rond', gebaar: 'tik', tekst: 'Hier kies je tegen wie je speelt' }
-    ]);
+    // waar je hand ligt, uit de opstelling (ook als er nog gedeeld wordt)
+    const handVak = () => {
+      const m = M;
+      if (!m) return null;
+      const r = tafel.getBoundingClientRect(), n = spel ? Math.max(1, K.aantal(spel.handen[0])) : 8, { stap, x0 } = handMaat(m, n);
+      const y = m.kort ? m.H - m.kh * 0.62 : m.H - m.kh - 8, onder = Math.min(m.H, y + m.kh * 1.1);
+      return { left: r.left + x0 - 4, top: r.top + y - 6, width: m.kb + stap * (n - 1) + 8, height: onder - y + 6 };
+    };
+    const lesVak = () => {
+      const rs = Array.from(ui.lesLaag ? ui.lesLaag.children : []).map((e) => e.getBoundingClientRect());
+      if (!rs.length) return null;
+      const l = Math.min(...rs.map((x) => x.left)), t = Math.min(...rs.map((x) => x.top));
+      return { left: l, top: t, width: Math.max(...rs.map((x) => x.right)) - l, height: Math.max(...rs.map((x) => x.bottom)) - t };
+    };
+    const zonder = (doel) => () => { lesTafel(null); return doel(); };
+    const met = (soort) => () => { lesTafel(soort); return lesVak(); };
+    Les.zet('klaverjassen', () => {
+      const kies = !ui.troefkeuze.hidden, toont = !ui.troef.hidden;
+      return [
+        { doel: zonder(handVak), gebaar: 'wijs', tekst: 'Dit zijn jouw kaarten. Tik er een aan om hem te spelen' },
+        { doel: zonder(() => vakVan(ui.zit[2])), vorm: 'rond', gebaar: 'wijs', tekst: 'Opoe is je maat: samen spelen jullie tegen de andere twee' },
+        { doel: zonder(() => (kies ? vakVan(ui.troefkeuze) : toont ? vakVan(ui.troef) : handVak())), gebaar: 'wijs', tekst: kies ? 'Troef is de sterkste kleur. Jij komt uit, dus jij kiest' : toont ? 'Troef is de sterkste kleur. Hier zie je welke het is' : 'Troef is de sterkste kleur. Wie uitkomt, kiest hem' },
+        { doel: met('bekennen'), gebaar: 'wijs', tekst: 'Volg de kleur. Kan dat niet? Troef dan, want troef wint' },
+        { doel: met('volgorde'), gebaar: 'wijs', tekst: 'In troef zijn de boer en de negen het sterkst' },
+        { doel: met('roem'), gebaar: 'wijs', tekst: 'Drie op een rij in één slag is 20 roem, vier is 50' },
+        { doel: zonder(() => vakVan(ui.stand)), marge: 6, gebaar: 'wijs', tekst: 'Wie troef koos, moet meer dan de helft halen. Anders nat' },
+        { doel: zonder(() => vakVan(ui.balk.querySelector('.mo-meer'))), vorm: 'rond', marge: 5, gebaar: 'wijs', tekst: 'Via deze knop kies je tegen wie je speelt' }
+      ];
+    });
   }
 
   // ============================================================
@@ -963,8 +1030,9 @@
             else if (fase === 'denkt' || fase === 'bezig' || fase === 'spelen') verder();
           }
         }
+        // de eerste keer komt Gijs pas als de kaarten gedeeld zijn, zodat hij naar je hand kan wijzen
+        if (window.Les) { if (fase === 'delen') lesWacht = true; else Les.eersteKeer('klaverjassen'); }
       });
-      if (window.Les) Les.eersteKeer('klaverjassen');
     },
     stop() {
       spelId++;

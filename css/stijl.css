@@ -1491,6 +1491,10 @@ button.mo-kaart { cursor: pointer; }
 .kj-kaart.mijn { cursor: pointer; }
 .kj-kaart.mag-niet .kj-voor::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: rgba(30, 16, 8, .38); }
 .kj-kaart.wint .kj-voor { box-shadow: 0 0 0 3px #F2C14E, 0 0 24px rgba(242, 193, 78, .85); }
+/* voorbeeldslagen van Gijs: boven de echte kaarten; het troefpaneel en de kaarten op tafel gaan zolang opzij */
+.kj-les-laag { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.kj-tafel.les-demo .kj-troefkeuze, .kj-tafel.les-demo .kj-melding, .kj-tafel.les-demo .mo-banier,
+.kj-tafel.les-demo .kj-kaarten .kj-kaart:not(.mijn) { visibility: hidden; }
 .kj-kaart.tip .kj-voor { box-shadow: 0 0 0 3px #7FD0A2, 0 0 18px rgba(127, 208, 162, .75); }
 .kj-kaart.gekozen .kj-voor { box-shadow: 0 0 0 3px #F2D78E, 0 6px 14px rgba(0, 0, 0, .45); }
 .kj-kaart.schud .kj-binnen { animation: schud-plek .45s ease; }
