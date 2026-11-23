@@ -900,26 +900,29 @@ html[data-seizoen="koningsdag"] .alleen-koningsdag { display: inline; }
 
 /* ---------- De pronkkast: prijzen achter glas, speelgoed in de laatjes ---------- */
 .pronkkast {
-  position: fixed; inset: 0; z-index: 20; margin: 0; padding: 0; max-width: none; color: #F4E9CF;
-  background:
-    radial-gradient(ellipse 55% 45% at 24% 6%, rgba(255, 236, 196, .2), rgba(255, 236, 196, 0) 70%),
-    radial-gradient(ellipse 95% 75% at 50% 38%, #574230, #392819 58%, #1E140C);
+  position: fixed; inset: 0; z-index: 20; margin: 0; padding: 0; max-width: none; color: #F4E9CF; background: #24130A;
   -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
 }
-.pronkkast::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 58%, rgba(8, 4, 1, .5)); }
+.pronkkast::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 75% at 50% 46%, rgba(0, 0, 0, 0) 55%, rgba(8, 4, 1, .55)); }
+/* de maten: --vloer is de vloer onderin, --b de breedte van de kast, die op de vloer staat */
 .pk-zaal {
   position: absolute; inset: 0; z-index: 1; display: grid; grid-template-rows: auto minmax(0, 1fr);
-  padding: max(10px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
-  --b: min(94vw, 560px, calc((100vh - 104px) / 1.27));
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px));
+  --vloer: calc(clamp(60px, 16vh, 180px) + env(safe-area-inset-bottom, 0px)); --diep: clamp(10px, 2.2vh, 22px);
+  --b: min(80vw, 520px, calc((100vh - 84px - var(--vloer) + var(--diep)) / 1.55));
 }
-@supports (height: 100dvh) { .pk-zaal { --b: min(94vw, 560px, calc((100dvh - 104px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 1.27)); } }
-.pk-kop { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; max-width: 640px; margin: 0 auto; padding-bottom: 6px; }
+@supports (height: 100dvh) { .pk-zaal { --b: min(80vw, 520px, calc((100dvh - 84px - env(safe-area-inset-top, 0px) - var(--vloer) + var(--diep)) / 1.55)); } }
+.pk-kop { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; max-width: 760px; margin: 0 auto; padding-bottom: 6px; }
+.pk-naam { margin: 0; font-family: var(--f-sier); font-style: italic; font-size: clamp(1.05rem, .9rem + .8vw, 1.5rem); color: #F2CF7A; text-shadow: 0 2px 8px rgba(0, 0, 0, .7); white-space: nowrap; }
 .pk-saldo { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px 6px 8px; border-radius: 999px; background: rgba(20, 12, 6, .55); box-shadow: inset 0 0 0 1px rgba(255, 236, 200, .2); font-family: var(--f-tekst); font-weight: 600; font-size: 1.2rem; font-variant-numeric: lining-nums tabular-nums; }
 .pk-saldo .duit { width: 26px; height: 26px; }
-.pk-midden { display: grid; place-items: center; min-height: 0; }
+.pk-midden { position: relative; z-index: 1; display: grid; justify-items: center; align-items: end; min-height: 0; padding-bottom: calc(var(--vloer) - var(--diep)); }
 
-.pk-kast { position: relative; width: var(--b); filter: drop-shadow(0 22px 28px rgba(0, 0, 0, .55)); }
-.pk-kast::before { content: ""; position: absolute; left: 6%; right: 6%; bottom: -14px; height: 22px; border-radius: 50%; background: rgba(0, 0, 0, .45); filter: blur(10px); }
+.pk-kast { position: relative; width: var(--b); margin-top: calc(var(--b) * .17); filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .5)); }
+.pk-kast::before { content: ""; position: absolute; left: 2%; right: 2%; bottom: calc(var(--b) * -.07); height: calc(var(--b) * .1); border-radius: 50%; background: rgba(0, 0, 0, .5); filter: blur(10px); }
+/* het kaststel: vijf vazen van Delfts blauw op de kroonlijst */
+.pk-kaststel { position: absolute; left: 4%; right: 4%; bottom: calc(100% - 2px); height: calc(var(--b) * .17); pointer-events: none; }
+.pk-kaststel svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45)); }
 /* de kroonlijst met het koperen naambord */
 .pk-kroon {
   position: relative; height: calc(var(--b) * .13); margin: 0 calc(var(--b) * -.03);
@@ -942,6 +945,51 @@ html[data-seizoen="koningsdag"] .alleen-koningsdag { display: inline; }
 .pk-plaat small { font-family: var(--f-tekst); font-size: clamp(.56rem, calc(var(--b) * .028), .9rem); font-variant-numeric: lining-nums; opacity: .8; }
 .pk-plaat::before, .pk-plaat::after { content: ""; position: absolute; top: 50%; width: 4px; height: 4px; margin-top: -2px; border-radius: 50%; background: #5C3D12; }
 .pk-plaat::before { left: 6px; } .pk-plaat::after { right: 6px; }
+
+/* de kamer: goudleer, lambrisering, een marmeren vloer, een raam met lichtval, een zeestuk en twee blakers */
+.pk-kamer { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; --kant: calc(50% - var(--b) / 2); }
+.pk-muur { position: absolute; left: 0; right: 0; top: 0; bottom: var(--vloer);
+  background:
+    radial-gradient(ellipse 60% 70% at 18% 30%, rgba(255, 226, 170, .22), rgba(255, 226, 170, 0) 70%),
+    radial-gradient(ellipse 50% 40% at 50% 52%, rgba(255, 200, 120, .14), rgba(255, 200, 120, 0) 70%),
+    radial-gradient(ellipse 75% 65% at 50% 48%, rgba(10, 5, 2, 0) 35%, rgba(10, 5, 2, .5) 100%),
+    linear-gradient(rgba(10, 5, 2, .6), rgba(10, 5, 2, .15) 30%, rgba(10, 5, 2, .15) 75%, rgba(10, 5, 2, .45)),
+    var(--goudleer) 50% 0 / clamp(56px, 6vw, 84px) auto, #4B2616; }
+.pk-muur::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 18px; background: linear-gradient(#1A0F08, #3A2414 55%, #24160C); box-shadow: 0 4px 10px rgba(0, 0, 0, .5); }
+.pk-lambris { position: absolute; left: 0; right: 0; bottom: var(--vloer); height: calc(var(--b) * .34);
+  background:
+    linear-gradient(rgba(255, 220, 170, .22), rgba(255, 220, 170, 0) 7%, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, .45)),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, .35) 0 2px, rgba(255, 220, 170, .08) 2px 4px, rgba(0, 0, 0, 0) 4px calc(var(--b) * .26 - 2px), rgba(0, 0, 0, .2) calc(var(--b) * .26 - 2px) calc(var(--b) * .26)),
+    linear-gradient(90deg, #3B2213, #5A361D 30%, #4A2B16 60%, #34200F);
+  box-shadow: inset 0 3px 0 #6E4626, inset 0 6px 0 #24160C; }
+.pk-vloer { position: absolute; left: 0; right: 0; bottom: 0; height: var(--vloer); overflow: hidden; perspective: 900px; perspective-origin: 50% -40%; background: #2A2420; }
+.pk-vloer i { position: absolute; left: -200%; right: -200%; top: 0; height: 700%; transform-origin: 50% 0; transform: rotateX(78deg);
+  background: conic-gradient(from 45deg, #D9D2C3 0 25%, #302A25 0 50%, #D9D2C3 0 75%, #302A25 0) 50% 0 / 72px 72px; }
+.pk-vloer::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(10, 6, 3, .6), rgba(10, 6, 3, .1) 45%, rgba(10, 6, 3, .35)), radial-gradient(ellipse 30% 60% at 50% 0, rgba(0, 0, 0, .35), rgba(0, 0, 0, 0)); }
+/* het raam links van de kast: glas in lood, het daglicht valt schuin naar binnen */
+.pk-raam { position: absolute; right: calc(100% - var(--kant) + var(--b) * .3); bottom: calc(var(--vloer) + var(--b) * .38); width: calc(var(--b) * .42); height: calc(var(--b) * .9); }
+.pk-raam-glas { position: absolute; inset: 7%; background:
+    repeating-linear-gradient(60deg, rgba(60, 50, 40, .55) 0 1.2px, rgba(0, 0, 0, 0) 1.2px 16px),
+    repeating-linear-gradient(-60deg, rgba(60, 50, 40, .55) 0 1.2px, rgba(0, 0, 0, 0) 1.2px 16px),
+    linear-gradient(#EFF3EE, #D8E2DC 55%, #F6EFD8); box-shadow: 0 0 40px rgba(255, 240, 200, .45); }
+.pk-raam-kozijn { position: absolute; inset: 0; border: calc(var(--b) * .03) solid #3A2414; box-shadow: inset 0 0 0 2px #24160C, 0 6px 14px rgba(0, 0, 0, .5);
+  background: linear-gradient(90deg, transparent calc(50% - 3px), #3A2414 calc(50% - 3px) calc(50% + 3px), transparent calc(50% + 3px)), linear-gradient(transparent 38%, #3A2414 38% calc(38% + 6px), transparent calc(38% + 6px)); }
+.pk-lichtval { position: absolute; inset: 0; mix-blend-mode: screen; opacity: .55;
+  background: linear-gradient(118deg, rgba(255, 240, 205, 0) calc(var(--kant) - var(--b) * .55), rgba(255, 240, 205, .32) calc(var(--kant) - var(--b) * .3), rgba(255, 240, 205, .12) calc(var(--kant) + var(--b) * .2), rgba(255, 240, 205, 0) calc(var(--kant) + var(--b) * .55)); }
+/* het zeestuk rechts van de kast */
+.pk-schilderij { position: absolute; left: calc(var(--kant) + var(--b) + var(--b) * .32); bottom: calc(var(--vloer) + var(--b) * .62); width: calc(var(--b) * .5); filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .55)); }
+.pk-schilderij svg { display: block; width: 100%; height: auto; }
+/* koperen blakers met een kaars naast de kast */
+.pk-blaker { position: absolute; bottom: calc(var(--vloer) + var(--b) * .74); width: clamp(26px, calc(var(--b) * .09), 46px); }
+.pk-blaker svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pk-blaker::before { content: ""; position: absolute; left: 50%; top: 4%; width: 380%; aspect-ratio: 1; transform: translate(-50%, -40%); border-radius: 50%; background: radial-gradient(circle, rgba(255, 196, 110, .34), rgba(255, 196, 110, 0) 65%); mix-blend-mode: screen; animation: pk-gloed 3.6s ease-in-out infinite alternate; }
+.pk-blaker-l { right: calc(100% - var(--kant) + var(--b) * .03); }
+.pk-blaker-r { left: calc(var(--kant) + var(--b) + var(--b) * .03); }
+.pk-vlam { transform-box: fill-box; transform-origin: 50% 100%; animation: pk-vlam 1.9s ease-in-out infinite alternate; }
+@keyframes pk-vlam { 0% { transform: scale(1, 1) skewX(0); } 40% { transform: scale(.94, 1.06) skewX(2deg); } 100% { transform: scale(1.04, .95) skewX(-2deg); } }
+@keyframes pk-gloed { from { opacity: .85; } to { opacity: 1; } }
+/* op een smal scherm is er naast de kast geen plek voor het raam en het schilderij */
+@media (max-aspect-ratio: 4/5) { .pk-raam, .pk-schilderij, .pk-lichtval { display: none; } }
 
 /* de vitrine: walnoot om groen fluweel, drie planken */
 .pk-vitrine {
@@ -982,12 +1030,9 @@ html[data-seizoen="koningsdag"] .alleen-koningsdag { display: inline; }
 @keyframes pk-glim { 0%, 70%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); } 82% { opacity: 1; transform: scale(1.1) rotate(45deg); } }
 @keyframes pk-nieuw { 0%, 100% { filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .45)) drop-shadow(0 0 0 rgba(255, 220, 120, 0)); } 50% { filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .45)) drop-shadow(0 0 10px rgba(255, 220, 120, .85)); } }
 /* Delfts servies (klus) in het lege vak van de onderste plank */
-.pk-servies { display: none; align-self: end; justify-self: center; width: 62%; aspect-ratio: 1; margin-bottom: 4%; border-radius: 50%; box-shadow: 0 3px 4px rgba(0, 0, 0, .45);
+.pk-servies { display: block; align-self: end; justify-self: center; width: 62%; aspect-ratio: 1; margin-bottom: 4%; border-radius: 50%; box-shadow: 0 3px 4px rgba(0, 0, 0, .45);
   background: radial-gradient(circle, #1C3473 0 13%, #F4F1E8 14% 44%, #1C3473 45% 48%, #F4F1E8 49% 66%, #2B4C9A 67% 71%, #F4F1E8 72% 92%, #B7B09E 93%); }
-.pk-kast.met-servies .pk-servies { display: block; }
-.pk-plank:first-child::before { content: ""; display: none; position: absolute; left: 3%; bottom: calc(var(--b) * .03); width: 15%; aspect-ratio: 1; border-radius: 50%; opacity: .9;
-  background: radial-gradient(circle, #1C3473 0 13%, #F4F1E8 14% 44%, #1C3473 45% 48%, #F4F1E8 49% 66%, #2B4C9A 67% 71%, #F4F1E8 72% 92%, #B7B09E 93%); box-shadow: 0 2px 3px rgba(0, 0, 0, .4); }
-.pk-kast.met-servies .pk-plank:first-child::before { display: block; }
+
 
 /* de glazen deurtjes met lood, die opengaan als je voor de kast staat */
 .pk-deur {
@@ -1032,7 +1077,11 @@ html[data-seizoen="koningsdag"] .alleen-koningsdag { display: inline; }
 .pk-la:hover, .pk-la:focus-visible { transform: translateY(2px); }
 .pk-la:focus-visible { outline: 3px solid #F2C14E; outline-offset: 2px; }
 .pk-la.open { transform: translateY(8px) scale(1.05); box-shadow: inset 0 0 0 1px rgba(20, 10, 4, .8), inset 0 2px 0 rgba(255, 220, 170, .3), 0 10px 14px rgba(0, 0, 0, .55); z-index: 2; }
-.pk-voet { height: calc(var(--b) * .05); margin: 0 calc(var(--b) * -.015); border-radius: 0 0 4px 4px; background: linear-gradient(#3E2412, #24160C); box-shadow: inset 0 2px 0 rgba(255, 220, 170, .12); }
+.pk-voet { position: relative; height: calc(var(--b) * .05); margin: 0 calc(var(--b) * -.015) calc(var(--b) * .055); border-radius: 0 0 4px 4px; background: linear-gradient(#3E2412, #24160C); box-shadow: inset 0 2px 0 rgba(255, 220, 170, .12); }
+/* bolpoten: de kast staat op de vloer */
+.pk-bol { position: absolute; top: 100%; width: calc(var(--b) * .1); height: calc(var(--b) * .062); border-radius: 50% 50% 46% 46%; background: radial-gradient(ellipse at 38% 30%, #8A5A30, #4A2B16 55%, #1E1009); box-shadow: 0 4px 6px rgba(0, 0, 0, .45); }
+.pk-bol-l { left: 5%; }
+.pk-bol-r { right: 5%; }
 
 /* het kaartje bij een prijs en het open laatje */
 .pk-sluier { position: absolute; inset: 0; z-index: 4; background: rgba(10, 6, 3, .55); }
@@ -1096,8 +1145,10 @@ html[data-seizoen="koningsdag"] .alleen-koningsdag { display: inline; }
 .pk-l-doe.koop { background: linear-gradient(#F2CF7A, #C9973F); color: #2A1A08; }
 .pk-l-doe.stil, .pk-l-doe:disabled { opacity: .75; cursor: default; background: rgba(0, 0, 0, .3); color: #F4E9CF; box-shadow: none; }
 @media (max-height: 520px) {
-  .pk-zaal { --b: min(94vw, 560px, calc((100vh - 70px) / 1.27)); grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
-  @supports (height: 100dvh) { .pk-zaal { --b: min(94vw, 560px, calc((100dvh - 70px) / 1.27)); } }
+  .pk-zaal { --vloer: 34px; --diep: 8px; --b: min(94vw, 560px, calc((100vh - 30px - var(--vloer)) / 1.4)); grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  @supports (height: 100dvh) { .pk-zaal { --b: min(94vw, 560px, calc((100dvh - 30px - var(--vloer)) / 1.4)); } }
+  .pk-kaststel, .pk-naam, .pk-blaker { display: none; }
+  .pk-kast { margin-top: 0; }
   .pk-kop { flex-direction: column; justify-content: flex-start; width: auto; padding: 0 10px 0 0; }
   .pk-la-naam { display: none; }
   .pk-la { padding-bottom: 14%; }
@@ -2205,6 +2256,20 @@ html.met-opening .film { display: block; }
 .kk-blader button { max-width: 48%; }
 .kk-blader button span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .plek-knop.plek-lezen .plek-ikoon { background: radial-gradient(circle at 35% 30%, #F6EAD0, #C9B48A 72%); color: #3A2A14; }
+.plek-knop.plek-pronk .plek-ikoon { background: radial-gradient(circle at 35% 30%, #4C8466, #1F3D2B 72%); color: #F2CF7A; box-shadow: 0 3px 8px rgba(0, 0, 0, .35), inset 0 0 0 1.5px #C9973F; }
+.plek-knop.plek-lezen + .plek-knop.plek-lezen { margin-left: 0; }
+.plek-knop.plek-lezen + .plek-knop.plek-lezen::before { display: none; }
+.gevel.dok .plek-knop.plek-lezen + .plek-knop.plek-lezen { margin: 0; }
+.plek-ster { display: none; position: absolute; right: -5px; top: -4px; width: 20px; height: 20px; border-radius: 50%; place-items: center; background: #C9973F; color: #FBF3DC; box-shadow: 0 0 0 1.5px #FBF3DC; }
+.plek-ster svg { width: 12px; height: 12px; }
+.plek-knop.nieuw .plek-ster { display: grid; animation: puls 1.3s ease-in-out infinite; }
+.plek-naam { text-align: center; line-height: 1.05; -webkit-hyphens: manual; hyphens: manual; }
+.plek-wijzer .nieuw-teken { display: none; }
+.plek-wijzer.nieuw .nieuw-teken { display: inline; }
+.plek-wijzer.nieuw .puls { animation: puls 1.3s ease-in-out infinite; }
+.bel-prijs { border: 0; font: inherit; color: inherit; cursor: pointer; }
+.bel-prijs-kijk { margin-left: auto; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #B8893A; color: #FBF3DC; }
+.bel-prijs-kijk svg { width: 18px; height: 18px; }
 /* de Kunstkamer is geen spel: helemaal rechts in de balk, met een streepje ertussen */
 .plek-knop.plek-lezen { position: relative; margin-left: 9px; }
 .plek-knop.plek-lezen::before { content: ""; position: absolute; left: -7px; top: 16%; bottom: 16%; width: 1px; background: linear-gradient(rgba(231, 195, 106, 0), rgba(231, 195, 106, .6), rgba(231, 195, 106, 0)); pointer-events: none; }
@@ -2238,6 +2303,7 @@ html.met-opening .film { display: block; }
   .kh-tel.in b { opacity: 1; }
   .kn-beurt, .sj-speler.kn-wip { animation: none !important; }
   .pk-deur, .pk-la { transition: none !important; }
+  .pk-vlam, .pk-blaker::before { animation: none !important; }
   .gevel-svg .ster, .gevel-svg .straal, .gevel-svg .flakker, .gevel-svg .glans, .plek-wijzer .zweef, .plek-wijzer.kan .puls,
   .hoepelaar .loopt, .hoepelaar .huppel, .hoepel-draai, .gevel-svg .been, .wandelaar .loopt, .wandelaar .stap,
   .pijprook circle, .schoorsteenrook circle, .zwaaiarm, .straatkat-staart, .zwem, .eend-lijf, .riem, .kruin, .vleugel, .wieken { animation: none !important; }

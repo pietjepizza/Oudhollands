@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=33">
+<link rel="stylesheet" href="css/stijl.css?v=34">
 <script>
   /* de opening (een korte film over de gracht) alleen als je bij het huis begint, één keer per bezoek; meteen zetten,
      zodat de straat niet eerst even flitst. Laadt het filmscript niet, dan gaat de opening na een tijdje vanzelf weg. */
@@ -550,12 +550,13 @@
           <button class="knop knop-binnen" id="naar-binnen" type="button">Ga naar binnen</button>
         </div>
         <nav class="plekken" id="plekken" aria-label="Plekken aan de gracht">
-          <button class="plek-knop" type="button" data-plek="voorkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-deur"/></svg></span><span class="plek-naam">Voorkamer</span></button>
+          <button class="plek-knop" type="button" data-plek="voorkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-deur"/></svg></span><span class="plek-naam">Voor&shy;kamer</span></button>
           <button class="plek-knop" type="button" data-plek="zolder"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-luik"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">Zolder</span></button>
           <button class="plek-knop" type="button" data-plek="herberg"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-kroes"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">Herberg</span></button>
           <button class="plek-knop" type="button" data-plek="kermis"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-vlag"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">Kermis</span></button>
           <button class="plek-knop" type="button" data-plek="ijsbaan"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-schaats"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">IJsbaan</span></button>
-          <button class="plek-knop plek-lezen" type="button" data-plek="kunstkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-boek"/></svg></span><span class="plek-naam">Kunstkamer</span></button>
+          <button class="plek-knop plek-lezen plek-pronk" type="button" data-plek="pronkkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-kast"/></svg><i class="plek-ster"><svg aria-hidden="true"><use href="#i-ster"/></svg></i></span><span class="plek-naam">Pronk&shy;kamer</span></button>
+          <button class="plek-knop plek-lezen plek-boek" type="button" data-plek="kunstkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-boek"/></svg></span><span class="plek-naam">Kunst&shy;kamer</span></button>
         </nav>
       </div>
       <div class="kamer" id="kamer" hidden>
@@ -673,9 +674,9 @@
     <div class="mo-podium kh-podium" id="kh-podium"></div>
   </section>
   <!-- DE KUNSTKAMER: lezen en kijken, geen spel -->
-  <!-- DE PRONKKAST: prijzen achter glas en laatjes met speelgoed -->
-  <section id="scherm-pronkkast" class="weergave volscherm pronkkast" aria-labelledby="pk-titel" hidden>
-    <h1 id="pk-titel" class="sr-only">Pronkkast</h1>
+  <!-- DE PRONKKAMER: de mooiste kamer van het huis, met de pronkkast (prijzen achter glas, laatjes met speelgoed) -->
+  <section id="scherm-pronkkamer" class="weergave volscherm pronkkast" aria-labelledby="pk-titel" hidden>
+    <h1 id="pk-titel" class="sr-only">De pronkkamer</h1>
     <div class="pk-zaal" id="pk-zaal"></div>
   </section>
   <section id="scherm-kunstkamer" class="weergave volscherm kunstkamer" aria-labelledby="kk-titel" hidden>
@@ -705,10 +706,11 @@
     </div>
     <p class="bel-bedrag" id="bel-bedrag">+0</p>
     <p class="bel-sub" id="bel-sub"><svg aria-hidden="true"><use href="#i-ster"/></svg><span id="bel-sub-tekst">Gewonnen!</span></p>
-    <div class="bel-prijs" id="bel-prijs" hidden>
+    <button class="bel-prijs" id="bel-prijs" type="button" hidden>
       <span class="bel-prijs-beeld" id="bel-prijs-beeld" aria-hidden="true"></span>
       <span class="bel-prijs-tekst"><small>Nieuw in je pronkkast</small><b id="bel-prijs-naam"></b></span>
-    </div>
+      <span class="bel-prijs-kijk"><svg aria-hidden="true"><use href="#i-pijl"/></svg></span>
+    </button>
     <div class="bel-volgende" id="bel-volgende">
       <span class="bel-v-ikoon" aria-hidden="true"><svg><use id="bel-v-use" href="#i-raam"/></svg></span>
       <span class="bel-v-midden"><span class="bel-v-naam" id="bel-v-naam">Ramen lappen</span><span class="bel-v-meter" aria-hidden="true"><i id="bel-v-meter"></i></span></span>
@@ -814,7 +816,7 @@
       <span><svg aria-hidden="true"><use href="#i-hamer"/></svg><b id="menu-klussen">0/10</b></span>
     </div>
     <button class="menu-knop" id="menu-buiten" type="button"><svg aria-hidden="true"><use href="#i-huis"/></svg>Huis van buiten</button>
-    <button class="menu-knop" id="menu-kast" type="button"><svg aria-hidden="true"><use href="#i-kast"/></svg>Pronkkast</button>
+    <button class="menu-knop" id="menu-kast" type="button"><svg aria-hidden="true"><use href="#i-kast"/></svg>Pronkkamer</button>
     <button class="menu-knop" id="menu-uitleg" type="button"><svg aria-hidden="true"><use href="#i-vraag"/></svg>Zo werkt het</button>
     <button class="menu-knop menu-schakel" id="menu-tril" type="button" role="switch" aria-checked="true"><svg aria-hidden="true"><use href="#i-tril"/></svg>Trillen<span class="schakel" aria-hidden="true"><i></i></span></button>
     <div class="menu-seizoen" role="group" aria-labelledby="seizoen-kop">
@@ -861,31 +863,31 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=33"></script>
-<script src="js/muziek.js?v=33"></script>
-<script src="js/duiten.js?v=33"></script>
-<script src="js/pronk.js?v=33"></script>
-<script src="js/seizoen.js?v=33"></script>
-<script src="js/les.js?v=33"></script>
-<script src="js/personen.js?v=33"></script>
-<script src="js/ganzenbord.js?v=33"></script>
-<script src="js/sjoelen.js?v=33"></script>
-<script src="js/molenspel.js?v=33"></script>
-<script src="js/damregels.js?v=33"></script>
-<script src="js/dammen.js?v=33"></script>
-<script src="js/klaverregels.js?v=33"></script>
-<script src="js/klaverjassen.js?v=33"></script>
-<script src="js/triktrakregels.js?v=33"></script>
-<script src="js/triktrak.js?v=33"></script>
-<script src="js/bikkelen.js?v=33"></script>
-<script src="js/kolf.js?v=33"></script>
-<script src="js/koekhappen.js?v=33"></script>
-<script src="js/kunstkamer.js?v=33"></script>
-<script src="js/knikkeren.js?v=33"></script>
-<script src="js/tollen.js?v=33"></script>
-<script src="js/huis.js?v=33"></script>
-<script src="js/app.js?v=33"></script>
-<script src="js/wenken.js?v=33"></script>
-<script src="js/opening.js?v=33"></script>
+<script src="js/geluid.js?v=34"></script>
+<script src="js/muziek.js?v=34"></script>
+<script src="js/duiten.js?v=34"></script>
+<script src="js/pronk.js?v=34"></script>
+<script src="js/seizoen.js?v=34"></script>
+<script src="js/les.js?v=34"></script>
+<script src="js/personen.js?v=34"></script>
+<script src="js/ganzenbord.js?v=34"></script>
+<script src="js/sjoelen.js?v=34"></script>
+<script src="js/molenspel.js?v=34"></script>
+<script src="js/damregels.js?v=34"></script>
+<script src="js/dammen.js?v=34"></script>
+<script src="js/klaverregels.js?v=34"></script>
+<script src="js/klaverjassen.js?v=34"></script>
+<script src="js/triktrakregels.js?v=34"></script>
+<script src="js/triktrak.js?v=34"></script>
+<script src="js/bikkelen.js?v=34"></script>
+<script src="js/kolf.js?v=34"></script>
+<script src="js/koekhappen.js?v=34"></script>
+<script src="js/kunstkamer.js?v=34"></script>
+<script src="js/knikkeren.js?v=34"></script>
+<script src="js/tollen.js?v=34"></script>
+<script src="js/huis.js?v=34"></script>
+<script src="js/app.js?v=34"></script>
+<script src="js/wenken.js?v=34"></script>
+<script src="js/opening.js?v=34"></script>
 </body>
 </html>

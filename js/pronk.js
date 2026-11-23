@@ -1,10 +1,10 @@
-/* De pronkkast: een glazen kast in de voorkamer.
+/* De pronkkamer en de pronkkast: een glazen kast in de mooiste kamer van het huis, op de eerste verdieping.
    - Bovenin, achter glas, staan zilveren prijsjes. Elke prijs win je door de kampioen van een spel te verslaan.
      Zulke piepkleine zilveren voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor
      pronkkasten en poppenhuizen (zie de poppenhuizen en de miniaturen in het Rijksmuseum).
    - Onderin zitten vijf laatjes met speelgoed: daar kies je je sjoelschijven, dobbelstenen, stenen, knikkers en
      tollen, of koop je nieuwe met duiten. Ze veranderen alleen hoe de spellen eruitzien, nooit je kans om te winnen.
-   De kast is een eigen scherm (#pronkkast); in de voorkamer hangt hij aan de muur en zie je wat erin staat. */
+   De pronkkamer is een eigen plek (#pronkkamer): je komt er via de knoppenbalk of de ramen van de eerste verdieping. */
 (function () {
   'use strict';
   const SOORTEN = [
@@ -266,6 +266,84 @@
   const PER_PLANK = 4;
   let zaal = null, gebouwd = false, openLa = null, gekozenInLa = null, kaartjeVan = null, actief = false;
 
+  // ============================================================
+  // DE PRONKKAMER: de mooiste kamer van het huis, op de eerste verdieping. Goudleer aan de muur (in de 17e eeuw
+  // een Amsterdamse specialiteit), een lambrisering van eikenhout, een marmeren vloer in een ruitpatroon zoals op
+  // de schilderijen van De Hooch en Vermeer, een raam met glas in lood, een zeestuk in een vergulde lijst en twee
+  // koperen blakers met kaarsen. Bovenop de kast staat een kaststel: vijf vazen van Delfts blauw.
+  // ============================================================
+  const svgUrl = (inhoud, b, h) => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${b}' height='${h}' viewBox='0 0 ${b} ${h}'>${inhoud}</svg>`)}")`;
+  function goudleer() {
+    // één tegel: een granaatappelbloem met ranken, in reliëf (een donkere schaduw onder het goud)
+    const motief = `<path d='M60 26 C71 35 75 48 67 58 C64 62 56 62 53 58 C45 48 49 35 60 26 Z'/><circle cx='60' cy='44' r='3.6'/>
+      <path d='M60 62 V92' fill='none' stroke-width='2.4'/><path d='M60 76 C52 70 43 72 38 80 C45 83 54 81 60 76 Z'/><path d='M60 76 C68 70 77 72 82 80 C75 83 66 81 60 76 Z'/>
+      <path d='M0 0 C13 3 19 13 15 21 C12 27 4 26 3 20 M120 0 C107 3 101 13 105 21 C108 27 116 26 117 20 M0 120 C13 117 19 107 15 99 C12 93 4 94 3 100 M120 120 C107 117 101 107 105 99 C108 93 116 94 117 100' fill='none' stroke-width='2.2'/>
+      <path d='M60 0 C64 6 64 10 60 14 C56 10 56 6 60 0 Z M60 120 C64 114 64 110 60 106 C56 110 56 114 60 120 Z M0 60 C6 56 10 56 14 60 C10 64 6 64 0 60 Z M120 60 C114 56 110 56 106 60 C110 64 114 64 120 60 Z'/>`;
+    return svgUrl(`<rect width='120' height='120' fill='#4B2616'/>` +
+      `<g fill='#230F07' stroke='#230F07' opacity='.55' transform='translate(1.4 1.8)'>${motief}</g>` +
+      `<g fill='#B8862E' stroke='#B8862E' opacity='.4'>${motief}</g>` +
+      `<g fill='#FFE7A6' stroke='#FFE7A6' opacity='.08' transform='translate(-.6 -.8)'>${motief}</g>`, 120, 120);
+  }
+  const ZEESTUK = `<svg viewBox="0 0 170 124" aria-hidden="true">
+    <defs><linearGradient id="pk-lucht" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FA7B5"/><stop offset=".55" stop-color="#D9D7C6"/><stop offset="1" stop-color="#EDE1C2"/></linearGradient>
+    <linearGradient id="pk-zee" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6E7C72"/><stop offset="1" stop-color="#34403A"/></linearGradient>
+    <linearGradient id="pk-lijst" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3D88F"/><stop offset=".5" stop-color="#B4832E"/><stop offset="1" stop-color="#6A4716"/></linearGradient></defs>
+    <rect width="170" height="124" fill="#1A110B"/><rect x="5" y="5" width="160" height="114" fill="url(#pk-lijst)"/><rect x="11" y="11" width="148" height="102" fill="#24170E"/>
+    <rect x="14" y="14" width="142" height="96" fill="url(#pk-lucht)"/>
+    <ellipse cx="52" cy="34" rx="30" ry="9" fill="#F4EEDD" opacity=".7"/><ellipse cx="118" cy="44" rx="26" ry="7" fill="#F4EEDD" opacity=".55"/><ellipse cx="88" cy="26" rx="22" ry="6" fill="#B9C3C6" opacity=".6"/>
+    <rect x="14" y="78" width="142" height="32" fill="url(#pk-zee)"/>
+    <path d="M14 84 Q40 81 70 84 T130 83 T156 85" fill="none" stroke="#C9CBB8" stroke-width=".8" opacity=".6"/>
+    <g fill="#2A1A10"><path d="M56 82 L104 82 L98 90 L62 90 Z"/><rect x="66" y="48" width="1.6" height="34"/><rect x="80" y="40" width="1.8" height="42"/><rect x="93" y="52" width="1.5" height="30"/></g>
+    <g fill="#EFE4C8"><path d="M60 52 L67 50 L67 70 L61 72 Z"/><path d="M68 50 L75 52 L74 72 L68 70 Z"/><path d="M73 44 L80 42 L80 66 L74 68 Z"/><path d="M82 42 L90 44 L89 68 L82 66 Z"/><path d="M88 56 L93 54 L93 72 L88 74 Z"/><path d="M95 54 L101 56 L100 74 L95 72 Z"/></g>
+    <path d="M80 36 L86 38 L80 40 Z" fill="#B6452C"/>
+    <g fill="#3A2A20" opacity=".7"><path d="M128 84 L142 84 L140 87 L130 87 Z"/><rect x="134" y="70" width=".9" height="14"/><path d="M130 72 L134 71 L134 81 L131 82 Z" fill="#E6DCC0"/></g>
+    <rect x="14" y="14" width="142" height="96" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="2"/>
+  </svg>`;
+  const BLAKER = `<svg viewBox="0 0 44 110" aria-hidden="true">
+    <defs><radialGradient id="pk-koper" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#FFF1C2"/><stop offset=".45" stop-color="#D9A84E"/><stop offset="1" stop-color="#6E4A14"/></radialGradient>
+    <radialGradient id="pk-vlam" cx="50%" cy="62%" r="60%"><stop offset="0" stop-color="#FFFBE0"/><stop offset=".45" stop-color="#FFCB55"/><stop offset="1" stop-color="#FF8A1E" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="22" cy="64" rx="15" ry="26" fill="url(#pk-koper)" stroke="#5A3A10" stroke-width="1"/><ellipse cx="22" cy="64" rx="9" ry="17" fill="none" stroke="#FFF1C2" stroke-opacity=".5" stroke-width="1.4"/>
+    <path d="M22 84 C22 96 30 98 32 92" fill="none" stroke="#9A6B1F" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="22" cy="56" rx="10" ry="3" fill="#B8862E"/><rect x="18" y="30" width="8" height="26" rx="1.5" fill="#F4EEDD"/><rect x="18" y="30" width="3" height="26" fill="#fff" opacity=".6"/>
+    <path d="M22 30 V27" stroke="#2A1A08" stroke-width="1"/>
+    <g class="pk-vlam"><ellipse cx="22" cy="20" rx="4.2" ry="9" fill="url(#pk-vlam)"/><ellipse cx="22" cy="23" rx="1.6" ry="3.4" fill="#FFFFFF" opacity=".9"/></g>
+  </svg>`;
+  function kaststel() {
+    // vijf vazen van Delfts blauw: aan de buitenkant kleine dekselpotten, dan twee bekervazen, in het midden een grote dekselpot
+    const glazuur = 'url(#pk-glazuur)', B = '#1C3473';
+    const pot = (cx, h, w) => {
+      const y0 = 60 - h;
+      return `<path d="M${cx - w * 0.28} 60 C${cx - w * 0.42} 52 ${cx - w * 0.55} ${y0 + h * 0.55} ${cx - w * 0.5} ${y0 + h * 0.38} C${cx - w * 0.46} ${y0 + h * 0.26} ${cx - w * 0.3} ${y0 + h * 0.2} ${cx - w * 0.26} ${y0 + h * 0.16} L${cx + w * 0.26} ${y0 + h * 0.16} C${cx + w * 0.3} ${y0 + h * 0.2} ${cx + w * 0.46} ${y0 + h * 0.26} ${cx + w * 0.5} ${y0 + h * 0.38} C${cx + w * 0.55} ${y0 + h * 0.55} ${cx + w * 0.42} 52 ${cx + w * 0.28} 60 Z" fill="${glazuur}" stroke="#9AA3B4" stroke-width=".6"/>` +
+        `<path d="M${cx - w * 0.3} ${y0 + h * 0.16} Q${cx} ${y0 - h * 0.02} ${cx + w * 0.3} ${y0 + h * 0.16} Z" fill="${glazuur}" stroke="#9AA3B4" stroke-width=".6"/><circle cx="${cx}" cy="${y0 + h * 0.02}" r="${w * 0.06}" fill="${B}"/>` +
+        `<path d="M${cx - w * 0.46} ${y0 + h * 0.36} H${cx + w * 0.46} M${cx - w * 0.34} ${60 - h * 0.12} H${cx + w * 0.34}" stroke="${B}" stroke-width="1.2"/>` +
+        `<path d="M${cx} ${y0 + h * 0.44} C${cx - w * 0.16} ${y0 + h * 0.56} ${cx - w * 0.1} ${y0 + h * 0.74} ${cx} ${y0 + h * 0.8} C${cx + w * 0.1} ${y0 + h * 0.74} ${cx + w * 0.16} ${y0 + h * 0.56} ${cx} ${y0 + h * 0.44} Z M${cx} ${y0 + h * 0.8} V${60 - h * 0.14} M${cx - w * 0.2} ${y0 + h * 0.62} Q${cx - w * 0.1} ${y0 + h * 0.66} ${cx} ${y0 + h * 0.62} M${cx + w * 0.2} ${y0 + h * 0.62} Q${cx + w * 0.1} ${y0 + h * 0.66} ${cx} ${y0 + h * 0.62}" fill="none" stroke="${B}" stroke-width="1.1"/>`;
+    };
+    const beker = (cx, h, w) => {
+      const y0 = 60 - h;
+      return `<path d="M${cx - w * 0.2} 60 C${cx - w * 0.3} ${60 - h * 0.2} ${cx - w * 0.16} ${y0 + h * 0.5} ${cx - w * 0.14} ${y0 + h * 0.4} C${cx - w * 0.2} ${y0 + h * 0.2} ${cx - w * 0.42} ${y0 + h * 0.06} ${cx - w * 0.48} ${y0} L${cx + w * 0.48} ${y0} C${cx + w * 0.42} ${y0 + h * 0.06} ${cx + w * 0.2} ${y0 + h * 0.2} ${cx + w * 0.14} ${y0 + h * 0.4} C${cx + w * 0.16} ${y0 + h * 0.5} ${cx + w * 0.3} ${60 - h * 0.2} ${cx + w * 0.2} 60 Z" fill="${glazuur}" stroke="#9AA3B4" stroke-width=".6"/>` +
+        `<ellipse cx="${cx}" cy="${y0}" rx="${w * 0.48}" ry="${w * 0.08}" fill="#E7EBF1" stroke="#9AA3B4" stroke-width=".6"/>` +
+        `<path d="M${cx - w * 0.26} ${y0 + h * 0.14} H${cx + w * 0.26} M${cx - w * 0.2} ${60 - h * 0.1} H${cx + w * 0.2}" stroke="${B}" stroke-width="1.1"/>` +
+        `<path d="M${cx} ${y0 + h * 0.22} V${y0 + h * 0.7} M${cx - w * 0.1} ${y0 + h * 0.36} Q${cx} ${y0 + h * 0.3} ${cx + w * 0.1} ${y0 + h * 0.36} M${cx - w * 0.08} ${y0 + h * 0.52} Q${cx} ${y0 + h * 0.46} ${cx + w * 0.08} ${y0 + h * 0.52}" fill="none" stroke="${B}" stroke-width="1"/>`;
+    };
+    return `<svg viewBox="0 0 300 62" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <defs><linearGradient id="pk-glazuur" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C9D0DC"/><stop offset=".3" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F2F4F7"/><stop offset="1" stop-color="#A9B2C3"/></linearGradient></defs>
+      <g opacity=".35" fill="#000">${[30, 90, 150, 210, 270].map((x, i) => `<ellipse cx="${x + 2}" cy="60.5" rx="${[12, 11, 17, 11, 12][i]}" ry="2"/>`).join('')}</g>
+      ${pot(30, 34, 30)}${beker(90, 44, 30)}${pot(150, 56, 44)}${beker(210, 44, 30)}${pot(270, 34, 30)}
+    </svg>`;
+  }
+  function kamerHtml() {
+    return `<div class="pk-kamer" aria-hidden="true">
+      <div class="pk-muur"></div>
+      <div class="pk-raam"><i class="pk-raam-glas"></i><i class="pk-raam-kozijn"></i></div>
+      <div class="pk-schilderij">${ZEESTUK}</div>
+      <div class="pk-blaker pk-blaker-l">${BLAKER}</div>
+      <div class="pk-blaker pk-blaker-r">${BLAKER}</div>
+      <div class="pk-lambris"></div>
+      <div class="pk-vloer"><i></i></div>
+      <div class="pk-lichtval"></div>
+    </div>`;
+  }
+
   function bouw() {
     zaal = document.getElementById('pk-zaal');
     if (!zaal) return;
@@ -274,13 +352,15 @@
     for (let i = 0; i < planken; i++) {
       plankHtml += `<div class="pk-plank" role="list">${PRIJZEN.slice(i * PER_PLANK, (i + 1) * PER_PLANK).map((p) => `<button class="pk-prijs" type="button" role="listitem" data-prijs="${p.id}">${prijsSvg(p.id)}<i class="pk-glim" aria-hidden="true"></i></button>`).join('')}${i === planken - 1 ? '<span class="pk-servies" aria-hidden="true"></span>' : ''}</div>`;
     }
-    zaal.innerHTML = `
+    zaal.innerHTML = `${kamerHtml()}
       <header class="pk-kop">
         <a class="mo-knop pk-terug" href="#" aria-label="Terug" title="Terug">${icoon('terug')}</a>
+        <p class="pk-naam">De pronkkamer</p>
         <span class="pk-saldo" aria-label="Duiten"><svg class="duit" aria-hidden="true"><use href="#i-duit"/></svg><b class="pk-saldo-getal">0</b></span>
       </header>
       <div class="pk-midden">
         <div class="pk-kast">
+          <div class="pk-kaststel">${kaststel()}</div>
           <div class="pk-kroon"><span class="pk-plaat"><b>Pronkkast</b><small class="pk-teller"></small></span></div>
           <div class="pk-vitrine">
             <div class="pk-binnen">${plankHtml}</div>
@@ -288,7 +368,7 @@
             <div class="pk-deur pk-deur-r" aria-hidden="true"></div>
           </div>
           <div class="pk-laden" role="list" aria-label="Laatjes met speelgoed">${SOORTEN.map((so) => `<button class="pk-la" type="button" role="listitem" data-soort="${so.id}"><span class="pk-la-raam"></span><span class="pk-la-naam">${so.kort}</span><i class="pk-la-greep" aria-hidden="true"></i><i class="pk-stip" aria-hidden="true"></i></button>`).join('')}</div>
-          <div class="pk-voet" aria-hidden="true"></div>
+          <div class="pk-voet" aria-hidden="true"><i class="pk-bol pk-bol-l"></i><i class="pk-bol pk-bol-r"></i></div>
         </div>
       </div>
       <div class="pk-sluier" hidden></div>
@@ -304,6 +384,7 @@
         <div class="pk-l-vakken"></div>
         <button class="knop pk-l-doe" type="button"></button>
       </div>`;
+    zaal.querySelector('.pk-kamer').style.setProperty('--goudleer', goudleer());
     zaal.querySelectorAll('.pk-prijs').forEach((b) => b.addEventListener('click', () => toonKaartje(b.getAttribute('data-prijs'), b)));
     zaal.querySelectorAll('.pk-la').forEach((b) => b.addEventListener('click', () => (openLa === b.getAttribute('data-soort') ? sluitLa() : openLaatje(b.getAttribute('data-soort')))));
     zaal.querySelector('.pk-kaartje .pk-x').addEventListener('click', sluitKaartje);
@@ -330,7 +411,6 @@
       b.setAttribute('aria-label', won ? `${p.naam}, gewonnen met ${p.titel.toLowerCase()}` : `Nog te winnen: ${p.naam}. ${p.titel}: ${p.eis.toLowerCase()}`);
     });
     zaal.querySelector('.pk-teller').textContent = `${aantal} van ${PRIJZEN.length}`;
-    zaal.querySelector('.pk-kast').classList.toggle('met-servies', !!(D() && D().klusKlaar && D().klusKlaar('servies')));
     const stippen = nieuweSoorten();
     zaal.querySelectorAll('.pk-la').forEach((b) => {
       const so = SOORTEN.find((x) => x.id === b.getAttribute('data-soort'));
@@ -524,8 +604,8 @@
     prijsSvg,
     start,
     stop,
-    open() { location.hash = '#pronkkast'; },
-    sluit() { if (location.hash === '#pronkkast') location.hash = '#'; },
+    open() { location.hash = '#pronkkamer'; },
+    sluit() { if (location.hash === '#pronkkamer') location.hash = '#'; },
     opWijziging(f) { luisteraars.push(f); },
     get _toestand() { return { gebouwd, actief, openLa, kaartjeVan, gekozenInLa }; }
   };

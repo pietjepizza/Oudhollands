@@ -34,25 +34,32 @@ Alles wordt in de browser bewaard; via het menu kun je opnieuw beginnen.
 steile Hollandse trap leidt naar de **zolder**. Daar staan twee nieuwe spellen (knikkeren in de zandbak, tollen op de
 kist) en acht eigen klussen: rommel opruimen, het hijsluik openen, balken schuren, planken boenen, een lantaarn, een
 lappendeken, een hobbelpaard en duiven op de hanenbalk. De straat is het knooppunt: onderaan staan de plekken
-(voorkamer, zolder, herberg, kermis, ijsbaan). Herberg, kermis en ijsbaan zitten nog op slot.
+(voorkamer, zolder, herberg, kermis, ijsbaan, en rechts de pronkkamer en de Kunstkamer). Herberg, kermis en ijsbaan zitten nog op slot.
 
 **Gijs de gans doet het voor.** De eerste keer dat je een spel opent, laat een gans in een paar stapjes zien hoe het
 werkt: een lichtcirkel wijst de plek aan, een vinger tikt of veegt, en een ballonnetje zegt het in een paar woorden.
 Daarna kan het opnieuw via het vraagteken in het spel.
 
-**De pronkkast.** Links aan de muur van de voorkamer hangt een walnoten kast met glas in lood en groen fluweel. Tik erop
-en de deurtjes gaan open. Bovenin, achter het glas, staan zilveren prijsjes: voor elk spel één, en je wint hem door de
-kampioen van dat spel te verslaan (de burgemeester, Opoe bij het bikkelen, bakkersjongen Teun bij het koekhappen; bij
-het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet; tik erop en je
-ziet van wie je moet winnen, met een knop naar het spel. Een nieuwe prijs zie je meteen in het beloningsscherm, en de
-kast in de kamer glinstert tot je hem hebt bekeken. De prijzen zijn een gans, een sjoelbakje, een molentje, een dam met
-kroon, vergulde kaarten, een dobbelbeker, bikkels, een kolf, een koek aan een galg, een knikkerschaal en een tol. Zulke
-piepkleine zilveren voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor pronkkasten en poppenhuizen
-(zie de poppenhuizen en miniaturen in het Rijksmuseum). Onderin zitten vijf laatjes met speelgoed: sjoelschijven,
+**De pronkkamer.** De mooiste kamer van het huis, op de eerste verdieping: in een 17e-eeuws grachtenhuis heette die
+de pronkkamer, en daar stond wat je wilde laten zien. Je komt er via de knop "Pronkkamer" in de balk onderin, of door
+op de ramen van de eerste verdieping te tikken (daar hangt een groene wijzer met een ring voor je prijzen); de camera
+zoomt dan in op het raam. Aan de muur goudleer (in de 17e eeuw een Amsterdamse specialiteit), een eikenhouten
+lambrisering, een marmeren vloer in ruiten zoals op de schilderijen van De Hooch en Vermeer, een raam met glas in
+lood, een zeestuk in een vergulde lijst en twee koperen blakers met kaarsen. In het midden staat de pronkkast op
+bolpoten, met een kaststel van vijf vazen van Delfts blauw op de kroonlijst.
+
+Tik op de kast en de deurtjes gaan open. Achter het glas staan zilveren prijsjes: voor elk spel één, en je wint hem
+door de kampioen van dat spel te verslaan (de burgemeester, Opoe bij het bikkelen, bakkersjongen Teun bij het
+koekhappen; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
+tik erop en je ziet van wie je moet winnen, met een knop naar het spel. Een nieuwe prijs zie je meteen in het
+beloningsscherm (tik erop en je gaat naar de pronkkamer), en tot je hem hebt bekeken staat er een gouden sterretje bij
+de knop en de wijzer. De prijzen zijn een gans, een sjoelbakje, een molentje, een dam met kroon, vergulde kaarten, een
+dobbelbeker, bikkels, een kolf, een koek aan een galg, een knikkerschaal en een tol. Zulke piepkleine zilveren
+voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor pronkkasten en poppenhuizen (zie de
+poppenhuizen en miniaturen in het Rijksmuseum). Onderin zitten vijf laatjes met speelgoed: sjoelschijven,
 dobbelstenen, molen- en damstenen, knikkers en tollen. Trek een laatje open om te kiezen wat je gebruikt, of koop iets
 nieuws met duiten (kersenhout, Delfts blauw, goud, agaat...). Alleen voor de sier: ze spelen nooit beter dan de gewone.
-Een cadeautje uit de klomp ligt ook in een laatje, met een rood stipje tot je het hebt gezien. Na de klus "Delfts
-servies" staan er Delftse borden in de kast.
+Een cadeautje uit de klomp ligt ook in een laatje, met een rood stipje tot je het hebt gezien.
 
 **Seizoenen.** Rond Sinterklaas (12 november tot 5 december) ligt de stoomboot in de gracht, staat het paard op het dak
 en zet je je klomp in de voorkamer: de volgende dag zit er iets in. In de winter ligt er sneeuw en is de gracht bevroren,
@@ -202,7 +209,7 @@ dan de blokfluit met het begin van het Engels Nachtegaeltje, met een roffel op d
 
 | Plek | Stuk | Bezetting | Begint bij |
 |---|---|---|---|
-| Het huis, de pronkkast en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
+| Het huis, de pronkkamer en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
 | Ganzenbord, knikkeren, koekhappen en bikkelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, 2e modo, luit |
 | Sjoelen, klaverjassen, tollen en kolf | Onder de Linde groene | klavecimbel | thema, 1e modo, 2e modo, blokfluit |
 | Molenspel, triktrak en dammen | Doen Daphne d'over schoone Maeght | luit en viola da gamba | thema, 1e modo, blokfluit |
@@ -223,7 +230,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=33`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=34`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

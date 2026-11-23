@@ -10,11 +10,13 @@
     triktrak: ['molenspel', 1], bikkelen: ['ganzenbord', 3], kolf: ['sjoelen', 3], koekhappen: ['ganzenbord', 2]
   };
   // plekken om te lezen en te kijken; geen spel
-  const PAGINAS = ['kunstkamer', 'pronkkast'];
-  const PAGINA = { kunstkamer: () => window.Kunstkamer, pronkkast: () => window.Pronk };
+  const PAGINAS = ['kunstkamer', 'pronkkamer'];
+  const PAGINA = { kunstkamer: () => window.Kunstkamer, pronkkamer: () => window.Pronk };
   let huidig; // undefined = er is nog niets getoond
 
   function toon() {
+    // het oude adres van de pronkkast leidt naar de pronkkamer
+    if (location.hash === '#pronkkast') { location.replace('#pronkkamer'); return; }
     const naam = (location.hash || '').replace('#', '');
     const spel = SPELLEN.includes(naam) ? naam : null;
     const pagina = PAGINAS.includes(naam) ? naam : null;
@@ -41,7 +43,7 @@
         window.scrollTo(0, 0);
         requestAnimationFrame(() => window.Huis.naarBuiten());
       } else if (vorige) {
-        // uit een spel of de pronkkast: terug in de kamer (of op de gracht, als je daar was)
+        // uit een spel of de pronkkamer: terug in de kamer (of op de gracht, als je daar was)
         window.scrollTo(0, 0);
         requestAnimationFrame(() => window.Huis.terugUit(vorige));
       } else if (vorige === undefined) {
@@ -122,7 +124,7 @@
   }
   document.getElementById('menu-kast').addEventListener('click', () => {
     sluitMenu();
-    setTimeout(() => { location.hash = '#pronkkast'; }, 60);
+    setTimeout(() => { location.hash = '#pronkkamer'; }, 60);
   });
 
   // ---------- Trillen ----------

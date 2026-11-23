@@ -119,9 +119,9 @@
         ganzenbord: plaats([800, 208], [450, 262], 1.22),
         sjoelbak: plaats([1025, 186], [712, 262], 1.05),
         kopvanjut: plaats([1176, 169], [192, 262], 0.8),
-        pronkkast: plaats([372, 302], [212, 398], 0.95),
+        rek: plaats([365, 372], [192, 430], 0.78),
         molenspel: plaats([550, 292], [240, 735], 1.05),
-        uilenspel: plaats([372, 153], [440, 755], 0.96),
+        uilenspel: plaats([360, 173], [440, 755], 0.9),
         hoepel: plaats([1190, 386], [622, 760], 1.0),
         plank: plaats([1196, 588], [658, 1010], 1.0),
         kolf: plaats([1290, 775], [764, 1180], 1.05),
@@ -307,9 +307,6 @@
     verloop(defs, 'h-messing', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#F6DC97'], [0.45, '#C9973F'], [1, '#71501E']]);
     verloop(defs, 'h-goud', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#F3D88F'], [0.5, '#B4832E'], [1, '#6A4716']]);
     verloop(defs, 'h-eik', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#C4955E'], [1, '#7A532E']]);
-    verloop(defs, 'h-noot', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, '#3B2213'], [0.18, '#5E3A1F'], [0.5, '#4A2B16'], [0.82, '#62401F'], [1, '#34200F']]);
-    verloop(defs, 'h-fluweel', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#3A6650'], [0.5, '#22432F'], [1, '#12281C']]);
-    verloop(defs, 'h-ruit', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#FFFFFF', 0.24], [0.4, '#FFFFFF', 0.03], [0.55, '#FFFFFF', 0.14], [0.7, '#FFFFFF', 0]]);
     verloop(defs, 'h-beuk', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, '#E2BE88'], [0.5, '#D7AF75'], [1, '#C39558']]);
     verloop(defs, 'h-steenplaat', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#C9C3B6'], [1, '#9C968A']]);
     verloop(defs, 'h-licht', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0.7 }, [[0, '#FFF6DA', 0.6], [0.7, '#FFF6DA', 0.12], [1, '#FFF6DA', 0]]);
@@ -505,11 +502,11 @@
 
     // ---------- Aan de muur ----------
     const wand = el('g', { class: 'wand' }, svg);
-    bouwPronkkast(plek('pronkkast', wand));
+    bouwRek(plek('rek', wand));
     bouwGanzenbord(plek('ganzenbord', wand));
     bouwMolenspel(plek('molenspel', wand));
     bouwSjoelbak(plek('sjoelbak', wand));
-    bouwPrent(plek('uilenspel', wand), { x: 316, y: 160, b: 112, h: 128, naam: 'Uilenspel', ill: 'ill-uil', gordijn: '#3F5B3B' });
+    bouwPrent(plek('uilenspel', wand), { x: 300, y: 180, b: 120, h: 140, naam: 'Uilenspel', ill: 'ill-uil', gordijn: '#3F5B3B' });
     bouwPrent(plek('kopvanjut', wand), { x: 1112, y: 176, b: 128, h: 144, naam: 'Kop van Jut', ill: 'ill-jut', gordijn: '#7A2E28' });
     bouwHoepel(plek('hoepel', wand));
     bouwPlank(plek('plank', wand));
@@ -749,98 +746,20 @@
     for (let i = 0; i < 6; i++) el('circle', { cx: gx + 4 + i * (gb - 8) / 5, cy: o.y - 7, r: 3, fill: 'none', stroke: '#B9893A', 'stroke-width': 1.5 }, gd);
   }
 
-  // De pronkkast: een walnoten hangkast met glas in lood en groen fluweel. Achter het glas staan de zilveren
-  // prijzen die je gewonnen hebt (Pronk.prijzen); onderin vijf laatjes met speelgoed. Na de klus 'Delfts servies'
-  // staan er Delftse borden in. Tik erop: dan zoom je in en open je de kast (#pronkkast).
-  const KAST = { x: 290, y: 302, b: 164 };
-  function bouwPronkkast(ouder) {
-    const { x, y, b } = KAST, r = x + b, cx = x + b / 2;
-    const g = voorwerp(ouder, { spel: 'pronkkast', label: 'Bekijk je pronkkast' });
-    g.parentNode.classList.add('kast');
-    schaduw(g, x, y + 4, b, 268);
-    // kroonlijst
-    el('path', { d: `M${x - 9} ${y} H${r + 9} L${r + 6} ${y + 8} H${x - 6} Z`, fill: '#2A190E' }, g);
-    el('rect', { x: x - 6, y: y + 8, width: b + 12, height: 8, fill: '#7A4E2A' }, g);
-    el('rect', { x: x - 6, y: y + 8, width: b + 12, height: 1.5, fill: '#B07A48', opacity: 0.7 }, g);
-    el('rect', { x: x - 2, y: y + 16, width: b + 4, height: 10, fill: '#3E2412' }, g);
-    el('rect', { x: x - 2, y: y + 24, width: b + 4, height: 1.2, fill: '#C9973F', opacity: 0.8 }, g);
-    // de kast en het fluweel erin
-    el('rect', { x, y: y + 26, width: b, height: 196, fill: 'url(#h-noot)' }, g);
-    const bx = x + 8, by = y + 34, bb = b - 16, bh = 180;
-    el('rect', { x: bx, y: by, width: bb, height: bh, fill: 'url(#h-fluweel)' }, g);
-    el('rect', { x: bx, y: by, width: bb, height: 12, fill: '#000', opacity: 0.3 }, g);
-    // twee planken
-    const PLANK = [by + 90, by + bh - 5];
-    PLANK.forEach((py) => {
-      el('rect', { x: bx, y: py, width: bb, height: 5, fill: '#5A3A1F' }, g);
-      el('rect', { x: bx, y: py, width: bb, height: 1.2, fill: '#A6784A', opacity: 0.8 }, g);
-      el('rect', { x: bx, y: py + 5, width: bb, height: 4, fill: '#000', opacity: 0.25 }, g);
+  // Bordenrek met vier Delfts blauwe borden (klus: Delfts servies)
+  function bouwRek(ouder) {
+    const g = el('g', { 'data-na': 'servies', 'data-doel': 'servies', 'data-vonk': 'servies' }, ouder);
+    const x = 300, y = 372, b = 130, h = 168;
+    schaduw(g, x, y, b, h);
+    el('rect', { x, y, width: 8, height: h, fill: 'url(#h-eik)' }, g);
+    el('rect', { x: x + b - 8, y, width: 8, height: h, fill: 'url(#h-eik)' }, g);
+    el('path', { d: `M${x - 6} ${y} h${b + 12} l-6 12 h${-b} z`, fill: '#6B4726' }, g);
+    [y + 84, y + 162].forEach((py) => {
+      el('rect', { x: x + 4, y: py, width: b - 8, height: 8, fill: 'url(#h-eik)' }, g);
+      el('rect', { x: x + 4, y: py - 12, width: b - 8, height: 3, fill: '#6B4726' }, g);
     });
-    // Delfts servies (klus): borden tegen de achterwand
-    const servies = el('g', { 'data-na': 'servies', 'data-doel': 'servies', 'data-vonk': 'servies' }, g);
-    bord(servies, bx + 13, by + 78, 10, 'ill-gans');
-    bord(servies, bx + bb - 13, PLANK[1] - 12, 10, 'ill-molen');
-    // de prijzen (ingevuld door vulKast)
-    el('g', { class: 'kast-prijzen', 'data-planken': PLANK.join(','), 'data-x': bx, 'data-b': bb }, g);
-    // glas in lood en de deurtjes
-    const glas = el('g', { 'pointer-events': 'none' }, g);
-    el('rect', { x: bx, y: by, width: bb, height: bh, fill: 'url(#h-ruit)' }, glas);
-    for (let ly = by + 22; ly < by + bh; ly += 22) el('line', { x1: bx, y1: ly, x2: bx + bb, y2: ly, stroke: '#2E2116', 'stroke-width': 0.8, opacity: 0.45 }, glas);
-    for (let lx = bx + bb / 6; lx < bx + bb - 2; lx += bb / 6) el('line', { x1: lx, y1: by, x2: lx, y2: by + bh, stroke: '#2E2116', 'stroke-width': 0.8, opacity: 0.45 }, glas);
-    el('path', { d: `M${bx + 10} ${by + bh} L${bx + 44} ${by} L${bx + 60} ${by} L${bx + 26} ${by + bh} Z`, fill: '#fff', opacity: 0.07 }, glas);
-    el('path', { d: `M${bx + bb - 40} ${by + bh} L${bx + bb - 10} ${by + 30} L${bx + bb - 4} ${by + 44} L${bx + bb - 30} ${by + bh} Z`, fill: '#fff', opacity: 0.05 }, glas);
-    el('rect', { x: bx, y: by, width: bb, height: bh, fill: 'none', stroke: '#3B2213', 'stroke-width': 4 }, g);
-    el('rect', { x: cx - 2.5, y: by, width: 5, height: bh, fill: '#4A2B16' }, g);
-    el('rect', { x: cx - 2.5, y: by, width: 1.2, height: bh, fill: '#8A5A30', opacity: 0.7 }, g);
-    el('rect', { x: cx - 1.5, y: by + bh / 2 - 6, width: 3, height: 12, rx: 1.5, fill: 'url(#h-messing)' }, g);
-    // vijf laatjes
-    const ly = y + 226, lh = 34, lb = (b - 12) / 5;
-    el('rect', { x: x + 4, y: ly - 3, width: b - 8, height: lh + 6, fill: '#2A190E' }, g);
-    for (let i = 0; i < 5; i++) {
-      const lx = x + 6 + i * lb;
-      el('rect', { x: lx + 0.8, y: ly, width: lb - 1.6, height: lh, fill: '#6A4324', stroke: '#24160C', 'stroke-width': 0.8 }, g);
-      el('rect', { x: lx + 0.8, y: ly, width: lb - 1.6, height: 1.4, fill: '#A6784A', opacity: 0.6 }, g);
-      el('circle', { cx: lx + lb / 2, cy: ly + lh / 2 + 1, r: 2.6, fill: 'url(#h-messing)' }, g);
-    }
-    // onderlijst en twee krulconsoles waarmee de kast aan de muur hangt
-    el('rect', { x: x - 5, y: y + 264, width: b + 10, height: 9, fill: '#2A190E' }, g);
-    el('rect', { x: x - 5, y: y + 264, width: b + 10, height: 1.5, fill: '#8A5A30', opacity: 0.7 }, g);
-    [x + 16, r - 16].forEach((kx, i) => {
-      const s = i ? -1 : 1;
-      el('path', { d: `M${kx - 7 * s} ${y + 273} C${kx + 6 * s} ${y + 274} ${kx + 8 * s} ${y + 284} ${kx} ${y + 290} C${kx - 4 * s} ${y + 292} ${kx - 7 * s} ${y + 288} ${kx - 4 * s} ${y + 285} Z`, fill: '#3E2412' }, g);
-    });
-    // glinstering als er een nieuwe prijs in staat
-    const glim = el('g', { class: 'kast-glim', 'pointer-events': 'none' }, g);
-    [[bx + 18, by + 40, 1], [bx + bb - 26, by + 120, 0.8], [cx + 8, by + 22, 0.7]].forEach(([gx, gy, sch], i) => {
-      el('path', { d: `M${gx} ${gy - 9 * sch} L${gx + 2 * sch} ${gy - 2 * sch} L${gx + 9 * sch} ${gy} L${gx + 2 * sch} ${gy + 2 * sch} L${gx} ${gy + 9 * sch} L${gx - 2 * sch} ${gy + 2 * sch} L${gx - 9 * sch} ${gy} L${gx - 2 * sch} ${gy - 2 * sch} Z`, fill: '#FFF8DC', style: `animation-delay:-${(i * 0.5).toFixed(1)}s` }, glim);
-    });
-    naambordje(g, cx, y + 296, 'Pronkkast');
-  }
-  // zet de gewonnen prijzen op de planken (en laat de kast glinsteren als er iets nieuws is)
-  function vulKast(svg) {
-    const doel = svg && svg.querySelector('.kast-prijzen');
-    if (!doel || !window.Pronk) return;
-    const won = Pronk.prijzen.filter((p) => Pronk.gewonnen(p)).map((p) => p.id);
-    const kast = doel.closest('.voorwerp');
-    if (kast) kast.classList.toggle('nieuw', Pronk.ongezien().length > 0);
-    const sleutel = won.join(',');
-    if (doel.getAttribute('data-sleutel') === sleutel) return;
-    doel.setAttribute('data-sleutel', sleutel);
-    while (doel.firstChild) doel.removeChild(doel.firstChild);
-    const planken = doel.getAttribute('data-planken').split(',').map(Number);
-    const bx = Number(doel.getAttribute('data-x')), bb = Number(doel.getAttribute('data-b'));
-    const PER = [6, 5], sch = 0.235;
-    let i = 0;
-    planken.forEach((py, pi) => {
-      const n = PER[pi], stap = (bb - (pi === 1 ? 24 : 0)) / n;
-      for (let k = 0; k < n && i < Pronk.prijzen.length; k++, i++) {
-        const p = Pronk.prijzen[i];
-        if (!won.includes(p.id)) continue;
-        const px = bx + stap * (k + 0.5);
-        const pg = el('g', { transform: `translate(${(px - 50 * sch).toFixed(1)} ${(py - 91 * sch).toFixed(1)}) scale(${sch})` }, doel);
-        pg.innerHTML = Pronk.tekenPrijs(p.id);
-      }
-    });
+    const motief = ['ill-gans', 'ill-molen', 'ill-tol', 'ill-hoepel'];
+    [[x + 36, y + 54], [x + 94, y + 54], [x + 36, y + 132], [x + 94, y + 132]].forEach(([cx, cy], i) => bord(g, cx, cy, 26, motief[i]));
   }
 
   function bouwHoepel(ouder) {
@@ -2078,6 +1997,7 @@
     verloop(defs, 'g-schijnsel', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#FFD98A', 0.6], [0.5, '#FFC870', 0.22], [1, '#FFC870', 0]]);
     verloop(defs, 'g-messing', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#F6DC97'], [0.5, '#C9973F'], [1, '#71501E']]);
     verloop(defs, 'g-goud', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#FFF2B8'], [0.45, '#E7C36A'], [1, '#9A6A1E']]);
+    verloop(defs, 'g-pronk', 'radialGradient', { cx: '38%', cy: '32%', r: '75%' }, [[0, '#4C8466'], [0.6, '#22432F'], [1, '#12281C']]);
     verloop(defs, 'g-zonlicht', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#FFF0C8', 0.2], [0.5, '#FFF0C8', 0], [1, '#1A0F08', 0.22]]);
     verloop(defs, 'g-schaduw', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, '#000', 0.25], [0.08, '#000', 0], [0.92, '#000', 0], [1, '#000', 0.3]]);
     verloop(defs, 'g-nevel', 'linearGradient', omlaag, [[0, '#F4E9DA', 0.5], [1, '#F4E9DA', 0]]);
@@ -2251,7 +2171,8 @@
     venster(huis, 690, 300, 54, 70, { licht: 'zolderraam' });
     venster(huis, 910, 300, 54, 70, { licht: 'zolderraam' });
     [640, 800, 960].forEach((cx) => venster(huis, cx, 432, 86, 108, { boog: true, gloed: true, licht: 'boven' }));
-    [640, 960].forEach((cx) => venster(huis, cx, 588, 86, 108, { gloed: true, licht: 'boven' }));
+    // de eerste verdieping: de pronkkamer (daar branden 's avonds de kaarsen)
+    [640, 960].forEach((cx) => venster(huis, cx, 588, 86, 108, { gloed: true, licht: 'aan' }));
     [640, 960].forEach((cx) => venster(huis, cx, 742, 92, 120, { luiken: true, boog: true, gloed: true, licht: 'voorkamer' }));
     // vuile benedenramen, tot je binnen de ramen lapt
     const vuilRaam = el('g', { class: 'weg-bij-ramen' }, huis);
@@ -2321,6 +2242,7 @@
     el('rect', { x: 754, y: 758, width: 92, height: 151, fill: 'none', stroke: '#FFD98A', 'stroke-width': 3, class: 'deur-wenk', rx: 2 }, huis);
     el('rect', { x: 758, y: 762, width: 84, height: 143, fill: 'transparent', class: 'deur-klik plek-klik', 'data-plek': 'voorkamer', role: 'button', tabindex: 0, 'aria-label': 'Naar de voorkamer' }, huis);
     plekKlik(huis, { x: 766, y: 220, width: 68, height: 94, class: 'plek-klik luik-klik' }, 'zolder', 'Naar de zolder');
+    plekKlik(huis, { x: 597, y: 588, width: 406, height: 108, class: 'plek-klik pronk-klik' }, 'pronkkamer', 'Naar de pronkkamer');
     slotje(huis, 800, 268, 'zolder');
     // muurlantaarn naast de deur, als de voorkamer klaar is
     const deurlamp = el('g', { class: 'toon-bij-klaar' }, huis);
@@ -2582,6 +2504,23 @@
       el('use', { href: '#i-vink', x: -6.5, y: -6.5, width: 13, height: 13, style: 'color:#FBF3DC' }, af);
       el('circle', { r: 31, fill: 'transparent', class: 'plek-klik', 'data-plek': plek, role: 'button', tabindex: 0, 'aria-label': plek === 'voorkamer' ? 'Naar de voorkamer' : 'Naar de zolder' }, g);
     });
+
+    {
+      const g = el('g', { class: 'plek-wijzer pronk-wijzer', 'data-wijzer': 'pronkkamer', transform: 'translate(716 642)' }, svg);
+      const zweef = el('g', { class: 'zweef' }, g);
+      el('circle', { r: 24, fill: '#1A0F06', opacity: 0.35, transform: 'translate(2 4)' }, zweef);
+      el('circle', { r: 23, fill: '#12281C', opacity: 0.7 }, zweef);
+      el('circle', { r: 23, fill: 'none', stroke: 'rgba(255,240,200,.3)', 'stroke-width': 4 }, zweef);
+      el('circle', { r: 23, fill: 'none', stroke: '#F6D77E', 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-dasharray': '0 144.5', transform: 'rotate(-90)', class: 'ring' }, zweef);
+      el('circle', { r: 17.5, fill: 'url(#g-pronk)', stroke: '#6A4A14', 'stroke-width': 1.2 }, zweef);
+      el('circle', { cx: -5, cy: -6, r: 5, fill: '#fff', opacity: 0.18 }, zweef);
+      el('use', { href: '#i-kast', x: -10, y: -10, width: 20, height: 20, style: 'color:#F2CF7A' }, zweef);
+      const ster = el('g', { class: 'nieuw-teken', transform: 'translate(17 -17)' }, zweef);
+      const puls = el('g', { class: 'puls' }, ster);
+      el('circle', { r: 10, fill: '#C9973F', stroke: '#FBF3DC', 'stroke-width': 2 }, puls);
+      el('use', { href: '#i-ster', x: -6.5, y: -6.5, width: 13, height: 13, style: 'color:#FBF3DC' }, puls);
+      el('circle', { r: 29, fill: 'transparent', class: 'plek-klik', 'data-plek': 'pronkkamer', role: 'button', tabindex: 0, 'aria-label': 'Naar de pronkkamer' }, g);
+    }
 
     svg.setAttribute('data-tijd', tijdNu());
     svg.setAttribute('data-boom', boomNu());
@@ -2896,6 +2835,8 @@
     if (buiten) buiten.addEventListener('click', (e) => { e.preventDefault(); naarBuiten(); });
     const straat = document.getElementById('knop-straat');
     if (straat) straat.addEventListener('click', () => { if (!bezig) naarBuiten(); });
+    const kast = document.getElementById('knop-kast');
+    if (kast) kast.addEventListener('click', () => { if (window.Pronk) Pronk.open(); });
     if (knopKamer) knopKamer.addEventListener('click', () => gaNaarKamer(andereKamer(), knopKamer));
     kamerScroll.addEventListener('scroll', () => { if (hint) hint.classList.add('weg'); verbergLabel(); }, { passive: true });
     klusknop.addEventListener('click', doeKlus);
@@ -3072,7 +3013,6 @@
 
   // De knop onderin: de volgende klus, of door naar de volgende kamer.
   function werkHudBij() {
-    vulKast(kamerSvg);
     if (!klusknop || !window.Duiten) return;
     const k = kamerNaam, lijst = Duiten.klussenVan(k), v = Duiten.volgendeKlus(k), n = Duiten.aantalKlaar(k);
     voortgang.innerHTML = lijst.map((x) => `<i class="${Duiten.klusKlaar(x.id) ? 'af' : ''}"></i>`).join('');
@@ -3147,9 +3087,16 @@
       w.classList.toggle('kan', !!v && Duiten.saldo >= v.prijs);
       w.classList.toggle('af', !v);
     });
+    if (window.Pronk) {
+      const nieuw = Pronk.ongezien().length > 0, won = Pronk.prijzen.filter((x) => Pronk.gewonnen(x)).length;
+      const w = gevelSvg.querySelector('[data-wijzer="pronkkamer"]');
+      if (w) { w.querySelector('.ring').setAttribute('stroke-dasharray', `${(144.5 * won / Pronk.prijzen.length).toFixed(1)} 144.5`); w.classList.toggle('nieuw', nieuw); }
+      const knop = document.querySelector('.plek-knop[data-plek="pronkkamer"]');
+      if (knop) knop.classList.toggle('nieuw', nieuw);
+    }
     document.querySelectorAll('.plek-knop').forEach((k) => {
       const p = k.getAttribute('data-plek');
-      const open = p === 'voorkamer' || p === 'kunstkamer' || (p === 'zolder' && zolder);
+      const open = p === 'voorkamer' || p === 'kunstkamer' || p === 'pronkkamer' || (p === 'zolder' && zolder);
       k.classList.toggle('dicht', !open);
       const naam = k.querySelector('.plek-naam') ? k.querySelector('.plek-naam').textContent : p;
       k.setAttribute('aria-label', open ? naam : `${naam}, nog op slot`);
@@ -3161,6 +3108,7 @@
   function kiesPlek(plek, bron) {
     if (bezig) return;
     if (plek === 'kunstkamer') { Geluid.deur(); location.hash = '#kunstkamer'; return; }
+    if (plek === 'pronkkamer') { naarPronkkamer(); return; }
     if (plek === 'voorkamer' || plek === 'zolder') {
       if (!kamerOpen(plek)) {
         schud(bron);
@@ -3214,7 +3162,7 @@
       schud(klusknop);
       if (window.Tril) Tril.fout();
       toonWenk('Speel een spel en verdien duiten');
-      kamerSvg.querySelectorAll('.speelbaar:not(.kast)').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
+      kamerSvg.querySelectorAll('.speelbaar').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
       Geluid.pak();
       return;
     }
@@ -3417,13 +3365,13 @@
     bezig = false;
     if (hint) hint.classList.remove('weg');
     if (omhoog) {
-      kamerSvg.querySelectorAll('.speelbaar:not(.kast)').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
+      kamerSvg.querySelectorAll('.speelbaar').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
     }
   }
 
   function terugUit(spel) {
     bouw();
-    if (gevel.hidden === false) return;
+    if (gevel.hidden === false) { terugOpStraat(); return; }
     let k = window.Duiten ? Duiten.kamerVanSpel(spel) : 'voorkamer';
     if (laatsteStart && laatsteStart.spel === spel && kamerOpen(laatsteStart.kamer)) k = laatsteStart.kamer;
     if (!kamerOpen(k)) k = 'voorkamer';
@@ -3632,6 +3580,38 @@
         gevel.hidden = true; kamer.hidden = false; sluier.style.opacity = 0;
       }
     }, wachtTijd + 1120);
+  }
+
+  // Naar de pronkkamer: de camera zoomt in op de ramen van de eerste verdieping, en dan sta je in de kamer.
+  function naarPronkkamer() {
+    if (bezig) return;
+    verbergLabel();
+    if (rustig() || !gevelSvg) { location.hash = '#pronkkamer'; return; }
+    bezig = true;
+    try {
+      const t = toneel.getBoundingClientRect(), s0 = gevelSvg.getBoundingClientRect(), r = svgVak(597, 588, 406, 108);
+      const cx = r.left + r.width / 2 - s0.left, cy = r.top + r.height / 2 - s0.top;
+      const s = Math.min(t.width * 0.95 / r.width, t.height * 0.9 / r.height, 9);
+      const tx = t.left + t.width / 2 - s0.left - s * cx, ty = t.top + t.height / 2 - s0.top - s * cy;
+      Geluid.woesj();
+      gevelSvg.animate([{ transform: 'translate(0px,0px) scale(1)' }, { transform: `translate(${tx}px, ${ty}px) scale(${s})` }], { duration: 1000, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
+      sluier.style.background = '#2A170C';
+      sluier.animate([{ opacity: 0 }, { opacity: 0, offset: 0.5 }, { opacity: 1 }], { duration: 1000, easing: 'ease-in', fill: 'forwards' });
+    } catch (e) { bezig = false; location.hash = '#pronkkamer'; return; }
+    setTimeout(() => { bezig = false; location.hash = '#pronkkamer'; }, 1010);
+  }
+  // terug uit de pronkkamer (of een ander scherm) terwijl je op de gracht stond: de camera zoomt weer uit
+  function terugOpStraat() {
+    const zoom = gevelSvg ? gevelSvg.getAnimations() : [];
+    const van = zoom.length ? getComputedStyle(gevelSvg).transform : 'none';
+    zoom.forEach((a) => a.cancel());
+    sluier.getAnimations().forEach((a) => a.cancel());
+    pasGevelBeeld();
+    werkGevelBij();
+    if (rustig() || van === 'none') { sluier.style.opacity = 0; return; }
+    sluier.style.opacity = 1;
+    gevelSvg.animate([{ transform: van }, { transform: 'translate(0px,0px) scale(1)' }], { duration: 900, easing: 'cubic-bezier(.3,0,.25,1)' });
+    sluier.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: 'ease-out', fill: 'forwards' });
   }
 
   function naarBuiten() {

@@ -36,14 +36,14 @@
     const P = window.Pronk;
     if (P && !P.heeft('schijf-choco')) {
       P.geef('schijf-choco');
-      return { soort: 'voorwerp', id: 'schijf-choco', titel: 'Chocolade sjoelschijven!', sub: 'Ze staan in je pronkkast' };
+      return { soort: 'voorwerp', id: 'schijf-choco', titel: 'Chocolade sjoelschijven!', sub: 'Ze liggen in een laatje van je pronkkast' };
     }
     if (P && Math.random() < 0.3) {
       const kans = P.voorwerpen.filter((v) => v.prijs && v.prijs <= 120 && !P.heeft(v.id));
       if (kans.length) {
         const v = kans[Math.floor(Math.random() * kans.length)];
         P.geef(v.id);
-        return { soort: 'voorwerp', id: v.id, titel: v.naam + '!', sub: 'Ze staan in je pronkkast' };
+        return { soort: 'voorwerp', id: v.id, titel: v.naam + '!', sub: 'Ze liggen in een laatje van je pronkkast' };
       }
     }
     const bedrag = 15 + Math.floor(Math.random() * 5) * 5;

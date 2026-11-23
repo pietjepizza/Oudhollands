@@ -195,6 +195,8 @@
 
   if (bel) {
     document.getElementById('bel-huis').addEventListener('click', () => { sluit(); location.hash = '#'; });
+    const prijsKnop = document.getElementById('bel-prijs');
+    if (prijsKnop) prijsKnop.addEventListener('click', () => { sluit(); location.hash = '#pronkkamer'; });
     const verderKnop = document.getElementById('bel-verder');
     if (verderKnop) verderKnop.addEventListener('click', () => { const v = belVerder; sluit(); if (v && v.actie) v.actie(); });
     document.getElementById('bel-nog').addEventListener('click', () => {
