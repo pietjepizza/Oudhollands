@@ -31,7 +31,7 @@
     clearTimeout(autoTimer);
     let r = rechthoek(s.doel);
     // valt het doel buiten beeld, schuif dan eerst de pagina
-    if (r && (r.top < 50 || r.top + r.height > innerHeight - 10)) {
+    if (r && !document.body.classList.contains('volscherm') && (r.top < 50 || r.top + r.height > innerHeight - 10)) {
       window.scrollBy(0, r.top + r.height / 2 - innerHeight * 0.42);
       r = rechthoek(s.doel);
     }

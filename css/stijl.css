@@ -1493,6 +1493,12 @@ button.mo-kaart { cursor: pointer; }
 .kj-kaart.wint .kj-voor { box-shadow: 0 0 0 3px #F2C14E, 0 0 24px rgba(242, 193, 78, .85); }
 /* voorbeeldslagen van Gijs: boven de echte kaarten; het troefpaneel en de kaarten op tafel gaan zolang opzij */
 .kj-les-laag { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.kj-les-troef {
+  position: absolute; z-index: 320; transform: translate(-50%, -50%);
+  display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 10px 0 7px; border-radius: 13px; white-space: nowrap;
+  background: #F7F0DE; color: #2A1A08; font: 600 .84rem/1 var(--f-tekst);
+  box-shadow: 0 0 0 1.5px #F2C14E, 0 4px 10px rgba(0, 0, 0, .45);
+}
 .kj-tafel.les-demo .kj-troefkeuze, .kj-tafel.les-demo .kj-melding, .kj-tafel.les-demo .mo-banier,
 .kj-tafel.les-demo .kj-kaarten .kj-kaart:not(.mijn) { visibility: hidden; }
 .kj-kaart.tip .kj-voor { box-shadow: 0 0 0 3px #7FD0A2, 0 0 18px rgba(127, 208, 162, .75); }
@@ -1739,6 +1745,41 @@ button.mo-kaart { cursor: pointer; }
   .tt-podium .tt-beker svg { width: 38px; height: 38px; }
 }
 
+/* ---------- Bikkelen (pops, banier en kaart delen we met sjoelen) ---------- */
+.bk-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr); }
+.bk-podium .mo-info { grid-column: 2; grid-row: 1; }
+.bk-rij { grid-column: 2; grid-row: 2; display: flex; align-items: center; gap: 3px; margin-top: 5px; min-height: 17px; }
+.bk-fig { flex: none; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 5px; color: rgba(244, 233, 207, .3); box-shadow: inset 0 0 0 1px rgba(244, 233, 207, .14); }
+.bk-fig svg { width: 14px; height: 14px; display: block; }
+.bk-fig.klaar { color: #3A2208; background: radial-gradient(circle at 35% 30%, #F8DC8E, #C9973F 78%); box-shadow: 0 1px 2px rgba(0, 0, 0, .45); }
+.bk-fig.nu { color: #FFF4D6; box-shadow: inset 0 0 0 1.5px #E7C36A; animation: bk-nu 1.3s ease-in-out infinite alternate; }
+@keyframes bk-nu { to { box-shadow: inset 0 0 0 1.5px #E7C36A, 0 0 9px rgba(231, 195, 106, .75); } }
+.bk-podium .mo-doe svg { width: 17px; height: 17px; }
+.bk-podium .mo-doe .bk-op { transform: rotate(-90deg); }
+.bk-podium.bk-liggend .mo-doe .bk-op { transform: rotate(180deg); }
+.bk-veldvak { position: relative; width: var(--bk-b, 320px); height: var(--bk-h, 460px); }
+.bk-doek { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 16px; touch-action: none; outline: none; cursor: pointer; -webkit-tap-highlight-color: transparent; box-shadow: 0 20px 38px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); }
+.bk-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E, 0 20px 38px rgba(0, 0, 0, .55); }
+.bk-pop.fout { color: #FFD9C2; font-family: var(--f-sier); font-weight: normal; font-size: 1.7rem; }
+.bk-pop.zacht { font-size: 1rem; font-weight: normal; font-family: var(--f-sier); font-style: italic; animation-duration: 1.4s; }
+.bk-kaart .knop { margin-top: 4px; }
+.mo-kaart.bk-winnaar { box-shadow: 0 0 0 2.5px #E7C36A, 0 0 26px rgba(231, 195, 106, .6), 0 4px 14px rgba(0, 0, 0, .3); }
+.les-vinger.met-bikkel .les-ding { display: block; width: 30px; height: 21px; border-radius: 48% 52% 44% 46% / 55% 55% 45% 45%; background: radial-gradient(circle at 36% 30%, #FFF9EC, #EBDCBA 45%, #BFA273); box-shadow: 0 3px 5px rgba(0, 0, 0, .4); transform: rotate(-20deg); }
+@media (orientation: landscape) and (max-height: 620px) {
+  .bk-podium { grid-template-columns: minmax(0, 1fr) calc(var(--bk-b, 300px) + 4px) minmax(0, 1fr); }
+  .bk-podium .mo-kaart { grid-template-rows: auto auto auto; padding: 8px 10px 9px 8px; }
+  .bk-podium .mo-gezicht { grid-row: 1 / span 2; }
+  .bk-podium .mo-info { flex-direction: column; align-items: flex-start; row-gap: 2px; }
+  .bk-podium .bk-rij { grid-column: 1 / -1; grid-row: 3; margin-top: 7px; gap: 2px; justify-content: center; }
+  .bk-podium .bk-fig { width: 16px; height: 16px; }
+  .bk-podium .bk-fig svg { width: 13px; height: 13px; }
+}
+@media (max-width: 380px) {
+  .bk-fig { width: 15px; height: 15px; }
+  .bk-fig svg { width: 12px; height: 12px; }
+  .bk-rij { gap: 2px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .kroon, .vlam, .gloed, .haardvlam, .haardgloed, .gloeit, .kj-kaarten.wijs .kj-kaart .kj-voor, .kj-melding.in, .kj-troefkeuze, .stofje, .lichtbundel, .zonvlek, .koek-touw, .hoepel-hang, .kat-lijf, .kat-staart, .gangLicht, .glim,
   .wolk, .uithangbord, .vogels, .water-glans line, .deur-licht, .deur-wenk, .spel:not([hidden]), .schud .vw,
@@ -1748,7 +1789,7 @@ button.mo-kaart { cursor: pointer; }
   .hobbel, .duif, .lantaarn-zwaai, .les-gans, .les-gans.praat .gans-snavel, .les-vinger.tikt svg, .les-vinger.tikt::before,
   .les-ballon.in, .les.open .les-licht, .cad-stralen, .cadeau-vel.open .cad-beeld, .kast-vak.nieuw, .plek-knop.schud,
   .kast-vak.schud-vak, .luik-wenk, .lamp-glas, .klusknop.ga,
-  .tt-kan, .tt-doel, .tt-doelbak, .tt-uitslag.in,
+  .tt-kan, .tt-doel, .tt-doelbak, .tt-uitslag.in, .bk-fig.nu,
   .mo-plek, .mo-doel, .mo-pakbaar, .mo-tip-ring, .dm-moet, .dm-doel, .dm-tip-ring, .mo-steen.in-molen .mo-binnen, .mo-banier.in, .mo-ballon.in, .mo-menu.open .mo-menu-kaart, .mo-denk i, .mo-doe.schud { animation: none !important; }
   .mo-molenlijn { animation: none !important; stroke-dashoffset: 0; }
   .gb-beker.klaar, .gb-beker.schudt svg, .gb-beker.gooit svg, .gb-kaartje.in, .gb-pion-binnen.gewonnen { animation: none !important; }

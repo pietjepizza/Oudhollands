@@ -1063,6 +1063,7 @@
     toonBanier(soortTekst || (ikWin && tegen ? 'Gewonnen!' : `${naamVan(w)} wint`), ikWin);
     if (ikWin) { Geluid.tada(); vonken(u.punten * 14); } else Geluid.jammer();
     const klaar = partij.score[w] >= lengte;
+    if (!klaar) zeg(1, w === 1 ? 'wint' : 'verliest');
     meld(`${naamVan(w)} wint ${u.punten === 1 ? 'een punt' : u.punten + ' punten'}. Stand ${partij.score[0]} tegen ${partij.score[1]}.`);
     bewaar();
     const mijnId = spelId;

@@ -915,12 +915,22 @@
     const m = M, troefS = spel && spel.troef >= 0 ? spel.troef : 0;
     const anders = (n) => [0, 1, 2, 3].filter((x) => x !== troefS)[n];
     const kaart = (kleur, rang) => kleur * 8 + rang; // rang: 0 zeven, 1 acht, 2 negen, 3 tien, 4 boer, 5 vrouw, 6 heer, 7 aas
-    const leg = (k, x, y, hoek, wint) => {
+    // de kaarten waar Gijs het over heeft (wint) krijgen een gouden rand; daar wijst ook het licht naar
+    const leg = (k, x, y, hoek, wint, boven) => {
       const e = document.createElement('div');
-      e.className = 'kj-kaart les-kaart' + (wint ? ' wint' : '');
+      e.className = 'kj-kaart les-kaart' + (wint ? ' wint les-doel' : '');
       e.innerHTML = `<div class="kj-binnen"><div class="kj-voor">${voorkant(k)}</div><div class="kj-achter">${ACHTER}</div></div>`;
       e.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${hoek.toFixed(1)}deg)`;
-      e.style.zIndex = 260 + ui.lesLaag.children.length;
+      e.style.zIndex = (boven ? 290 : 260) + ui.lesLaag.children.length;
+      ui.lesLaag.appendChild(e);
+      return e;
+    };
+    // een labeltje dat zegt welke kleur in het voorbeeld troef is
+    const troefLabel = (x, y) => {
+      const e = document.createElement('div');
+      e.className = 'kj-les-troef les-doel';
+      e.innerHTML = `${kleurSvg(troefS, 18)}<span>Troef</span>`;
+      e.style.left = x.toFixed(1) + 'px'; e.style.top = y.toFixed(1) + 'px';
       ui.lesLaag.appendChild(e);
     };
     const d = m.kb * (m.kort ? 0.95 : 0.78), dy = m.kh * (m.kort ? 0.36 : 0.46);
@@ -930,12 +940,28 @@
       // links komt uit met de aas; Opoe en jij bekennen; rechts heeft die kleur niet en troeft, en troef wint
       const s = anders(1);
       inSlag(1, kaart(s, 7)); inSlag(2, kaart(s, 3)); inSlag(3, kaart(troefS, 0), true); inSlag(0, kaart(s, 5));
+      const [dx, ddy] = PLEK[3];
+      troefLabel(m.cx + dx, m.cy - m.kh / 2 + ddy - 2);
     } else if (soort === 'volgorde') {
-      // de troefkleur van hoog naar laag: boer, negen, aas, tien, heer, vrouw, acht, zeven
-      // (smal genoeg om tussen de buren links en rechts te passen)
+      // de troefkleur van hoog naar laag: boer, negen, aas, tien, heer, vrouw, acht, zeven.
+      // De boer en de negen liggen los vooraan met een gouden rand; de rest ernaast, of eronder als de tafel smal is
       const ruimte = m.zx ? m.zx[3] - m.zx[1] - 64 : m.W * 0.6;
-      const orde = [4, 2, 7, 3, 6, 5, 1, 0], stap = Math.min(m.kb * (m.kort ? 0.5 : 0.42), (ruimte - m.kb) / 7), x0 = m.cx - (m.kb + stap * 7) / 2;
-      orde.forEach((r, i) => { const t = i / 7 - 0.5; leg(kaart(troefS, r), x0 + i * stap, m.cy - m.kh / 2 + t * t * m.kh * 0.2, t * 10, i < 2); });
+      const rest = [7, 3, 6, 5, 1, 0];
+      if (ruimte >= m.kb * 4.7 + 8) {
+        const stap = Math.min(m.kb * 0.42, (ruimte - m.kb * 3 - 8) / 5);
+        const x0 = m.cx - (m.kb * 3 + 8 + stap * 5) / 2, y0 = m.cy - m.kh / 2;
+        leg(kaart(troefS, 4), x0, y0 - m.kh * 0.06, -3, true, true);
+        leg(kaart(troefS, 2), x0 + m.kb + 4, y0 - m.kh * 0.06, 2, true, true);
+        rest.forEach((r, i) => leg(kaart(troefS, r), x0 + m.kb * 2 + 8 + i * stap, y0 + m.kh * 0.04, (i - 2.5) * 2));
+        troefLabel(x0 + m.kb + 2, y0 - m.kh * 0.06 - 2);
+      } else {
+        const yb = m.cy - m.kh * 0.95;
+        leg(kaart(troefS, 4), m.cx - m.kb - 3, yb, -3, true, true);
+        leg(kaart(troefS, 2), m.cx + 3, yb, 2, true, true);
+        const stap = Math.min(m.kb * 0.42, (ruimte - m.kb) / 5), x1 = m.cx - (m.kb + stap * 5) / 2;
+        rest.forEach((r, i) => leg(kaart(troefS, r), x1 + i * stap, yb + m.kh * 0.98, (i - 2.5) * 2));
+        troefLabel(m.cx, yb - 2);
+      }
     } else if (soort === 'roem') {
       // negen, tien en boer van één kleur in één slag: drie op een rij
       const s = anders(2);
@@ -961,13 +987,24 @@
       const y = m.kort ? m.H - m.kh * 0.62 : m.H - m.kh - 8, onder = Math.min(m.H, y + m.kh * 1.1);
       return { left: r.left + x0 - 4, top: r.top + y - 6, width: m.kb + stap * (n - 1) + 8, height: onder - y + 6 };
     };
+    // het licht om de kaarten waar het over gaat (met een gouden rand), anders om het hele voorbeeld
     const lesVak = () => {
-      const rs = Array.from(ui.lesLaag ? ui.lesLaag.children : []).map((e) => e.getBoundingClientRect());
+      const laag = ui.lesLaag;
+      const doel = laag ? laag.querySelectorAll('.les-doel') : [];
+      const rs = Array.from(doel.length ? doel : (laag ? laag.children : [])).map((e) => e.getBoundingClientRect());
       if (!rs.length) return null;
       const l = Math.min(...rs.map((x) => x.left)), t = Math.min(...rs.map((x) => x.top));
       return { left: l, top: t, width: Math.max(...rs.map((x) => x.right)) - l, height: Math.max(...rs.map((x) => x.bottom)) - t };
     };
     const zonder = (doel) => () => { lesTafel(null); return doel(); };
+    // de punten van wij en zij, niet de hele balk eromheen
+    const standVak = () => {
+      const a = ui.stand.querySelector('.kj-wij'), b = ui.stand.querySelector('.kj-zij');
+      if (!a || !b) return vakVan(ui.stand);
+      const r1 = a.getBoundingClientRect(), r2 = b.getBoundingClientRect();
+      const l = Math.min(r1.left, r2.left), t = Math.min(r1.top, r2.top);
+      return { left: l, top: t, width: Math.max(r1.right, r2.right) - l, height: Math.max(r1.bottom, r2.bottom) - t };
+    };
     const met = (soort) => () => { lesTafel(soort); return lesVak(); };
     Les.zet('klaverjassen', () => {
       const kies = !ui.troefkeuze.hidden, toont = !ui.troef.hidden;
@@ -978,7 +1015,7 @@
         { doel: met('bekennen'), gebaar: 'wijs', tekst: 'Volg de kleur. Kan dat niet? Troef dan, want troef wint' },
         { doel: met('volgorde'), gebaar: 'wijs', tekst: 'In troef zijn de boer en de negen het sterkst' },
         { doel: met('roem'), gebaar: 'wijs', tekst: 'Drie op een rij in één slag is 20 roem, vier is 50' },
-        { doel: zonder(() => vakVan(ui.stand)), marge: 6, gebaar: 'wijs', tekst: 'Wie troef koos, moet meer dan de helft halen. Anders nat' },
+        { doel: zonder(standVak), marge: 8, gebaar: 'wijs', tekst: 'Wie troef koos, moet meer dan de helft halen. Anders nat' },
         { doel: zonder(() => vakVan(ui.balk.querySelector('.mo-meer'))), vorm: 'rond', marge: 5, gebaar: 'wijs', tekst: 'Via deze knop kies je tegen wie je speelt' }
       ];
     });

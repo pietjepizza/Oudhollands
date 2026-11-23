@@ -535,7 +535,7 @@
     // ---------- Voorgrond ----------
     bouwKolf(plek('kolf', svg));
     bouwTafel(plek('tafel', svg));
-    bouwBikkels(plek('bikkels', svg));
+    bouwBikkels(plek('bikkels', svg), L);
     bouwKat(plek('kat', svg));
     bouwKoek(plek('koek', svg));
     bouwKroon(plek('kroon', svg));
@@ -982,33 +982,41 @@
     naambordje(kaarten, kv[0], kv[1] + 7, 'Klaverjassen');
   }
 
-  // Bikkels op de vloer: vier botjes en een leren balletje. Knikkeren speel je op de zolder; bikkelen komt nog.
+  // Bikkels op de vloer: vier botjes en een leren balletje, net als in het spel. Knikkeren speel je op de zolder.
   // Bikkels van schapen-, varkens- en runderbotjes zijn in Delft opgegraven uit lagen van 1600 tot 1800.
-  function bouwBikkels(ouder) {
-    const g = voorwerp(ouder, { label: 'Bikkelen · komt binnenkort' });
+  function bouwBikkels(ouder, L) {
+    const g = voorwerp(ouder, { spel: 'bikkelen', label: 'Speel bikkelen' });
     const K = (X, Z) => P(X, HH, Z);
     const verweg = K(30, 770), dichtbij = K(180, 680);
-    el('rect', { x: verweg[0] - 24, y: verweg[1] - 30, width: dichtbij[0] - verweg[0] + 48, height: dichtbij[1] - verweg[1] + 48, fill: 'transparent' }, g);
-    // een kootbeentje van boven gezien: twee knobbels, een smalle taille en een holletje aan de onderkant
-    const VORM = 'M-1 -0.12 C-1.04 -0.52 -0.62 -0.7 -0.3 -0.56 C-0.1 -0.47 0.1 -0.47 0.3 -0.56 C0.64 -0.72 1.04 -0.5 1 -0.08 C0.97 0.3 0.74 0.62 0.36 0.58 C0.16 0.56 0.07 0.42 -0.04 0.42 C-0.17 0.42 -0.26 0.61 -0.5 0.6 C-0.84 0.59 -0.97 0.26 -1 -0.12 Z';
-    // de vier kanten van een bikkel: bol, hol, rug (smal, met een groef) en S (smal, met een kronkel)
+    el('rect', { x: verweg[0] - 24, y: verweg[1] - 38, width: dichtbij[0] - verweg[0] + 48, height: dichtbij[1] - verweg[1] + 56, fill: 'transparent' }, g);
+    // een sprongbeentje van boven gezien, met dezelfde vormen als in het spel:
+    // de brede kanten (bol en hol) met een inkeping aan één eind, de smalle (rug en S) als een staafje
+    const VORM = {
+      breed: 'M-1 0.02 C-1 -0.36 -0.82 -0.6 -0.5 -0.6 C-0.2 -0.6 0.1 -0.52 0.4 -0.56 C0.66 -0.6 0.94 -0.48 0.98 -0.24 C1 -0.12 0.9 -0.07 0.9 0 C0.9 0.06 1 0.12 0.98 0.24 C0.94 0.46 0.68 0.58 0.4 0.56 C0.1 0.54 -0.18 0.6 -0.5 0.6 C-0.82 0.6 -1 0.38 -1 0.02 Z',
+      rug: 'M-1 0 C-1 -0.3 -0.8 -0.43 -0.5 -0.42 C-0.16 -0.41 0.18 -0.38 0.5 -0.4 C0.8 -0.41 1 -0.28 1 0 C1 0.28 0.8 0.41 0.5 0.4 C0.18 0.39 -0.16 0.43 -0.5 0.42 C-0.8 0.42 -1 0.3 -1 0 Z',
+      s: 'M-1 0.04 C-1 -0.28 -0.8 -0.42 -0.52 -0.38 C-0.2 -0.34 0.1 -0.46 0.44 -0.44 C0.78 -0.42 1 -0.26 1 0.02 C1 0.3 0.8 0.42 0.5 0.38 C0.2 0.34 -0.1 0.46 -0.44 0.44 C-0.78 0.42 -1 0.32 -1 0.04 Z'
+    };
+    // de vier kanten van een bikkel: bol (met het katrolletje), hol (met de holte), rug (een groef) en S (een kronkel)
     const bikkel = (X, Z, hoek, maat, kant) => {
-      const smal = kant === 'rug' || kant === 's' ? 0.74 : 1;
-      const m = K(X, Z), s = 13 * 1000 / Z * 0.75 * maat, dik = s * (smal < 1 ? 0.42 : 0.34);
+      const smal = kant === 'rug' || kant === 's';
+      const d = smal ? VORM[kant] : VORM.breed;
+      const m = K(X, Z), s = 15 * 1000 / Z * 0.75 * maat, dik = s * (smal ? 0.46 : 0.36);
       // eerst draaien op de vloer, dan in perspectief platdrukken
-      const stand = `scale(${s.toFixed(2)} ${(s * 0.64).toFixed(2)}) rotate(${hoek}) scale(1 ${smal})`;
+      const stand = `scale(${s.toFixed(2)} ${(s * 0.64).toFixed(2)}) rotate(${hoek})${kant === 'hol' ? ' scale(1 -1)' : ''}`;
       const op = (dy) => `translate(${m[0].toFixed(1)} ${(m[1] - dy).toFixed(1)}) ${stand}`;
-      el('ellipse', { cx: m[0] + 3, cy: m[1] + 1, rx: s * 1.06, ry: s * 0.4 * smal, fill: '#000', opacity: 0.3 }, g);
+      el('ellipse', { cx: m[0] + 3, cy: m[1] + 1, rx: s * 1.06, ry: s * (smal ? 0.3 : 0.4), fill: '#000', opacity: 0.3 }, g);
       // de zijkant: de onderste omtrek en een paar lagen ertussen, zodat het één stevig botje wordt
-      el('path', { d: VORM, transform: op(0), fill: '#937850', stroke: '#5A452A', 'stroke-width': 0.08 }, g);
-      [0.34, 0.67].forEach((f) => el('path', { d: VORM, transform: op(dik * f), fill: '#A2875B' }, g));
+      el('path', { d, transform: op(0), fill: '#937850', stroke: '#5A452A', 'stroke-width': 0.07 }, g);
+      [0.34, 0.67].forEach((f) => el('path', { d, transform: op(dik * f), fill: '#A2875B' }, g));
       const boven = el('g', { transform: op(dik) }, g);
-      el('path', { d: VORM, fill: 'url(#h-bikkel)', stroke: '#6B5434', 'stroke-width': 0.07 }, boven);
-      if (kant === 'hol') el('ellipse', { cx: 0.04, cy: 0.1, rx: 0.3, ry: 0.17, fill: '#AE9367', opacity: 0.85 }, boven);
-      else if (kant === 'bol') el('path', { d: 'M-0.62 -0.04 Q0 0.18 0.62 -0.04', fill: 'none', stroke: '#C4AB7E', 'stroke-width': 0.08 }, boven);
-      else if (kant === 's') el('path', { d: 'M-0.58 0.14 C-0.24 -0.34 0.24 0.38 0.58 -0.1', fill: 'none', stroke: '#A68C60', 'stroke-width': 0.09, 'stroke-linecap': 'round' }, boven);
-      else el('path', { d: 'M-0.62 0.03 L0.62 0.03', fill: 'none', stroke: '#B29770', 'stroke-width': 0.1, 'stroke-linecap': 'round' }, boven);
-      el('ellipse', { cx: -0.44, cy: -0.27, rx: 0.24, ry: 0.1, fill: '#fff', opacity: 0.65 }, boven);
+      el('path', { d, fill: 'url(#h-bikkel)', stroke: '#6B5434', 'stroke-width': 0.05 }, boven);
+      if (kant === 'hol') el('ellipse', { cx: -0.06, cy: 0.02, rx: 0.42, ry: 0.2, fill: '#A08458', opacity: 0.85, transform: 'rotate(-20)' }, boven);
+      else if (kant === 'bol') {
+        [-0.27, 0.27].forEach((y) => el('circle', { cx: 0.56, cy: y, r: 0.24, fill: '#FFF8E6', opacity: 0.45 }, boven));
+        el('path', { d: 'M0.9 0 C0.62 -0.03 0.4 0.02 0.16 0', fill: 'none', stroke: '#A68C60', 'stroke-width': 0.09, 'stroke-linecap': 'round' }, boven);
+      } else if (kant === 's') el('path', { d: 'M-0.62 0.14 C-0.26 -0.34 0.26 0.36 0.62 -0.12', fill: 'none', stroke: '#A68C60', 'stroke-width': 0.09, 'stroke-linecap': 'round' }, boven);
+      else el('path', { d: 'M-0.66 0.02 Q0 -0.05 0.66 0.02', fill: 'none', stroke: '#A68C60', 'stroke-width': 0.09, 'stroke-linecap': 'round' }, boven);
+      el('ellipse', { cx: -0.42, cy: -0.24, rx: 0.24, ry: 0.09, fill: '#fff', opacity: 0.6 }, boven);
     };
     const bal = (X, Z) => {
       const m = K(X, Z), r = 12 * 1000 / Z * 0.75;
@@ -1028,6 +1036,11 @@
     bal(58, 726);
     bikkel(162, 712, 58, 0.94, 's');
     bikkel(118, 690, -64, 1.04, 'rug');
+    // het naambordje staat achter de bikkels: vóór ze ligt op de telefoon de kaart met je klus.
+    // Staand is de hele groep kleiner getekend; het bordje houdt dezelfde maat als de andere bordjes.
+    const staand = L && L.naam === 'staand', bx = staand ? 992 : 958, by = 836;
+    const bordje = el('g', staand ? { transform: `translate(${bx} ${by + 11.5}) scale(${(1 / 0.85).toFixed(4)}) translate(${-bx} ${-(by + 11.5)})` } : {}, g);
+    naambordje(bordje, bx, by, 'Bikkelen');
   }
 
   function bouwKat(ouder) {

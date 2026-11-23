@@ -103,6 +103,15 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   kwartslag, zodat de schijven groot genoeg zijn om te tikken. De regels zijn getest met handgemaakte gevallen en
   duizenden standen tegen een los geschreven tweede zettengenerator; de waardering is afgesteld met partijen tegen
   zichzelf. Het bord op de plank in de voorkamer opent het spel.
+- **Bikkelen** (schermvullend): vier bikkels (sprongbeentjes van een schaap) en een leren balletje op de stoep, een
+  spel dat vooral meisjes speelden. Veeg de bikkels van je zakdoek de stoep op (zacht vegen houdt ze bij elkaar), tik
+  op de bal, pak gauw bikkels en vang de bal als hij één keer gestuit is. Acht figuren: enen, tweeën, drieën (drie en
+  één) en vieren, en daarna draai je ze één voor één op bol, hol, rug en S, en veeg je ze alle vier op. Pak je te veel
+  of te weinig, of stuit de bal twee keer, dan is de ander; wie het eerst alle acht figuren haalt, wint. Een bikkel valt
+  zoals een echte: vaak op een brede kant, zelden op een smalle. De stoep is hardsteen met frijnslag en een paar
+  voegen; de bal wordt groter als hij omhoog gaat en zijn schaduw loopt weg. Tegen Mieke, Grietje, Trijntje en Opoe
+  (versla er een en de volgende komt vrij; tik op de stoep om haar beurt sneller te laten gaan) of met z'n tweeën.
+  De niveaus zijn afgesteld met duizenden nagespeelde spellen. De bikkels op de vloer van de voorkamer openen het spel.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -122,21 +131,21 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 | Plek | Stuk | Klank |
 |---|---|---|
 | Het huis | Engels Nachtegaeltje | blokfluit |
-| Ganzenbord | Malle Symen | blokfluit en trom |
+| Ganzenbord en bikkelen | Malle Symen | blokfluit en trom |
 | Sjoelen en klaverjassen | Onder de Linde groene | luit |
 | Molenspel, dammen en triktrak | Doen Daphne d'over schoone Maeght | luit |
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": bikkelen (de bikkels en het balletje liggen al op de vloer van de voorkamer), kolf op het ijs
-(ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
+Nog "in de oven": kolf op het ijs (ijsbaan), de kermis, koekhappen, hoepelen, kop van Jut, uilenspel, vliegeren en
+steltlopen. Knikkeren en tollen speel
 je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=26`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=27`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
