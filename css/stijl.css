@@ -318,7 +318,6 @@ svg.duit { width: 22px; height: 22px; flex: none; }
 .schemer { transition: opacity 1.4s ease; }
 
 /* sfeer in de kamer */
-.tafel { transform: translate(calc(var(--px, 0) * -22px), calc(var(--py, 0) * -6px)); transition: transform .8s ease-out; }
 .diepte { transform: translate(calc(var(--px, 0) * -12px), calc(var(--py, 0) * -4px)); transition: transform .8s ease-out; }
 .kroon { transform-box: fill-box; transform-origin: 50% 0; animation: slinger-klein 7s ease-in-out infinite alternate; }
 .vlam { transform-box: fill-box; transform-origin: 50% 100%; animation: flakker 1.7s ease-in-out infinite alternate; }

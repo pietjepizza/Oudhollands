@@ -2852,12 +2852,30 @@
   }
 
   // Hoort het spel in een kamer die nog dicht is?
+  // Een vast vlak onder elk voorwerp, een stukje langer dan het voorwerp zelf. Bij aanwijzen met de muis komt een
+  // voorwerp een paar pixels omhoog; zonder dit vlak glijdt het dan onder een muis bij de onderrand weg, zakt terug,
+  // komt weer omhoog, en zo eindeloos door. Het vlak beweegt niet mee, dus de muis blijft erop.
+  function vastVlak(v) {
+    if (v.querySelector(':scope > .vlak')) return;
+    const vw = v.querySelector(':scope > .vw');
+    if (!vw) return;
+    let b;
+    try { b = vw.getBBox(); } catch (e) { return; }
+    if (!b || !b.width || !b.height) return;
+    const r = document.createElementNS(NS, 'rect');
+    r.setAttribute('class', 'vlak');
+    r.setAttribute('x', b.x.toFixed(1)); r.setAttribute('y', b.y.toFixed(1));
+    r.setAttribute('width', b.width.toFixed(1)); r.setAttribute('height', (b.height + 9).toFixed(1));
+    r.setAttribute('fill', 'transparent');
+    v.insertBefore(r, v.firstChild);
+  }
   function koppelVoorwerpen(svg) {
     const viaToetsen = (v) => { try { return v.matches(':focus-visible'); } catch (e) { return false; } };
     svg.querySelectorAll('.voorwerp').forEach((v) => {
+      vastVlak(v);
       // labels alleen bij de muis of het toetsenbord: op een aanraakscherm kan een label dat bij het
       // aanraken verschijnt ervoor zorgen dat Safari de tik als "aanwijzen" ziet en niet als klik
-      v.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') toonLabel(v); });
+      v.addEventListener('pointerenter', (e) => { vastVlak(v); if (e.pointerType === 'mouse') toonLabel(v); });
       v.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') verbergLabel(); });
       v.addEventListener('focus', () => { if (viaToetsen(v)) toonLabel(v); });
       v.addEventListener('blur', verbergLabel);
