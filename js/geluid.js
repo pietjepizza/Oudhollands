@@ -127,7 +127,9 @@
     // zacht getokt met de vinger, dubbele snaren (koren) die een fractie verstemd zijn
     luit: { sr: 24000, helder: 0.3, pos: 0.19, koor: 2.6, oct: 0, t60: (m) => Math.max(0.9, Math.min(2.6, 2.5 - (m - 40) * 0.04)) },
     // een ganzenveer tokkelt de snaar fel aan, en een tweede register een octaaf hoger
-    klavecimbel: { sr: 32000, helder: 0.6, pos: 0.12, koor: 1.1, oct: 0.17, t60: (m) => Math.max(1.0, Math.min(3.4, 3.3 - (m - 36) * 0.045)) }
+    klavecimbel: { sr: 32000, helder: 0.6, pos: 0.12, koor: 1.1, oct: 0.17, t60: (m) => Math.max(1.0, Math.min(3.4, 3.3 - (m - 36) * 0.045)) },
+    // de cister (op schilderijen van Vermeer en Metsu): koperen snaren in koren, met een plectrum aangeslagen
+    cister: { sr: 32000, helder: 0.8, pos: 0.09, koor: 3.4, oct: 0.24, t60: (m) => Math.max(0.7, Math.min(2.2, 2.2 - (m - 48) * 0.035)) }
   };
   const SNAREN = new Map();
   function renderSnaar(f, o, duur) {
@@ -188,9 +190,11 @@
     let per = k.rompen.get(uit);
     if (!per) { per = {}; k.rompen.set(uit, per); }
     if (per[sleutel]) return per[sleutel];
-    const filters = soort === 'klavecimbel'
-      ? [['peaking', 260, 1.0, 3], ['peaking', 1900, 1.1, -3.5], ['highshelf', 5500, 0.7, -2]]
-      : [['peaking', 215, 1.2, 5], ['peaking', 520, 1.4, 2.5], ['highshelf', 2800, 0.7, -6]];
+    const filters = {
+      klavecimbel: [['peaking', 260, 1.0, 3], ['peaking', 1900, 1.1, -3.5], ['highshelf', 5500, 0.7, -2]],
+      cister: [['peaking', 340, 1.1, 3.5], ['peaking', 1150, 1.4, -2.5], ['peaking', 2600, 1.0, 2.5], ['highshelf', 6500, 0.7, -4]],
+      luit: [['peaking', 215, 1.2, 5], ['peaking', 520, 1.4, 2.5], ['highshelf', 2800, 0.7, -6]]
+    }[soort] || [['peaking', 215, 1.2, 5], ['peaking', 520, 1.4, 2.5], ['highshelf', 2800, 0.7, -6]];
     let eerste = null, vorige = null;
     filters.forEach(([type, f, q, gain]) => {
       const b = c.createBiquadFilter(); b.type = type; b.frequency.value = f; b.Q.value = q; b.gain.value = gain;
@@ -280,9 +284,42 @@
     }
   }
 
+  // ============================================================
+  // DE TORENKLOK: een gegoten klok (zoals de klokken van Hemony) met zijn deeltonen: de brom een octaaf lager,
+  // de slagtoon, de kleine terts, de kwint en de nominaal; de lage tonen zweven door kleine onzuiverheden
+  // in het gietsel, de hoge sterven snel uit. Ver weg: zachter in de hoogte en met veel galm.
+  // ============================================================
+  const KLOKDELEN = [[0.5, 0.5, 11], [1, 0.75, 7.5], [1.19, 0.42, 5.5], [1.5, 0.24, 3.6], [2, 0.7, 4.5], [2.52, 0.2, 2.4], [3, 0.26, 2], [4.17, 0.12, 1.2], [5.43, 0.07, 0.75], [6.8, 0.04, 0.5]];
+  function klok(c, uit, t, f, vol, pan) {
+    const k = ketting(c);
+    const g = c.createGain(); g.gain.value = vol;
+    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3600; lp.Q.value = 0.4;
+    g.connect(lp);
+    let naar = uit;
+    if (pan && c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = pan; p.connect(uit); naar = p; }
+    lp.connect(naar);
+    KLOKDELEN.forEach(([r, a, d]) => {
+      [[1, a], [1.0011 + Math.random() * 0.0008, a * 0.45]].forEach(([z, aa], i) => {
+        if (i && r > 2.1) return;
+        const o = c.createOscillator(); o.frequency.value = f * r * z;
+        const og = c.createGain();
+        og.gain.setValueAtTime(0, t);
+        og.gain.linearRampToValueAtTime(aa, t + 0.003 + r * 0.001);
+        og.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        o.connect(og); og.connect(g); o.start(t); o.stop(t + d + 0.05);
+      });
+    });
+    // de klepel tegen het brons
+    const n = c.createBufferSource(); n.buffer = k.ruis;
+    const nb = c.createBiquadFilter(); nb.type = 'bandpass'; nb.frequency.value = f * 9; nb.Q.value = 0.9;
+    const ng = c.createGain(); ng.gain.setValueAtTime(0.3, t); ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+    n.connect(nb); nb.connect(ng); ng.connect(g);
+    n.start(t, Math.random() * 1.5, 0.1);
+  }
+
   window.Klank = {
     maak, ontgrendel, get ctx() { return ctx; },
-    ketting, tokkel, blokfluit, snaarBuffer,
+    ketting, tokkel, blokfluit, snaarBuffer, klok,
     // (voor de tests) een geluid of stukje muziek opnemen in plaats van afspelen
     async render(duur, fn) {
       const sr = 44100;

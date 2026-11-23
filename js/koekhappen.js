@@ -1599,7 +1599,7 @@
     Geluid.munt();
     const klaar = wins[k] >= nodig();
     if (!klaar) {
-      banier(`${naamVan(k)} heeft de koek op!`, `${wins[0]} tegen ${wins[1]}`);
+      banier(spelers[k] && spelers[k].naam === 'Jij' ? 'Jij hebt de koek op!' : `${naamVan(k)} heeft de koek op!`, `${wins[0]} tegen ${wins[1]}`);
       if (spelers[k].t) zeg(k, 'wint');
       bewaar();
       setTimeout(() => { if (id === spelId) { ronde++; nieuweRonde(); } }, rustig() ? 900 : 2600);

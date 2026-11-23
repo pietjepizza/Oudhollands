@@ -17,13 +17,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=32">
+<link rel="stylesheet" href="css/stijl.css?v=33">
 <script>
-  /* de opening (het doek gaat op) alleen als je bij het huis begint, één keer per bezoek; meteen zetten, zodat de straat niet eerst even flitst */
+  /* de opening (een korte film over de gracht) alleen als je bij het huis begint, één keer per bezoek; meteen zetten,
+     zodat de straat niet eerst even flitst. Laadt het filmscript niet, dan gaat de opening na een tijdje vanzelf weg. */
   (function () {
     var thuis = !location.hash || location.hash === '#', proef = location.search.indexOf('opening') >= 0, gezien = false;
     try { gezien = sessionStorage.getItem('speelhuys.opening') === '1'; } catch (e) { /* geen opslag: dan gewoon tonen */ }
-    if (proef || (thuis && !gezien && !navigator.webdriver)) document.documentElement.classList.add('met-opening');
+    if (proef || (thuis && !gezien && !navigator.webdriver)) {
+      document.documentElement.classList.add('met-opening');
+      setTimeout(function () { if (!window.Opening) document.documentElement.classList.remove('met-opening'); }, 15000);
+    }
   })();
 </script>
 </head>
@@ -41,6 +45,22 @@
       <stop offset=".45" stop-color="#E2B655"/>
       <stop offset="1" stop-color="#9A6B1F"/>
     </radialGradient>
+    <!-- gepoetst zilver en verguldsel voor de prijsjes in de pronkkast -->
+    <linearGradient id="pk-zilver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDFEFF"/><stop offset=".28" stop-color="#DDE2E7"/><stop offset=".5" stop-color="#9DA6B0"/><stop offset=".72" stop-color="#D4D9DE"/><stop offset="1" stop-color="#6B747E"/>
+    </linearGradient>
+    <linearGradient id="pk-zilver-h" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#77808A"/><stop offset=".2" stop-color="#E6EAEE"/><stop offset=".36" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#AAB2BB"/><stop offset="1" stop-color="#5C6570"/>
+    </linearGradient>
+    <radialGradient id="pk-zilver-r" cx="38%" cy="32%" r="72%">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#DCE1E6"/><stop offset=".75" stop-color="#97A0AA"/><stop offset="1" stop-color="#5F6872"/>
+    </radialGradient>
+    <linearGradient id="pk-goud" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF3BF"/><stop offset=".4" stop-color="#E7C36A"/><stop offset=".75" stop-color="#B8862E"/><stop offset="1" stop-color="#7E5616"/>
+    </linearGradient>
+    <linearGradient id="pk-goud-h" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8A5E1A"/><stop offset=".3" stop-color="#F3D586"/><stop offset=".45" stop-color="#FFF5CC"/><stop offset=".7" stop-color="#C99A3F"/><stop offset="1" stop-color="#7A5214"/>
+    </linearGradient>
 
     <symbol id="hoeken" viewBox="0 0 100 100">
       <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
@@ -436,6 +456,9 @@
     <symbol id="i-duif" viewBox="0 0 24 24">
       <path d="M2.6 13.4c3-1 5.2-4 9.2-4 2.2 0 3.4-2.6 5.6-2.6 1.4 0 2.4 1 2.9 2.1l1.7.5-1.7.9c-.2 3.8-3.6 6.6-8.5 6.6H8l-3 3v-3.6c-1.3-.6-2.2-1.7-2.4-2.9z" fill="currentColor"/>
     </symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24">
+      <path d="M9.4 3.3a1.7 1.7 0 0 1 3.4 0v6.4l.5-.1a1.6 1.6 0 0 1 1.9 1.2l.1.3.5-.1a1.6 1.6 0 0 1 1.9 1.2l.1.4.3-.1a1.6 1.6 0 0 1 1.9 1.4l.3 3a6.3 6.3 0 0 1-4.3 6.6l-.4.1a6.2 6.2 0 0 1-6.9-2.5L5.6 16a1.6 1.6 0 0 1 2.4-2.1l1.4 1.3z" fill="currentColor"/>
+    </symbol>
     <symbol id="i-kast" viewBox="0 0 24 24">
       <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4.5 3h15v18h-15z"/><path d="M4.5 10h15M4.5 15.5h15M12 15.5V21"/></g>
       <circle cx="8.2" cy="7.4" r="1.7" fill="currentColor"/><circle cx="12" cy="7.4" r="1.7" fill="currentColor"/><circle cx="15.8" cy="7.4" r="1.7" fill="currentColor"/>
@@ -526,7 +549,6 @@
           <p class="gevel-uitleg">Oud-Hollandse spellen in een 17e-eeuws grachtenpand. Speel, verdien duiten en knap het huis op.</p>
           <button class="knop knop-binnen" id="naar-binnen" type="button">Ga naar binnen</button>
         </div>
-        <button class="hud-knop gevel-vraag" id="knop-uitleg" type="button" aria-label="Hoe werkt het huis? Gijs leidt je rond" title="Hoe werkt het huis?"><svg aria-hidden="true"><use href="#i-vraag"/></svg></button>
         <nav class="plekken" id="plekken" aria-label="Plekken aan de gracht">
           <button class="plek-knop" type="button" data-plek="voorkamer"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-deur"/></svg></span><span class="plek-naam">Voorkamer</span></button>
           <button class="plek-knop" type="button" data-plek="zolder"><span class="plek-ikoon"><svg aria-hidden="true"><use href="#i-luik"/></svg><i class="plek-slotje"><svg aria-hidden="true"><use href="#i-slot"/></svg></i></span><span class="plek-naam">Zolder</span></button>
@@ -553,8 +575,6 @@
         </button>
         <p class="veeg-hint" id="veeg-hint">Veeg om rond te kijken</p>
         <div class="hud-knoppen">
-          <button class="hud-knop" id="knop-uitleg-kamer" type="button" aria-label="Hoe werkt het huis? Gijs leidt je rond" title="Hoe werkt het huis?"><svg aria-hidden="true"><use href="#i-vraag"/></svg></button>
-          <button class="hud-knop" id="knop-kast" type="button" aria-label="Pronkkast" title="Pronkkast"><svg aria-hidden="true"><use href="#i-kast"/></svg></button>
           <button class="hud-knop" id="knop-kamer" type="button" aria-label="Naar de zolder" title="Naar de zolder" hidden><svg aria-hidden="true"><use id="knop-kamer-use" href="#i-trap"/></svg></button>
           <button class="hud-knop" id="knop-straat" type="button" aria-label="Naar buiten" title="Naar buiten"><svg aria-hidden="true"><use href="#i-huis"/></svg></button>
         </div>
@@ -653,6 +673,11 @@
     <div class="mo-podium kh-podium" id="kh-podium"></div>
   </section>
   <!-- DE KUNSTKAMER: lezen en kijken, geen spel -->
+  <!-- DE PRONKKAST: prijzen achter glas en laatjes met speelgoed -->
+  <section id="scherm-pronkkast" class="weergave volscherm pronkkast" aria-labelledby="pk-titel" hidden>
+    <h1 id="pk-titel" class="sr-only">Pronkkast</h1>
+    <div class="pk-zaal" id="pk-zaal"></div>
+  </section>
   <section id="scherm-kunstkamer" class="weergave volscherm kunstkamer" aria-labelledby="kk-titel" hidden>
     <h1 id="kk-titel" class="sr-only">De Kunstkamer</h1>
     <div class="kk-zaal" id="kk-zaal"></div>
@@ -680,6 +705,10 @@
     </div>
     <p class="bel-bedrag" id="bel-bedrag">+0</p>
     <p class="bel-sub" id="bel-sub"><svg aria-hidden="true"><use href="#i-ster"/></svg><span id="bel-sub-tekst">Gewonnen!</span></p>
+    <div class="bel-prijs" id="bel-prijs" hidden>
+      <span class="bel-prijs-beeld" id="bel-prijs-beeld" aria-hidden="true"></span>
+      <span class="bel-prijs-tekst"><small>Nieuw in je pronkkast</small><b id="bel-prijs-naam"></b></span>
+    </div>
     <div class="bel-volgende" id="bel-volgende">
       <span class="bel-v-ikoon" aria-hidden="true"><svg><use id="bel-v-use" href="#i-raam"/></svg></span>
       <span class="bel-v-midden"><span class="bel-v-naam" id="bel-v-naam">Ramen lappen</span><span class="bel-v-meter" aria-hidden="true"><i id="bel-v-meter"></i></span></span>
@@ -693,16 +722,19 @@
   </div>
 </div>
 
-<!-- Pronkkast: verzamelde schijven, dobbelstenen, stenen, knikkers en tollen -->
-<div class="vel kast-vel" id="pronkkast" role="dialog" aria-modal="true" aria-labelledby="kast-titel" hidden>
-  <div class="vel-kaart kast-kaart">
+<!-- Zo werkt het: vier plaatjes in een kring, geen lange uitleg -->
+<div class="vel zo-vel" id="zo-werkt" role="dialog" aria-modal="true" aria-labelledby="zo-titel" hidden>
+  <div class="vel-kaart zo-kaart">
     <div class="vel-kop">
-      <h2 id="kast-titel">Pronkkast</h2>
-      <span class="kast-saldo"><svg class="duit" aria-hidden="true"><use href="#i-duit"/></svg><b id="kast-saldo">0</b></span>
-      <button class="ikoon-knop" id="kast-sluit" type="button" aria-label="Sluiten"><svg aria-hidden="true"><use href="#i-sluit"/></svg></button>
+      <h2 id="zo-titel">Zo werkt het</h2>
+      <button class="ikoon-knop" id="zo-sluit" type="button" aria-label="Sluiten"><svg aria-hidden="true"><use href="#i-sluit"/></svg></button>
     </div>
-    <div class="kast-tabs" id="kast-tabs" role="tablist" aria-label="Soorten"></div>
-    <div class="kast-plank" id="kast-plank"></div>
+    <ol class="zo-stappen">
+      <li><span class="zo-beeld"><svg aria-hidden="true"><use href="#i-dobbel"/></svg></span><b>Speel</b><small>Tik op een spel in de kamer</small></li>
+      <li><span class="zo-beeld zo-duit"><svg aria-hidden="true"><use href="#i-duit"/></svg></span><b>Verdien duiten</b><small>Win je, dan krijg je er meer</small></li>
+      <li><span class="zo-beeld"><svg aria-hidden="true"><use href="#i-hamer"/></svg></span><b>Knap het huis op</b><small>Kamer klaar? Dan gaat de volgende open</small></li>
+      <li><span class="zo-beeld zilver" aria-hidden="true"></span><b>Win prijzen</b><small>Versla de kampioen: een zilveren prijs voor je pronkkast</small></li>
+    </ol>
   </div>
 </div>
 
@@ -717,19 +749,25 @@
   </div>
 </div>
 
-<!-- De opening: het rode doek gaat op voor Het Speelhuys (tik om over te slaan) -->
-<div class="opening" id="opening">
-  <div class="opening-licht" aria-hidden="true"></div>
-  <div class="opening-doek opening-links" aria-hidden="true"><i class="opening-koord"></i></div>
-  <div class="opening-doek opening-rechts" aria-hidden="true"><i class="opening-koord"></i></div>
-  <div class="opening-val" aria-hidden="true"></div>
-  <div class="opening-kaart" role="img" aria-label="Het Speelhuys. Oud-Hollandse spellen, anno 1648">
-    <svg class="opening-tegel" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" class="merk-grond"/><use href="#hoeken" class="merk-hoeken"/><use href="#ill-gans" x="12" y="10" width="76" height="76" class="tekening opening-gans"/></svg>
-    <p class="opening-titel" aria-hidden="true">Het Speelhuys</p>
-    <svg class="opening-krul" viewBox="0 0 260 26" aria-hidden="true"><path d="M6 15 C 38 3, 70 25, 104 13 C 118 8, 124 6, 130 13 C 136 6, 142 8, 156 13 C 190 25, 222 3, 254 15"/><circle cx="130" cy="13" r="3.2"/></svg>
-    <p class="opening-onder" aria-hidden="true">Oud-Hollandse spellen &middot; anno 1648</p>
+<!-- De opening: een korte film over de gracht. Tik om te beginnen (dan mag er geluid bij), tik om over te slaan. -->
+<div class="film" id="opening">
+  <div class="film-licht" aria-hidden="true"></div>
+  <div class="film-diepte" aria-hidden="true"><div class="film-nevel film-nevel-1"></div><div class="film-nevel film-nevel-2"></div><div class="film-stof"></div></div>
+  <div class="film-vignet" aria-hidden="true"></div>
+  <div class="film-korrel" aria-hidden="true"></div>
+  <div class="film-zwart" aria-hidden="true"></div>
+  <div class="film-balk film-boven" aria-hidden="true"></div>
+  <div class="film-balk film-onder" aria-hidden="true"></div>
+  <p class="film-plaats" aria-hidden="true"><span>Amsterdam</span><small>anno 1648</small></p>
+  <div class="film-titel" role="img" aria-label="Het Speelhuys, Oud-Hollandse spellen">
+    <p class="film-naam" aria-hidden="true">Het Speelhuys</p>
+    <p class="film-sub" aria-hidden="true"><i></i>Oud-Hollandse spellen<i></i></p>
   </div>
-  <p class="opening-tik" aria-hidden="true">tik om verder te gaan</p>
+  <button class="film-poort" type="button" aria-label="Tik om te beginnen">
+    <svg class="film-tegel" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" class="merk-grond"/><use href="#hoeken" class="merk-hoeken"/><use href="#ill-gans" x="12" y="10" width="76" height="76" class="tekening"/></svg>
+    <span class="film-tik">Tik om te beginnen</span>
+  </button>
+  <button class="film-over" type="button">Overslaan<svg aria-hidden="true"><use href="#i-pijl"/></svg></button>
 </div>
 
 <!-- Gijs de gans doet voor hoe een spel werkt -->
@@ -777,7 +815,7 @@
     </div>
     <button class="menu-knop" id="menu-buiten" type="button"><svg aria-hidden="true"><use href="#i-huis"/></svg>Huis van buiten</button>
     <button class="menu-knop" id="menu-kast" type="button"><svg aria-hidden="true"><use href="#i-kast"/></svg>Pronkkast</button>
-    <button class="menu-knop" id="menu-uitleg" type="button"><svg aria-hidden="true"><use href="#i-vraag"/></svg>Hoe werkt het huis?</button>
+    <button class="menu-knop" id="menu-uitleg" type="button"><svg aria-hidden="true"><use href="#i-vraag"/></svg>Zo werkt het</button>
     <button class="menu-knop menu-schakel" id="menu-tril" type="button" role="switch" aria-checked="true"><svg aria-hidden="true"><use href="#i-tril"/></svg>Trillen<span class="schakel" aria-hidden="true"><i></i></span></button>
     <div class="menu-seizoen" role="group" aria-labelledby="seizoen-kop">
       <p class="menu-klein" id="seizoen-kop"><svg aria-hidden="true"><use href="#i-kalender"/></svg>Seizoen</p>
@@ -823,31 +861,31 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=32"></script>
-<script src="js/muziek.js?v=32"></script>
-<script src="js/duiten.js?v=32"></script>
-<script src="js/pronk.js?v=32"></script>
-<script src="js/seizoen.js?v=32"></script>
-<script src="js/les.js?v=32"></script>
-<script src="js/personen.js?v=32"></script>
-<script src="js/ganzenbord.js?v=32"></script>
-<script src="js/sjoelen.js?v=32"></script>
-<script src="js/molenspel.js?v=32"></script>
-<script src="js/damregels.js?v=32"></script>
-<script src="js/dammen.js?v=32"></script>
-<script src="js/klaverregels.js?v=32"></script>
-<script src="js/klaverjassen.js?v=32"></script>
-<script src="js/triktrakregels.js?v=32"></script>
-<script src="js/triktrak.js?v=32"></script>
-<script src="js/bikkelen.js?v=32"></script>
-<script src="js/kolf.js?v=32"></script>
-<script src="js/koekhappen.js?v=32"></script>
-<script src="js/kunstkamer.js?v=32"></script>
-<script src="js/knikkeren.js?v=32"></script>
-<script src="js/tollen.js?v=32"></script>
-<script src="js/huis.js?v=32"></script>
-<script src="js/app.js?v=32"></script>
-<script src="js/rondleiding.js?v=32"></script>
-<script src="js/opening.js?v=32"></script>
+<script src="js/geluid.js?v=33"></script>
+<script src="js/muziek.js?v=33"></script>
+<script src="js/duiten.js?v=33"></script>
+<script src="js/pronk.js?v=33"></script>
+<script src="js/seizoen.js?v=33"></script>
+<script src="js/les.js?v=33"></script>
+<script src="js/personen.js?v=33"></script>
+<script src="js/ganzenbord.js?v=33"></script>
+<script src="js/sjoelen.js?v=33"></script>
+<script src="js/molenspel.js?v=33"></script>
+<script src="js/damregels.js?v=33"></script>
+<script src="js/dammen.js?v=33"></script>
+<script src="js/klaverregels.js?v=33"></script>
+<script src="js/klaverjassen.js?v=33"></script>
+<script src="js/triktrakregels.js?v=33"></script>
+<script src="js/triktrak.js?v=33"></script>
+<script src="js/bikkelen.js?v=33"></script>
+<script src="js/kolf.js?v=33"></script>
+<script src="js/koekhappen.js?v=33"></script>
+<script src="js/kunstkamer.js?v=33"></script>
+<script src="js/knikkeren.js?v=33"></script>
+<script src="js/tollen.js?v=33"></script>
+<script src="js/huis.js?v=33"></script>
+<script src="js/app.js?v=33"></script>
+<script src="js/wenken.js?v=33"></script>
+<script src="js/opening.js?v=33"></script>
 </body>
 </html>

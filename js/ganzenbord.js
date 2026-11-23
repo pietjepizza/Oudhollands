@@ -648,7 +648,7 @@
       await wacht(650); if (mijnId !== spelId) return;
       gooi(true);
     } else {
-      meld(`${p.naam} is aan de beurt. Schud de beker.`);
+      meld(`${p.naam === 'Jij' ? 'Jij bent' : p.naam + ' is'} aan de beurt. Schud de beker.`);
     }
   }
 
@@ -750,7 +750,10 @@
     const mensen = spelers.filter((q) => q.mens).length, computers = spelers.length - mensen;
     spelers.forEach((q) => { if (q !== w && q.persoon) setTimeout(() => zeg(q, 'verliest'), 500); });
     let bedrag, tekst, gewonnen;
-    if (w.mens && computers > 0) { bedrag = 25 + 10 * computers; tekst = w.id === 'jij' ? 'Jij wint het ganzenbord!' : `${w.naam} wint!`; gewonnen = true; }
+    if (w.mens && computers > 0) {
+      bedrag = 25 + 10 * computers; tekst = w.id === 'jij' ? 'Jij wint het ganzenbord!' : `${w.naam} wint!`; gewonnen = true;
+      if (w.id === 'jij' && window.Duiten) Duiten.zetVeld('gans-gewonnen', Math.max(Duiten.veld('gans-gewonnen', 0) || 0, computers));
+    }
     else if (!w.mens) { bedrag = 15; tekst = `${w.naam} wint. Goed gespeeld!`; gewonnen = false; zeg(w, 'wint'); }
     else { bedrag = 30; tekst = `${w.naam} wint!`; gewonnen = true; }
     meld(tekst);

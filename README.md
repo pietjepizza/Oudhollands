@@ -38,10 +38,21 @@ lappendeken, een hobbelpaard en duiven op de hanenbalk. De straat is het knooppu
 
 **Gijs de gans doet het voor.** De eerste keer dat je een spel opent, laat een gans in een paar stapjes zien hoe het
 werkt: een lichtcirkel wijst de plek aan, een vinger tikt of veegt, en een ballonnetje zegt het in een paar woorden.
-Daarna kan het opnieuw via het vraagteken.
+Daarna kan het opnieuw via het vraagteken in het spel.
 
-**Pronkkast.** Verzamel sjoelschijven, dobbelstenen, molen- en damstenen, knikkers en tollen (kersenhout, Delfts blauw, goud,
-agaat...). Alleen voor de sier: ze spelen nooit beter dan de gewone.
+**De pronkkast.** Links aan de muur van de voorkamer hangt een walnoten kast met glas in lood en groen fluweel. Tik erop
+en de deurtjes gaan open. Bovenin, achter het glas, staan zilveren prijsjes: voor elk spel één, en je wint hem door de
+kampioen van dat spel te verslaan (de burgemeester, Opoe bij het bikkelen, bakkersjongen Teun bij het koekhappen; bij
+het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet; tik erop en je
+ziet van wie je moet winnen, met een knop naar het spel. Een nieuwe prijs zie je meteen in het beloningsscherm, en de
+kast in de kamer glinstert tot je hem hebt bekeken. De prijzen zijn een gans, een sjoelbakje, een molentje, een dam met
+kroon, vergulde kaarten, een dobbelbeker, bikkels, een kolf, een koek aan een galg, een knikkerschaal en een tol. Zulke
+piepkleine zilveren voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor pronkkasten en poppenhuizen
+(zie de poppenhuizen en miniaturen in het Rijksmuseum). Onderin zitten vijf laatjes met speelgoed: sjoelschijven,
+dobbelstenen, molen- en damstenen, knikkers en tollen. Trek een laatje open om te kiezen wat je gebruikt, of koop iets
+nieuws met duiten (kersenhout, Delfts blauw, goud, agaat...). Alleen voor de sier: ze spelen nooit beter dan de gewone.
+Een cadeautje uit de klomp ligt ook in een laatje, met een rood stipje tot je het hebt gezien. Na de klus "Delfts
+servies" staan er Delftse borden in de kast.
 
 **Seizoenen.** Rond Sinterklaas (12 november tot 5 december) ligt de stoomboot in de gracht, staat het paard op het dak
 en zet je je klomp in de voorkamer: de volgende dag zit er iets in. In de winter ligt er sneeuw en is de gracht bevroren,
@@ -152,13 +163,19 @@ je het speelt, op welke schilderijen en prenten het staat (met links naar de mus
 staat een knop om het spel zelf te spelen. Een kunstkamer was in de zeventiende eeuw de verzameling waarmee een
 welgestelde burger liet zien wat hij wist en had.
 
-**De opening en de rondleiding.** Wie Het Speelhuys opent, ziet eerst een rood toneeldoek met een gouden lambrekijn. In
-het midden tekent een gans zich op een Delfts tegeltje, en de naam verschijnt letter voor letter in goud, met "anno 1648"
-(het jaartal op de gevel). Dan gaat het doek op en sta je aan de gracht. Tik om meteen verder te gaan; de opening komt
-één keer per bezoek, en met "minder beweging" alleen als stil titelbord. De eerste keer leidt Gijs de gans je daarna
-rond: de deur naar de spellen, de duiten, het opknappen, de zolder, de plekken die nog komen, de Kunstkamer en het menu.
-Binnen in de kamer wijst hij een spel, de klussen, de voortgang, de pronkkast en de weg naar buiten aan. Later start je
-de rondleiding met het vraagteken op de straat, in de kamer of in het menu ("Hoe werkt het huis?").
+**De opening.** Een korte film over de echte straat. Eerst zwart met het tegeltje van het huis: tik om te beginnen
+(dan mag de browser ook geluid maken; mag dat al of staat het geluid uit, dan begint de film meteen). De torenklok slaat
+twee keer, het beeld komt op in de lucht boven het huis en de camera zakt langs de trapgevel naar de deur, met een
+kaartje "Amsterdam, anno 1648". 's Avonds gaan de lichten één voor één aan. Dan zoomt de camera uit tot de hele gracht,
+de blokfluit zet in, en met het slotakkoord verschijnt de naam in goud, met een glans eroverheen. De zwarte filmbalken
+schuiven weg en de knoppen komen in beeld. Nevel, stofjes en licht liggen in lagen voor de straat en bewegen sneller
+mee, zodat het beeld diepte krijgt; er ligt een vleugje filmkorrel over. Overslaan kan altijd (tik, een toets of
+"Overslaan"). De opening komt één keer per bezoek, en met "minder beweging" alleen als stil titelbeeld.
+
+**Wenken in plaats van uitleg.** Er is geen rondleiding meer: een tikkende hand wijst wat je kunt doen, en verdwijnt
+zodra je het gedaan hebt. Buiten tikt hij op de deur zolang je nog nooit binnen was, binnen op het ganzenbord zolang je
+nog geen spel hebt gespeeld, en op de klusknop zodra je je eerste klus kunt betalen. In het menu staat "Zo werkt het":
+vier plaatjes in een kring (speel, verdien duiten, knap het huis op, win prijzen).
 
 **Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), gespeeld
 door een klein barokensemble dat de browser zelf laat klinken met Web Audio. De luit en het klavecimbel zijn getokte
@@ -168,14 +185,27 @@ en een tabortrommel slaat de maat bij de dans. Van Eyck schreef alleen de melodi
 bedacht zoals een continuospeler dat doet (bij elke halve of hele maat het akkoord dat het best bij de melodie past,
 met stappen als IV-V-I en aan het eind van elk deel een cadens V-I, een vloeiende baslijn en akkoorden die zo min
 mogelijk verspringen). Gespeeld als door mensen: nadruk op de tel, een triller vlak voor het slot, iets vertragen
-naar het eind van een deel, en net niet precies tegelijk. Alles klinkt door één galm, als in een betegelde kamer.
+naar het eind van een deel, elke zin van twee maten zwelt aan en neemt weer af, en net niet precies tegelijk. Alles
+klinkt door één galm, als in een betegelde kamer.
 
-| Plek | Stuk | Bezetting |
-|---|---|---|
-| Het huis | Engels Nachtegaeltje | blokfluit, luit en viola da gamba |
-| Ganzenbord, bikkelen, koekhappen en knikkeren | Malle Symen | blokfluit en tabor, met luit |
-| Sjoelen, klaverjassen, kolf en tollen | Onder de Linde groene | klavecimbel |
-| Molenspel, dammen en triktrak | Doen Daphne d'over schoone Maeght | luit en viola da gamba |
+Zoals Van Eyck het zelf deed, komt elk stuk in ronden: eerst het thema, dan de **eerste modo** (de noten opgedeeld in
+achtsten) en de **tweede modo** (in zestienden), en tot slot het thema op een ander instrument (de luit in plaats van
+de blokfluit, of andersom). De versieringen zijn doorgangsnoten, wisselnoten en omspelingen in de toonsoort, passend
+bij het akkoord eronder (bij de dominant in mineur met de verhoogde leidtoon), en ze komen stap voor stap op de
+volgende noot uit; de slotnoot en de triller ervoor blijven zoals ze zijn. Zo duurt een stuk zes tot negen minuten
+voordat het zich herhaalt. Spellen die een stuk delen, beginnen elk bij een andere ronde. Bij de dans speelt een cister
+mee (het getokte instrument met koperen snaren dat op schilderijen van Vermeer en Metsu te zien is), en de viola da
+gamba heeft een strijkstok die aanzet en een klankkast met formanten. De muziek staat aan, tenzij je hem uitzet; hij
+begint bij de eerste tik, en na de opening pas als de film klaar is. De film heeft zijn eigen muziek: een torenklok
+(een gegoten klok met brom, slagtoon, kleine terts, kwint en nominaal die zweven), een gamba die aanzwelt, de luit, en
+dan de blokfluit met het begin van het Engels Nachtegaeltje, met een roffel op de tabor naar het slotakkoord.
+
+| Plek | Stuk | Bezetting | Begint bij |
+|---|---|---|---|
+| Het huis, de pronkkast en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
+| Ganzenbord, knikkeren, koekhappen en bikkelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, 2e modo, luit |
+| Sjoelen, klaverjassen, tollen en kolf | Onder de Linde groene | klavecimbel | thema, 1e modo, 2e modo, blokfluit |
+| Molenspel, triktrak en dammen | Doen Daphne d'over schoone Maeght | luit en viola da gamba | thema, 1e modo, blokfluit |
 
 **Geluidseffecten**: nagebootst zoals ze in het echt ontstaan. Hout, been, steen, glas, metaal en klokken klinken als
 een handvol tonen die elk op hun eigen tempo uitsterven (modale klank), met een tikje ruis waar het ding iets raakt;
@@ -193,7 +223,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=32`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=33`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

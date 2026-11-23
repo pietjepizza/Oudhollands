@@ -100,6 +100,7 @@
       return null;
     },
     get saldo() { return staat.duiten; },
+    get potjes() { return staat.potjes || 0; },
     klusKlaar(id) { return klaar(id); },
     bij(n) { staat.duiten += n; bewaar(); toonBedrag(true); meld(); },
     af(n) {
@@ -144,6 +145,17 @@
     }
     vorigeFocus = document.activeElement;
     document.getElementById('bel-sub-tekst').textContent = o.tekst || (o.gewonnen ? 'Gewonnen!' : 'Goed gespeeld');
+    // een nieuwe prijs voor de pronkkast (de kampioen verslagen)
+    const prijs = o.gewonnen && window.Pronk && Pronk.meldNieuw ? Pronk.meldNieuw(o.spel) : null;
+    const prijsVak = document.getElementById('bel-prijs');
+    if (prijsVak) {
+      prijsVak.hidden = !prijs;
+      if (prijs) {
+        document.getElementById('bel-prijs-beeld').innerHTML = Pronk.prijsSvg(prijs.id);
+        document.getElementById('bel-prijs-naam').textContent = prijs.naam;
+        if (window.Geluid && Geluid.cadeau) setTimeout(() => Geluid.cadeau(), 700);
+      }
+    }
     const v = Duiten.volgendeKlus(Duiten.kamerVanSpel(o.spel)) || Duiten.volgendeKlus('voorkamer');
     const vak = document.getElementById('bel-volgende');
     if (v) {

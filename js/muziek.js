@@ -19,7 +19,7 @@
     thuis: {
       titel: 'Engels Nachtegaeltje',
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof I (1649)',
-      melodie: 'blokfluit', stijl: 'arpeggio', tempo: 74, transpositie: 0, maat: 4, grond: 0, mineur: false, niveau: 0.52,
+      melodie: 'blokfluit', stijl: 'arpeggio', tempo: 74, transpositie: 0, maat: 4, grond: 0, mineur: false, niveau: 0.52, wissel: 3.2,
       noten: "|: e''4. d''16 e''16 c''4 g''8. f''16 | e''2. , c''8 d''8 | e''4 c''4 e''4 fis''4 | g''2. , e''8 f''8 | " +
              "g''4 g''8 a''8 g''4 e''8 f''8 | g''8 f''8 g''8 a''8 g''4 e''8 f''8 | g''4 e''4 f''4 g''4 | a''4 , a'4 a'4. h'8 | " +
              "c''8 d''8 e''8 f''8 g''4 c''4 | h'8. c''16 d''4 g'4 g''4 | e''8. f''16 g''8 e''8 d''4. c''8 | c''2. :| " +
@@ -29,7 +29,7 @@
     ganzenbord: {
       titel: 'Malle Symen',
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof I (1649)',
-      melodie: 'blokfluit', stijl: 'dans', tempo: 100, transpositie: 0, maat: 4, grond: 2, mineur: true, trom: true, niveau: 0.5,
+      melodie: 'blokfluit', stijl: 'dans', tempo: 100, transpositie: 0, maat: 4, grond: 2, mineur: true, trom: true, niveau: 0.5, wissel: 3.6,
       noten: "|: a'2 f''2 | e''2 a'4 a''4 | g''4 f''4 e''4 d''4 | cis''4 a'4 a'2 , | " +
              "f''4 d''4 e''4 a'4 | g'4 f'4 e'4 d'4 | a'4 d''4 h'4 cis''4 | d''1 :| " +
              "|: f''8 g''8 a''4 e''8 f''8 g''4 | d''8 f''8 e''8 d''8 cis''4 a'4 , | f'8 g'8 a'4 e'8 f'8 g'4 | " +
@@ -40,7 +40,7 @@
     sjoelen: {
       titel: 'Onder de Linde groene',
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof II (1654)',
-      melodie: 'klavecimbel', stijl: 'klavier', tempo: 90, transpositie: 0, maat: 4, grond: 0, mineur: false, niveau: 1.8,
+      melodie: 'klavecimbel', stijl: 'klavier', tempo: 90, transpositie: 0, maat: 4, grond: 0, mineur: false, niveau: 1.8, wissel: 0.17,
       noten: "|: g'2 c''2 | e'4. f'8 g'2 | c''4 g'4 a'4 g'4 | e'8 f'8 g'4 e''2 , | " +
              "g'4. a'8 h'8 c''8 d''4 | f'4. g'8 a'8 h'8 c''4 | e'2 d'2 | c'1 :| " +
              "|: g'4 g'4 a'8 h'8 c''4 | c''4 h'4 c''2 , | d''8 e''8 f''8 d''8 e''4 e''4 | d''8 e''8 f''8 d''8 e''8. f''16 g''4 , | " +
@@ -49,7 +49,7 @@
     molenspel: {
       titel: "Doen Daphne d'over schoone Maeght",
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof I (1649)',
-      melodie: 'luit', stijl: 'menuet', tempo: 96, transpositie: 0, maat: 3, grond: 2, mineur: true, niveau: 1,
+      melodie: 'luit', stijl: 'menuet', tempo: 96, transpositie: 0, maat: 3, grond: 2, mineur: true, niveau: 1, wissel: 0.33,
       noten: "d'4 | f'2 g'4 | a'2 d''4 | cis''4. d''8 e''4 | d''2 , a'4 | " +
              "c''4 a'4 f'4 | g'4 e'4 c'4 | d'4 f'4 e'4 | [1 d'2 :| [2 d'2. | " +
              "|: f''2 f''4 | e''2 e''4 | d''2 d''4 | cis''2 , a'4 | a'4. b'8 a'4 | g'4. a'8 f'4 | f'4. g'8 e'4 | f'2. :| " +
@@ -199,62 +199,134 @@
   }
 
   // ============================================================
-  // HET ARRANGEMENT: alle gebeurtenissen van één ronde, in tellen
+  // VERSIEREN: de 'modi' van Van Eyck. Hij speelde eerst het thema en daarna variaties waarin de noten
+  // werden opgedeeld in steeds snellere loopjes: doorgangsnoten, wisselnoten en omspelingen, in de toonsoort
+  // en passend bij het akkoord eronder (bij de dominant in mineur dus met de verhoogde leidtoon).
   // ============================================================
-  function arrangeer(stuk) {
-    const akkoorden = harmoniseer(stuk);
+  function ladderVoor(stuk, akkoord) {
+    const l = stuk.mineur ? [0, 2, 3, 5, 7, 8, 10] : [0, 2, 4, 5, 7, 9, 11];
+    akkoord.tonen.forEach((pc) => {
+      if (l.includes(pc)) return;
+      let i = l.indexOf((pc + 11) % 12);
+      if (i < 0) i = l.indexOf((pc + 1) % 12);
+      if (i >= 0) l[i] = pc;
+    });
+    return l;
+  }
+  // k noten die op x beginnen en naar het doel lopen (zonder het doel zelf)
+  function figuur(x, doel, k, st) {
+    const r = doel > x ? 1 : doel < x ? -1 : 0;
+    const tussen = [];
+    if (r) { let y = st(x, r); while ((r > 0 ? y < doel : y > doel) && tussen.length < 14) { tussen.push(y); y = st(y, r); } }
+    // past de hele toonladder er niet in, dan springt het loopje eerst en loopt het stap voor stap naar het doel
+    const loop = tussen.length > k - 1 ? tussen.slice(tussen.length - (k - 1)) : tussen;
+    const kant = r === 0 ? 1 : -r;
+    const om = [st(x, kant), x, st(x, -kant), x];
+    const lijn = [x];
+    for (let i = 0; i < k - 1 - loop.length; i++) lijn.push(om[i % 4]);
+    lijn.push(...loop);
+    // nooit vlak voor het doel al op het doel uitkomen
+    if (lijn.length > 1 && lijn[lijn.length - 1] === doel) lijn[lijn.length - 1] = st(doel, r || 1);
+    return lijn.slice(0, k);
+  }
+  function versier(stuk, modo) {
+    if (!modo) return stuk.noten;
+    const g = stuk.grond;
+    const eindes = stuk.strepen.filter((s) => s.einde).map((s) => s.t);
+    const isEinde = (t) => eindes.some((e) => Math.abs(e - t) < 1e-6);
+    const akkOp = (t) => stuk.akkoorden.find((s) => t >= s.a - 1e-6 && t < s.b - 1e-6) || stuk.akkoorden[stuk.akkoorden.length - 1];
+    const uit = [];
+    stuk.noten.forEach((n, i) => {
+      const volg = stuk.noten[i + 1];
+      if (n.midi === null || !volg || volg.midi === null) { uit.push(n); return; }
+      // de slotnoot en de noot met de triller ervoor blijven zoals ze zijn
+      const slot = isEinde(n.begin + n.duur);
+      const voorSlot = isEinde(volg.begin + volg.duur) && volg.duur >= 0.99;
+      let eenheid = 0;
+      if (modo === 1) eenheid = n.duur >= 0.99 ? 0.5 : 0;
+      else eenheid = n.duur > 1.01 ? 0.5 : n.duur >= 0.49 ? 0.25 : 0;
+      const aantal = eenheid ? Math.round(n.duur / eenheid) : 0;
+      if (slot || voorSlot || aantal < 2 || Math.abs(aantal * eenheid - n.duur) > 1e-6) { uit.push(n); return; }
+      const lad = ladderVoor(stuk, akkOp(n.begin).akkoord).map((p) => (p + g) % 12);
+      const op = (m) => lad.includes(((m % 12) + 12) % 12);
+      const st = (m, r) => { let x = m + r; for (let v = 0; v < 3 && !op(x); v++) x += r; return x; };
+      figuur(n.midi, volg.midi, aantal, st).forEach((m, k) => uit.push({ midi: m, duur: eenheid, begin: n.begin + k * eenheid, bind: false, versiering: k > 0 }));
+    });
+    return uit;
+  }
+
+  // ============================================================
+  // HET ARRANGEMENT: alle gebeurtenissen van één ronde, in tellen.
+  // De ronden: eerst het thema, dan twee modi, dan het thema nog eens op een ander instrument.
+  // ============================================================
+  const RONDEN = [{ modo: 0, pauze: 0.6 }, { modo: 1, pauze: 0.5 }, { modo: 2, pauze: 1.3 }, { modo: 0, wissel: true, pauze: 2.4 }];
+  const WISSEL = { blokfluit: 'luit', luit: 'blokfluit', klavecimbel: 'blokfluit' };
+  function arrangeer(stuk, ronde) {
+    ronde = ronde || RONDEN[0];
+    const akkoorden = stuk.akkoorden;
+    const noten = versier(stuk, ronde.modo);
+    const speler = ronde.wissel ? (WISSEL[stuk.melodie] || stuk.melodie) : stuk.melodie;
+    // het stuk is afgesteld op zijn eigen melodie-instrument; voor het andere instrument staat bij elk stuk
+    // hoeveel harder of zachter (gemeten, zie 'wissel')
+    const wisselVol = ronde.wissel ? (stuk.wissel || 1) : 1;
     const ev = [];
     const g = stuk.grond, tr = stuk.transpositie || 0;
     let bas = 43 + g, ligging = null;
     const eindes = stuk.strepen.filter((s) => s.einde).map((s) => s.t);
     const toonladder = stuk.mineur ? [0, 2, 3, 5, 7, 8, 10, 11] : [0, 2, 4, 5, 7, 9, 11];
     const bovenBuur = (midi) => { for (let s = 1; s <= 2; s++) if (toonladder.includes((((midi + s - g) % 12) + 12) % 12)) return midi + s; return midi + 2; };
+    // frasering: elke zin van twee maten zwelt aan en neemt weer af
+    const eerste = stuk.strepen.length ? stuk.strepen[0].t : 0, zin = 2 * stuk.maat;
+    const frase = (t) => { const p = ((((t - eerste) % zin) + zin) % zin) / zin; return 0.9 + 0.16 * Math.sin(Math.PI * p); };
+    const rondeVol = ronde.modo === 2 ? 1.04 : ronde.wissel ? 0.96 : 1;
     // de melodie, met nadruk op de tel en een triller vlak voor het slot
-    stuk.noten.forEach((n, i) => {
+    noten.forEach((n, i) => {
       if (n.midi === null) return;
       const inMaat = (() => { let laatst = 0; stuk.strepen.forEach((s) => { if (s.t <= n.begin + 1e-6) laatst = s.t; }); return n.begin - laatst; })();
       const nadruk = Math.abs(inMaat) < 1e-6 ? 1 : Math.abs(inMaat - Math.round(inMaat)) < 1e-6 ? (stuk.maat === 4 && Math.abs(inMaat - 2) < 1e-6 ? 0.92 : 0.86) : 0.76;
-      const volgende = stuk.noten[i + 1];
+      const volgende = noten[i + 1];
       const slot = volgende && eindes.some((e) => Math.abs(volgende.begin + volgende.duur - e) < 1e-6);
       const legato = volgende && volgende.midi !== null && Math.abs(volgende.midi - n.midi) <= 2 && n.duur <= 0.5;
-      if (slot && n.duur >= 0.99 && stuk.melodie === 'blokfluit') {
+      const vol = nadruk * (n.versiering ? 0.84 : 1) * frase(n.begin) * rondeVol * wisselVol;
+      if (slot && n.duur >= 0.99 && speler === 'blokfluit') {
         const boven = bovenBuur(n.midi), stap = 0.125, triller = Math.min(n.duur * 0.6, 1);
-        for (let t = 0, k = 0; t < triller - 1e-6; t += stap, k++) ev.push({ t: n.begin + t, inst: 'melodie', midi: (k % 2 ? n.midi : boven) + tr, duur: stap, vol: 0.85, legato: true });
-        ev.push({ t: n.begin + triller, inst: 'melodie', midi: n.midi + tr, duur: n.duur - triller, vol: 0.9, legato: true });
-      } else ev.push({ t: n.begin, inst: 'melodie', midi: n.midi + tr, duur: n.duur, vol: nadruk, legato });
+        for (let t = 0, k = 0; t < triller - 1e-6; t += stap, k++) ev.push({ t: n.begin + t, inst: 'melodie', speler, midi: (k % 2 ? n.midi : boven) + tr, duur: stap, vol: 0.85 * frase(n.begin) * wisselVol, legato: true });
+        ev.push({ t: n.begin + triller, inst: 'melodie', speler, midi: n.midi + tr, duur: n.duur - triller, vol: 0.9 * frase(n.begin) * wisselVol, legato: true });
+      } else ev.push({ t: n.begin, inst: 'melodie', speler, midi: n.midi + tr, duur: n.duur, vol, legato });
     });
-    // de begeleiding per akkoord
+    // de begeleiding per akkoord; in de snelle modo speelt de luit rustiger, zodat de loopjes te horen zijn
     akkoorden.forEach((s) => {
       const pcs = s.akkoord.tonen.map((p) => (p + g) % 12);
       const lengte = s.b - s.a;
       bas = kiesBas(pcs[0], bas, 36, 50);
       ligging = kiesLigging(pcs, ligging, 52, 63);
-      const zacht = s.einde ? 0.85 : 1;
+      const zacht = (s.einde ? 0.85 : 1) * frase(s.a);
       if (stuk.stijl === 'arpeggio') {
-        ev.push({ t: s.a, inst: 'bas', midi: bas, duur: lengte, vol: 0.9 });
-        if (lengte >= 1.99) [0, 1, 2, 1].forEach((k, x) => ev.push({ t: s.a + x * 0.5, inst: 'begeleiding', midi: ligging[k], duur: 1.2, vol: (x ? 0.8 : 1.04) * zacht }));
-        else ev.push({ t: s.a, inst: 'begeleiding', midi: ligging[1], duur: lengte, vol: 0.6 });
+        ev.push({ t: s.a, inst: 'bas', midi: bas, duur: lengte, vol: 0.9 * frase(s.a) });
+        if (lengte >= 1.99 && ronde.modo !== 2) [0, 1, 2, 1].forEach((k, x) => ev.push({ t: s.a + x * 0.5, inst: 'begeleiding', midi: ligging[k], duur: 1.2, vol: (x ? 0.8 : 1.04) * zacht }));
+        else if (lengte >= 1.99) [0, 1].forEach((o) => ligging.forEach((m, k) => ev.push({ t: s.a + o + k * 0.035, inst: 'begeleiding', midi: m, duur: 0.9, vol: (o ? 0.6 : 0.78) * zacht })));
+        else ev.push({ t: s.a, inst: 'begeleiding', midi: ligging[1], duur: lengte, vol: 0.6 * zacht });
       } else if (stuk.stijl === 'dans') {
-        ev.push({ t: s.a, inst: 'begeleiding', midi: bas, duur: 0.9, vol: 0.95 });
-        if (lengte >= 1.99) ligging.forEach((m, k) => ev.push({ t: s.a + 1 + k * 0.03, inst: 'begeleiding', midi: m, duur: 0.6, vol: 0.62 }));
-        if (s.einde) ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.04, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.66 }));
+        ev.push({ t: s.a, inst: 'begeleiding', midi: bas, duur: 0.9, vol: 0.95 * zacht });
+        if (lengte >= 1.99) ligging.forEach((m, k) => ev.push({ t: s.a + 1 + k * 0.03, inst: 'begeleiding', midi: m, duur: 0.6, vol: 0.62 * zacht }));
+        if (s.einde) ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.04, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.66 * zacht }));
       } else if (stuk.stijl === 'klavier') {
-        ev.push({ t: s.a, inst: 'begeleiding', midi: bas, duur: Math.min(lengte, 1.9), vol: 1.05 });
-        ev.push({ t: s.a, inst: 'begeleiding', midi: bas - 12, duur: Math.min(lengte, 1.9), vol: 0.8 });
-        if (lengte >= 1.99) [0.5, 1.5].forEach((o) => ligging.forEach((m, k) => ev.push({ t: s.a + o + k * 0.012, inst: 'begeleiding', midi: m, duur: 0.42, vol: 0.5 })));
-        else ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.02, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.55 }));
+        ev.push({ t: s.a, inst: 'begeleiding', midi: bas, duur: Math.min(lengte, 1.9), vol: 1.05 * zacht });
+        ev.push({ t: s.a, inst: 'begeleiding', midi: bas - 12, duur: Math.min(lengte, 1.9), vol: 0.8 * zacht });
+        if (lengte >= 1.99) [0.5, 1.5].forEach((o) => ligging.forEach((m, k) => ev.push({ t: s.a + o + k * 0.012, inst: 'begeleiding', midi: m, duur: 0.42, vol: 0.5 * zacht })));
+        else ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.02, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.55 * zacht }));
       } else if (stuk.stijl === 'menuet') {
-        ev.push({ t: s.a, inst: 'bas', midi: bas, duur: lengte, vol: 0.6 });
-        if (lengte >= 2.99) [1, 2].forEach((o) => ligging.forEach((m, k) => ev.push({ t: s.a + o + k * 0.025, inst: 'begeleiding', midi: m, duur: 0.9, vol: 0.52 })));
-        else ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.03, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.5 }));
+        ev.push({ t: s.a, inst: 'bas', midi: bas, duur: lengte, vol: 0.6 * frase(s.a) });
+        if (lengte >= 2.99) [1, 2].forEach((o) => ligging.forEach((m, k) => ev.push({ t: s.a + o + k * 0.025, inst: 'begeleiding', midi: m, duur: 0.9, vol: 0.52 * zacht })));
+        else ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.03, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.5 * zacht }));
       }
     });
-    // de tabortrommel bij de dans: lang, kort-kort
+    // de tabortrommel bij de dans: lang, kort-kort (en in de snelle modo wat drukker)
     if (stuk.trom) {
+      const slagen = ronde.modo === 2 ? [[0, 'sterk'], [0.5, 'zacht'], [1, ''], [1.5, 'zacht'], [2, 'sterk'], [2.5, 'zacht'], [3, ''], [3.5, 'zacht']]
+        : [[0, 'sterk'], [1, ''], [1.5, 'zacht'], [2, 'sterk'], [3, ''], [3.5, 'zacht']];
       for (let maat = 0; maat < stuk.lengte - 0.01; maat += 4) {
-        [[0, 'sterk'], [1, ''], [1.5, 'zacht'], [2, 'sterk'], [3, ''], [3.5, 'zacht']].forEach(([o, s]) => {
-          if (maat + o < stuk.lengte - 0.01) ev.push({ t: maat + o, inst: 'trom', sterk: s });
-        });
+        slagen.forEach(([o, s]) => { if (maat + o < stuk.lengte - 0.01) ev.push({ t: maat + o, inst: 'trom', sterk: s }); });
       }
     }
     ev.sort((a, b) => a.t - b.t);
@@ -280,7 +352,12 @@
     return { ev, tijd, lengte: tijd(stuk.lengte), akkoorden };
   }
 
-  Object.values(STUKKEN).forEach((s) => { Object.assign(s, lees(s.noten)); s.arr = arrangeer(s); });
+  Object.values(STUKKEN).forEach((s) => {
+    Object.assign(s, lees(s.noten));
+    s.akkoorden = harmoniseer(s);
+    s.arrs = RONDEN.map((r) => arrangeer(s, r));
+    s.arr = s.arrs[0];
+  });
 
   // ============================================================
   // INSTRUMENTEN
@@ -296,31 +373,39 @@
     GAMBA.set(c, w);
     return w;
   }
-  // de viola da gamba: een gestreken baslijn, met een strijkstok die aanzet
+  // de viola da gamba: een gestreken baslijn. De strijkstok zet aan (even ruwer en helderder), dan zingt de
+  // snaar; twee tonen een fractie uit elkaar voor de klankkast, en formanten rond 260, 620 en 1300 Hz.
   function gamba(c, uit, f, t, duur, vol, pan) {
     const k = window.Klank.ketting(c);
     const lengte = Math.max(0.15, duur * 0.97);
     const g = c.createGain();
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.linearRampToValueAtTime(vol, t + 0.07);
-    g.gain.setTargetAtTime(vol * 0.78, t + 0.07, 0.25);
-    g.gain.setValueAtTime(vol * 0.78, t + lengte);
-    g.gain.linearRampToValueAtTime(0.0001, t + lengte + 0.14);
+    g.gain.linearRampToValueAtTime(vol * 0.8, t + 0.045);
+    g.gain.linearRampToValueAtTime(vol, t + 0.16);
+    g.gain.setTargetAtTime(vol * 0.8, t + 0.16, 0.3);
+    g.gain.setValueAtTime(vol * 0.8, t + lengte);
+    g.gain.linearRampToValueAtTime(0.0001, t + lengte + 0.16);
     let naar = uit;
     if (pan && c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = pan; p.connect(uit); naar = p; }
-    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1500; lp.Q.value = 0.5;
-    const pk = c.createBiquadFilter(); pk.type = 'peaking'; pk.frequency.value = 620; pk.Q.value = 1.2; pk.gain.value = 4;
-    g.connect(lp); lp.connect(pk); pk.connect(naar);
+    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.6;
+    lp.frequency.setValueAtTime(2700, t); lp.frequency.exponentialRampToValueAtTime(1350, t + 0.28);
+    let keten = lp;
+    [[260, 1.4, 3], [620, 1.2, 4], [1300, 2, 2]].forEach(([ff, q, gg]) => { const b = c.createBiquadFilter(); b.type = 'peaking'; b.frequency.value = ff; b.Q.value = q; b.gain.value = gg; keten.connect(b); keten = b; });
+    g.connect(lp); keten.connect(naar);
     const o = c.createOscillator(); o.setPeriodicWave(gambaGolf(c)); o.frequency.value = f;
+    const o2 = c.createOscillator(); o2.setPeriodicWave(gambaGolf(c)); o2.frequency.value = f * 1.0024;
+    const g2 = c.createGain(); g2.gain.value = 0.32;
     if (lengte > 0.8) {
-      const lfo = c.createOscillator(); lfo.frequency.value = 4.8;
-      const diep = c.createGain(); diep.gain.setValueAtTime(0, t); diep.gain.linearRampToValueAtTime(7, t + 0.6);
-      lfo.connect(diep); diep.connect(o.detune); lfo.start(t); lfo.stop(t + lengte + 0.2);
+      const lfo = c.createOscillator(); lfo.frequency.value = 4.6 + Math.random() * 0.5;
+      const diep = c.createGain(); diep.gain.setValueAtTime(0, t); diep.gain.linearRampToValueAtTime(6, t + 0.7);
+      lfo.connect(diep); diep.connect(o.detune); diep.connect(o2.detune); lfo.start(t); lfo.stop(t + lengte + 0.2);
     }
-    o.connect(g); o.start(t); o.stop(t + lengte + 0.2);
+    o.connect(g); o2.connect(g2); g2.connect(g);
+    o.start(t); o.stop(t + lengte + 0.2); o2.start(t); o2.stop(t + lengte + 0.2);
+    // het strijken: ruis van de stok over de snaar, met een krasje bij de aanzet
     const r = c.createBufferSource(); r.buffer = k.ruis; r.loop = true;
     const rb = c.createBiquadFilter(); rb.type = 'bandpass'; rb.frequency.value = 1900; rb.Q.value = 0.8;
-    const rg = c.createGain(); rg.gain.value = 0.05;
+    const rg = c.createGain(); rg.gain.setValueAtTime(0.11, t); rg.gain.setTargetAtTime(0.045, t + 0.05, 0.08);
     r.connect(rb); rb.connect(rg); rg.connect(g);
     r.start(t, Math.random() * 1.5); r.stop(t + lengte + 0.2);
   }
@@ -346,11 +431,12 @@
     const K = window.Klank;
     const mens = 1 + (Math.random() - 0.5) * 0.1;
     if (e.inst === 'melodie') {
-      if (stuk.melodie === 'blokfluit') K.blokfluit(c, uit, freq(e.midi), t, sec, 0.32 * e.vol * mens, -0.16, { legato: e.legato });
-      else K.tokkel(c, uit, stuk.melodie, e.midi, t, (stuk.melodie === 'luit' ? 0.5 : 0.42) * e.vol * mens, stuk.melodie === 'klavecimbel' ? sec * 0.96 : 0, -0.12);
+      const sp = e.speler || stuk.melodie;
+      if (sp === 'blokfluit') K.blokfluit(c, uit, freq(e.midi), t, sec, 0.32 * e.vol * mens, -0.16, { legato: e.legato });
+      else K.tokkel(c, uit, sp, e.midi, t, (sp === 'luit' ? 0.5 : 0.42) * e.vol * mens, sp === 'klavecimbel' ? sec * 0.96 : 0, -0.12);
     } else if (e.inst === 'begeleiding') {
-      const soort = stuk.stijl === 'klavier' ? 'klavecimbel' : 'luit';
-      K.tokkel(c, uit, soort, e.midi, t, (soort === 'luit' ? 0.3 : 0.24) * e.vol * mens, soort === 'klavecimbel' ? sec : 0, soort === 'luit' ? 0.24 : 0.1);
+      const soort = stuk.stijl === 'klavier' ? 'klavecimbel' : stuk.stijl === 'dans' ? 'cister' : 'luit';
+      K.tokkel(c, uit, soort, e.midi, t, ({ luit: 0.3, klavecimbel: 0.24, cister: 0.2 })[soort] * e.vol * mens, soort === 'klavecimbel' ? sec : 0, ({ luit: 0.24, klavecimbel: 0.1, cister: 0.3 })[soort]);
     } else if (e.inst === 'bas') gamba(c, uit, freq(e.midi), t, sec, 0.2 * e.vol * mens, 0.18);
     else if (e.inst === 'trom') tabor(c, uit, t, e.sterk);
   }
@@ -359,8 +445,9 @@
   // AFSPELEN
   // ============================================================
   let ctx = null, hoofd = null;
-  let aan = false;
-  try { aan = localStorage.getItem('speelhuys.muziek') === 'aan'; } catch (e) { /* geen opslag */ }
+  // de muziek staat aan, tenzij je hem zelf hebt uitgezet
+  let aan = true;
+  try { aan = localStorage.getItem('speelhuys.muziek') !== 'uit'; } catch (e) { /* geen opslag */ }
 
   function maakContext() {
     if (ctx) { if (ctx.state === 'suspended') ctx.resume().catch(() => { /* */ }); return ctx; }
@@ -372,37 +459,41 @@
     return ctx;
   }
 
-  let huidigStuk = null, gewenst = 'thuis', speelt = null, klok = 0;
-  const VOORUIT = 0.4, PAUZE = 1.6; // seconden vooruit plannen, seconden stilte tussen herhalingen
+  let huidigStuk = null, gewenst = 'thuis', gewenstVanaf = 0, speelt = null, klok = 0;
+  const VOORUIT = 0.4; // seconden vooruit plannen
+  const RONDE_NAAM = ['', '1e modo', '2e modo', ''];
 
-  function begin(naam) {
+  function begin(naam, vanaf) {
     const stuk = STUKKEN[naam];
     if (!stuk || !maakContext()) return;
     const uitgang = ctx.createGain();
     uitgang.gain.setValueAtTime(0.0001, ctx.currentTime);
     uitgang.gain.exponentialRampToValueAtTime(stuk.niveau || 1, ctx.currentTime + 0.8);
     uitgang.connect(hoofd);
-    speelt = { naam, stuk, uitgang, index: 0, ronde: 0, start: ctx.currentTime + 0.15 };
+    speelt = { naam, stuk, uitgang, index: 0, ronde: 0, vanaf: vanaf || 0, rondeBegin: ctx.currentTime + 0.15 };
     huidigStuk = naam;
     toonTitel();
     clearInterval(klok);
     klok = setInterval(plan, 60);
     plan();
   }
+  const rondeNr = (s) => (s.ronde + s.vanaf) % RONDEN.length;
 
   function plan() {
     if (!speelt) return;
-    const s = speelt, stuk = s.stuk, arr = stuk.arr;
-    const horizon = ctx.currentTime + VOORUIT, ronde = arr.lengte + PAUZE;
+    const s = speelt, stuk = s.stuk;
+    const horizon = ctx.currentTime + VOORUIT;
     for (let veilig = 0; veilig < 400; veilig++) {
-      const rondeBegin = s.start + s.ronde * ronde;
+      const nr = rondeNr(s), arr = stuk.arrs[nr];
       if (s.index >= arr.ev.length) {
-        if (rondeBegin + ronde > horizon) break;
-        s.index = 0; s.ronde++;
+        const volgende = s.rondeBegin + arr.lengte + RONDEN[nr].pauze;
+        if (volgende > horizon) break;
+        s.index = 0; s.ronde++; s.rondeBegin = volgende;
+        toonTitel();
         continue;
       }
       const e = arr.ev[s.index];
-      const t = rondeBegin + arr.tijd(e.t) + (Math.random() - 0.5) * (e.inst === 'melodie' ? 0.012 : 0.02);
+      const t = s.rondeBegin + arr.tijd(e.t) + (Math.random() - 0.5) * (e.inst === 'melodie' ? 0.012 : 0.02);
       if (t > horizon) break;
       if (t > ctx.currentTime - 0.05) speel(ctx, s.uitgang, stuk, e, Math.max(t, ctx.currentTime), arr.tijd(e.t + (e.duur || 0)) - arr.tijd(e.t));
       s.index++;
@@ -422,14 +513,72 @@
     toonTitel();
   }
 
+  // ============================================================
+  // DE FILMMUZIEK BIJ DE OPENING (zie opening.js): de torenklok slaat twee keer, een gamba zwelt aan op een
+  // open kwint, de luit breekt de akkoorden C, F en G, en dan zet de blokfluit het begin van het Engels
+  // Nachtegaeltje in. Het slotakkoord, met een roffel op de tabor, valt precies als de naam verschijnt.
+  // ============================================================
+  function film() {
+    if (!maakContext()) return null;
+    const c = ctx, K = window.Klank, k = K.ketting(c);
+    const uit = c.createGain(); uit.gain.value = 0.62; uit.connect(hoofd);
+    const klokken = c.createGain(); klokken.gain.value = 0.8; klokken.connect(k.muziek);
+    const galm = c.createGain(); galm.gain.value = 0.6; klokken.connect(galm); galm.connect(k.galm);
+    const t0 = c.currentTime + 0.06, T = (s) => t0 + s;
+    // de torenklok (slagtoon C, de brom een octaaf lager)
+    K.klok(c, klokken, T(0), 130.8, 0.19, -0.35);
+    K.klok(c, klokken, T(1.75), 130.8, 0.12, -0.35);
+    // de gamba: eerst een open kwint, dan de baslijn onder de akkoorden
+    [[2.2, 1.75, 36, 0.12], [2.35, 1.6, 43, 0.07], [3.95, 0.6, 41, 0.17], [4.55, 0.3, 43, 0.18], [4.85, 1.88, 36, 0.19],
+      [6.73, 0.63, 43, 0.21], [7.36, 1.1, 36, 0.25], [7.36, 1.1, 48, 0.1], [8.46, 0.3, 43, 0.19], [8.76, 2.6, 36, 0.21]]
+      .forEach(([s, d, m, v]) => gamba(c, uit, freq(m), T(s), d, v, 0.18));
+    // de luit breekt de akkoorden
+    const breek = (s, noten, stap, vol) => noten.forEach((m, i) => K.tokkel(c, uit, 'luit', m, T(s + i * stap), vol * (1 - i * 0.04), 0, 0.24));
+    breek(3.0, [48, 55, 60, 64, 67], 0.16, 0.27);
+    breek(3.95, [53, 57, 60, 65], 0.12, 0.25);
+    breek(4.55, [55, 59, 62, 67], 0.07, 0.26);
+    breek(4.85, [48, 55, 60, 64], 0.03, 0.28);
+    breek(6.11, [52, 55, 60], 0.03, 0.18);
+    breek(6.73, [55, 59, 62, 65], 0.03, 0.26);
+    breek(7.36, [48, 55, 60, 64, 67, 72], 0.035, 0.34);
+    breek(8.46, [55, 59, 62, 67], 0.03, 0.22);
+    breek(8.76, [48, 55, 60, 64, 67], 0.07, 0.3);
+    // het klavecimbel versterkt het slotakkoord, en hoog glinstert het als de naam verschijnt
+    [60, 64, 67, 72].forEach((m, i) => K.tokkel(c, uit, 'klavecimbel', m, T(7.36 + i * 0.012), 0.2, 1.3, 0.1));
+    [84, 88, 91, 96].forEach((m, i) => K.tokkel(c, uit, 'klavecimbel', m, T(7.5 + i * 0.1), 0.1, 0.7, 0.35 - i * 0.18));
+    [60, 64, 67, 72].forEach((m, i) => K.tokkel(c, uit, 'klavecimbel', m, T(8.76 + i * 0.02), 0.18, 2.4, 0.1));
+    // de blokfluit: e'' d'' e'' c'' g'' f'' | e'' d'' c''
+    [[4.85, 0.94, 76, 1, false], [5.79, 0.16, 74, 0.9, true], [5.95, 0.16, 76, 0.9, true], [6.11, 0.62, 72, 0.95, true], [6.73, 0.47, 79, 1, false],
+      [7.2, 0.16, 77, 0.9, true], [7.36, 1.1, 76, 1.15, false], [8.46, 0.3, 74, 0.95, true], [8.76, 2.1, 72, 1, true]]
+      .forEach(([s, d, m, v, legato]) => K.blokfluit(c, uit, freq(m), T(s), d, 0.3 * v, -0.16, { legato }));
+    // een roffel op de tabor naar het slotakkoord
+    for (let i = 0; i < 9; i++) tabor(c, uit, T(6.79 + i * 0.064), i < 5 ? 'zacht' : '');
+    tabor(c, uit, T(7.36), 'sterk');
+    tabor(c, uit, T(8.76), 'zacht');
+    let gestopt = false;
+    return {
+      duur: 11,
+      stop(snel) {
+        if (gestopt) return;
+        gestopt = true;
+        const n = c.currentTime;
+        [uit, klokken].forEach((gg) => { gg.gain.cancelScheduledValues(n); gg.gain.setValueAtTime(Math.max(0.0001, gg.gain.value), n); gg.gain.exponentialRampToValueAtTime(0.0001, n + (snel ? 0.4 : 1.4)); });
+        setTimeout(() => { uit.disconnect(); klokken.disconnect(); galm.disconnect(); }, 2500);
+      }
+    };
+  }
+
   // ---------- Bediening ----------
   const knop = document.getElementById('knop-muziek');
   const titelVak = document.getElementById('nu-speelt');
 
   function toonTitel() {
     if (!titelVak) return;
-    if (speelt) { titelVak.textContent = speelt.stuk.titel; titelVak.title = speelt.stuk.bron; titelVak.hidden = false; }
-    else { titelVak.textContent = ''; titelVak.hidden = true; }
+    if (speelt) {
+      const nr = rondeNr(speelt), extra = RONDEN[nr].wissel ? `op de ${WISSEL[speelt.stuk.melodie] || speelt.stuk.melodie}` : RONDE_NAAM[nr];
+      titelVak.textContent = speelt.stuk.titel + (extra ? ` · ${extra}` : '');
+      titelVak.title = speelt.stuk.bron; titelVak.hidden = false;
+    } else { titelVak.textContent = ''; titelVak.hidden = true; }
   }
   function knopTekst() {
     if (!knop) return;
@@ -441,48 +590,63 @@
     aan = waarde;
     try { localStorage.setItem('speelhuys.muziek', aan ? 'aan' : 'uit'); } catch (e) { /* */ }
     knopTekst();
-    if (aan) { if (window.Klank) window.Klank.ontgrendel(); begin(gewenst); } else stopHuidig();
+    if (aan) { if (window.Klank) window.Klank.ontgrendel(); begin(gewenst, gewenstVanaf); } else stopHuidig();
   }
 
   if (knop) knop.addEventListener('click', () => zet(!aan));
   knopTekst();
 
-  // Browsers spelen pas geluid na een klik: stond de muziek de vorige keer aan, dan start hij bij de eerste klik.
+  // Browsers spelen pas geluid na een tik: dan begint de muziek. Loopt de opening nog, dan wacht de muziek
+  // tot de film klaar is (die heeft zijn eigen muziek) en zwelt daarna rustig aan.
+  const filmLoopt = () => document.documentElement.classList.contains('met-opening');
   function eersteGebaar() {
     ['touchend', 'pointerup', 'keydown'].forEach((t) => window.removeEventListener(t, eersteGebaar, true));
-    if (aan && !speelt) begin(gewenst);
+    if (!aan || speelt) return;
+    if (filmLoopt()) window.addEventListener('speelhuys:opening-klaar', () => setTimeout(() => { if (aan && !speelt) begin(gewenst, gewenstVanaf); }, 1400), { once: true });
+    else begin(gewenst, gewenstVanaf);
   }
   ['touchend', 'pointerup', 'keydown'].forEach((t) => window.addEventListener(t, eersteGebaar, true));
 
   document.addEventListener('visibilitychange', () => {
     if (!ctx) return;
     if (document.hidden) { if (speelt) { const naam = speelt.naam; stopHuidig(true); gewenst = naam; } }
-    else if (aan && !speelt) begin(gewenst);
+    else if (aan && !speelt && !filmLoopt()) begin(gewenst, gewenstVanaf);
   });
 
   window.Muziek = {
     stukken: STUKKEN,
+    ronden: RONDEN,
     get speelt() { return speelt ? speelt.naam : null; },
+    get ronde() { return speelt ? rondeNr(speelt) : null; },
     get aan() { return aan; },
-    kies(naam) {
+    // het stuk voor dit scherm; 'vanaf' laat elk spel met een eigen variatie beginnen
+    kies(naam, vanaf) {
       const doel = STUKKEN[naam] ? naam : 'thuis';
-      gewenst = doel;
+      gewenst = doel; gewenstVanaf = vanaf || 0;
       if (!aan || !ctx) return;
       if (huidigStuk === doel) return;
       stopHuidig();
-      setTimeout(() => { if (aan && gewenst === doel && !speelt) begin(doel); }, 500);
+      setTimeout(() => { if (aan && gewenst === doel && !speelt) begin(doel, gewenstVanaf); }, 500);
     },
-    // (voor de tests) een stuk opnemen in plaats van afspelen
-    _render(naam, seconden) {
+    film,
+    // (voor de tests) een stuk opnemen in plaats van afspelen, met de ronden na elkaar
+    _render(naam, seconden, vanaf) {
       const stuk = STUKKEN[naam];
       return window.Klank.render(seconden, (oc, k) => {
         const h = oc.createGain(); h.gain.value = 0.62 * (stuk.niveau || 1); h.connect(k.muziek);
-        const arr = stuk.arr;
-        for (let r = 0; r < 3; r++) {
-          const begin = 0.1 + r * (arr.lengte + PAUZE);
-          if (begin > seconden) break;
-          arr.ev.forEach((e) => { const t = begin + arr.tijd(e.t); if (t < seconden) speel(oc, h, stuk, e, t, arr.tijd(e.t + (e.duur || 0)) - arr.tijd(e.t)); });
+        let begin = 0.1;
+        for (let r = 0; r < 8 && begin < seconden; r++) {
+          const nr = (r + (vanaf || 0)) % RONDEN.length, arr = stuk.arrs[nr], b = begin;
+          arr.ev.forEach((e) => { const t = b + arr.tijd(e.t); if (t < seconden) speel(oc, h, stuk, e, t, arr.tijd(e.t + (e.duur || 0)) - arr.tijd(e.t)); });
+          begin += arr.lengte + RONDEN[nr].pauze;
         }
+      });
+    },
+    _renderFilm(seconden) {
+      return window.Klank.render(seconden, (oc, k) => {
+        const vorig = ctx, vorigHoofd = hoofd;
+        ctx = oc; hoofd = oc.createGain(); hoofd.gain.value = 0.62; hoofd.connect(k.muziek);
+        try { film(); } finally { ctx = vorig; hoofd = vorigHoofd; }
       });
     }
   };
