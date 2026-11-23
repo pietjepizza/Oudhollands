@@ -25,7 +25,10 @@
   // het bovenste randje bij het touwtje telt niet mee: als de rest op is, is de koek op
   const N_ONDER = Array.from({ length: NY }, (_, iy) => ((iy + 0.5) * KH / NY > BOVEN ? NX : 0)).reduce((a, b) => a + b, 0);
   const SPLEET = 2.6;
-  const HEUP = [-1.5, 63], NEK = [4.3, 44.5], HOOFD = [0.4, 10.2], RH = 9.3;
+  // een kind van een jaar of negen: heup op 65,5 cm, schouders op 107, het hoofd (19 cm) vlak op een korte nek
+  const HEUP = [-1.5, 65.5], NEK = [4.0, 43.0], HOOFD = [0.3, 9.9], RH = 9.3;
+  // kinderen hebben een groot hoofd: alles in het hoofd-vlak wordt 10% groter getekend (en zo ook geraakt)
+  const HS = 1.1;
   const SCH = [-0.6, -2.6], MOND = [10.4, -4.4];
   const HOR = 109;
 
@@ -120,7 +123,7 @@
     }
   }
   function maakKind(k, look, isMens, ai) {
-    const kd = { k, dir: k === 0 ? 1 : -1, look, mens: isMens, ai, fx: 0, fxDoel: 0, staat: 'staan', z: 0, vz: 0, zak: 0, laad: 0, beta: 0.03, alpha: 0.14, jaw: 0,
+    const kd = { k, dir: k === 0 ? 1 : -1, look, mens: isMens, ai, fx: 0, fxDoel: 0, staat: 'staan', z: 0, vz: 0, zak: 0, dx: 0, laad: 0, beta: 0.03, alpha: 0.14, jaw: 0,
       open: false, hapt: false, tl: 0, tUp: 0.2, apexT: -1, kauw: 0, au: 0, blij: 0, wil: false, plan: null, denk: 0.9, happen: 0, botsen: 0, kruimels: [], stap: 0, naLanden: null, p: null };
     kd.fx = kd.fxDoel = rustVoet(kd, null);
     pose(kd);
@@ -134,7 +137,7 @@
   // ---------- de houding van een kind: heup, nek, hoofd ----------
   function pose(kd) {
     const d = kd.dir, b = kd.beta, a = kd.alpha;
-    const hipX = kd.fx + d * (HEUP[0] - kd.zak * 0.3), hipY = HEUP[1] + kd.z;
+    const hipX = kd.fx + d * (HEUP[0] - kd.zak * 0.3 + (kd.dx || 0)), hipY = HEUP[1] + kd.z;
     const cb = Math.cos(b), sb = Math.sin(b);
     const nekX = hipX + d * (NEK[0] * cb + NEK[1] * sb), nekY = hipY - NEK[0] * sb + NEK[1] * cb;
     const ca = Math.cos(a), sa = Math.sin(a);
@@ -142,12 +145,12 @@
     return kd.p;
   }
   function naarHoofd(kd, wx, wy) {
-    const p = kd.p, dx = (wx - p.cx) * kd.dir, dy = wy - p.cy;
+    const p = kd.p, dx = (wx - p.cx) * kd.dir / HS, dy = (wy - p.cy) / HS;
     return [dx * p.ca + dy * p.sa, -dx * p.sa + dy * p.ca];
   }
   function naarWereldH(kd, hx, hy) {
     const p = kd.p;
-    return [p.cx + kd.dir * (hx * p.ca - hy * p.sa), p.cy + hx * p.sa + hy * p.ca];
+    return [p.cx + kd.dir * HS * (hx * p.ca - hy * p.sa), p.cy + HS * (hx * p.sa + hy * p.ca)];
   }
   // de kaak draait om een scharnier achter de mond
   function kaak(x, y, j) {
@@ -171,7 +174,7 @@
   }
   // waar de mond zit als je gewoon staat (ten opzichte van je voeten)
   const MOND_RUST = (() => {
-    const kd = { dir: 1, fx: 0, zak: 0, z: 0, beta: 0.03, alpha: 0.14 };
+    const kd = { dir: 1, fx: 0, zak: 0, z: 0, dx: 0, beta: 0.03, alpha: 0.14 };
     pose(kd);
     return naarWereldH(kd, MOND[0], MOND[1])[0];
   })();
@@ -225,7 +228,7 @@
     if (kd.kauw > 0) kd.kauw -= dt;
     if (kd.au > 0) kd.au -= dt;
     if (kd.blij > 0) kd.blij -= dt;
-    let zakDoel = 0, betaDoel = 0.03, alphaDoel = 0.14, jawDoel = 0;
+    let zakDoel = 0, betaDoel = 0.03, alphaDoel = 0.14, jawDoel = 0, dxDoel = 0;
     switch (kd.staat) {
       case 'staan': {
         if (actief && kd.wil && kd.kauw <= 0) { kd.staat = 'laden'; kd.laad = 0; }
@@ -237,7 +240,7 @@
         kd.laad += dt;
         const c = Math.min(1, kd.laad / T_LAAD);
         zakDoel = DIEP * (1 - (1 - c) * (1 - c));
-        betaDoel = 0.03 + 0.05 * c; alphaDoel = 0.17;
+        betaDoel = 0.03 + 0.04 * c; alphaDoel = 0.17;
         if (!actief) kd.staat = 'staan';
         else if (!kd.wil) spring(w, kd);
         break;
@@ -247,8 +250,8 @@
         kd.vz -= G_S * dt; kd.z += kd.vz * dt;
         if (kd.apexT < 0 && kd.vz <= 0) kd.apexT = kd.tl;
         const prog = kd.apexT < 0 ? Math.min(1, kd.tl / kd.tUp) : Math.max(0, 1 - (kd.tl - kd.apexT) / kd.tUp);
-        betaDoel = 0.03 + 0.19 * prog; alphaDoel = 0.14 + 0.41 * prog;
-        if (kd.hapt) { betaDoel = 0.02; alphaDoel = 0.22; }
+        betaDoel = 0.03 + 0.08 * prog; alphaDoel = 0.14 + 0.24 * prog; dxDoel = 3.8 * prog;
+        if (kd.hapt) { betaDoel = 0.02; alphaDoel = 0.2; dxDoel = 0.6; }
         if (kd.open && kd.apexT >= 0 && kd.tl - kd.apexT > OPEN_NA) { kd.open = false; w.cb.klap(kd); }
         jawDoel = kd.open ? 1 : 0;
         if (kd.z <= 0 && kd.vz < 0) {
@@ -276,6 +279,7 @@
       kd.z = kd.staat === 'juich' ? 2.2 * Math.abs(Math.sin(kd.tl * 7.5)) : -kd.zak;
     }
     const f = Math.min(1, dt * 16);
+    kd.dx = (kd.dx || 0) + (dxDoel - (kd.dx || 0)) * Math.min(1, dt * 14);
     kd.beta += (betaDoel - kd.beta) * f;
     kd.alpha += (alphaDoel - kd.alpha) * f;
     if (kd.kauw > 0) jawDoel = 0.2 + 0.18 * Math.sin(kd.kauw * 34);
@@ -303,7 +307,7 @@
       if (kk.op) continue;
       const st = koekStand(kk), p = kd.p;
       const mx = st.ex + (KH / 2) * st.s, my = st.ey - (KH / 2) * st.c;
-      if ((mx - p.cx) ** 2 + (my - p.cy) ** 2 > (RH + 9) ** 2) continue;
+      if ((mx - p.cx) ** 2 + (my - p.cy) ** 2 > (RH * HS + 9) ** 2) continue;
       const open = kd.open && kd.jaw > 0.55, m = mondZone(kd.jaw);
       let mond = null, bots = null;
       for (let i = 0; i < N; i++) {
@@ -409,7 +413,7 @@
   function maakSprongen() {
     const w0 = { cb: STIL, rnd: () => 0.5 };
     SPRONGEN = LAADTIJDEN.map((tc) => {
-      const kd = { k: 0, dir: 1, fx: 0, fxDoel: 0, staat: 'staan', z: 0, vz: 0, zak: 0, laad: 0, beta: 0.03, alpha: 0.14, jaw: 0, open: false, tl: 0, tUp: 0.2, apexT: -1, kauw: 0, au: 0, blij: 0, wil: true, stap: 0 };
+      const kd = { k: 0, dir: 1, fx: 0, fxDoel: 0, staat: 'staan', z: 0, vz: 0, zak: 0, dx: 0, laad: 0, beta: 0.03, alpha: 0.14, jaw: 0, open: false, tl: 0, tUp: 0.2, apexT: -1, kauw: 0, au: 0, blij: 0, wil: true, stap: 0 };
       pose(kd);
       let t = 0;
       while (t < tc - 1e-9) { stapKind(w0, kd, DT, true); t += DT; }
@@ -461,7 +465,7 @@
             const u = pts[e][0], v = pts[e][1];
             const wx = st.ex + u * st.f * st.c + v * st.s, wy = st.ey + u * st.f * st.s - v * st.c;
             const dx = (wx - cx) * kd.dir, dy = wy - cy;
-            const hx = dx * q.ca + dy * q.sa, hy = -dx * q.sa + dy * q.ca;
+            const hx = (dx * q.ca + dy * q.sa) / HS, hy = (-dx * q.sa + dy * q.ca) / HS;
             if (hx * hx + hy * hy > 160) continue;
             if (open && inMond(hx, hy, m)) {
               const px = vorig.ex + u * vorig.f * vorig.c + v * vorig.s, py = vorig.ey + u * vorig.f * vorig.s - v * vorig.c;
@@ -469,7 +473,7 @@
               maat = hapMaat(Math.hypot((wx - px) / dtt - mvx, (wy - py) / dtt - mvy));
               // hoeveel koek levert deze hap op?
               const R = HAP_R * maat * ((kd.ai && kd.ai.hap) || 1), bxh = m.cx + 1.6, byh = m.cy;
-              const bx = cx + kd.dir * (bxh * q.ca - byh * q.sa), by = cy + bxh * q.sa + byh * q.ca;
+              const bx = cx + kd.dir * HS * (bxh * q.ca - byh * q.sa), by = cy + HS * (bxh * q.sa + byh * q.ca);
               brok = 0;
               for (let i2 = 0; i2 < N; i2++) {
                 if (kk.weg[i2]) continue;
@@ -1083,7 +1087,7 @@
     if (kd.staat !== 'juich') tekenArm(g, kd, U, true);
     g.restore();
     // hoofd
-    g.save(); g.translate(p.cx, p.cy); g.scale(d, 1); g.rotate(kd.alpha);
+    g.save(); g.translate(p.cx, p.cy); g.scale(d, 1); g.rotate(kd.alpha); g.scale(HS, HS);
     tekenHoofd(g, kd, U);
     g.restore();
     if (kd.staat === 'juich') { g.save(); g.translate(p.hipX, p.hipY); g.scale(d, 1); g.rotate(-kd.beta); tekenArm(g, kd, U, true); g.restore(); }
@@ -1093,8 +1097,8 @@
   function tekenNek(g, kd, U) {
     const p = kd.p, d = kd.dir, cb = Math.cos(kd.beta), sb = Math.sin(kd.beta);
     const lijf = (x, y) => [p.hipX + d * (x * cb + y * sb), p.hipY - x * sb + y * cb];
-    const a0 = lijf(-1.2, 37.4), a1 = lijf(5.8, 37.0);
-    const b0 = naarWereldH(kd, -3.6, -5.4), b1 = naarWereldH(kd, 3.8, -6.6);
+    const a0 = lijf(-2.0, 38.6), a1 = lijf(6.0, 37.8);
+    const b0 = naarWereldH(kd, -4.2, -5.2), b1 = naarWereldH(kd, 4.6, -7.2);
     g.beginPath(); g.moveTo(a0[0], a0[1]); g.lineTo(b0[0], b0[1]); g.lineTo(b1[0], b1[1]); g.lineTo(a1[0], a1[1]); g.closePath();
     const gr = g.createLinearGradient(b1[0], b1[1], (a0[0] + a1[0]) / 2, (a0[1] + a1[1]) / 2);
     gr.addColorStop(0, U.k.huid.dd); gr.addColorStop(0.35, U.k.huid.d); gr.addColorStop(1, U.k.huid.m);
@@ -1114,20 +1118,23 @@
     const lucht = kd.staat === 'lucht' || kd.z > 0.4;
     const heupen = [[p.hipX - d * 1.6, p.hipY - 2], [p.hipX + d * 0.8, p.hipY - 2]];
     const opGrond = (i) => [kd.fx + d * (i ? 2.6 : -2.2) + Math.sin(kd.stap * 0.5 + i * Math.PI) * 1.2 * (Math.abs(kd.fxDoel - kd.fx) > 0.05 ? 1 : 0), 7.5];
-    const enkels = [0, 1].map((i) => (lucht ? [heupen[i][0] + d * (i ? 2.5 : -0.5), heupen[i][1] - 50] : opGrond(i)));
+    const enkels = [0, 1].map((i) => (lucht ? [heupen[i][0] + d * (i ? 2.5 : -0.5), heupen[i][1] - 52] : opGrond(i)));
     [0, 1].forEach((i) => {
-      const h = heupen[i], a = enkels[i], kn = knie(h, a, 28.8, 27.6, d);
-      const ver = i === 0;
-      // broek of kousen
-      g.strokeStyle = ver ? K.kleur2.d : K.kleur2.m;
-      if (U.kleed === 'jurk') g.strokeStyle = ver ? '#1E1C22' : '#2E2C34';
-      g.lineWidth = U.kleed === 'jurk' ? 4.4 : 6.2;
-      g.beginPath(); g.moveTo(h[0], h[1]); g.lineTo(kn[0], kn[1]); g.lineTo(a[0], a[1] + 1.5); g.stroke();
+      const h = heupen[i], a = enkels[i], kn = knie(h, a, 28.7, 27.9, d);
+      const ver = i === 0, jurk = U.kleed === 'jurk';
+      // broek (of kousen onder de rok): dij breder dan de kuit, en een knie ertussen
+      const kleur = jurk ? (ver ? '#1E1C22' : '#2E2C34') : (ver ? K.kleur2.d : K.kleur2.m);
+      g.strokeStyle = kleur;
+      g.lineWidth = jurk ? 7.4 : 9.8;
+      g.beginPath(); g.moveTo(h[0], h[1]); g.lineTo(kn[0], kn[1]); g.stroke();
+      g.lineWidth = jurk ? 5.8 : 7.8;
+      g.beginPath(); g.moveTo(kn[0], kn[1]); g.lineTo(a[0], a[1] + 1.5); g.stroke();
+      if (!ver) { g.strokeStyle = 'rgba(255, 244, 226, .1)'; g.lineWidth = 2.2; g.beginPath(); g.moveTo(h[0] - d * 2.4, h[1] - 2); g.lineTo(kn[0] - d * 2.2, kn[1]); g.stroke(); }
       klomp(g, a, d, ver);
     });
   }
   function klomp(g, a, d, ver) {
-    g.save(); g.translate(a[0], a[1] - 7.5); g.scale(d * 0.8, 0.8);
+    g.save(); g.translate(a[0], a[1] - 7.5); g.scale(d * 0.88, 0.88);
     g.beginPath();
     g.moveTo(-7.2, 1.2); g.bezierCurveTo(-7.6, 5.2, -5.6, 8.6, -2.2, 8.4);
     g.bezierCurveTo(2.4, 8.4, 6.4, 6.4, 11.6, 4.6);
@@ -1209,8 +1216,10 @@
     } else if (voor) { elb = [-6.6, 20.6]; pols = [-10.2, 13.6]; }
     else { elb = [-5.4, 21.4]; pols = [-8.8, 14.2]; }
     g.strokeStyle = voor ? kleur.m : kleur.dd;
-    g.lineWidth = 5.0;
-    g.beginPath(); g.moveTo(sch[0], sch[1]); g.lineTo(elb[0], elb[1]); g.lineTo(pols[0], pols[1]); g.stroke();
+    g.lineWidth = 6.6;
+    g.beginPath(); g.moveTo(sch[0], sch[1]); g.lineTo(elb[0], elb[1]); g.stroke();
+    g.lineWidth = 5.6;
+    g.beginPath(); g.moveTo(elb[0], elb[1]); g.lineTo(pols[0], pols[1]); g.stroke();
     if (voor) {
       g.strokeStyle = 'rgba(255, 244, 226, .18)'; g.lineWidth = 1.4;
       g.beginPath(); g.moveTo(sch[0] - 1.2, sch[1] - 1); g.lineTo(elb[0] - 1.4, elb[1]); g.stroke();
@@ -1221,7 +1230,7 @@
     const ang = Math.atan2(pols[1] - elb[1], pols[0] - elb[0]);
     const hx = pols[0] + Math.cos(ang) * 1.4, hy = pols[1] + Math.sin(ang) * 1.4;
     g.fillStyle = voor ? K.huid.m : K.huid.d;
-    g.beginPath(); g.ellipse(hx, hy, 2.0, 1.5, ang, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.ellipse(hx, hy, 2.7, 2.0, ang, 0, Math.PI * 2); g.fill();
     g.strokeStyle = 'rgba(120, 60, 30, .3)'; g.lineWidth = 0.15; g.stroke();
   }
 
@@ -1897,9 +1906,9 @@
     // begin van de les: alles hangt stil, jij staat klaar
     const kd = W.kinderen[0], kk = W.koeken[0];
     kk.th = soort === 'zwaai' ? -0.32 : 0; kk.om = 0; kk.px = kk.py = kk.pvx = kk.pvy = 0; kk.fi = 0; kk.fv = 0;
-    Object.assign(kd, { staat: 'staan', z: 0, vz: 0, zak: 0, laad: 0, beta: 0.03, alpha: 0.14, jaw: 0, kauw: 0, au: 0, blij: 0, open: false });
+    Object.assign(kd, { staat: 'staan', z: 0, vz: 0, zak: 0, dx: 0, laad: 0, beta: 0.03, alpha: 0.14, jaw: 0, kauw: 0, au: 0, blij: 0, open: false });
     if (soort === 'laad') Object.assign(kd, { staat: 'laden', laad: 0.38, zak: DIEP * 0.82, z: -DIEP * 0.82, beta: 0.1, alpha: 0.1 });
-    if (soort === 'sprong') Object.assign(kd, { staat: 'lucht', z: 6.2, vz: 0, apexT: 0.1, tl: 0.1, tUp: 0.2, open: true, jaw: 1, beta: 0.16, alpha: 0.36 });
+    if (soort === 'sprong') Object.assign(kd, { staat: 'lucht', z: 6.2, vz: 0, apexT: 0.1, tl: 0.1, tUp: 0.2, open: true, jaw: 1, beta: 0.1, alpha: 0.4, dx: 3.2 });
     pose(kd);
   }
   const vakOm = (x, y, r) => { const d = doek.getBoundingClientRect(); return { left: d.left + (X(x) - r * S) * sc, top: d.top + (Y(y) - r * S) * sc, width: 2 * r * S * sc, height: 2 * r * S * sc }; };

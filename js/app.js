@@ -214,9 +214,20 @@
   // Offline werken via een service worker, alleen op de echte website (GitHub Pages) of lokaal.
   const host = location.hostname;
   if ('serviceWorker' in navigator && (host.endsWith('github.io') || host === 'localhost' || host === '127.0.0.1')) {
+    let registratie = null, laatsteVraag = 0;
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => { /* offline werken is een extraatje */ });
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then((r) => { registratie = r; }).catch(() => { /* offline werken is een extraatje */ });
     });
+    // Komt de app terug uit de achtergrond (een app op het beginscherm laadt dan niet opnieuw), vraag dan of er een
+    // nieuwe versie is; zo blijft niemand hangen op een oude versie. Hoogstens eens per minuut.
+    const vraagNieuweVersie = () => {
+      if (!registratie || document.hidden || Date.now() - laatsteVraag < 60000) return;
+      laatsteVraag = Date.now();
+      registratie.update().catch(() => { /* geen internet: dan later */ });
+    };
+    document.addEventListener('visibilitychange', vraagNieuweVersie);
+    window.addEventListener('focus', vraagNieuweVersie);
+    window.addEventListener('online', vraagNieuweVersie);
     // Neemt een nieuwe versie het over, laad dan één keer opnieuw (niet midden in een spel: dan bij terugkomst in het huis).
     const hadVersie = !!navigator.serviceWorker.controller;
     let herladen = false;

@@ -160,14 +160,29 @@ rond: de deur naar de spellen, de duiten, het opknappen, de zolder, de plekken d
 Binnen in de kamer wijst hij een spel, de klussen, de voortgang, de pronkkast en de weg naar buiten aan. Later start je
 de rondleiding met het vraagteken op de straat, in de kamer of in het menu ("Hoe werkt het huis?").
 
-**Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), die de browser zelf speelt met Web Audio, op blokfluit en luit. Elke plek heeft een eigen stuk:
+**Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), gespeeld
+door een klein barokensemble dat de browser zelf laat klinken met Web Audio. De luit en het klavecimbel zijn getokte
+snaren (Karplus-Strong: ruis die in een lus rondgaat en een toon wordt, met dubbele snaren die een fractie verstemd
+zijn en een klankkast), de blokfluit heeft adem, een aanblaasruisje en vibrato, de viola da gamba strijkt de baslijn
+en een tabortrommel slaat de maat bij de dans. Van Eyck schreef alleen de melodie; de begeleiding wordt per stuk
+bedacht zoals een continuospeler dat doet (bij elke halve of hele maat het akkoord dat het best bij de melodie past,
+met stappen als IV-V-I en aan het eind van elk deel een cadens V-I, een vloeiende baslijn en akkoorden die zo min
+mogelijk verspringen). Gespeeld als door mensen: nadruk op de tel, een triller vlak voor het slot, iets vertragen
+naar het eind van een deel, en net niet precies tegelijk. Alles klinkt door één galm, als in een betegelde kamer.
 
-| Plek | Stuk | Klank |
+| Plek | Stuk | Bezetting |
 |---|---|---|
-| Het huis | Engels Nachtegaeltje | blokfluit |
-| Ganzenbord, bikkelen en koekhappen | Malle Symen | blokfluit en trom |
-| Sjoelen, klaverjassen en kolf | Onder de Linde groene | luit |
-| Molenspel, dammen en triktrak | Doen Daphne d'over schoone Maeght | luit |
+| Het huis | Engels Nachtegaeltje | blokfluit, luit en viola da gamba |
+| Ganzenbord, bikkelen, koekhappen en knikkeren | Malle Symen | blokfluit en tabor, met luit |
+| Sjoelen, klaverjassen, kolf en tollen | Onder de Linde groene | klavecimbel |
+| Molenspel, dammen en triktrak | Doen Daphne d'over schoone Maeght | luit en viola da gamba |
+
+**Geluidseffecten**: nagebootst zoals ze in het echt ontstaan. Hout, been, steen, glas, metaal en klokken klinken als
+een handvol tonen die elk op hun eigen tempo uitsterven (modale klank), met een tikje ruis waar het ding iets raakt;
+schuiven, papier, kruim en water zijn gevormde ruis, soms in tientallen piepkleine korrels (de hap in de koek, het
+rollen van een dobbelsteen). Feestjes en jammer-geluidjes worden op het klavecimbel en de luit gespeeld. Elk geluid
+klinkt elke keer net iets anders, heeft een eigen plek in het stereobeeld, en alles is op elkaar afgesteld met
+opnames: feestgeluiden het luidst, spelgeluiden daaronder, het tikje bij elke aanraking heel zacht.
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
@@ -178,7 +193,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=31`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=32`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
