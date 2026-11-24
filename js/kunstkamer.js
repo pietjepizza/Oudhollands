@@ -198,7 +198,7 @@
         'Het woord carrousel komt van de ruitertoernooien uit de zeventiende eeuw, waar ook ringgestoken werd. Later kwamen er draaimolens met houten paarden, eerst om te oefenen en daarna voor de kermis. Op oude draaimolens hing soms een arm met ringen die je in het voorbijrijden kon pakken.'
       ],
       spelen: ['Je rijdt op een houten paard in de draaimolen. Aan een galg naast de molen hangt een ring.', 'Elk rondje kom je er één keer langs. Steek je lans uit op het goede moment, dan schuift de ring erop.', 'Een gouden ring telt drie keer.', 'Na tien rondjes wint wie de meeste ringen heeft.'],
-      weetjes: ['Het woord kermis komt van kerkmis: het feest van de wijding van de kerk.', 'De oudste draaimolen die nog draait, staat in de Efteling: de Vermolen uit 1865.', 'In Laren steken ze op Koningsdag ringen vanuit een rijtuigje: cabriolet-ringsteken.'],
+      weetjes: ['Het woord kermis komt van kerkmis: het feest van de wijding van de kerk.', 'Volgens het Guinness Book of Records staat de oudste draaimolen die nog draait in de Efteling: de Vermolen uit 1865. Maar in het Duitse Hanau draait sinds 2016 weer een draaimolen uit 1780.', 'In Laren steken ze op Koningsdag ringen vanuit een rijtuigje: cabriolet-ringsteken.'],
       kunst: [
         { titel: 'Draaimolen', maker: 'Willem de Zwart, omstreeks 1890-1924', url: 'https://www.rijksmuseum.nl/en/collection/object/Draaimolen--95609ed63d39a52c05c0928a629fec6d', waar: 'Rijksmuseum, Amsterdam' },
         { titel: 'Perspectivische Vorstellung eines Jahrmarckts oder Kirchweyh (een kermis)', maker: 'Martin Engelbrecht, tweede helft achttiende eeuw', url: 'https://www.lakenhal.nl/en/collection/3126-93', waar: 'Museum De Lakenhal, Leiden' }
