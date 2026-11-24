@@ -1,13 +1,14 @@
 /* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel, #dammen, #klaverjassen, #triktrak, #knikkeren, #tollen),
    de knoppen in de kop, het menu, tikgeluid en trilling, en het installeren als app. */
 (function () {
-  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'koekhappen', 'knikkeren', 'tollen'];
+  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'koekhappen', 'hoepelen', 'knikkeren', 'tollen'];
   // muziek per spel: [stuk, ronde]. Spellen die een stuk delen, beginnen elk bij een andere variatie
   // (0 = het thema, 1 en 2 = de modi met versieringen, 3 = het thema op een ander instrument)
   const MUZIEK = {
     ganzenbord: ['ganzenbord', 0], sjoelen: ['sjoelen', 0], molenspel: ['molenspel', 0],
     knikkeren: ['ganzenbord', 1], tollen: ['sjoelen', 2], dammen: ['molenspel', 3], klaverjassen: ['sjoelen', 1],
-    triktrak: ['molenspel', 1], bikkelen: ['ganzenbord', 3], kolf: ['sjoelen', 3], koekhappen: ['ganzenbord', 2]
+    triktrak: ['molenspel', 1], bikkelen: ['ganzenbord', 3], kolf: ['sjoelen', 3], koekhappen: ['ganzenbord', 2],
+    hoepelen: ['ganzenbord', 1]
   };
   // plekken om te lezen en te kijken; geen spel
   const PAGINAS = ['kunstkamer', 'pronkkamer'];

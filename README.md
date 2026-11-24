@@ -50,11 +50,11 @@ bolpoten, met een kaststel van vijf vazen van Delfts blauw op de kroonlijst.
 
 Tik op de kast en de deurtjes gaan open. Achter het glas staan zilveren prijsjes: voor elk spel één, en je wint hem
 door de kampioen van dat spel te verslaan (de burgemeester, Opoe bij het bikkelen, bakkersjongen Teun bij het
-koekhappen; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
+koekhappen, Jantje bij het hoepelen; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
 tik erop en je ziet van wie je moet winnen, met een knop naar het spel. Een nieuwe prijs zie je meteen in het
 beloningsscherm (tik erop en je gaat naar de pronkkamer), en tot je hem hebt bekeken staat er een gouden sterretje bij
 de knop en de wijzer. De prijzen zijn een gans, een sjoelbakje, een molentje, een dam met kroon, vergulde kaarten, een
-dobbelbeker, bikkels, een kolf, een koek aan een galg, een knikkerschaal en een tol. Zulke piepkleine zilveren
+dobbelbeker, bikkels, een kolf, een koek aan een galg, een hoepel met belletjes, een knikkerschaal en een tol. Zulke piepkleine zilveren
 voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor pronkkasten en poppenhuizen (zie de
 poppenhuizen en miniaturen in het Rijksmuseum). Onderin zitten vijf laatjes met speelgoed: sjoelschijven,
 dobbelstenen, molen- en damstenen, knikkers en tollen. Trek een laatje open om te kiezen wat je gebruikt, of koop iets
@@ -149,6 +149,20 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   eerst twee op heeft. Tegen Jantje, Mieke, Trijntje en Bakkersjongen Teun (die rekenen de slinger vooruit, maar niet
   allemaal even vlug; afgesteld met duizenden nagespeelde races) of met z'n tweeën op één scherm (links en rechts, of
   de toetsen A en L). De koek aan het plafond van de voorkamer opent het spel.
+- **Hoepelen** (schermvullend): een hoepelrace langs de gracht, tot boven op de brug. Je kijkt over het water naar de
+  overkant: grachtenhuizen met trap-, hals-, klok-, lijst- en tuitgevels en iepen langs de kade, die golvend in het
+  water spiegelen. Er vaart een schuit voorbij, en aan jouw kant staan meerpalen en de olielampen op palen die Jan van
+  der Heyden in 1669 voor Amsterdam bedacht. Tik op het veld en je kind geeft de houten hoepel (met drie koperen
+  belletjes) een tik met de stok. Tik als de hoepel glimt: dan zit hij goed voor de stok en loopt hij het hardst en het
+  rechtst. Rolt hij te langzaam, dan gaat hij wiebelen en valt hij om, en moet je kind hem oprapen; tik je te vaak,
+  dan loopt hij van je weg (een vaartmeter op je kaart laat zien waar je zit). Met vaart wip je over een losse kei, in
+  een plas rem je af, en voor een gans of een kat die oversteekt houd je even in, of je bent er net voor langs. De race
+  eindigt boven op de stenen brug over een dwarsgracht: wie daar het eerst door het lint gaat, wint. Kies een korte
+  (130 meter) of een lange race (220 meter). Tegen Mieke, Bakkersjongen Teun, Trijntje en Jantje, de snelste van de
+  gracht (ze verschillen in hardlopen, precisie en hoe goed ze een gans inschatten; afgesteld met nagespeelde races), of
+  met z'n tweeën (links en rechts tikken, of de toetsen A en L). Met vaart zoomt de camera uit en kijk je verder
+  vooruit; je hoort de hoepel over de klinkers rollen, de belletjes rinkelen en de klompen klakken. De hoepel aan de
+  muur van de voorkamer opent het spel.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -210,27 +224,29 @@ dan de blokfluit met het begin van het Engels Nachtegaeltje, met een roffel op d
 | Plek | Stuk | Bezetting | Begint bij |
 |---|---|---|---|
 | Het huis, de pronkkamer en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
-| Ganzenbord, knikkeren, koekhappen en bikkelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, 2e modo, luit |
+| Ganzenbord, knikkeren, koekhappen, bikkelen en hoepelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, 2e modo, luit |
 | Sjoelen, klaverjassen, tollen en kolf | Onder de Linde groene | klavecimbel | thema, 1e modo, 2e modo, blokfluit |
 | Molenspel, triktrak en dammen | Doen Daphne d'over schoone Maeght | luit en viola da gamba | thema, 1e modo, blokfluit |
 
 **Geluidseffecten**: nagebootst zoals ze in het echt ontstaan. Hout, been, steen, glas, metaal en klokken klinken als
 een handvol tonen die elk op hun eigen tempo uitsterven (modale klank), met een tikje ruis waar het ding iets raakt;
 schuiven, papier, kruim en water zijn gevormde ruis, soms in tientallen piepkleine korrels (de hap in de koek, het
-rollen van een dobbelsteen). Feestjes en jammer-geluidjes worden op het klavecimbel en de luit gespeeld. Elk geluid
+rollen van een dobbelsteen). Bij het hoepelen rolt de hoepel over de klinkers (ruis die met de vaart meegaat en over
+de voegen hobbelt), rinkelen de belletjes bij elke halve omwenteling en klakken de klompen bij elke stap.
+Feestjes en jammer-geluidjes worden op het klavecimbel en de luit gespeeld. Elk geluid
 klinkt elke keer net iets anders, heeft een eigen plek in het stereobeeld, en alles is op elkaar afgesteld met
 opnames: feestgeluiden het luidst, spelgeluiden daaronder, het tikje bij elke aanraking heel zacht.
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": de kermis, hoepelen, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
+Nog "in de oven": de kermis, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
 je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=34`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=35`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

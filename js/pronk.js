@@ -54,6 +54,7 @@
     { id: 'bikkels', spel: 'bikkelen', titel: 'Bikkelen', naam: 'Zilveren bikkels', veld: 'bik-gewonnen', kampioen: 'opoe', eis: 'Win van Opoe' },
     { id: 'kolf', spel: 'kolf', titel: 'Kolf op het ijs', naam: 'Zilveren kolf', veld: 'kolf-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' },
     { id: 'koek', spel: 'koekhappen', titel: 'Koekhappen', naam: 'Vergulde koek', veld: 'kh-gewonnen', kampioen: 'teun', eis: 'Win van bakkersjongen Teun' },
+    { id: 'hoepel', spel: 'hoepelen', titel: 'Hoepelen', naam: 'Zilveren hoepel', veld: 'hoepel-gewonnen', kampioen: 'jantje', eis: 'Win van Jantje' },
     { id: 'knikkers', spel: 'knikkeren', titel: 'Knikkeren', naam: 'Zilveren knikkerschaal', veld: 'knikker-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' },
     { id: 'tol', spel: 'tollen', titel: 'Tollen', naam: 'Zilveren tol', veld: 'tol-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' }
   ];
@@ -200,6 +201,16 @@
       `<circle cx="50" cy="51" r="15.5" fill="${G}" stroke="#7E5616" stroke-width="1.1"/><circle cx="50" cy="51" r="12" fill="none" stroke="#7E5616" stroke-width=".7" stroke-dasharray="1.6 1.6"/>` +
       `<path d="M50 42 C53 42 53 46 50 47 C47 46 47 42 50 42 Z M46 49 L54 49 M50 47 V57 M50 57 L46.5 61 M50 57 L53.5 61" fill="none" stroke="#7E5616" stroke-width="1.2" stroke-linecap="round"/>` +
       `<ellipse cx="44" cy="44.5" rx="4" ry="2" fill="#FFF5CC" opacity=".8" transform="rotate(-35 44 44.5)"/>`,
+    // een zilveren hoepel met drie gouden belletjes op een voetje, de stok ertegenaan
+    hoepel: () => voet(48, 88, 22) +
+      `<path d="M40.5 86 L43.5 78.5 M55.5 86 L52.5 78.5" stroke="${DONKER}" stroke-width="2.4" stroke-linecap="round"/>` +
+      `<circle cx="48" cy="47" r="30.5" fill="none" stroke="${LIJN}" stroke-width="8"/>` +
+      `<circle cx="48" cy="47" r="30.5" fill="none" stroke="${ZR}" stroke-width="6"/>` +
+      `<circle cx="48" cy="47" r="30.5" fill="none" stroke="${G}" stroke-width="1.2" stroke-dasharray="2.4 5.6" opacity=".9"/>` +
+      [-90, 30, 150].map((h) => { const a = h * Math.PI / 180, x = (48 + Math.cos(a) * 23.5).toFixed(1), y = (47 + Math.sin(a) * 23.5).toFixed(1);
+        return `<circle cx="${x}" cy="${y}" r="4.4" fill="${G}" stroke="#7E5616" stroke-width=".7"/><path d="M${(+x - 2.6).toFixed(1)} ${(+y + 1.2).toFixed(1)} H${(+x + 2.6).toFixed(1)}" stroke="#7E5616" stroke-width=".7"/><circle cx="${(+x - 1.4).toFixed(1)}" cy="${(+y - 1.6).toFixed(1)}" r="1.2" fill="#FFF5CC" opacity=".9"/>`; }).join('') +
+      `<path d="M70 87 L86 26" stroke="${LIJN}" stroke-width="4.2" stroke-linecap="round"/><path d="M70 87 L86 26" stroke="${ZH}" stroke-width="2.6" stroke-linecap="round"/><circle cx="86.3" cy="25" r="2.6" fill="${G}" stroke="#7E5616" stroke-width=".5"/>` +
+      glans('M22 34 C25 25 32 19.5 40 17', 1.6),
     knikkers: () => `<ellipse cx="50" cy="90" rx="17" ry="3.6" fill="#7E5616"/><ellipse cx="50" cy="88" rx="17" ry="3.6" fill="${ZR}" stroke="${LIJN}" stroke-width=".7"/>` +
       `<path d="M46 88 L47.5 70 L52.5 70 L54 88 Z" fill="${ZH}"/><ellipse cx="50" cy="72" rx="5" ry="2.4" fill="${G}"/>` +
       `<ellipse cx="50" cy="46" rx="31" ry="9" fill="#2F363D"/>` +
@@ -350,7 +361,7 @@
     const planken = Math.ceil(PRIJZEN.length / PER_PLANK);
     let plankHtml = '';
     for (let i = 0; i < planken; i++) {
-      plankHtml += `<div class="pk-plank" role="list">${PRIJZEN.slice(i * PER_PLANK, (i + 1) * PER_PLANK).map((p) => `<button class="pk-prijs" type="button" role="listitem" data-prijs="${p.id}">${prijsSvg(p.id)}<i class="pk-glim" aria-hidden="true"></i></button>`).join('')}${i === planken - 1 ? '<span class="pk-servies" aria-hidden="true"></span>' : ''}</div>`;
+      plankHtml += `<div class="pk-plank" role="list">${PRIJZEN.slice(i * PER_PLANK, (i + 1) * PER_PLANK).map((p) => `<button class="pk-prijs" type="button" role="listitem" data-prijs="${p.id}">${prijsSvg(p.id)}<i class="pk-glim" aria-hidden="true"></i></button>`).join('')}${i === planken - 1 && PRIJZEN.length % PER_PLANK ? '<span class="pk-servies" aria-hidden="true"></span>' : ''}</div>`;
     }
     zaal.innerHTML = `${kamerHtml()}
       <header class="pk-kop">

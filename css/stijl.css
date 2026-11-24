@@ -2105,6 +2105,41 @@ button.mo-kaart { cursor: pointer; }
   .kh-stand { grid-column: 1 / -1; grid-row: 3; margin: 6px 0 0; justify-content: center; }
 }
 
+/* ---------- Hoepelen: een race langs de gracht ---------- */
+.hp-veldvak { position: relative; width: var(--hp-b, 320px); height: var(--hp-h, 400px); }
+.hp-doek { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 16px; touch-action: none; outline: none; cursor: pointer; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-shadow: 0 20px 38px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); }
+.hp-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E, 0 20px 38px rgba(0, 0, 0, .55); }
+/* de baan bovenin: waar iedereen is, en de brug aan het eind */
+.hp-baan { position: absolute; left: 50%; top: 10px; z-index: 2; width: min(70%, 300px); height: 26px; transform: translateX(-50%); pointer-events: none; }
+.hp-lijn { position: absolute; left: 0; right: 0; top: 11px; height: 4px; border-radius: 2px; background: rgba(244, 233, 207, .9); box-shadow: 0 1px 3px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(120, 80, 30, .25); }
+.hp-brug { position: absolute; right: -14px; top: 1px; width: 26px; height: 15px; border: 3.5px solid #8A4A36; border-bottom: 0; border-radius: 14px 14px 0 0; box-shadow: 0 -1px 0 #D8D0BC, 0 2px 4px rgba(0, 0, 0, .35); }
+.hp-brug::after { content: ""; position: absolute; left: 50%; top: -12px; width: 2px; height: 11px; background: #E8E0CC; }
+.hp-brug::before { content: ""; position: absolute; left: calc(50% + 2px); top: -12px; border: 4px solid transparent; border-left: 8px solid #C8382B; border-right: 0; }
+.hp-merk { position: absolute; top: 2px; left: 0; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; overflow: hidden; background: #E9DFC8; box-shadow: 0 0 0 2px #F4E9CF, 0 2px 5px rgba(0, 0, 0, .45); }
+.hp-merk svg { display: block; width: 100%; height: 100%; }
+.hp-merk[data-k="0"] { z-index: 1; box-shadow: 0 0 0 2.5px #E7C36A, 0 2px 5px rgba(0, 0, 0, .45); }
+.hp-tel { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; align-content: center; gap: 6px; pointer-events: none; }
+.hp-tel b { padding: 4px 18px; font-family: var(--f-sier); font-weight: normal; font-size: clamp(1.7rem, 1.1rem + 3vw, 2.7rem); line-height: 1; color: #FFF6DC; text-shadow: 0 2px 0 rgba(90, 40, 10, .65), 0 4px 18px rgba(0, 0, 0, .5); opacity: 0; }
+.hp-tel b.groot { font-size: clamp(3.2rem, 2rem + 7vw, 5.4rem); }
+.hp-tel span { padding: 4px 12px; border-radius: 12px; background: rgba(244, 233, 207, .9); color: #2A1A08; font-family: var(--f-sier); font-style: italic; font-size: 1rem; box-shadow: 0 3px 10px rgba(0, 0, 0, .3); }
+.hp-tel.in b { animation: kh-tel .64s cubic-bezier(.2, 1.3, .4, 1) both; }
+.hp-tel.in b:not(.groot) { animation-duration: .95s; }
+.hp-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr) auto; }
+.hp-stand { display: flex; align-items: center; margin-left: auto; padding-right: 4px; grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+/* de vaartmeter: rood is te langzaam (dan wiebelt hij), groen is goed, oranje is te hard */
+.hp-vaart { position: relative; width: 62px; height: 9px; border-radius: 5px; background: linear-gradient(90deg, #B9573E 0 18.5%, #6FA35A 18.5% 84%, #D98C3A 84%); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .35), 0 1px 0 rgba(255, 236, 200, .15); }
+.hp-vaart i { position: absolute; top: -4px; left: 0; width: 5px; height: 17px; margin-left: -2.5px; border-radius: 3px; background: #FFF6DC; box-shadow: 0 1px 3px rgba(0, 0, 0, .6), inset 0 0 0 1px rgba(90, 60, 20, .35); }
+.hp-pop.goed { color: #FFE6A6; font-family: var(--f-sier); font-weight: normal; font-size: 1.4rem; }
+.hp-pop.fout { color: #FFD6C6; font-family: var(--f-sier); font-weight: normal; font-size: 1.4rem; }
+.hp-pop.zacht { font-size: 1rem; font-weight: normal; font-family: var(--f-sier); font-style: italic; color: rgba(255, 248, 230, .9); }
+.hp-kaart .knop { margin-top: 4px; }
+.mo-kaart.hp-winnaar { box-shadow: 0 0 0 2.5px #E7C36A, 0 0 26px rgba(231, 195, 106, .6), 0 4px 14px rgba(0, 0, 0, .3); }
+@media (orientation: landscape) and (max-height: 620px) {
+  .hp-podium { grid-template-columns: minmax(0, 1fr) calc(var(--hp-b, 300px) + 4px) minmax(0, 1fr); }
+  .hp-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr); }
+  .hp-stand { grid-column: 1 / -1; grid-row: 3; margin: 6px 0 0; justify-content: center; }
+}
+
 /* ---------- De opening: een korte film over de gracht ---------- */
 html.met-opening body { overflow: hidden; }
 /* tijdens de film zie je alleen de straat; de kop, de knoppen en het welkomstbord komen aan het eind */
@@ -2299,8 +2334,8 @@ html.met-opening .film { display: block; }
   .mo-plek, .mo-doel, .mo-pakbaar, .mo-tip-ring, .dm-moet, .dm-doel, .dm-tip-ring, .mo-steen.in-molen .mo-binnen, .mo-banier.in, .mo-ballon.in, .mo-menu.open .mo-menu-kaart, .mo-denk i, .mo-doe.schud { animation: none !important; }
   .mo-molenlijn { animation: none !important; stroke-dashoffset: 0; }
   .gb-beker.klaar, .gb-beker.schudt svg, .gb-beker.gooit svg, .gb-kaartje.in, .gb-pion-binnen.gewonnen { animation: none !important; }
-  .sj-pop, .sj-banier, .sj-kaart.in, .kh-tel.in b { animation: none !important; }
-  .kh-tel.in b { opacity: 1; }
+  .sj-pop, .sj-banier, .sj-kaart.in, .kh-tel.in b, .hp-tel.in b { animation: none !important; }
+  .kh-tel.in b, .hp-tel.in b { opacity: 1; }
   .kn-beurt, .sj-speler.kn-wip { animation: none !important; }
   .pk-deur, .pk-la { transition: none !important; }
   .pk-vlam, .pk-blaker::before { animation: none !important; }

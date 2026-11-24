@@ -818,6 +818,84 @@
         g.connect(f); f.connect(fg); fg.connect(naar);
       });
       o.connect(g); o.start(t); o.stop(t + 0.75);
+    },
+    // de stok tikt tegen de houten hoepel; de belletjes aan de hoepel schudden mee
+    hoepel(kracht) {
+      const B = bron(); if (!B) return;
+      const t = nu(B), k = klem(kracht === undefined ? 0.7 : kracht, 0, 1);
+      raak(B, t, HOUT, rnd(900, 1040), 0.12 + 0.16 * k, rnd(-0.1, 0.1), 2600, 0.55);
+      modaal(B, t, rnd(230, 260), [[1, 1, 0.05], [2.6, 0.3, 0.02]], 0.08 + 0.06 * k);
+      [0, 1].forEach((i) => modaal(B, t + 0.012 + i * rnd(0.018, 0.04), rnd(2900, 3900), BELLETJE.map(([r, a, d]) => [r, a, d * 0.45]), 0.02 + 0.03 * k, rnd(-0.25, 0.25)));
+    },
+    // de belletjes aan een rollende hoepel
+    rinkel(kracht, pan) {
+      const B = bron(); if (!B) return;
+      const t = nu(B), k = klem(kracht === undefined ? 0.5 : kracht, 0, 1), n = k > 0.6 ? 3 : 2;
+      for (let i = 0; i < n; i++) modaal(B, t + i * rnd(0.02, 0.05), rnd(3000, 4300), BELLETJE.map(([r, a, d]) => [r, a, d * 0.35]), 0.012 + 0.024 * k, (pan || 0) + rnd(-0.2, 0.2));
+    },
+    // een hoepel die omvalt en uitdraait op de klinkers: steeds snellere tikjes
+    kletter() {
+      const B = bron(); if (!B) return;
+      let t = nu(B), gat = 0.16, v = 0.22;
+      for (let i = 0; i < 9; i++) {
+        raak(B, t, HOUT, rnd(760, 900), v, rnd(-0.15, 0.15), 2400, 0.5);
+        if (i % 3 === 0) modaal(B, t + 0.01, rnd(2900, 3800), BELLETJE.map(([r, a, d]) => [r, a, d * 0.4]), v * 0.25, rnd(-0.2, 0.2));
+        t += gat; gat *= 0.74; v *= 0.84;
+      }
+      stoot(B, nu(B), { duur: 0.5, type: 'lowpass', f: 700, f2: 300, q: 0.6, vol: 0.06 });
+    },
+    // door een plas: een spat en wat druppels
+    spat() {
+      const B = bron(); if (!B) return;
+      const t = nu(B);
+      stoot(B, t, { duur: 0.3, type: 'lowpass', f: 3200, f2: 600, q: 0.6, aanzet: 0.003, vol: 0.22 });
+      stoot(B, t, { duur: 0.12, type: 'bandpass', f: 1500, q: 0.9, vol: 0.1 });
+      for (let i = 0; i < 4; i++) glij(B, t + rnd(0.06, 0.3), { f1: rnd(500, 700), f2: rnd(1200, 1800), duur: 0.035, vol: 0.035, pan: rnd(-0.3, 0.3) });
+    },
+    // een voetstap op de klinkers: een klomp klakt, een schoen klopt zacht
+    voet(soort, pan) {
+      const B = bron(); if (!B) return;
+      const t = nu(B);
+      if (soort === 'klomp') {
+        raak(B, t, HOUT_DOF, rnd(330, 400), 0.16, pan || 0, 1500, 0.5);
+        modaal(B, t, rnd(1150, 1350), [[1, 1, 0.018], [2.4, 0.3, 0.008]], 0.05, pan || 0);
+      } else {
+        stoot(B, t, { duur: 0.05, type: 'lowpass', f: 700, q: 0.7, vol: 0.12, pan: pan || 0 });
+        modaal(B, t, rnd(140, 170), [[1, 1, 0.04]], 0.1, pan || 0);
+      }
+    },
+    // het rollen van een houten hoepel over de klinkers, zolang hij rolt (zet de vaart, en stop aan het eind)
+    rollen() {
+      const leeg = { zet() {}, stop() {} };
+      const B = bron(); if (!B) return leeg;
+      const c = B.c, t = c.currentTime;
+      const src = c.createBufferSource(); src.buffer = B.k.ruis; src.loop = true;
+      const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 240; bp.Q.value = 0.9;
+      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1100; lp.Q.value = 0.5;
+      const am = c.createGain(); am.gain.value = 0.62;
+      const lfo = c.createOscillator(); lfo.type = 'triangle'; lfo.frequency.value = 20;
+      const diep = c.createGain(); diep.gain.value = 0.38;
+      lfo.connect(diep); diep.connect(am.gain);
+      const g = c.createGain(); g.gain.value = 0;
+      src.connect(bp); bp.connect(lp); lp.connect(am); am.connect(g); g.connect(uitgang(B, 1, 0));
+      src.start(t, Math.random()); lfo.start(t);
+      let weg = false;
+      return {
+        zet(v) {
+          if (weg) return;
+          const n = c.currentTime, k = klem(v / 5, 0, 1.25);
+          g.gain.setTargetAtTime(k * 0.2, n, 0.06);
+          lfo.frequency.setTargetAtTime(6 + v * 8.5, n, 0.08);
+          bp.frequency.setTargetAtTime(170 + v * 38, n, 0.1);
+        },
+        stop() {
+          if (weg) return;
+          weg = true;
+          const n = c.currentTime;
+          g.gain.cancelScheduledValues(n); g.gain.setTargetAtTime(0, n, 0.05);
+          try { src.stop(n + 0.4); lfo.stop(n + 0.4); } catch (e) { /* */ }
+        }
+      };
     }
   };
 
@@ -827,7 +905,8 @@
     dobbel: 0.42, stap: 1.46, hout: 2.1, schuif: 1.9, steen: 1.58, pak: 2.1, klok: 0.72, plons: 1.7, jammer: 0.74, deur: 0.44,
     woesj: 1.8, munt: 1.12, klus: 1.45, tada: 1, tik: 1.6, knik: 3.4, bikkel: 2, stuit: 2.1, vang: 2.8, kolf: 2.05, paal: 1.58,
     hap: 3.9, klap: 1.6, boing: 2.4, tel: 1.86, start: 0.7, gak: 2.1, kling: 2.1, tralies: 1.1, molen: 1.23, plop: 2.1,
-    zweep: 0.5, val: 1.78, cadeau: 1.3, koer: 1.1, kwak: 1.7, kaart: 2.7, deel: 2.6, schud: 1.8, fluit: 1.33, miauw: 1.06
+    zweep: 0.5, val: 1.78, cadeau: 1.3, koer: 1.1, kwak: 1.7, kaart: 2.7, deel: 2.6, schud: 1.8, fluit: 1.33, miauw: 1.06,
+    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4
   };
   Object.keys(window.Geluid).forEach((naam) => {
     const d = Object.getOwnPropertyDescriptor(window.Geluid, naam);

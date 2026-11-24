@@ -508,7 +508,7 @@
     bouwSjoelbak(plek('sjoelbak', wand));
     bouwPrent(plek('uilenspel', wand), { x: 300, y: 180, b: 120, h: 140, naam: 'Uilenspel', ill: 'ill-uil', gordijn: '#3F5B3B' });
     bouwPrent(plek('kopvanjut', wand), { x: 1112, y: 176, b: 128, h: 144, naam: 'Kop van Jut', ill: 'ill-jut', gordijn: '#7A2E28' });
-    bouwHoepel(plek('hoepel', wand));
+    bouwHoepel(plek('hoepel', wand), L);
     bouwPlank(plek('plank', wand));
 
     // ---------- Lichtbundel en stofjes (na het lappen van de ramen) ----------
@@ -762,14 +762,27 @@
     [[x + 36, y + 54], [x + 94, y + 54], [x + 36, y + 132], [x + 94, y + 132]].forEach(([cx, cy], i) => bord(g, cx, cy, 26, motief[i]));
   }
 
-  function bouwHoepel(ouder) {
-    const g = voorwerp(ouder, { label: 'Hoepelen · komt binnenkort' });
+  // hoepelen: de hoepel van de kuiper met drie koperen belletjes en de stok, aan een spijker; net als in het spel
+  function bouwHoepel(ouder, L) {
+    const staand = L && L.naam === 'staand';
+    const g = voorwerp(ouder, { spel: 'hoepelen', label: 'Speel hoepelen' });
+    el('rect', { x: 1118, y: staand ? 380 : 342, width: 144, height: staand ? 172 : 176, fill: 'transparent' }, g);
+    // het naambordje: breed boven de spijker (onder hangt de plank), staand eronder
+    naambordje(g, 1190, staand ? 526 : 348, 'Hoepelen');
     const h = el('g', { class: 'hoepel-hang' }, g);
     el('circle', { cx: 1190, cy: 450, r: 66, fill: 'transparent' }, h);
     el('circle', { cx: 1198, cy: 460, r: 62, fill: 'none', stroke: '#2A1A0C', 'stroke-opacity': 0.35, 'stroke-width': 8, filter: 'url(#h-schaduw)' }, h);
     el('line', { x1: 1204, y1: 392, x2: 1246, y2: 548, stroke: '#5E3B1E', 'stroke-width': 5, 'stroke-linecap': 'round' }, h);
-    el('circle', { cx: 1190, cy: 450, r: 62, fill: 'none', stroke: '#8A5A2E', 'stroke-width': 8 }, h);
-    el('circle', { cx: 1190, cy: 450, r: 62, fill: 'none', stroke: '#D29E62', 'stroke-width': 2, 'stroke-dasharray': '30 14', opacity: 0.8 }, h);
+    el('circle', { cx: 1190, cy: 450, r: 62, fill: 'none', stroke: '#3A2412', 'stroke-width': 9.5 }, h);
+    el('circle', { cx: 1190, cy: 450, r: 62, fill: 'none', stroke: '#C8965A', 'stroke-width': 6.5 }, h);
+    el('circle', { cx: 1190, cy: 450, r: 62, fill: 'none', stroke: '#F0D29C', 'stroke-width': 1.6, 'stroke-dasharray': '38 18', opacity: 0.8 }, h);
+    // drie belletjes aan de binnenkant
+    [[-90, 0], [30, 1], [150, 2]].forEach(([hoek]) => {
+      const a = hoek * Math.PI / 180, bx = 1190 + Math.cos(a) * 53, by = 450 + Math.sin(a) * 53;
+      el('circle', { cx: bx + 1, cy: by + 2, r: 5.2, fill: '#2A1A0C', opacity: 0.3 }, h);
+      el('circle', { cx: bx, cy: by, r: 5, fill: 'url(#h-messing)', stroke: '#6A4A16', 'stroke-width': 0.8 }, h);
+      el('circle', { cx: bx - 1.5, cy: by - 1.6, r: 1.3, fill: '#FFF4C8', opacity: 0.85 }, h);
+    });
     spijker(g, 1190, 386);
   }
 

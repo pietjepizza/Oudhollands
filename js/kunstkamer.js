@@ -167,6 +167,30 @@
       ]
     },
     {
+      id: 'hoepelen', naam: 'Hoepelen', tegel: 'ill-hoepel', tijd: 'Sinds de oudheid', kort: 'Een hoepel, een stok, en rennen maar',
+      herkomst: [
+        'Een hoepel en een stok: meer had je niet nodig. In het oude Griekenland en Rome hoepelden kinderen al; de Romeinen noemden de hoepel trochus.',
+        'Vaak was het een oude band van een ton, van hout of van ijzer. Met een stokje hield je hem aan het rollen.',
+        'In de zeventiende eeuw zag je hoepelende kinderen overal: op Delftse tegels, op prenten en op schilderijen. Op de Kinderspelen van Pieter Bruegel (1560) rennen ze met hun hoepel door de straat.'
+      ],
+      spelen: ['Je geeft de hoepel een tik met je stok, zodat hij blijft rollen.', 'Rolt hij te langzaam, dan gaat hij wiebelen en valt hij om.', 'Je kunt een race houden: wie het eerst bij de brug is, wint.', 'Of je stuurt hem zo lang mogelijk door de straat, om alles heen wat in de weg staat.'],
+      weetjes: ['Sommige hoepels hadden belletjes of plaatjes, die rinkelden als ze rolden.', 'De lantaarns langs de gracht in het spel zijn van Jan van der Heyden. Hij was schilder en uitvinder: in 1669 kreeg Amsterdam zijn olielampen op palen.', 'Gesina ter Borch tekende rond 1675 haar neefjes Gerrit en Cornelis Schellinger; een van hen heeft een hoepel.'],
+      kunst: [
+        { titel: 'De kinderspelen', maker: 'Pieter Bruegel de Oude, 1560', url: 'https://en.wikipedia.org/wiki/Children%27s_Games_(Bruegel)', waar: 'Kunsthistorisches Museum, Wenen' },
+        { titel: 'Tegel met een jongen met een hoepel', maker: 'Tweede kwart zeventiende eeuw', url: 'https://www.lakenhal.nl/en/collection/z-n-611', waar: 'Museum De Lakenhal, Leiden' },
+        { titel: 'Tegel met een jongen met hoepel en stok', maker: 'Tweede helft zeventiende eeuw', url: 'https://www.lakenhal.nl/en/collection/10087', waar: 'Museum De Lakenhal, Leiden' },
+        { titel: 'Gerrit en Cornelis Schellinger als kinderen', maker: 'Gesina ter Borch, omstreeks 1675-1685', url: 'https://www.rijksmuseum.nl/en/stories/get-ready--get-set--draw/story/a-very-personal-drawing', waar: 'Rijksmuseum, Amsterdam' }
+      ],
+      bronnen: [
+        { tekst: 'Hoop rolling (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Hoop_rolling' },
+        { tekst: 'Hoop and hook (Amgueddfa Cymru, Museum Wales)', url: 'https://museum.wales/traditional_toys/hoop_and_hook' },
+        { tekst: 'Children\'s Games van Bruegel (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Children%27s_Games_(Bruegel)' },
+        { tekst: 'Tegels met hoepelende jongens (Museum De Lakenhal)', url: 'https://www.lakenhal.nl/en/collection/z-n-611' },
+        { tekst: 'A very personal drawing (Rijksmuseum)', url: 'https://www.rijksmuseum.nl/en/stories/get-ready--get-set--draw/story/a-very-personal-drawing' },
+        { tekst: 'Jan van der Heyden and the dawn of efficient street lights (JSTOR Daily)', url: 'https://daily.jstor.org/jan-van-der-heyden-and-the-dawn-of-efficient-street-lights/' }
+      ]
+    },
+    {
       id: 'knikkeren', naam: 'Knikkeren', tegel: 'ill-knikkers', tijd: 'Eeuwenoud', kort: 'Een potje in het zand',
       herkomst: [
         'Kinderen speelden al in de oudheid met noten, steentjes en balletjes. Knikkers waren vaak van gebakken klei; die waren goedkoop. Wie meer geld had, kon knikkers van steen of glas kopen.',
