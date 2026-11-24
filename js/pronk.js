@@ -55,6 +55,7 @@
     { id: 'kolf', spel: 'kolf', titel: 'Kolf op het ijs', naam: 'Zilveren kolf', veld: 'kolf-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' },
     { id: 'koek', spel: 'koekhappen', titel: 'Koekhappen', naam: 'Vergulde koek', veld: 'kh-gewonnen', kampioen: 'teun', eis: 'Win van bakkersjongen Teun' },
     { id: 'hoepel', spel: 'hoepelen', titel: 'Hoepelen', naam: 'Zilveren hoepel', veld: 'hoepel-gewonnen', kampioen: 'jantje', eis: 'Win van Jantje' },
+    { id: 'draaimolen', spel: 'ringsteken', titel: 'Ringsteken', naam: 'Zilveren draaimolentje', veld: 'ring-gewonnen', kampioen: 'trijntje', eis: 'Win van Trijntje' },
     { id: 'knikkers', spel: 'knikkeren', titel: 'Knikkeren', naam: 'Zilveren knikkerschaal', veld: 'knikker-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' },
     { id: 'tol', spel: 'tollen', titel: 'Tollen', naam: 'Zilveren tol', veld: 'tol-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' }
   ];
@@ -211,6 +212,20 @@
         return `<circle cx="${x}" cy="${y}" r="4.4" fill="${G}" stroke="#7E5616" stroke-width=".7"/><path d="M${(+x - 2.6).toFixed(1)} ${(+y + 1.2).toFixed(1)} H${(+x + 2.6).toFixed(1)}" stroke="#7E5616" stroke-width=".7"/><circle cx="${(+x - 1.4).toFixed(1)}" cy="${(+y - 1.6).toFixed(1)}" r="1.2" fill="#FFF5CC" opacity=".9"/>`; }).join('') +
       `<path d="M70 87 L86 26" stroke="${LIJN}" stroke-width="4.2" stroke-linecap="round"/><path d="M70 87 L86 26" stroke="${ZH}" stroke-width="2.6" stroke-linecap="round"/><circle cx="86.3" cy="25" r="2.6" fill="${G}" stroke="#7E5616" stroke-width=".5"/>` +
       glans('M22 34 C25 25 32 19.5 40 17', 1.6),
+    // een zilveren draaimolentje: een vloer, paardjes op gouden palen, een gestreepte kap en een vaantje
+    draaimolen: () => {
+      const paardje = (x, y, s) => `<path transform="translate(${x} ${y}) scale(${s})" d="M-7 0 Q-5 -4 0 -3.6 L3.4 -7 L5.4 -6.2 L4.6 -3 Q6.2 -0.4 3 0.8 L4.2 5 H2.6 L1.4 1.4 H-4.2 L-5.8 5 H-7.4 L-6 1 Q-8 0.6 -7 0 Z" fill="${ZR}" stroke="${LIJN}" stroke-width=".6"/>`;
+      return voet(50, 89, 31) +
+        `<path d="M19 77 V81 A31 7.4 0 0 0 81 81 V77" fill="${ZH}" stroke="${LIJN}" stroke-width=".7"/><ellipse cx="50" cy="77" rx="31" ry="7.4" fill="${ZR}" stroke="${LIJN}" stroke-width=".8"/>` +
+        [24, 37, 63, 76].map((x) => `<path d="M${x} ${x < 50 ? 79 : 79} V37" stroke="${G}" stroke-width="1.5"/>`).join('') +
+        `<rect x="45.5" y="37" width="9" height="40" fill="${ZH}" stroke="${LIJN}" stroke-width=".6"/><path d="M47.5 41 V73 M52.5 41 V73" stroke="${DONKER}" stroke-width=".5" opacity=".6"/>` +
+        paardje(27, 62, 1.05) + paardje(66, 58, 0.95) +
+        `<path d="M15 38 L50 13 L85 38 Q50 45 15 38 Z" fill="${Z}" stroke="${LIJN}" stroke-width=".9"/>` +
+        [24, 33, 42, 58, 67, 76].map((x) => `<path d="M50 13 L${x} ${38 + Math.abs(50 - x) * -0.08 + 3.5}" stroke="${G}" stroke-width="1.6"/>`).join('') +
+        `<path d="M15 38 q4.4 6 8.8 1 q4.4 6 8.8 1 q4.4 6 8.8 1 q4.4 6 8.8 1 q4.4 6 8.8 1 q4.4 6 8.8 1 q4.4 6 8.8 1 q4.4 6 8.6 -0.4 Q50 45 15 38 Z" fill="${GH}" stroke="#7E5616" stroke-width=".6"/>` +
+        `<path d="M50 13 V4" stroke="${DONKER}" stroke-width="1.2"/><path d="M50 4.2 L59 6.6 L50 9 Z" fill="${G}" stroke="#7E5616" stroke-width=".5"/><circle cx="50" cy="13" r="2" fill="${G}"/>` +
+        glans('M20 36 L44 18', 1.4);
+    },
     knikkers: () => `<ellipse cx="50" cy="90" rx="17" ry="3.6" fill="#7E5616"/><ellipse cx="50" cy="88" rx="17" ry="3.6" fill="${ZR}" stroke="${LIJN}" stroke-width=".7"/>` +
       `<path d="M46 88 L47.5 70 L52.5 70 L54 88 Z" fill="${ZH}"/><ellipse cx="50" cy="72" rx="5" ry="2.4" fill="${G}"/>` +
       `<ellipse cx="50" cy="46" rx="31" ry="9" fill="#2F363D"/>` +
@@ -274,7 +289,8 @@
   const icoon = (naam, klasse) => `<svg class="${klasse || ''}" aria-hidden="true"><use href="#i-${naam}"/></svg>`;
   const rustig = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const klank = (naam) => { if (window.Geluid && Geluid[naam]) Geluid[naam](); };
-  const PER_PLANK = 4;
+  // drie planken in de kast; komen er meer prijzen bij, dan staan ze wat dichter op elkaar
+  const PER_PLANK = Math.max(4, Math.ceil(PRIJZEN.length / 3));
   let zaal = null, gebouwd = false, openLa = null, gekozenInLa = null, kaartjeVan = null, actief = false;
 
   // ============================================================
@@ -374,7 +390,7 @@
           <div class="pk-kaststel">${kaststel()}</div>
           <div class="pk-kroon"><span class="pk-plaat"><b>Pronkkast</b><small class="pk-teller"></small></span></div>
           <div class="pk-vitrine">
-            <div class="pk-binnen">${plankHtml}</div>
+            <div class="pk-binnen" style="--per: ${PER_PLANK}">${plankHtml}</div>
             <div class="pk-deur pk-deur-l" aria-hidden="true"></div>
             <div class="pk-deur pk-deur-r" aria-hidden="true"></div>
           </div>

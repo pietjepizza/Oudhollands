@@ -2770,8 +2770,7 @@
       el('ellipse', { cx: x, cy: -146, rx: 5, ry: 4, fill: '#2A1A0C' }, n);
       el('path', { d: `M${x + 4} -146 v -18 q 6 2 8 8`, fill: 'none', stroke: '#2A1A0C', 'stroke-width': 2 }, n);
     });
-    plekKlik(g, { x: -70, y: -142, width: 140, height: 146 }, 'kermis', 'Kermis, binnenkort');
-    slotje(g, 0, -72, 'kermis');
+    plekKlik(g, { x: -70, y: -142, width: 140, height: 146 }, 'kermis', 'Naar de kermis');
   }
 
   // ============================================================
@@ -3109,7 +3108,7 @@
     }
     document.querySelectorAll('.plek-knop').forEach((k) => {
       const p = k.getAttribute('data-plek');
-      const open = p === 'voorkamer' || p === 'kunstkamer' || p === 'pronkkamer' || (p === 'zolder' && zolder);
+      const open = p === 'voorkamer' || p === 'kunstkamer' || p === 'pronkkamer' || p === 'kermis' || (p === 'zolder' && zolder);
       k.classList.toggle('dicht', !open);
       const naam = k.querySelector('.plek-naam') ? k.querySelector('.plek-naam').textContent : p;
       k.setAttribute('aria-label', open ? naam : `${naam}, nog op slot`);
@@ -3122,6 +3121,7 @@
     if (bezig) return;
     if (plek === 'kunstkamer') { Geluid.deur(); location.hash = '#kunstkamer'; return; }
     if (plek === 'pronkkamer') { naarPronkkamer(); return; }
+    if (plek === 'kermis') { Geluid.deur(); location.hash = '#kermis'; return; }
     if (plek === 'voorkamer' || plek === 'zolder') {
       if (!kamerOpen(plek)) {
         schud(bron);
@@ -3135,7 +3135,7 @@
     }
     schud(bron);
     Geluid.pak();
-    toonLabel(bron, { herberg: 'De herberg: binnenkort', kermis: 'De kermis: binnenkort', ijsbaan: 'De ijsbaan: binnenkort' }[plek] || 'Binnenkort');
+    toonLabel(bron, { herberg: 'De herberg: binnenkort', ijsbaan: 'De ijsbaan: binnenkort' }[plek] || 'Binnenkort');
   }
 
   function toonWenk(tekst) {

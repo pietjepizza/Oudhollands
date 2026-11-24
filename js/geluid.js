@@ -864,6 +864,14 @@
         modaal(B, t, rnd(140, 170), [[1, 1, 0.04]], 0.1, pan || 0);
       }
     },
+    // een koperen ring schuift op de lans: een helder tikje metaal en een korte schuif; een gouden ring klinkt als een belletje
+    ring(goud) {
+      const B = bron(); if (!B) return;
+      const t = nu(B), f = goud ? rnd(2350, 2550) : rnd(1650, 1850);
+      modaal(B, t, f, MUNT.map(([r, a, d]) => [r, a, d * (goud ? 1.2 : 0.7)]), goud ? 0.16 : 0.12, rnd(-0.1, 0.1));
+      stoot(B, t + 0.02, { duur: 0.12, type: 'bandpass', f: 3200, f2: 2000, q: 1.4, aanzet: 0.01, vol: 0.05 });
+      if (goud) [0, 1, 2].forEach((i) => modaal(B, t + 0.08 + i * 0.07, [1568, 1976, 2349][i], BELLETJE, 0.06, -0.2 + i * 0.2));
+    },
     // het rollen van een houten hoepel over de klinkers, zolang hij rolt (zet de vaart, en stop aan het eind)
     rollen() {
       const leeg = { zet() {}, stop() {} };
@@ -906,7 +914,7 @@
     woesj: 1.8, munt: 1.12, klus: 1.45, tada: 1, tik: 1.6, knik: 3.4, bikkel: 2, stuit: 2.1, vang: 2.8, kolf: 2.05, paal: 1.58,
     hap: 3.9, klap: 1.6, boing: 2.4, tel: 1.86, start: 0.7, gak: 2.1, kling: 2.1, tralies: 1.1, molen: 1.23, plop: 2.1,
     zweep: 0.5, val: 1.78, cadeau: 1.3, koer: 1.1, kwak: 1.7, kaart: 2.7, deel: 2.6, schud: 1.8, fluit: 1.33, miauw: 1.06,
-    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4
+    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4, ring: 1.7
   };
   Object.keys(window.Geluid).forEach((naam) => {
     const d = Object.getOwnPropertyDescriptor(window.Geluid, naam);

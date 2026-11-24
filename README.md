@@ -34,7 +34,14 @@ Alles wordt in de browser bewaard; via het menu kun je opnieuw beginnen.
 steile Hollandse trap leidt naar de **zolder**. Daar staan twee nieuwe spellen (knikkeren in de zandbak, tollen op de
 kist) en acht eigen klussen: rommel opruimen, het hijsluik openen, balken schuren, planken boenen, een lantaarn, een
 lappendeken, een hobbelpaard en duiven op de hanenbalk. De straat is het knooppunt: onderaan staan de plekken
-(voorkamer, zolder, herberg, kermis, ijsbaan, en rechts de pronkkamer en de Kunstkamer). Herberg, kermis en ijsbaan zitten nog op slot.
+(voorkamer, zolder, herberg, kermis, ijsbaan, en rechts de pronkkamer en de Kunstkamer). De herberg en de ijsbaan zitten nog op slot.
+
+**De kermis.** Via de knop "Kermis" (of op Koningsdag via het draaiorgel op de kade) kom je op het kermisplein: een
+draaimolen met een rood-wit gestreepte kap, geschulpte rand met franje en een kroon met een vaantje, houten paarden in
+galop die op en neer gaan, en een middenzuil met spiegels en schilderijtjes. Eromheen staan tenten en kramen
+(poffertjes, kramerij), mensen die kijken, een koekkraam met ontbijtkoek aan touwtjes en een kop van Jut. Tik op de
+draaimolen om te ringsteken, op de koekkraam om te koekhappen; de kop van Jut komt binnenkort. Het plein is in
+perspectief getekend: staand zie je het van bovenaf, liggend alles naast elkaar.
 
 **Gijs de gans doet het voor.** De eerste keer dat je een spel opent, laat een gans in een paar stapjes zien hoe het
 werkt: een lichtcirkel wijst de plek aan, een vinger tikt of veegt, en een ballonnetje zegt het in een paar woorden.
@@ -50,11 +57,12 @@ bolpoten, met een kaststel van vijf vazen van Delfts blauw op de kroonlijst.
 
 Tik op de kast en de deurtjes gaan open. Achter het glas staan zilveren prijsjes: voor elk spel één, en je wint hem
 door de kampioen van dat spel te verslaan (de burgemeester, Opoe bij het bikkelen, bakkersjongen Teun bij het
-koekhappen, Jantje bij het hoepelen; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
+koekhappen, Jantje bij het hoepelen, Trijntje bij het ringsteken; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
 tik erop en je ziet van wie je moet winnen, met een knop naar het spel. Een nieuwe prijs zie je meteen in het
 beloningsscherm (tik erop en je gaat naar de pronkkamer), en tot je hem hebt bekeken staat er een gouden sterretje bij
 de knop en de wijzer. De prijzen zijn een gans, een sjoelbakje, een molentje, een dam met kroon, vergulde kaarten, een
-dobbelbeker, bikkels, een kolf, een koek aan een galg, een hoepel met belletjes, een knikkerschaal en een tol. Zulke piepkleine zilveren
+dobbelbeker, bikkels, een kolf, een koek aan een galg, een hoepel met belletjes, een draaimolentje, een knikkerschaal en
+een tol (vijf per plank). Zulke piepkleine zilveren
 voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor pronkkasten en poppenhuizen (zie de
 poppenhuizen en miniaturen in het Rijksmuseum). Onderin zitten vijf laatjes met speelgoed: sjoelschijven,
 dobbelstenen, molen- en damstenen, knikkers en tollen. Trek een laatje open om te kiezen wat je gebruikt, of koop iets
@@ -163,6 +171,15 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   met z'n tweeën (links en rechts tikken, of de toetsen A en L). Met vaart zoomt de camera uit en kijk je verder
   vooruit; je hoort de hoepel over de klinkers rollen, de belletjes rinkelen en de klompen klakken. De hoepel aan de
   muur van de voorkamer opent het spel.
+- **Ringsteken** (op de kermis, schermvullend): je rijdt op een houten paard in de draaimolen; naast de molen staat een
+  galg met een arm waaraan een ring hangt, en de ringenman hangt steeds een nieuwe op (soms een gouden). Elk rondje kom
+  je er één keer langs: tik op het goede moment en je kind steekt zijn lans uit. Raak? Dan schuift de ring op je lans,
+  en daar blijven ze zitten: je ziet je ringen opgestapeld. Te vroeg of te laat zie je meteen; een gemiste ring zwaait
+  na. Een gouden ring telt drie keer, maar is kleiner. Na tien rondjes wint wie de meeste ringen heeft; bij gelijke
+  stand rijdt iedereen nog een rondje. De molen gaat elk rondje iets harder. Tegen Mieke, Bakkersjongen Teun, Jantje en
+  Trijntje (ze verschillen in hoe precies ze steken; afgesteld met 300 nagespeelde spellen per paar) of met z'n tweeën
+  (jullie rijden tegenover elkaar en wie bij de ring komt, tikt). De camera staat naast de galg, net onder de kap:
+  de paarden galopperen van links naar de ring.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -224,7 +241,7 @@ dan de blokfluit met het begin van het Engels Nachtegaeltje, met een roffel op d
 | Plek | Stuk | Bezetting | Begint bij |
 |---|---|---|---|
 | Het huis, de pronkkamer en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
-| Ganzenbord, knikkeren, koekhappen, bikkelen en hoepelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, 2e modo, luit |
+| Ganzenbord, knikkeren, koekhappen, bikkelen, hoepelen, ringsteken en het kermisplein | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, 2e modo, luit |
 | Sjoelen, klaverjassen, tollen en kolf | Onder de Linde groene | klavecimbel | thema, 1e modo, 2e modo, blokfluit |
 | Molenspel, triktrak en dammen | Doen Daphne d'over schoone Maeght | luit en viola da gamba | thema, 1e modo, blokfluit |
 
@@ -239,14 +256,14 @@ opnames: feestgeluiden het luidst, spelgeluiden daaronder, het tikje bij elke aa
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": de kermis, kop van Jut, uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
+Nog "in de oven": kop van Jut (op de kermis), uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
 je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=35`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=36`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

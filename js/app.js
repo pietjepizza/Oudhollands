@@ -1,18 +1,18 @@
 /* Navigatie tussen het huis en de spellen (via #ganzenbord, #sjoelen, #molenspel, #dammen, #klaverjassen, #triktrak, #knikkeren, #tollen),
    de knoppen in de kop, het menu, tikgeluid en trilling, en het installeren als app. */
 (function () {
-  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'koekhappen', 'hoepelen', 'knikkeren', 'tollen'];
+  const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'koekhappen', 'hoepelen', 'ringsteken', 'knikkeren', 'tollen'];
   // muziek per spel: [stuk, ronde]. Spellen die een stuk delen, beginnen elk bij een andere variatie
   // (0 = het thema, 1 en 2 = de modi met versieringen, 3 = het thema op een ander instrument)
   const MUZIEK = {
     ganzenbord: ['ganzenbord', 0], sjoelen: ['sjoelen', 0], molenspel: ['molenspel', 0],
     knikkeren: ['ganzenbord', 1], tollen: ['sjoelen', 2], dammen: ['molenspel', 3], klaverjassen: ['sjoelen', 1],
     triktrak: ['molenspel', 1], bikkelen: ['ganzenbord', 3], kolf: ['sjoelen', 3], koekhappen: ['ganzenbord', 2],
-    hoepelen: ['ganzenbord', 1]
+    hoepelen: ['ganzenbord', 1], ringsteken: ['ganzenbord', 3]
   };
   // plekken om te lezen en te kijken; geen spel
-  const PAGINAS = ['kunstkamer', 'pronkkamer'];
-  const PAGINA = { kunstkamer: () => window.Kunstkamer, pronkkamer: () => window.Pronk };
+  const PAGINAS = ['kunstkamer', 'pronkkamer', 'kermis'];
+  const PAGINA = { kunstkamer: () => window.Kunstkamer, pronkkamer: () => window.Pronk, kermis: () => window.Kermis };
   let huidig; // undefined = er is nog niets getoond
 
   function toon() {
@@ -39,8 +39,8 @@
       else { const p = PAGINA[pagina] && PAGINA[pagina](); if (p && p.start) p.start(); }
     }
     if (!wie && window.Huis) {
-      if (vorige === 'kunstkamer') {
-        // uit de kunstkamer stap je weer op de gracht
+      if (vorige === 'kunstkamer' || vorige === 'kermis') {
+        // uit de kunstkamer en van de kermis stap je weer op de gracht
         window.scrollTo(0, 0);
         requestAnimationFrame(() => window.Huis.naarBuiten());
       } else if (vorige) {
@@ -53,7 +53,8 @@
     }
     document.title = wie ? `${document.getElementById('scherm-' + wie).querySelector('h1').textContent} · Het Speelhuys` : 'Het Speelhuys';
     huidig = wie;
-    if (window.Muziek) { const m = spel ? (MUZIEK[spel] || [spel, 0]) : ['thuis', 0]; window.Muziek.kies(m[0], m[1]); }
+    // op de kermis speelt een vrolijk deuntje (blokfluit en tabor); in het huis en de zalen het Engels Nachtegaeltje
+    if (window.Muziek) { const m = spel ? (MUZIEK[spel] || [spel, 0]) : pagina === 'kermis' ? ['ganzenbord', 2] : ['thuis', 0]; window.Muziek.kies(m[0], m[1]); }
   }
 
   // ---------- Hoogte van de kop, zodat de kamer precies het scherm vult ----------

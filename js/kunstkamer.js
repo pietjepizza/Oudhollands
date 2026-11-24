@@ -191,6 +191,28 @@
       ]
     },
     {
+      id: 'ringsteken', naam: 'Ringsteken', tegel: 'ill-draaimolen', tijd: 'Eeuwenoud, en nog steeds', kort: 'In volle vaart met je lans door de ring',
+      herkomst: [
+        'Ringsteken en ringrijden zijn eeuwenoud. Een ruiter komt in volle vaart aanrijden en probeert met een lans of een houten stok een kleine ring te steken die aan een galg hangt.',
+        'Op Walcheren werd het ringrijden vroeger op alle dorpen gehouden, ter gelegenheid van de kermis. In Zeeland en in Enkhuizen doen ze het nog steeds.',
+        'Het woord carrousel komt van de ruitertoernooien uit de zeventiende eeuw, waar ook ringgestoken werd. Later kwamen er draaimolens met houten paarden, eerst om te oefenen en daarna voor de kermis. Op oude draaimolens hing soms een arm met ringen die je in het voorbijrijden kon pakken.'
+      ],
+      spelen: ['Je rijdt op een houten paard in de draaimolen. Aan een galg naast de molen hangt een ring.', 'Elk rondje kom je er één keer langs. Steek je lans uit op het goede moment, dan schuift de ring erop.', 'Een gouden ring telt drie keer.', 'Na tien rondjes wint wie de meeste ringen heeft.'],
+      weetjes: ['Het woord kermis komt van kerkmis: het feest van de wijding van de kerk.', 'De oudste draaimolen die nog draait, staat in de Efteling: de Vermolen uit 1865.', 'In Laren steken ze op Koningsdag ringen vanuit een rijtuigje: cabriolet-ringsteken.'],
+      kunst: [
+        { titel: 'Draaimolen', maker: 'Willem de Zwart, omstreeks 1890-1924', url: 'https://www.rijksmuseum.nl/en/collection/object/Draaimolen--95609ed63d39a52c05c0928a629fec6d', waar: 'Rijksmuseum, Amsterdam' },
+        { titel: 'Perspectivische Vorstellung eines Jahrmarckts oder Kirchweyh (een kermis)', maker: 'Martin Engelbrecht, tweede helft achttiende eeuw', url: 'https://www.lakenhal.nl/en/collection/3126-93', waar: 'Museum De Lakenhal, Leiden' }
+      ],
+      bronnen: [
+        { tekst: 'Carousel (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Carousel' },
+        { tekst: 'The dizzy history of carousels begins with knights (Smithsonian)', url: 'https://www.smithsonianmag.com/smart-news/dizzy-history-carousels-begins-knights-180964100/' },
+        { tekst: 'Ringrijden op Walcheren, ter gelegenheid der kermis (DBNL)', url: 'https://www.dbnl.org/tekst/vinc014wati01_01/vinc014wati01_01_0012.php' },
+        { tekst: 'Eeuwenoude volksvermaak ringsteken nog altijd populair in Enkhuizen (NH Nieuws)', url: 'https://www.nhnieuws.nl/nieuws/308626/eeuwenoude-volksvermaak-ringsteken-nog-altijd-populair-in-enkhuizen' },
+        { tekst: 'Cabriolet-ringsteken: een Larense traditie op Koningsdag (NH Nieuws)', url: 'https://www.nhnieuws.nl/nieuws/318148/cabriolet-ringsteken-een-larense-traditie-op-koningsdag' },
+        { tekst: 'Oldest operating carousel (Guinness World Records)', url: 'https://www.guinnessworldrecords.com/world-records/76321-oldest-operating-carousel' }
+      ]
+    },
+    {
       id: 'knikkeren', naam: 'Knikkeren', tegel: 'ill-knikkers', tijd: 'Eeuwenoud', kort: 'Een potje in het zand',
       herkomst: [
         'Kinderen speelden al in de oudheid met noten, steentjes en balletjes. Knikkers waren vaak van gebakken klei; die waren goedkoop. Wie meer geld had, kon knikkers van steen of glas kopen.',

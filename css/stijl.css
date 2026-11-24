@@ -1006,7 +1006,7 @@ html[data-seizoen="koningsdag"] .alleen-koningsdag { display: inline; }
     linear-gradient(#2F5641, #1E3B2C 55%, #132A1F);
   box-shadow: inset 0 0 0 2px #1A100A, inset 0 10px 18px rgba(0, 0, 0, .55), inset 0 -6px 14px rgba(0, 0, 0, .35);
 }
-.pk-plank { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; padding: 0 calc(var(--b) * .015) calc(var(--b) * .024); }
+.pk-plank { position: relative; display: grid; grid-template-columns: repeat(var(--per, 4), minmax(0, 1fr)); align-items: end; padding: 0 calc(var(--b) * .015) calc(var(--b) * .024); }
 .pk-plank::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--b) * .026);
   background: linear-gradient(#7C5330, #5A3A1F 45%, #3A2312); box-shadow: 0 5px 8px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 220, 170, .25);
@@ -2139,6 +2139,65 @@ button.mo-kaart { cursor: pointer; }
   .hp-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr); }
   .hp-stand { grid-column: 1 / -1; grid-row: 3; margin: 6px 0 0; justify-content: center; }
 }
+
+/* ---------- De kermis (het plein) en ringsteken (in de draaimolen) ---------- */
+.km-veldvak { position: relative; width: var(--km-b, 320px); height: var(--km-h, 400px); }
+.km-doek { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 16px; outline: none; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-shadow: 0 20px 38px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); }
+.rs-doek { touch-action: none; cursor: pointer; }
+.rs-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E, 0 20px 38px rgba(0, 0, 0, .55); }
+.rs-ronde { position: absolute; left: 10px; top: 9px; z-index: 2; padding: 4px 10px 5px; border-radius: 10px; pointer-events: none;
+  background: rgba(244, 233, 207, .88); color: #2A1A08; box-shadow: 0 3px 10px rgba(0, 0, 0, .25), inset 0 0 0 1px rgba(150, 110, 50, .35); }
+.rs-ronde b { font-family: var(--f-sier); font-weight: normal; font-size: 1.02rem; line-height: 1.05; }
+.rs-ronde:empty { display: none; }
+.rs-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr) auto; }
+.rs-stand { display: flex; align-items: center; gap: 6px; margin-left: auto; padding-right: 4px; grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+.rs-punten { min-width: 1.1em; font: 600 1.25rem/1 var(--f-tekst); color: #F2D78E; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.rs-vakjes { display: grid; grid-template-columns: repeat(5, 10px); gap: 2px; }
+.rs-vak { width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(244, 233, 207, .28); }
+.rs-vak.mis { background: rgba(244, 233, 207, .1); box-shadow: inset 0 0 0 1.5px rgba(244, 233, 207, .16); }
+.rs-vak.mis::after { content: ""; display: block; width: 5px; height: 1.5px; margin: 4px auto 0; background: rgba(244, 233, 207, .35); transform: rotate(-35deg); }
+.rs-vak.koper { box-shadow: inset 0 0 0 2.5px #C8964A, 0 1px 2px rgba(0, 0, 0, .5); }
+.rs-vak.goud { box-shadow: inset 0 0 0 2.5px #F2CF6A, 0 0 6px rgba(242, 207, 106, .8); }
+.rs-pop { text-shadow: 0 2px 0 rgba(60, 30, 8, .95), 0 0 6px rgba(40, 20, 5, .95), 0 3px 14px rgba(0, 0, 0, .6); }
+.rs-pop.goed { color: #FFE6A6; font-family: var(--f-sier); font-weight: normal; font-size: 1.45rem; }
+.rs-pop.groot { font-size: 2rem; }
+.rs-pop.zacht { font-size: 1rem; font-weight: normal; font-family: var(--f-sier); font-style: italic; color: rgba(255, 248, 230, .92); }
+.rs-kaart .knop { margin-top: 4px; }
+.mo-kaart.rs-winnaar { box-shadow: 0 0 0 2.5px #E7C36A, 0 0 26px rgba(231, 195, 106, .6), 0 4px 14px rgba(0, 0, 0, .3); }
+@media (orientation: landscape) and (max-height: 620px) {
+  .rs-podium { grid-template-columns: minmax(0, 1fr) calc(var(--km-b, 300px) + 4px) minmax(0, 1fr); }
+  .rs-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr); }
+  .rs-stand { grid-column: 1 / -1; grid-row: 3; margin: 6px 0 0; justify-content: center; }
+}
+/* het plein */
+.kermis {
+  position: fixed; inset: 0; z-index: 20; margin: 0; padding: 0; max-width: none; color: #F4E9CF; background: #2A1A0E;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+}
+.km-plein {
+  position: absolute; inset: 0; display: grid; grid-template-rows: auto minmax(0, 1fr);
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
+}
+.km-kop { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; max-width: 760px; margin: 0 auto; padding-bottom: 8px; }
+.km-naam { margin: 0; font-family: var(--f-sier); font-style: italic; font-size: clamp(1.15rem, .95rem + .9vw, 1.6rem); color: #F2CF7A; text-shadow: 0 2px 8px rgba(0, 0, 0, .7); white-space: nowrap; }
+.km-vak { position: relative; display: grid; place-items: center; min-height: 0; }
+.km-plek { position: absolute; z-index: 2; display: block; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer; border-radius: 18px; -webkit-tap-highlight-color: transparent; font: inherit; color: inherit; text-decoration: none; }
+.km-plek:focus-visible { outline: 3px solid #F2C14E; outline-offset: 2px; }
+/* het messing bordje voor de attractie */
+.km-bord {
+  position: absolute; left: 50%; bottom: 2px; transform: translateX(-50%); white-space: nowrap;
+  padding: 3px 13px 4px; border-radius: 3px; border: 1px solid #5C3D12;
+  background: linear-gradient(#F6DE9A, #D9B566 45%, #B88E3E); color: #2A1A08;
+  font-family: "IM Fell English SC", Georgia, serif; font-size: 1.02rem; line-height: 1.15;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 250, 220, .7);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.km-bord::before, .km-bord::after { content: ""; position: absolute; top: 50%; width: 3px; height: 3px; margin-top: -1.5px; border-radius: 50%; background: #5C3D12; }
+.km-bord::before { left: 5px; } .km-bord::after { right: 5px; }
+.km-plek:hover .km-bord, .km-plek:focus-visible .km-bord { transform: translateX(-50%) translateY(-3px); box-shadow: 0 6px 14px rgba(0, 0, 0, .5), 0 0 12px rgba(242, 207, 122, .6), inset 0 1px 0 rgba(255, 250, 220, .7); }
+.km-plek.dicht .km-bord { filter: saturate(.5) brightness(.82); }
+.km-later { position: absolute; left: 50%; bottom: -19px; transform: translateX(-50%); white-space: nowrap; font-family: var(--f-sier); font-style: italic; font-size: .9rem; color: rgba(244, 233, 207, .9); text-shadow: 0 1px 4px rgba(0, 0, 0, .9); }
+.km-plek.schud .km-bord { animation: schud-knop .45s ease; }
 
 /* ---------- De opening: een korte film over de gracht ---------- */
 html.met-opening body { overflow: hidden; }
