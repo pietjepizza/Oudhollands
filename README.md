@@ -50,7 +50,7 @@ rood zadel op een Delfts blauw kleed; tik erop en het hobbelt) en duiven op de h
 draaimolen met een rood-wit gestreepte kap, geschulpte rand met franje en een kroon met een vaantje, houten paarden in
 galop die op en neer gaan, en een middenzuil met spiegels en schilderijtjes. Eromheen staan tenten en kramen
 (poffertjes, kramerij), mensen die kijken, een koekkraam met ontbijtkoek aan touwtjes en een kop van Jut. Tik op de
-draaimolen om te ringsteken, op de koekkraam om te koekhappen; de kop van Jut komt binnenkort. Het plein is in
+draaimolen om te ringsteken, op de koekkraam om te koekhappen en op de kop van Jut om te slaan. Het plein is in
 perspectief getekend: staand zie je het van bovenaf, liggend alles naast elkaar.
 
 **Gijs de gans doet het voor.** De eerste keer dat je een spel opent, laat een gans in een paar stapjes zien hoe het
@@ -67,11 +67,11 @@ bolpoten, met een kaststel van vijf vazen van Delfts blauw op de kroonlijst.
 
 Tik op de kast en de deurtjes gaan open. Achter het glas staan zilveren prijsjes: voor elk spel één, en je wint hem
 door de kampioen van dat spel te verslaan (de burgemeester, Opoe bij het bikkelen, bakkersjongen Teun bij het
-koekhappen, Jantje bij het hoepelen, Trijntje bij het ringsteken; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
+koekhappen, Jantje bij het hoepelen, Trijntje bij het ringsteken, Molenaar Kees bij de kop van Jut; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
 tik erop en je ziet van wie je moet winnen, met een knop naar het spel. Een nieuwe prijs zie je meteen in het
 beloningsscherm (tik erop en je gaat naar de pronkkamer), en tot je hem hebt bekeken staat er een gouden sterretje bij
 de knop en de wijzer. De prijzen zijn een gans, een sjoelbakje, een molentje, een dam met kroon, vergulde kaarten, een
-dobbelbeker, bikkels, een kolf, een koek aan een galg, een hoepel met belletjes, een draaimolentje, een knikkerschaal en
+dobbelbeker, bikkels, een kolf, een koek aan een galg, een hoepel met belletjes, een draaimolentje, een kop van Jut, een knikkerschaal en
 een tol (vijf per plank). Zulke piepkleine zilveren
 voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor pronkkasten en poppenhuizen (zie de
 poppenhuizen en miniaturen in het Rijksmuseum). Onderin zitten vijf laatjes met speelgoed: sjoelschijven,
@@ -190,6 +190,16 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   Trijntje (ze verschillen in hoe precies ze steken; afgesteld met 300 nagespeelde spellen per paar) of met z'n tweeën
   (jullie rijden tegenover elkaar en wie bij de ring komt, tikt). De camera staat naast de galg, net onder de kap:
   de paarden galopperen van links naar de ring.
+- **Kop van Jut** (op de kermis, schermvullend): een hoge paal met een schaal (blauw, geel, rood), een koperen rail met
+  een slee en bovenin een bel onder een rood dakje met een vaantje; vooraan een blok met een gesneden houten kop met
+  een hoge hoed, boze wenkbrauwen en een gekrulde snor. Houd je vinger op het veld en je kind tilt de zware moker op;
+  laat los als hij helemaal boven is: dan sla je het hardst en schiet de slee het hoogst. Te vroeg is de moker nog niet
+  boven, te laat gaan je armen trillen. Raak je de bel, dan klinkt hij (een koperen klok die nagalmt) en juicht de
+  kermisklant met zijn bolhoed; een perfecte slag laat de hoed van de kop vliegen (125 punten in plaats van 100).
+  Anders telt hoe hoog de slee kwam, en de schaal licht op tot daar. Vijf slagen elk, om de beurt; elke ronde draait de
+  kermisklant de veer wat strakker. Tegen Mieke, Jantje, Trijntje en Molenaar Kees (die sjouwt elke dag zakken meel),
+  afgesteld met 300 nagespeelde spellen per paar, of met z'n tweeën. Je staat op hetzelfde kermisplein: links achter
+  draait de draaimolen door.
 - **Knikkeren** (zolder, schermvullend): een potje in de zandbak, met de regels van het schoolplein. Iedereen zet vijf
   knikkers in en gooit ze om de beurt vanaf de streep naar het potje; wie het dichtst bij ligt, begint met tikken.
   Raak is nog een keer, en wie de laatste knikker erin tikt, wint de hele pot. Druk op een knikker, trek met je duim
@@ -261,7 +271,7 @@ eigen muziekknop rechtsboven.
 |---|---|---|---|
 | Het huis, de pronkkamer en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
 | Ganzenbord, knikkeren, bikkelen en hoepelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, luit |
-| Het kermisplein, ringsteken en koekhappen | Kermiswals (eigen melodie) | draaiorgel: vioolpijpen, fluiten, bourdon, klokkenspel, trommen en bekken | vioolpijpen, met klokkenspel, vol orgel |
+| Het kermisplein, ringsteken, koekhappen en de kop van Jut | Kermiswals (eigen melodie) | draaiorgel: vioolpijpen, fluiten, bourdon, klokkenspel, trommen en bekken | vioolpijpen, met klokkenspel, vol orgel |
 | Sjoelen, klaverjassen, tollen en kolf | Onder de Linde groene | klavecimbel | thema, 1e modo, 2e modo, blokfluit |
 | Molenspel, triktrak en dammen | Doen Daphne d'over schoone Maeght | luit en viola da gamba | thema, 1e modo, blokfluit |
 
@@ -276,14 +286,14 @@ opnames: feestgeluiden het luidst, spelgeluiden daaronder, het tikje bij elke aa
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": kop van Jut (op de kermis), uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
+Nog "in de oven": uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
 je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=41`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=42`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

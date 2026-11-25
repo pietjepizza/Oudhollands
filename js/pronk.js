@@ -56,6 +56,7 @@
     { id: 'koek', spel: 'koekhappen', titel: 'Koekhappen', naam: 'Vergulde koek', veld: 'kh-gewonnen', kampioen: 'teun', eis: 'Win van bakkersjongen Teun' },
     { id: 'hoepel', spel: 'hoepelen', titel: 'Hoepelen', naam: 'Zilveren hoepel', veld: 'hoepel-gewonnen', kampioen: 'jantje', eis: 'Win van Jantje' },
     { id: 'draaimolen', spel: 'ringsteken', titel: 'Ringsteken', naam: 'Zilveren draaimolentje', veld: 'ring-gewonnen', kampioen: 'trijntje', eis: 'Win van Trijntje' },
+    { id: 'jut', spel: 'kopvanjut', titel: 'Kop van Jut', naam: 'Zilveren kop van Jut', veld: 'jut-gewonnen', kampioen: 'kees', eis: 'Win van Molenaar Kees' },
     { id: 'knikkers', spel: 'knikkeren', titel: 'Knikkeren', naam: 'Zilveren knikkerschaal', veld: 'knikker-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' },
     { id: 'tol', spel: 'tollen', titel: 'Tollen', naam: 'Zilveren tol', veld: 'tol-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' }
   ];
@@ -122,6 +123,8 @@
   if (D() && !lijstVeld('pk-gemeld')) D().zetVeld('pk-gemeld', PRIJZEN.filter(gewonnen).map((p) => p.id));
 
   // ---------- De zilveren prijsjes (viewBox 0 0 100 100) ----------
+  // alleen de eerste letter klein: 'Kop van Jut' wordt 'kop van Jut', niet 'kop van jut'
+  const klein = (t) => t.charAt(0).toLowerCase() + t.slice(1);
   const Z = 'url(#pk-zilver)', ZH = 'url(#pk-zilver-h)', ZR = 'url(#pk-zilver-r)', G = 'url(#pk-goud)', GH = 'url(#pk-goud-h)';
   const LIJN = '#454D57', DONKER = '#5B636D';
   const voet = (cx, y, rx) => `<ellipse cx="${cx}" cy="${y + 3}" rx="${rx}" ry="${(rx * 0.2).toFixed(1)}" fill="#7E5616"/><rect x="${cx - rx}" y="${y - 1}" width="${rx * 2}" height="4" fill="${GH}"/><ellipse cx="${cx}" cy="${y - 1}" rx="${rx}" ry="${(rx * 0.2).toFixed(1)}" fill="${ZR}" stroke="${LIJN}" stroke-width=".7"/>`;
@@ -212,6 +215,17 @@
         return `<circle cx="${x}" cy="${y}" r="4.4" fill="${G}" stroke="#7E5616" stroke-width=".7"/><path d="M${(+x - 2.6).toFixed(1)} ${(+y + 1.2).toFixed(1)} H${(+x + 2.6).toFixed(1)}" stroke="#7E5616" stroke-width=".7"/><circle cx="${(+x - 1.4).toFixed(1)}" cy="${(+y - 1.6).toFixed(1)}" r="1.2" fill="#FFF5CC" opacity=".9"/>`; }).join('') +
       `<path d="M70 87 L86 26" stroke="${LIJN}" stroke-width="4.2" stroke-linecap="round"/><path d="M70 87 L86 26" stroke="${ZH}" stroke-width="2.6" stroke-linecap="round"/><circle cx="86.3" cy="25" r="2.6" fill="${G}" stroke="#7E5616" stroke-width=".5"/>` +
       glans('M22 34 C25 25 32 19.5 40 17', 1.6),
+    // een zilveren kop van Jut in het klein: een paal met een gouden bel en een dakje, een blokje met de kop en zijn hoge hoed
+    jut: () => voet(50, 89, 28) +
+      `<rect x="54" y="18" width="9" height="68" fill="${ZH}" stroke="${LIJN}" stroke-width=".8"/>` +
+      [28, 38, 48, 58, 68, 78].map((y) => `<path d="M55.5 ${y} H61.5" stroke="${DONKER}" stroke-width="1"/>`).join('') +
+      `<path d="M58.5 25 V84" stroke="${G}" stroke-width="1.3"/><rect x="55.6" y="60" width="5.8" height="7" rx="1" fill="${G}" stroke="#7E5616" stroke-width=".5"/>` +
+      `<path d="M51.5 18 L58.5 8 L65.5 18 Z" fill="${G}" stroke="#7E5616" stroke-width=".6"/><path d="M58.5 8 V3 L64 4.6 L58.5 6.2" fill="${G}" stroke="#7E5616" stroke-width=".5"/>` +
+      `<path d="M54.6 25 Q54.6 18.6 58.5 18.6 Q62.4 18.6 62.4 25 L64 27 H53 Z" fill="${GH}" stroke="#7E5616" stroke-width=".6"/>` +
+      `<rect x="27" y="73" width="22" height="13" fill="${ZR}" stroke="${LIJN}" stroke-width=".8"/><path d="M27 76 H49" stroke="${DONKER}" stroke-width=".6"/>` +
+      `<circle cx="38" cy="66" r="6.6" fill="${ZR}" stroke="${LIJN}" stroke-width=".8"/><path d="M34.6 68.6 q3.4 2.2 6.8 0" fill="none" stroke="${DONKER}" stroke-width=".9"/>` +
+      `<rect x="33" y="52.5" width="10" height="7.5" fill="${G}" stroke="#7E5616" stroke-width=".5"/><ellipse cx="38" cy="60" rx="7.6" ry="1.7" fill="${G}" stroke="#7E5616" stroke-width=".5"/>` +
+      glans('M56.5 22 V80', 1.1),
     // een zilveren draaimolentje: een vloer, paardjes op gouden palen, een gestreepte kap en een vaantje
     draaimolen: () => {
       const paardje = (x, y, s) => `<path transform="translate(${x} ${y}) scale(${s})" d="M-7 0 Q-5 -4 0 -3.6 L3.4 -7 L5.4 -6.2 L4.6 -3 Q6.2 -0.4 3 0.8 L4.2 5 H2.6 L1.4 1.4 H-4.2 L-5.8 5 H-7.4 L-6 1 Q-8 0.6 -7 0 Z" fill="${ZR}" stroke="${LIJN}" stroke-width=".6"/>`;
@@ -435,7 +449,7 @@
       if (won) aantal++;
       b.classList.toggle('gewonnen', won);
       b.classList.toggle('nieuw', won && nieuw.includes(p.id));
-      b.setAttribute('aria-label', won ? `${p.naam}, gewonnen met ${p.titel.toLowerCase()}` : `Nog te winnen: ${p.naam}. ${p.titel}: ${p.eis.toLowerCase()}`);
+      b.setAttribute('aria-label', won ? `${p.naam}, gewonnen met ${klein(p.titel)}` : `Nog te winnen: ${p.naam}. ${p.titel}: ${p.eis.toLowerCase()}`);
     });
     zaal.querySelector('.pk-teller').textContent = `${aantal} van ${PRIJZEN.length}`;
     const stippen = nieuweSoorten();
@@ -465,14 +479,14 @@
     const wie = p.gezicht || p.kampioen;
     const gezicht = window.Personen && Personen.gezicht[wie] ? `<span class="pk-k-gezicht">${Personen.gezicht[wie]}</span>` : '';
     k.querySelector('.pk-k-regel').innerHTML = won
-      ? `${gezicht}<span>Gewonnen met ${esc(p.titel.toLowerCase())}</span>`
+      ? `${gezicht}<span>Gewonnen met ${esc(klein(p.titel))}</span>`
       : `${gezicht}<span><b>${esc(p.eis)}</b><small>${esc(p.titel)}</small></span>`;
     const speel = k.querySelector('.pk-k-speel');
     const kamer = D() ? D().kamerVanSpel(p.spel) : 'voorkamer';
     const open = !D() || D().kamerOpen(kamer);
     speel.hidden = won || !open;
     speel.setAttribute('href', '#' + p.spel);
-    speel.querySelector('span').textContent = 'Speel ' + p.titel.toLowerCase();
+    speel.querySelector('span').textContent = 'Speel ' + klein(p.titel);
     toonLaag(k);
     if (won) klank('kling'); else klank('tik');
     if (won && knop && knop.classList.contains('nieuw')) {

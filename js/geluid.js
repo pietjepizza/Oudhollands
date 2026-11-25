@@ -872,6 +872,23 @@
       stoot(B, t + 0.02, { duur: 0.12, type: 'bandpass', f: 3200, f2: 2000, q: 1.4, aanzet: 0.01, vol: 0.05 });
       if (goud) [0, 1, 2].forEach((i) => modaal(B, t + 0.08 + i * 0.07, [1568, 1976, 2349][i], BELLETJE, 0.06, -0.2 + i * 0.2));
     },
+    // de koperen bel bovenin de kop van Jut: de delen van een klok, maar kleiner, helderder en korter
+    bel(kracht) {
+      const B = bron(); if (!B) return;
+      const k = klem(kracht === undefined ? 1 : kracht, 0.4, 1.3);
+      const t = nu(B), f = rnd(840, 880);
+      modaal(B, t, f, KLOK.map(([r, a, d]) => [r, a, d * 0.6]), 0.2 * k, 0.12);
+      modaal(B, t + 0.004, f * 1.0035, KLOK.map(([r, a, d]) => [r, a * 0.6, d * 0.5]), 0.12 * k, -0.08);
+      stoot(B, t, { duur: 0.02, type: 'bandpass', f: 5200, q: 1.2, aanzet: 0.001, vol: 0.08 * k });
+    },
+    // de slee van de kop van Jut schiet langs de ijzeren rail omhoog: een ratelend schuiven dat hoger wordt
+    slee(duur, hoog) {
+      const B = bron(); if (!B) return;
+      const t = nu(B), d = klem(duur || 0.6, 0.15, 1.4), h = klem(hoog === undefined ? 0.5 : hoog, 0, 1);
+      stoot(B, t, { duur: d, type: 'bandpass', f: 520, f2: 620 + 1700 * h, q: 2.2, aanzet: 0.02, vol: 0.06 });
+      const n = Math.round(d * 15);
+      for (let i = 0; i < n; i++) modaal(B, t + i / n * d * 0.9 + rnd(0, 0.008), rnd(1900, 2250) * (1 + i / (n * 2.5)), IJZER.map(([r, a, dd]) => [r, a, dd * 0.05]), 0.02 * (1 - i / (n * 1.6)), rnd(-0.2, 0.2));
+    },
     // het rollen van een houten hoepel over de klinkers, zolang hij rolt (zet de vaart, en stop aan het eind)
     rollen() {
       const leeg = { zet() {}, stop() {} };
@@ -914,7 +931,7 @@
     woesj: 1.8, munt: 1.12, klus: 1.45, tada: 1, tik: 1.6, knik: 3.4, bikkel: 2, stuit: 2.1, vang: 2.8, kolf: 2.05, paal: 1.58,
     hap: 3.9, klap: 1.6, boing: 2.4, tel: 1.86, start: 0.7, gak: 2.1, kling: 2.1, tralies: 1.1, molen: 1.23, plop: 2.1,
     zweep: 0.5, val: 1.78, cadeau: 1.3, koer: 1.1, kwak: 1.7, kaart: 2.7, deel: 2.6, schud: 1.8, fluit: 1.33, miauw: 1.06,
-    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4, ring: 1.7
+    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4, ring: 1.7, bel: 1.5, slee: 1.6
   };
   Object.keys(window.Geluid).forEach((naam) => {
     const d = Object.getOwnPropertyDescriptor(window.Geluid, naam);

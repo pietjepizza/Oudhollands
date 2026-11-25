@@ -2156,6 +2156,12 @@ button.mo-kaart { cursor: pointer; }
 .rs-vak.mis::after { content: ""; display: block; width: 5px; height: 1.5px; margin: 4px auto 0; background: rgba(244, 233, 207, .35); transform: rotate(-35deg); }
 .rs-vak.koper { box-shadow: inset 0 0 0 2.5px #C8964A, 0 1px 2px rgba(0, 0, 0, .5); }
 .rs-vak.goud { box-shadow: inset 0 0 0 2.5px #F2CF6A, 0 0 6px rgba(242, 207, 106, .8); }
+/* de kop van Jut: per slag de hoogte, goud als de bel klonk */
+.kv-vakjes { display: grid; grid-template-columns: repeat(5, auto); gap: 3px; }
+.kv-vak { min-width: 22px; height: 17px; padding: 0 2px; border-radius: 4px; display: inline-grid; place-items: center; font: 600 .7rem/1 var(--f-tekst); font-style: normal; font-variant-numeric: lining-nums tabular-nums; color: rgba(244, 233, 207, .5); box-shadow: inset 0 0 0 1px rgba(244, 233, 207, .26); }
+.kv-vak.vol { color: #F4E9CF; background: rgba(244, 233, 207, .12); }
+.kv-vak.bel { color: #2A1A08; background: linear-gradient(#F6DE9A, #C9973F); box-shadow: 0 0 6px rgba(242, 193, 78, .55); }
+.kv-vak.hoed { color: #2A1A08; background: linear-gradient(#FFF1C2, #E0B44A); box-shadow: 0 0 9px rgba(255, 220, 120, .9), inset 0 0 0 1px #FFF6D8; }
 .rs-pop { text-shadow: 0 2px 0 rgba(60, 30, 8, .95), 0 0 6px rgba(40, 20, 5, .95), 0 3px 14px rgba(0, 0, 0, .6); }
 .rs-pop.goed { color: #FFE6A6; font-family: var(--f-sier); font-weight: normal; font-size: 1.45rem; }
 .rs-pop.groot { font-size: 2rem; }

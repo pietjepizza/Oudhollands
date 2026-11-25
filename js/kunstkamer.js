@@ -213,6 +213,23 @@
       ]
     },
     {
+      id: 'kopvanjut', naam: 'Kop van Jut', tegel: 'ill-jut', tijd: 'Sinds de jaren 1870', kort: 'Sla zo hard je kan: ding!',
+      herkomst: [
+        'De kop van Jut is een krachtmeter op de kermis. Je slaat met een zware houten hamer op een blok, en een slee schiet langs een hoge paal omhoog. Sla je hard genoeg, dan klinkt bovenin de bel.',
+        'De naam komt van Hendrik Jut. In 1872 pleegde hij in Den Haag een beruchte roofmoord. Toen hij in 1876 terechtstond, was het hele land boos, en kermisbazen boden een kop van Jut aan: een houten kop waar je met een hamer op mocht slaan. Zo gaat het verhaal; helemaal zeker is het niet.'
+      ],
+      spelen: ['Houd je vinger op het veld: je tilt de zware moker op.', 'Laat los als hij helemaal boven is: dan sla je het hardst en schiet de slee het hoogst.', 'Raak je de bel, dan krijg je honderd punten. Bij een perfecte slag vliegt de hoed van de kop: honderdvijfentwintig.', 'Vijf slagen elk: wie bij elkaar het hoogst komt, wint.'],
+      weetjes: ['De kop van Jut zijn betekent: de zondebok zijn, degene die overal de schuld van krijgt.', 'Op een prent uit de negentiende eeuw staat een groepje jongens bij de kop van Jut; één van hen staat klaar om te slaan.'],
+      kunst: [
+        { titel: 'Prent met voorstelling van de kop van Jut', maker: 'Anoniem, tweede helft negentiende eeuw', url: 'https://www.lakenhal.nl/en/collection/z-n-334', waar: 'Museum De Lakenhal, Leiden' }
+      ],
+      bronnen: [
+        { tekst: 'Hendrik Jut (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Hendrik_Jut' },
+        { tekst: 'Waar is de kop van Jut gebleven? (Joop, BNNVARA)', url: 'https://www.bnnvara.nl/joop/artikelen/waar-is-de-kop-van-jut-gebleven' },
+        { tekst: 'Prent met voorstelling van de kop van Jut (Museum De Lakenhal)', url: 'https://www.lakenhal.nl/en/collection/z-n-334' }
+      ]
+    },
+    {
       id: 'knikkeren', naam: 'Knikkeren', tegel: 'ill-knikkers', tijd: 'Eeuwenoud', kort: 'Een potje in het zand',
       herkomst: [
         'Kinderen speelden al in de oudheid met noten, steentjes en balletjes. Knikkers waren vaak van gebakken klei; die waren goedkoop. Wie meer geld had, kon knikkers van steen of glas kopen.',
