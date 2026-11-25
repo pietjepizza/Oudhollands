@@ -235,45 +235,71 @@ zodra je het gedaan hebt. Buiten tikt hij op de deur zolang je nog nooit binnen 
 nog geen spel hebt gespeeld, en op de klusknop zodra je je eerste klus kunt betalen. In het menu staat "Zo werkt het":
 vier plaatjes in een kring (speel, verdien duiten, knap het huis op, win prijzen).
 
-**Muziek** (knop "Muziek" rechtsboven): melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654), gespeeld
-door een klein barokensemble dat de browser zelf laat klinken met Web Audio. De luit en het klavecimbel zijn getokte
-snaren (Karplus-Strong: ruis die in een lus rondgaat en een toon wordt, met dubbele snaren die een fractie verstemd
-zijn en een klankkast), de blokfluit heeft adem, een aanblaasruisje en vibrato, de viola da gamba strijkt de baslijn
-en een tabortrommel slaat de maat bij de dans. Van Eyck schreef alleen de melodie; de begeleiding wordt per stuk
-bedacht zoals een continuospeler dat doet (bij elke halve of hele maat het akkoord dat het best bij de melodie past,
-met stappen als IV-V-I en aan het eind van elk deel een cadens V-I, een vloeiende baslijn en akkoorden die zo min
-mogelijk verspringen). Gespeeld als door mensen: nadruk op de tel, een triller vlak voor het slot, iets vertragen
-naar het eind van een deel, elke zin van twee maten zwelt aan en neemt weer af, en net niet precies tegelijk. Alles
-klinkt door één galm, als in een betegelde kamer.
+**Muziek** (knop "Muziek" rechtsboven): elke plek en elk spel heeft een eigen stuk, gespeeld door een klein
+barokensemble dat de browser zelf laat klinken met Web Audio (er is geen opname en er zijn geen uitvoeringsrechten). Op
+de gracht klinkt het **Speelhuyslied**, het lied van het huis: een springerige dans op blokfluit, cister, viola da gamba
+en tabor, met een haakje dat blijft hangen (do do-re mi do, sol sol-la sol mi) en een middendeel dat in loopjes daalt
+en weer opklimt. In de voorkamer speelt een klavecimbel een menuet, op de zolder tingelt een speeldoos een wiegewijsje,
+de pronkkamer heeft een statige ouverture met gepunteerde ritmes en in de Kunstkamer klinkt het Engels Nachtegaeltje.
+Elk spel heeft een stuk dat erbij past (zie de tabel). Ganzenbord, sjoelen, molenspel en de Kunstkamer houden hun
+melodieën uit Jacob van Eyck, *Der Fluyten Lust-hof* (1649 en 1654); de andere zijn eigen melodieën in de trant van de
+dansen, menuetten, walsen en marsen van toen. Ga je de trap op of stap je naar buiten, dan dooft het ene stuk uit en
+begint het volgende.
 
-Zoals Van Eyck het zelf deed, komt elk stuk in ronden: eerst het thema, dan de **eerste modo** (de noten opgedeeld in
-achtsten) en de **tweede modo** (in zestienden), en tot slot het thema op een ander instrument (de luit in plaats van
-de blokfluit, of andersom). De versieringen zijn doorgangsnoten, wisselnoten en omspelingen in de toonsoort, passend
-bij het akkoord eronder (bij de dominant in mineur met de verhoogde leidtoon), en ze komen stap voor stap op de
-volgende noot uit; de slotnoot en de triller ervoor blijven zoals ze zijn. Zo duurt een stuk zes tot negen minuten
-voordat het zich herhaalt. Spellen die een stuk delen, beginnen elk bij een andere ronde. Bij de dans speelt een cister
-mee (het getokte instrument met koperen snaren dat op schilderijen van Vermeer en Metsu te zien is), en de viola da
-gamba heeft een strijkstok die aanzet en een klankkast met formanten. De muziek staat aan, tenzij je hem uitzet; hij
-begint bij de eerste tik, en na de opening pas als de film klaar is. De film heeft zijn eigen muziek: een torenklok
-(een gegoten klok met brom, slagtoon, kleine terts, kwint en nominaal die zweven), een gamba die aanzwelt, de luit, en
-dan de blokfluit met het begin van het Engels Nachtegaeltje, met een roffel op de tabor naar het slotakkoord.
+De luit, de cister en het klavecimbel zijn getokte snaren (Karplus-Strong: ruis die in een lus rondgaat en een toon
+wordt, met dubbele snaren die een fractie verstemd zijn en een klankkast), de blokfluit heeft adem, een aanblaasruisje
+en vibrato, de viola da gamba strijkt de baslijn en een tabortrommel slaat de maat bij de dans. De speeldoos is een
+stalen kam met tongetjes: een heldere toon die lang uitklinkt, een tweede tong die een fractie anders gestemd is, de
+onzuivere tweede trilling van een ingeklemde staaf en het tikje van het pinnetje op de rol. Bij de melodieën staat geen
+begeleiding; die wordt per stuk bedacht zoals een continuospeler dat doet (bij elke halve of hele maat het akkoord dat
+het best bij de melodie past, met stappen als IV-V-I en aan het eind van elk deel een cadens V-I, een vloeiende baslijn
+en akkoorden die zo min mogelijk verspringen). Gespeeld als door mensen: nadruk op de tel, een triller vlak voor het
+slot, iets vertragen naar het eind van een deel, elke zin van twee maten zwelt aan en neemt weer af, en net niet precies
+tegelijk. Alles klinkt door één galm, als in een betegelde kamer.
 
-Op de kermis speelt een **draaiorgel** de Kermiswals, een eigen melodie in de trant van de oude kermiswalsen (lange
-tonen met een chromatisch buurtje, e-dis-e en d-cis-d, in de vorm A-B-A). Het orgel heeft vioolpijpen in twee rijen
-die een fractie uit elkaar staan (de zweving van een draaiorgel), fluitpijpen die aanspreken met een zuchtje wind,
-een gedekte baspijp, een klokkenspel, en alle pijpen golven met de tremulant. Het speelt hoempa: de bas op de één,
-het akkoord op twee en drie, met de grote trom op de één, de kleine trom zacht op twee en drie, een roffeltje naar
-elk nieuw deel en in het volle orgel een bekken. Een orgel speelt strak in de maat. De wals speelt ook in de
-draaimolen en bij de koekkraam, en loopt door als je van het plein naar een attractie gaat. Op de kermis zit een
-eigen muziekknop rechtsboven.
+Elk stuk komt in ronden. Bij Van Eyck zoals hij het zelf deed: eerst het thema, dan de **eerste modo** (de noten
+opgedeeld in achtsten) en de **tweede modo** (in zestienden), en tot slot het thema op een ander instrument (de luit in
+plaats van de blokfluit, of andersom). De vlotte eigen stukken hebben drie ronden: het thema, een variatie en het thema
+op een ander instrument. De versieringen zijn doorgangsnoten, wisselnoten en omspelingen in de toonsoort, passend bij het
+akkoord eronder (bij de dominant in mineur met de verhoogde leidtoon), en ze komen stap voor stap op de volgende noot
+uit; de slotnoot en de triller ervoor blijven zoals ze zijn. Alle stukken zijn even luid afgesteld, gemeten zoals een
+oor dat hoort (geïntegreerde luidheid in LUFS); het draaiorgel mag iets harder en de speeldoos iets zachter. De muziek
+staat aan, tenzij je hem uitzet; hij begint bij de eerste tik, en na de opening pas als de film klaar is. De film heeft
+zijn eigen muziek: een torenklok (een gegoten klok met brom, slagtoon, kleine terts, kwint en nominaal die zweven), een
+gamba die aanzwelt en de luit, en dan zet de blokfluit met de tabor het Speelhuyslied in; de hoge do valt precies als
+de naam gaat glanzen.
 
-| Plek | Stuk | Bezetting | Begint bij |
+Op de kermis speelt een **draaiorgel**: de Kermiswals op het plein, de Draaimolenwals bij het ringsteken, een polka bij
+het koekhappen en een mars bij de kop van Jut. Het orgel heeft vioolpijpen in twee rijen die een fractie uit elkaar
+staan (de zweving van een draaiorgel), fluitpijpen die aanspreken met een zuchtje wind, een gedekte baspijp, een
+klokkenspel, en alle pijpen golven met de tremulant. Het speelt hoempa: in de wals de bas op de één en het akkoord op
+twee en drie, in de mars en de polka de bas op één en drie en het akkoord op twee en vier, met de grote trom op de zware
+tellen, de kleine trom zacht ertussen, een roffeltje naar elk nieuw deel en in het volle orgel een bekken. Een orgel
+speelt strak in de maat, en elke ronde trekt het andere registers open. Op de kermis zit een eigen muziekknop
+rechtsboven.
+
+| Plek of spel | Stuk | Bezetting | Ronden |
 |---|---|---|---|
-| Het huis, de pronkkamer en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
-| Ganzenbord, knikkeren, bikkelen en hoepelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, luit |
-| Het kermisplein, ringsteken, koekhappen en de kop van Jut | Kermiswals (eigen melodie) | draaiorgel: vioolpijpen, fluiten, bourdon, klokkenspel, trommen en bekken | vioolpijpen, met klokkenspel, vol orgel |
-| Sjoelen, klaverjassen, tollen en kolf | Onder de Linde groene | klavecimbel | thema, 1e modo, 2e modo, blokfluit |
-| Molenspel, triktrak en dammen | Doen Daphne d'over schoone Maeght | luit en viola da gamba | thema, 1e modo, blokfluit |
+| De gracht (en de opening) | Het Speelhuyslied (eigen dans) | blokfluit, cister, viola da gamba en tabor | thema, variatie, luit |
+| De voorkamer | Menuet van de voorkamer (eigen menuet) | klavecimbel, luit en gamba | thema, 1e en 2e variatie, blokfluit |
+| De zolder | De speeldoos op zolder (eigen wiegewijsje) | speeldoos | thema, variatie |
+| De pronkkamer | Pronkouverture (eigen ouverture) | klavecimbel | thema, variatie, blokfluit |
+| De Kunstkamer | Engels Nachtegaeltje (Van Eyck) | blokfluit, luit en gamba | thema, 1e en 2e modo, luit |
+| Het kermisplein | Kermiswals (eigen wals) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
+| Ganzenbord | Malle Symen (Van Eyck) | blokfluit, cister en tabor | thema, 1e en 2e modo, luit |
+| Sjoelen | Onder de Linde groene (Van Eyck) | klavecimbel | thema, 1e en 2e modo, blokfluit |
+| Molenspel | Doen Daphne d'over schoone Maeght (Van Eyck) | luit en gamba | thema, 1e en 2e modo, blokfluit |
+| Dammen | Damgavotte (eigen gavotte in a-klein) | luit en gamba | thema, 1e en 2e variatie, blokfluit |
+| Klaverjassen | Opoes wals (eigen wals) | blokfluit, luit en gamba | thema, variatie, luit |
+| Triktrak | Dobbelgaillarde (eigen gaillarde in g-klein) | luit en gamba | thema, variatie, blokfluit |
+| Bikkelen | Bikkeldans (eigen huppeldans) | blokfluit, cister en tabor | thema, variatie, luit |
+| Kolf | IJswals (eigen wals met klokjes als ijskristallen) | klavecimbel, klokjes, luit en gamba | thema, variatie, blokfluit |
+| Koekhappen | Happolka (eigen polka) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
+| Hoepelen | Hoepelloopje (eigen dans in loopjes) | blokfluit, cister en tabor | thema, variatie, luit |
+| Ringsteken | Draaimolenwals (eigen wals) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
+| Kop van Jut | Sterke-mannenmars (eigen mars) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
+| Knikkeren | Knikkerdeuntje (eigen deuntje) | klavecimbel | thema, variatie, blokfluit |
+| Tollen | Tolletje draai (eigen draaiwijsje in d-klein) | klavecimbel, luit en gamba | thema, variatie, blokfluit |
 
 **Geluidseffecten**: nagebootst zoals ze in het echt ontstaan. Hout, been, steen, glas, metaal en klokken klinken als
 een handvol tonen die elk op hun eigen tempo uitsterven (modale klank), met een tikje ruis waar het ding iets raakt;
@@ -293,7 +319,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=42`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=43`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

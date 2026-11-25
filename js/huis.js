@@ -2955,7 +2955,14 @@
   const kamerTitel = (k) => (window.Duiten && Duiten.kamers[k] ? Duiten.kamers[k].naam : k);
   const kamerOpen = (k) => !window.Duiten || Duiten.kamerOpen(k);
   const andereKamer = () => (kamerNaam === 'voorkamer' ? 'zolder' : 'voorkamer');
-  function zetKamerNaam(k) { kamerNaam = k; sessie('speelhuys.kamer', k); }
+  function zetKamerNaam(k) { kamerNaam = k; sessie('speelhuys.kamer', k); meldPlek(); }
+  // De muziek hoort bij de plek: op de gracht het lied van het huis, en elke kamer zijn eigen stuk (zie muziek.js).
+  // Alleen als het huis in beeld is; in een spel of zaal kiest app.js de muziek.
+  const plekNu = () => (gevel && gevel.hidden === false ? 'straat' : kamerNaam);
+  function meldPlek() {
+    const thuis = document.getElementById('thuis');
+    if (window.Muziek && thuis && !thuis.hidden) window.Muziek.kies(plekNu());
+  }
 
   // Staand (telefoon) of breed (computer, tablet)?
   function gewensteIndeling() {
@@ -3587,6 +3594,7 @@
     document.body.classList.remove('op-straat');
     pasMaatAan();
     centreer();
+    meldPlek();
   }
 
   function toonGevel() {
@@ -3600,6 +3608,7 @@
     werkTijdBij();
     werkGevelBij();
     vierVoortgang();
+    meldPlek();
   }
 
   // ---------- De straat: uitsnede, tijd van de dag, bewoners en nieuwe opknapklussen ----------
@@ -3808,6 +3817,8 @@
     naarBuiten,
     gaNaarKamer(k) { bouw(); gaNaarKamer(k); },
     get kamer() { return kamerNaam; },
+    // waar je bent: 'straat' (de gracht), 'voorkamer' of 'zolder'
+    get plek() { return plekNu(); },
     get tijd() { return gevelSvg ? gevelSvg.getAttribute('data-tijd') : tijdNu(); },
     get tijdKeuze() { return tijdKeuze(); },
     kiesTijd(k) {

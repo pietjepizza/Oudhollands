@@ -2,14 +2,6 @@
    de knoppen in de kop, het menu, tikgeluid en trilling, en het installeren als app. */
 (function () {
   const SPELLEN = ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'koekhappen', 'hoepelen', 'ringsteken', 'kopvanjut', 'knikkeren', 'tollen'];
-  // muziek per spel: [stuk, ronde]. Spellen die een stuk delen, beginnen elk bij een andere variatie
-  // (0 = het thema, 1 en 2 = de modi met versieringen, 3 = het thema op een ander instrument)
-  const MUZIEK = {
-    ganzenbord: ['ganzenbord', 0], sjoelen: ['sjoelen', 0], molenspel: ['molenspel', 0],
-    knikkeren: ['ganzenbord', 1], tollen: ['sjoelen', 2], dammen: ['molenspel', 3], klaverjassen: ['sjoelen', 1],
-    triktrak: ['molenspel', 1], bikkelen: ['ganzenbord', 3], kolf: ['sjoelen', 3], koekhappen: ['kermis', 1],
-    hoepelen: ['ganzenbord', 1], ringsteken: ['kermis', 3], kopvanjut: ['kermis', 2]
-  };
   // plekken om te lezen en te kijken; geen spel
   const PAGINAS = ['kunstkamer', 'pronkkamer', 'kermis'];
   const PAGINA = { kunstkamer: () => window.Kunstkamer, pronkkamer: () => window.Pronk, kermis: () => window.Kermis };
@@ -78,8 +70,9 @@
     }
     document.title = wie ? `${document.getElementById('scherm-' + wie).querySelector('h1').textContent} · Het Speelhuys` : 'Het Speelhuys';
     huidig = wie;
-    // op de kermis speelt het draaiorgel de kermiswals; in het huis en de zalen het Engels Nachtegaeltje
-    if (window.Muziek) { const m = spel ? (MUZIEK[spel] || [spel, 0]) : pagina === 'kermis' ? ['kermis', 0] : ['thuis', 0]; window.Muziek.kies(m[0], m[1]); }
+    // elk spel en elke plek heeft een eigen stuk (zie muziek.js); in het huis hangt het af van waar je staat: op de
+    // gracht, in de voorkamer of op de zolder (huis.js meldt het ook als je de trap op gaat of naar buiten)
+    if (window.Muziek) window.Muziek.kies(wie || (window.Huis && window.Huis.plek) || 'straat');
   }
 
   // ---------- Hoogte van de kop, zodat de kamer precies het scherm vult ----------

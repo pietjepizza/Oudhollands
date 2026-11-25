@@ -1,13 +1,16 @@
-/* Achtergrondmuziek: melodieën uit Jacob van Eyck, Der Fluyten Lust-hof (Amsterdam, 1649 en 1654).
-   De browser speelt de noten zelf met Web Audio, dus er is geen opname en er zijn geen uitvoeringsrechten.
+/* Achtergrondmuziek: elke plek en elk spel heeft een eigen stuk. Drie dansen en het Engels Nachtegaeltje komen uit
+   Jacob van Eyck, Der Fluyten Lust-hof (Amsterdam, 1649 en 1654); de andere zijn eigen melodieën in de trant van de
+   dansen, menuetten, walsen en marsen van toen. De browser speelt de noten zelf met Web Audio, dus er is geen opname
+   en er zijn geen uitvoeringsrechten.
 
-   Een klein barokensemble speelt ze: blokfluit, luit, klavecimbel, viola da gamba en een tabortrommel.
-   - De luit en het klavecimbel zijn getokte snaren (Karplus-Strong, zie geluid.js), de blokfluit heeft adem en
-     vibrato, de gamba strijkt de baslijn en de tabor slaat de maat bij de dans.
-   - Van Eyck schreef alleen de melodie. De begeleiding wordt hier voor elk stuk zelf bedacht: per halve of hele maat
-     een akkoord uit de toonsoort, gekozen zoals een continuospeler dat doet (de melodietonen moeten passen, met de
+   Een klein barokensemble speelt ze: blokfluit, luit, klavecimbel, cister, viola da gamba en een tabortrommel; op de
+   kermis een draaiorgel en op de zolder een speeldoos.
+   - De luit, de cister en het klavecimbel zijn getokte snaren (Karplus-Strong, zie geluid.js), de blokfluit heeft adem
+     en vibrato, de gamba strijkt de baslijn en de tabor slaat de maat bij de dans.
+   - Bij de melodieën staat geen begeleiding. Die wordt hier voor elk stuk zelf bedacht: per halve of hele maat een
+     akkoord uit de toonsoort, gekozen zoals een continuospeler dat doet (de melodietonen moeten passen, met de
      gebruikelijke stappen zoals IV-V-I, en aan het eind van een deel een cadens V-I). Daarbij een vloeiende baslijn
-     en akkoorden die zo min mogelijk verspringen.
+     en akkoorden die zo min mogelijk verspringen. Alleen het draaiorgel speelt vaste akkoorden per maat.
    - Gespeeld als door mensen: nadruk op de tel, een ademende frase, een triller op de slotnoot, iets vertragen
      naar het eind van elk deel, en net niet precies tegelijk.
 
@@ -15,45 +18,114 @@
    c' = centrale do, getal = notenwaarde (4 = kwart), punt = gepunteerd, ~ = overbinding, | = maatstreep,
    |: :| = herhaling, [1 [2 = eerste en tweede eind, || = slot. */
 (function () {
-  // De kermiswals: een eigen melodie in de trant van de oude kermiswalsen, voor het draaiorgel. Lange tonen met
-  // een chromatisch buurtje (e-dis-e, d-cis-d, a-gis-a), A-B-A. De akkoorden staan per maat in 'maten';
-  // het orgel speelt ze als hoempa: de bas op de één, het akkoord op twee en drie.
+  // ============================================================
+  // DE EIGEN MELODIEËN DIE UIT DELEN BESTAAN
+  // ============================================================
+  // Het lied van het huis (op de gracht en in de opening): een springerige dans met een haakje dat blijft hangen,
+  // do do-re mi do, sol sol-la sol mi. Het middendeel daalt in loopjes en klimt weer op naar het thema.
+  const SPEELHUYS_A = "c''4 c''8 d''8 e''4 c''4 | g''4 g''8 a''8 g''4 e''4 | f''4 f''8 g''8 a''4 f''4 | e''4 d''8 c''8 d''2 | " +
+    "c''4 c''8 d''8 e''4 c''4 | g''4 g''8 a''8 g''4 c'''4 | h''4 a''8 g''8 h''4 d'''4 | ";
+  const SPEELHUYS_B = "|: a''8 g''8 f''8 e''8 d''4 a''4 | g''8 f''8 e''8 d''8 c''4 g''4 | f''8 e''8 d''8 c''8 h'4 g''4 | " +
+    "e''8 d''8 c''8 h'8 a'4 e''4 | d''8 e''8 f''8 g''8 a''4 f''4 | e''8 f''8 g''8 a''8 h''4 g''4 | c'''4 h''8 a''8 g''4 f''4 | e''2 d''2 :| ";
+
+  // De kermiswals: lange tonen met een chromatisch buurtje (e-dis-e, d-cis-d, a-gis-a), A-B-A. De akkoorden staan
+  // per maat in 'maten'; het orgel speelt ze als hoempa: de bas op de één, het akkoord op twee en drie.
   const KERMIS_A = "e''2. | e''4 dis''4 e''4 | g''2. | f''4 e''4 d''4 | d''2. | d''4 cis''4 d''4 | f''2. | e''4 d''4 c''4 | " +
     "a''2. | a''4 gis''4 a''4 | c'''2. | h''4 a''4 g''4 | g''2. | e''4 f''4 g''4 | f''4 e''4 d''4 | c''2 g'4 | ";
   const KERMIS_B = "d''4 h'4 d''4 | g''2. | fis''4 e''4 fis''4 | a''2. | a''4 g''4 fis''4 | g''4 a''4 h''4 | c'''4 h''4 a''4 | g''2. | " +
     "e''4 dis''4 e''4 | c'''2. | h''4 a''4 g''4 | d''2. | f''4 e''4 d''4 | g''2. | g''4 f''4 e''4 | d''2 g'4 | ";
   const KERMIS_AKK_A = 'C C C G7 G7 G7 G7 C F F F G7 C C G7 C ';
   const KERMIS_AKK_B = 'G G D7 D7 D7 G D7 G C C G G G7 G7 G7 G7 ';
+  // De draaimolenwals (ringsteken): een draaitje om de toon en dan een sprong, steeds hoger, zoals de molen
+  // die op gang komt. Het middendeel staat in C, en via D7 draait hij terug.
+  const MOLENWALS_A = "h''4 a''4 h''4 | d'''2. | c'''4 h''4 c'''4 | a''2. | a''4 g''4 a''4 | c'''2. | h''4 a''4 h''4 | g''2. | " +
+    "e''4 dis''4 e''4 | g''2. | fis''4 e''4 fis''4 | a''2. | g''4 h''4 d'''4 | g'''2. | fis'''4 e'''4 d'''4 | g''2. | ";
+  const MOLENWALS_B = "g''4 fis''4 g''4 | e'''2. | d'''4 cis'''4 d'''4 | h''2. | c'''4 h''4 c'''4 | g'''2. | f'''4 e'''4 d'''4 | c'''2. | " +
+    "e''4 g''4 c'''4 | e'''2. | d'''4 c'''4 a''4 | h''2. | a''4 h''4 c'''4 | d'''2. | c'''4 h''4 a''4 | fis''2. | ";
+  const MOLENWALS_AKK_A = 'G G D7 D7 D7 D7 G G C C D D G G D7 G ';
+  const MOLENWALS_AKK_B = 'C C G7 G7 C C G7 C C Am D7 G D7 D7 D7 D7 ';
+  // De happolka (koekhappen): hop-hop en een sprong naar de koek. Een streep tussen twee akkoorden (F/C7)
+  // betekent: het eerste op de eerste helft van de maat, het tweede op de tweede helft.
+  const HAP_A = "c''8 c''8 f''4 a''8 a''8 c'''4 | b''8 a''8 g''8 f''8 g''4 c''4 | c''8 c''8 e''4 g''8 g''8 c'''4 | c'''8 b''8 a''8 g''8 a''4 f''4 | " +
+    "c''8 c''8 f''4 a''8 a''8 c'''4 | d'''8 c'''8 b''8 a''8 b''4 g''4 | a''8 g''8 f''8 e''8 g''4 e''4 | f''4 f''4 f''2 | ";
+  const HAP_B = "a''4. g''8 f''4 a''4 | g''4. f''8 e''4 g''4 | f''4. e''8 d''4 f''4 | e''2 c''2 | " +
+    "a''4. g''8 f''4 a''4 | b''4. a''8 g''4 b''4 | a''4 c'''4 g''4 e''4 | f''2. r4 | ";
+  const HAP_AKK_A = 'F C7 C7 F F Gm F/C7 F ', HAP_AKK_B = 'F C7 Dm C F Gm F/C7 F ';
+  // De sterke-mannenmars (kop van Jut): zware stappen, een fanfare en een beetje opschepperig
+  const MARS_A = "f''4 f''8. f''16 b''4 f''4 | d'''4 b''4 f''2 | es''4 es''8. es''16 g''4 es''4 | c'''4 a''4 f''2 | " +
+    "f''4 f''8. f''16 b''4 d'''4 | f'''4 d'''4 b''2 | c'''4 es'''4 c'''4 a''4 | b''2. r4 | ";
+  const MARS_B = "d'''4. c'''8 b''4 a''4 | g''4. a''8 b''4 g''4 | f''4. g''8 a''4 b''4 | c'''2 f''2 | " +
+    "d'''4. c'''8 b''4 a''4 | g''4 b''4 es'''4 d'''4 | c'''4 b''4 a''4 c'''4 | b''2. r4 | ";
+  const MARS_AKK_A = 'Bb Bb Eb F7 Bb Bb F7 Bb ', MARS_AKK_B = 'Gm Eb F F7 Bb Eb F7 Bb ';
+
+  // De ronden. Het draaiorgel wisselt van register: vioolpijpen, fluiten met klokkenspel, viool met klokkenspel en
+  // het volle orgel. De vlotte stukken: het thema, een variatie en het thema op een ander instrument.
+  const ORGELRONDEN = [
+    { reg: 'viool', naam: '', pauze: 0.35 },
+    { reg: 'fluit', klok: true, naam: 'met klokkenspel', pauze: 0.35 },
+    { reg: 'viool', klok: true, naam: 'met klokkenspel', pauze: 0.35 },
+    { reg: 'vol', klok: true, bekken: true, naam: 'vol orgel', pauze: 1.6 }
+  ];
+  const DRIE = [{ modo: 0, pauze: 0.8 }, { modo: 1, pauze: 0.8 }, { modo: 0, wissel: true, pauze: 2.2 }];
 
   const STUKKEN = {
-    kermis: {
-      titel: 'Kermiswals',
-      bron: 'Op het draaiorgel: een eigen wals in de trant van de oude kermiswalsen',
-      melodie: 'orgel', stijl: 'orgel', tempo: 168, transpositie: 0, maat: 3, grond: 0, mineur: false, niveau: 0.5,
-      noten: KERMIS_A + KERMIS_B + KERMIS_A + '||',
-      maten: KERMIS_AKK_A + KERMIS_AKK_B + KERMIS_AKK_A,
-      // de registers per ronde: vioolpijpen, fluiten met klokkenspel, viool met klokkenspel, en het volle orgel
-      ronden: [
-        { reg: 'viool', naam: '', pauze: 0.35 },
-        { reg: 'fluit', klok: true, naam: 'met klokkenspel', pauze: 0.35 },
-        { reg: 'viool', klok: true, naam: 'met klokkenspel', pauze: 0.35 },
-        { reg: 'vol', klok: true, bekken: true, naam: 'vol orgel', pauze: 1.6 }
-      ]
+    // ---------- De plekken ----------
+    straat: {
+      titel: 'Het Speelhuyslied',
+      bron: 'Het lied van het huis: een eigen dans in de trant van de Gouden Eeuw',
+      melodie: 'blokfluit', stijl: 'dans', tempo: 132, maat: 4, grond: 0, mineur: false, trom: true, gamba: true, niveau: 0.49, wissel: 3.7,
+      ronden: DRIE,
+      noten: "g'4 | " + SPEELHUYS_A + "c'''2. g''4 | " + SPEELHUYS_B + SPEELHUYS_A + "c'''1 ||"
     },
-    thuis: {
+    voorkamer: {
+      titel: 'Menuet van de voorkamer',
+      bron: 'Een eigen menuet in de trant van de klavecimbelboekjes uit de zeventiende eeuw',
+      melodie: 'klavecimbel', stijl: 'menuet', tempo: 112, maat: 3, grond: 7, mineur: false, niveau: 1.25, wissel: 0.17,
+      noten: "|: g''4 d''4 g''4 | a''8 h''8 c'''4 h''4 | a''4 fis''4 d''4 | g''2 d''4 | e''4 c'''4 h''4 | a''8 g''8 fis''4 g''4 | a''4 d''4 fis''4 | g''2. :| " +
+             "|: h''4 a''8 g''8 a''4 | h''4 g''4 e''4 | c'''4 h''8 a''8 h''4 | c'''4 a''4 fis''4 | d'''4 h''4 g''4 | c'''4 a''4 fis''4 | g''4 fis''8 e''8 fis''4 | g''2. :|"
+    },
+    zolder: {
+      titel: 'De speeldoos op zolder',
+      bron: 'Een eigen wiegewijsje voor een speeldoos: een stalen kam met tongetjes en een rol met pinnetjes',
+      melodie: 'speeldoos', stijl: 'speeldoos', tempo: 92, transpositie: 12, maat: 3, grond: 5, mineur: false, niveau: 1.25, wissel: 1,
+      ronden: [{ modo: 0, pauze: 1.6 }, { modo: 1, pauze: 3.2 }],
+      noten: "|: a'2 c''4 | f''2 e''4 | d''2 c''4 | a'2. | b'2 d''4 | g''2 f''4 | e''2 d''4 | c''2. | " +
+             "a'2 c''4 | f''2 a''4 | g''2 f''4 | d''2. | b'4 d''4 f''4 | a'4 c''4 f''4 | g'4 c''4 e''4 | f''2. :|"
+    },
+    pronkkamer: {
+      titel: 'Pronkouverture',
+      bron: 'Een eigen ouverture met gepunteerde ritmes, zoals bij een statige intocht',
+      melodie: 'klavecimbel', stijl: 'klavier', tempo: 82, maat: 4, grond: 2, mineur: false, niveau: 2.5, wissel: 0.16,
+      ronden: DRIE,
+      noten: "|: d''4. a'8 d''8. e''16 fis''8. d''16 | a''4. fis''8 a''8. h''16 a''8. g''16 | fis''4 e''8. d''16 e''4 a'4 | d''8. e''16 fis''8. g''16 a''2 | " +
+             "h''4. g''8 e''8. fis''16 g''8. e''16 | a''4. fis''8 d''8. e''16 fis''8. d''16 | e''8. fis''16 g''8. e''16 cis''4. d''8 | d''2. r4 :| " +
+             "|: a''4. e''8 a''8. h''16 cis'''8. a''16 | h''4. gis''8 e''8. fis''16 gis''8. e''16 | a''4 fis''8. d''16 h'4 e''4 | cis''2 a'2 | " +
+             "d''4. a'8 d''8. e''16 fis''8. g''16 | a''8. h''16 a''8. g''16 fis''8. e''16 d''8. fis''16 | e''4 a''4 cis''4. d''8 | d''2. r4 :|"
+    },
+    kunstkamer: {
       titel: 'Engels Nachtegaeltje',
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof I (1649)',
-      melodie: 'blokfluit', stijl: 'arpeggio', tempo: 74, transpositie: 0, maat: 4, grond: 0, mineur: false, niveau: 0.52, wissel: 3.2,
+      melodie: 'blokfluit', stijl: 'arpeggio', tempo: 74, maat: 4, grond: 0, mineur: false, niveau: 0.44, wissel: 4.9,
       noten: "|: e''4. d''16 e''16 c''4 g''8. f''16 | e''2. , c''8 d''8 | e''4 c''4 e''4 fis''4 | g''2. , e''8 f''8 | " +
              "g''4 g''8 a''8 g''4 e''8 f''8 | g''8 f''8 g''8 a''8 g''4 e''8 f''8 | g''4 e''4 f''4 g''4 | a''4 , a'4 a'4. h'8 | " +
              "c''8 d''8 e''8 f''8 g''4 c''4 | h'8. c''16 d''4 g'4 g''4 | e''8. f''16 g''8 e''8 d''4. c''8 | c''2. :| " +
              "|: f''8. g''16 | a''4 f''4 f''4. g''8 | a''8 f''8 a''8 f''8 a''8 f''8 a''8 f''8 | a''8 f''8 a''8 f''8 e''4 fis''4 | g''1 | " +
              "g''1 , | g''8 g''8 g''8 g''8 g''2 | g''8 g''8 g''8 g''8 g''8 g''8 g''4 | e''8. f''16 g''8 e''8 d''4. c''8 | [1 c''2. :| [2 c''1 ||"
     },
+    kermis: {
+      titel: 'Kermiswals',
+      bron: 'Op het draaiorgel: een eigen wals in de trant van de oude kermiswalsen',
+      melodie: 'orgel', stijl: 'orgel', tempo: 168, maat: 3, grond: 0, mineur: false, niveau: 0.52,
+      noten: KERMIS_A + KERMIS_B + KERMIS_A + '||',
+      maten: KERMIS_AKK_A + KERMIS_AKK_B + KERMIS_AKK_A,
+      ronden: ORGELRONDEN
+    },
+
+    // ---------- De spellen ----------
     ganzenbord: {
       titel: 'Malle Symen',
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof I (1649)',
-      melodie: 'blokfluit', stijl: 'dans', tempo: 100, transpositie: 0, maat: 4, grond: 2, mineur: true, trom: true, niveau: 0.5, wissel: 3.6,
+      melodie: 'blokfluit', stijl: 'dans', tempo: 100, maat: 4, grond: 2, mineur: true, trom: true, niveau: 0.51, wissel: 3.8,
       noten: "|: a'2 f''2 | e''2 a'4 a''4 | g''4 f''4 e''4 d''4 | cis''4 a'4 a'2 , | " +
              "f''4 d''4 e''4 a'4 | g'4 f'4 e'4 d'4 | a'4 d''4 h'4 cis''4 | d''1 :| " +
              "|: f''8 g''8 a''4 e''8 f''8 g''4 | d''8 f''8 e''8 d''8 cis''4 a'4 , | f'8 g'8 a'4 e'8 f'8 g'4 | " +
@@ -64,7 +136,7 @@
     sjoelen: {
       titel: 'Onder de Linde groene',
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof II (1654)',
-      melodie: 'klavecimbel', stijl: 'klavier', tempo: 90, transpositie: 0, maat: 4, grond: 0, mineur: false, niveau: 1.8, wissel: 0.17,
+      melodie: 'klavecimbel', stijl: 'klavier', tempo: 90, maat: 4, grond: 0, mineur: false, niveau: 2.24, wissel: 0.17,
       noten: "|: g'2 c''2 | e'4. f'8 g'2 | c''4 g'4 a'4 g'4 | e'8 f'8 g'4 e''2 , | " +
              "g'4. a'8 h'8 c''8 d''4 | f'4. g'8 a'8 h'8 c''4 | e'2 d'2 | c'1 :| " +
              "|: g'4 g'4 a'8 h'8 c''4 | c''4 h'4 c''2 , | d''8 e''8 f''8 d''8 e''4 e''4 | d''8 e''8 f''8 d''8 e''8. f''16 g''4 , | " +
@@ -73,12 +145,111 @@
     molenspel: {
       titel: "Doen Daphne d'over schoone Maeght",
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof I (1649)',
-      melodie: 'luit', stijl: 'menuet', tempo: 96, transpositie: 0, maat: 3, grond: 2, mineur: true, niveau: 1, wissel: 0.33,
+      melodie: 'luit', stijl: 'menuet', tempo: 96, maat: 3, grond: 2, mineur: true, niveau: 1.13, wissel: 0.31,
       noten: "d'4 | f'2 g'4 | a'2 d''4 | cis''4. d''8 e''4 | d''2 , a'4 | " +
              "c''4 a'4 f'4 | g'4 e'4 c'4 | d'4 f'4 e'4 | [1 d'2 :| [2 d'2. | " +
              "|: f''2 f''4 | e''2 e''4 | d''2 d''4 | cis''2 , a'4 | a'4. b'8 a'4 | g'4. a'8 f'4 | f'4. g'8 e'4 | f'2. :| " +
              "|: c''4 c''4 d''4 | c''4 a'4 f'4 | c''4. d''8 e''8 f''8 | g''4 e''4 c''4 , | a'4. g'8 f'4 | e'4 d'4 d''4 | " +
              "cis''4. d''8 e''4 | d''2 , a'8 h'8 | c''4 a'4 f'4 | g'4 e'4 c'4 | d'8 e'8 f'8 g'8 e'4 | d'2. :|"
+    },
+    dammen: {
+      titel: 'Damgavotte',
+      bron: 'Een eigen gavotte in a-klein: vraag en antwoord, zoals twee spelers aan het bord',
+      melodie: 'luit', stijl: 'arpeggio', tempo: 104, maat: 4, grond: 9, mineur: true, niveau: 0.78, wissel: 0.31,
+      noten: "|: e''2 d''4 c''4 | h'4 c''4 d''4 e''4 | a''2 g''4 f''4 | e''2 a'4 c''4 | e''2 d''4 c''4 | h'4 e''4 gis''4 h''4 | a''4 e''4 c''4 h'4 | " +
+             "[1 a'2 a'4 c''4 :| [2 a'2 e''4 f''4 | " +
+             "|: g''2 f''4 e''4 | d''4 e''4 f''4 d''4 | e''2 d''4 c''4 | h'2 c''4 d''4 | e''2 f''4 g''4 | a''4 g''4 f''4 e''4 | d''4 c''4 h'4 c''8 h'8 | " +
+             "[1 a'2 e''4 f''4 :| [2 a'2 a'4 c''4 ||"
+    },
+    klaverjassen: {
+      titel: 'Opoes wals',
+      bron: 'Een eigen wals om bij te kaarten, op de blokfluit met de luit',
+      melodie: 'blokfluit', stijl: 'menuet', tempo: 126, maat: 3, grond: 5, mineur: false, niveau: 0.48, wissel: 5.3,
+      ronden: DRIE,
+      noten: "|: c''4 f''4 a''4 | c'''2 a''4 | b''4 a''4 g''4 | a''2 f''4 | g''4 a''4 b''4 | c'''2 b''4 | a''4 g''4 f''4 | g''2. | " +
+             "c''4 f''4 a''4 | c'''2 a''4 | d'''4 c'''4 b''4 | a''2 f''4 | g''4 b''4 d'''4 | c'''4 a''4 f''4 | g''4 e''4 c''4 | f''2. :|"
+    },
+    triktrak: {
+      titel: 'Dobbelgaillarde',
+      bron: 'Een eigen gaillarde in g-klein, de springdans uit de tijd van het triktrak',
+      melodie: 'luit', stijl: 'menuet', tempo: 120, maat: 3, grond: 7, mineur: true, niveau: 1.05, wissel: 0.34,
+      ronden: DRIE,
+      noten: "|: g'4 b'4 d''4 | c''4. b'8 a'4 | b'4 g'4 a'4 | fis'2. | g'4 b'4 d''4 | es''4. d''8 c''4 | d''4 b'4 a'4 | g'2. :| " +
+             "|: b'4 d''4 f''4 | es''4. d''8 c''4 | d''4 c''4 b'4 | a'2. | g'4 a'4 b'4 | c''4 d''4 es''4 | d''4. c''8 b'8 a'8 | g'2. :|"
+    },
+    bikkelen: {
+      titel: 'Bikkeldans',
+      bron: 'Een eigen huppeldans: opgooien, oprapen en vangen',
+      melodie: 'blokfluit', stijl: 'dans', tempo: 144, maat: 4, grond: 9, mineur: false, trom: true, niveau: 0.51, wissel: 3.4,
+      ronden: DRIE,
+      noten: "e''8 fis''8 | |: e''8 a''8 a''8 cis'''8 h''8 a''8 gis''8 h''8 | a''4 e''4 e''4 e''8 fis''8 | e''8 cis''8 cis''8 e''8 d''8 h'8 h'8 d''8 | cis''4 a'4 a'4 e''8 fis''8 | " +
+             "e''8 a''8 a''8 cis'''8 h''8 a''8 gis''8 h''8 | a''4 cis'''4 h''4 a''8 gis''8 | fis''8 a''8 gis''8 fis''8 e''8 d''8 cis''8 h'8 | a'2 a'4 e''8 fis''8 :| " +
+             "|: fis''8 a''8 a''8 fis''8 d''8 fis''8 fis''8 d''8 | e''8 a''8 a''8 e''8 cis''8 e''8 e''8 cis''8 | d''8 fis''8 fis''8 d''8 h'8 d''8 gis''8 e''8 | a''4 e''4 cis''4 e''8 fis''8 | " +
+             "fis''8 a''8 a''8 fis''8 d''8 fis''8 fis''8 d''8 | e''8 a''8 a''8 e''8 cis''8 e''8 a''8 cis'''8 | h''8 gis''8 e''8 gis''8 fis''8 d''8 h'8 gis'8 | a'2 a'4 r4 :|"
+    },
+    kolf: {
+      titel: 'IJswals',
+      bron: 'Een eigen wals voor op het ijs, met klokjes als ijskristallen',
+      melodie: 'klavecimbel', stijl: 'menuet', tempo: 138, maat: 3, grond: 4, mineur: true, klokjes: true, niveau: 1.2, wissel: 0.17,
+      ronden: DRIE,
+      noten: "h'4 e''4 g''4 | h''2. | a''4 g''4 fis''4 | g''2 e''4 | c'''4 h''4 a''4 | h''2 g''4 | fis''4 g''4 a''4 | h''2. | " +
+             "h'4 e''4 g''4 | h''2. | c'''4 h''4 a''4 | g''2 e''4 | a''4 fis''4 dis''4 | e''2 fis''4 | h''4 a''4 fis''4 | e''2. | " +
+             "d''4 g''4 h''4 | d'''2. | c'''4 h''4 a''4 | h''2 g''4 | e''4 a''4 c'''4 | e'''2. | d'''4 c'''4 h''4 | a''2. | " +
+             "d''4 g''4 h''4 | d'''2 c'''4 | h''4 a''4 g''4 | e''2 c'''4 | h''4 a''4 g''4 | fis''4 a''4 c'''4 | h''4 a''4 fis''4 | e''2. ||"
+    },
+    koekhappen: {
+      titel: 'Happolka',
+      bron: 'Op het draaiorgel: een eigen polka om bij te happen',
+      melodie: 'orgel', stijl: 'orgel', tempo: 132, maat: 4, grond: 5, mineur: false, niveau: 0.49, los: 0.7,
+      noten: HAP_A + HAP_A + HAP_B + HAP_A + '||',
+      maten: HAP_AKK_A + HAP_AKK_A + HAP_AKK_B + HAP_AKK_A,
+      ronden: ORGELRONDEN
+    },
+    hoepelen: {
+      titel: 'Hoepelloopje',
+      bron: 'Een eigen dans in loopjes: rollen, rollen, rollen langs de gracht',
+      melodie: 'blokfluit', stijl: 'dans', tempo: 138, maat: 4, grond: 2, mineur: false, trom: true, niveau: 0.52, wissel: 3.9,
+      ronden: DRIE,
+      noten: "|: d''8 fis''8 a''8 fis''8 d''8 fis''8 a''8 d'''8 | cis'''8 a''8 e''8 a''8 cis''8 e''8 a''8 cis'''8 | d'''8 h''8 g''8 h''8 d''8 g''8 h''8 d'''8 | cis'''4 a''4 a''2 | " +
+             "d''8 fis''8 a''8 fis''8 d''8 fis''8 a''8 d'''8 | e'''8 cis'''8 a''8 cis'''8 h''8 g''8 e''8 g''8 | fis''8 a''8 d'''8 a''8 e''8 a''8 cis'''8 a''8 | d'''2 d'''4 r4 :| " +
+             "|: h''8 a''8 g''8 fis''8 e''8 fis''8 g''8 e''8 | a''8 g''8 fis''8 e''8 d''8 e''8 fis''8 d''8 | g''8 fis''8 e''8 d''8 cis''8 d''8 e''8 cis''8 | fis''4 d''4 d''2 | " +
+             "h''8 a''8 g''8 fis''8 e''8 fis''8 g''8 e''8 | a''8 g''8 fis''8 e''8 fis''8 g''8 a''8 h''8 | cis'''8 h''8 a''8 g''8 fis''8 e''8 d''8 cis''8 | d''2 d''4 r4 :|"
+    },
+    ringsteken: {
+      titel: 'Draaimolenwals',
+      bron: 'Op het draaiorgel: een eigen wals die rondzwiert als de draaimolen',
+      melodie: 'orgel', stijl: 'orgel', tempo: 180, maat: 3, grond: 7, mineur: false, niveau: 0.52,
+      noten: MOLENWALS_A + MOLENWALS_B + MOLENWALS_A + '||',
+      maten: MOLENWALS_AKK_A + MOLENWALS_AKK_B + MOLENWALS_AKK_A,
+      ronden: ORGELRONDEN
+    },
+    kopvanjut: {
+      titel: 'Sterke-mannenmars',
+      bron: 'Op het draaiorgel: een eigen mars, zwaar en een beetje opschepperig',
+      melodie: 'orgel', stijl: 'orgel', tempo: 108, maat: 4, grond: 10, mineur: false, niveau: 0.48,
+      noten: MARS_A + MARS_A + MARS_B + MARS_A + '||',
+      maten: MARS_AKK_A + MARS_AKK_A + MARS_AKK_B + MARS_AKK_A,
+      ronden: ORGELRONDEN
+    },
+    knikkeren: {
+      titel: 'Knikkerdeuntje',
+      bron: 'Een eigen deuntje op het klavecimbel: tikken en rollen',
+      melodie: 'klavecimbel', stijl: 'klavier', tempo: 120, maat: 4, grond: 7, mineur: false, niveau: 2.1, wissel: 0.16,
+      ronden: DRIE,
+      noten: "|: g''8 g''8 d''8 d''8 h'8 d''8 g''4 | a''8 a''8 fis''8 fis''8 d''8 fis''8 a''4 | h''8 a''8 g''8 fis''8 e''8 fis''8 g''8 a''8 | d''4 d'''4 d'''2 | " +
+             "g''8 g''8 d''8 d''8 h'8 d''8 g''4 | c'''8 c'''8 a''8 a''8 fis''8 a''8 c'''4 | h''8 g''8 a''8 fis''8 g''4 d''4 | g''2 g''4 r4 :| " +
+             "|: e''8 g''8 c'''8 g''8 e''8 g''8 c'''4 | d''8 g''8 h''8 g''8 d''8 g''8 h''4 | c''8 e''8 a''8 e''8 c''8 e''8 a''4 | d''8 fis''8 a''8 fis''8 d''4 r4 | " +
+             "e''8 g''8 c'''8 g''8 e''8 g''8 c'''4 | h'8 d''8 g''8 d''8 h'8 d''8 g''4 | a''8 c'''8 h''8 a''8 g''8 fis''8 e''8 fis''8 | g''2 g''4 r4 :|"
+    },
+    tollen: {
+      titel: 'Tolletje draai',
+      bron: 'Een eigen draaiwijsje in d-klein, dat rondtolt en niet stil wil staan',
+      melodie: 'klavecimbel', stijl: 'menuet', tempo: 152, maat: 3, grond: 2, mineur: true, niveau: 1.07, wissel: 0.18,
+      ronden: DRIE,
+      noten: "|: a'8 d''8 f''8 d''8 a'8 d''8 | g'8 cis''8 e''8 cis''8 g'8 cis''8 | f'8 a'8 d''8 a'8 f'8 a'8 | e'8 a'8 cis''8 a'8 e'4 | " +
+             "d'8 f'8 b'8 f'8 d'8 f'8 | e'8 g'8 c''8 g'8 e'8 g'8 | f'8 a'8 d''8 a'8 f'8 a'8 | a'4 cis''4 e''4 | " +
+             "d''8 a'8 f''8 d''8 a''8 f''8 | e''8 cis''8 a'8 cis''8 e''8 a''8 | f''8 d''8 a'8 d''8 f''8 d''8 | g''8 d''8 b'8 d''8 g''8 d''8 | " +
+             "e''8 cis''8 a'8 cis''8 e''8 g''8 | f''8 d''8 a'8 d''8 f''8 a''8 | g''8 f''8 e''8 d''8 cis''8 e''8 | d''2. :|"
     }
   };
 
@@ -312,6 +483,8 @@
       const slot = volgende && eindes.some((e) => Math.abs(volgende.begin + volgende.duur - e) < 1e-6);
       const legato = volgende && volgende.midi !== null && Math.abs(volgende.midi - n.midi) <= 2 && n.duur <= 0.5;
       const vol = nadruk * (n.versiering ? 0.84 : 1) * frase(n.begin) * rondeVol * wisselVol;
+      // klokjes (de ijswals): een metalen staafje een octaaf hoger op elke eerste tel, als een ijskristal
+      if (stuk.klokjes && Math.abs(inMaat) < 1e-6 && !n.versiering) ev.push({ t: n.begin, inst: 'klokje', midi: n.midi + 12 + tr, vol: n.duur >= 2.9 ? 0.8 : 0.6 });
       if (slot && n.duur >= 0.99 && speler === 'blokfluit') {
         const boven = bovenBuur(n.midi), stap = 0.125, triller = Math.min(n.duur * 0.6, 1);
         for (let t = 0, k = 0; t < triller - 1e-6; t += stap, k++) ev.push({ t: n.begin + t, inst: 'melodie', speler, midi: (k % 2 ? n.midi : boven) + tr, duur: stap, vol: 0.85 * frase(n.begin) * wisselVol, legato: true });
@@ -319,6 +492,7 @@
       } else ev.push({ t: n.begin, inst: 'melodie', speler, midi: n.midi + tr, duur: n.duur, vol, legato });
     });
     // de begeleiding per akkoord; in de snelle modo speelt de luit rustiger, zodat de loopjes te horen zijn
+    let doosLigging = null;
     akkoorden.forEach((s) => {
       const pcs = s.akkoord.tonen.map((p) => (p + g) % 12);
       const lengte = s.b - s.a;
@@ -331,6 +505,8 @@
         else if (lengte >= 1.99) [0, 1].forEach((o) => ligging.forEach((m, k) => ev.push({ t: s.a + o + k * 0.035, inst: 'begeleiding', midi: m, duur: 0.9, vol: (o ? 0.6 : 0.78) * zacht })));
         else ev.push({ t: s.a, inst: 'begeleiding', midi: ligging[1], duur: lengte, vol: 0.6 * zacht });
       } else if (stuk.stijl === 'dans') {
+        // (met 'gamba' strijkt de gamba de bas eronder: een vollere dans, zoals het lied van het huis)
+        if (stuk.gamba) ev.push({ t: s.a, inst: 'bas', midi: bas, duur: Math.min(lengte, 2) * 0.88, vol: 0.75 * frase(s.a) });
         ev.push({ t: s.a, inst: 'begeleiding', midi: bas, duur: 0.9, vol: 0.95 * zacht });
         if (lengte >= 1.99) ligging.forEach((m, k) => ev.push({ t: s.a + 1 + k * 0.03, inst: 'begeleiding', midi: m, duur: 0.6, vol: 0.62 * zacht }));
         if (s.einde) ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.04, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.66 * zacht }));
@@ -343,6 +519,11 @@
         ev.push({ t: s.a, inst: 'bas', midi: bas, duur: lengte, vol: 0.6 * frase(s.a) });
         if (lengte >= 2.99) [1, 2].forEach((o) => ligging.forEach((m, k) => ev.push({ t: s.a + o + k * 0.025, inst: 'begeleiding', midi: m, duur: 0.9, vol: 0.52 * zacht })));
         else ligging.forEach((m, k) => ev.push({ t: s.a + k * 0.03, inst: 'begeleiding', midi: m, duur: lengte, vol: 0.5 * zacht }));
+      } else if (stuk.stijl === 'speeldoos') {
+        // de speeldoos: een lage tong op de één en dan het akkoord gebroken in achtsten, zoals de pinnetjes op de rol
+        doosLigging = kiesLigging(pcs, doosLigging, 55, 66);
+        ev.push({ t: s.a, inst: 'doos', midi: bas + 12, vol: 0.95 * frase(s.a) });
+        [[1, 0], [1.5, 1], [2, 2], [2.5, 1]].forEach(([o, k]) => { if (o < lengte - 1e-6) ev.push({ t: s.a + o, inst: 'doos', midi: doosLigging[k], vol: (o % 1 ? 0.46 : 0.58) * zacht }); });
       }
     });
     // de tabortrommel bij de dans: lang, kort-kort (en in de snelle modo wat drukker)
@@ -377,37 +558,55 @@
   }
 
   // ============================================================
-  // HET DRAAIORGEL: de melodie op de vioolpijpen (of de fluiten), het klokkenspel erbij, en hoempa:
-  // de baspijp op de één, het akkoord kort op twee en drie. De grote trom op de één, de kleine trom zacht op
-  // twee en drie, een roffeltje naar elk nieuw deel en in het volle orgel een bekken. Een orgel speelt strak
-  // in de maat: geen vertraging naar het slot.
+  // HET DRAAIORGEL: de melodie op de vioolpijpen (of de fluiten), het klokkenspel erbij, en hoempa.
+  // In de wals de baspijp op de één en het akkoord kort op twee en drie; in de mars en de polka de bas op één en
+  // drie (grondtoon en kwint) en het akkoord op twee en vier. De grote trom op de zware tellen, de kleine trom zacht
+  // ertussen, een roffeltje naar elk nieuw deel en in het volle orgel een bekken. Een orgel speelt strak in de maat:
+  // geen vertraging naar het slot. Met 'los' worden de noten korter aangestoten (de polka).
   // ============================================================
-  const AKKOORD = { C: [0, 4, 7], F: [5, 9, 0], G: [7, 11, 2], G7: [7, 11, 2, 5], D7: [2, 6, 9, 0], Am: [9, 0, 4], C7: [0, 4, 7, 10] };
+  const AKKOORD = {
+    C: [0, 4, 7], F: [5, 9, 0], G: [7, 11, 2], D: [2, 6, 9], Bb: [10, 2, 5], Eb: [3, 7, 10], Am: [9, 0, 4], Dm: [2, 5, 9], Gm: [7, 10, 2],
+    G7: [7, 11, 2, 5], D7: [2, 6, 9, 0], C7: [0, 4, 7, 10], F7: [5, 9, 0, 3]
+  };
+  // het akkoord kort en hoog (de 'pah'), zonder de grondtoon als het een septiemakkoord is
+  const pahLigging = (pcs) => { const van = pcs.length > 3 ? 1 : 0; return pcs.slice(van, van + 3).map((p) => 55 + ((p - 7 + 12) % 12)).sort((x, y) => x - y); };
   function arrangeerOrgel(stuk, ronde) {
     const ev = [], maat = stuk.maat, lengte = stuk.lengte;
     const regs = ronde.reg === 'vol' ? [['viool', 1], ['fluit', 0.5]] : ronde.reg === 'fluit' ? [['fluit', 1]] : [['viool', 1], ['fluit', 0.36]];
+    const los = stuk.los || 0.92;
     stuk.noten.forEach((n) => {
       if (n.midi === null) return;
       const opTel = Math.abs(n.begin / maat - Math.round(n.begin / maat)) < 1e-6;
       const vol = opTel ? 1 : 0.86;
-      regs.forEach(([sp, v]) => ev.push({ t: n.begin, inst: 'orgel', speler: sp, midi: n.midi, duur: n.duur * 0.92, vol: vol * v }));
+      regs.forEach(([sp, v]) => ev.push({ t: n.begin, inst: 'orgel', speler: sp, midi: n.midi, duur: n.duur * (n.duur >= 1.5 ? 0.92 : los), vol: vol * v }));
       if (ronde.klok && (opTel || n.duur >= 2)) ev.push({ t: n.begin, inst: 'klokje', midi: n.midi + 12, vol: (n.duur >= 2 ? 1 : 0.8) });
     });
     let vorige = null, kwint = false;
+    const zin = maat === 4 ? 8 : 16;
     stuk.maten.split(/\s+/).filter(Boolean).forEach((naam, i) => {
       const a = i * maat;
       if (a >= lengte - 1e-6) return;
-      const pcs = AKKOORD[naam] || AKKOORD.C;
+      const [n1, n2] = naam.split('/');
+      const pcs = AKKOORD[n1] || AKKOORD.C, pcs2 = n2 ? (AKKOORD[n2] || pcs) : pcs;
       kwint = naam === vorige ? !kwint : false; vorige = naam;
-      ev.push({ t: a, inst: 'orgelbas', midi: 36 + (kwint ? pcs[2] : pcs[0]), duur: 0.75, vol: 1 });
-      const van = pcs.length > 3 ? 1 : 0;
-      const ligging = pcs.slice(van, van + 3).map((p) => 55 + ((p - 7 + 12) % 12)).sort((x, y) => x - y);
-      [1, 2].forEach((o) => ligging.forEach((m, k) => ev.push({ t: a + o + k * 0.006, inst: 'pah', midi: m, duur: 0.42, vol: o === 1 ? 1 : 0.88 })));
-      ev.push({ t: a, inst: 'grotetrom', vol: i % 4 === 0 ? 0.95 : 0.66 });
-      ev.push({ t: a + 1, inst: 'kleinetrom', vol: 0.34 });
-      ev.push({ t: a + 2, inst: 'kleinetrom', vol: 0.28 });
-      if ((i + 1) % 16 === 0) [2.25, 2.5, 2.75].forEach((o, k) => ev.push({ t: a + o, inst: 'kleinetrom', vol: 0.3 + k * 0.1 }));
-      if (ronde.bekken && i % 16 === 0) ev.push({ t: a, inst: 'bekken', vol: 1 });
+      if (maat === 4) {
+        ev.push({ t: a, inst: 'orgelbas', midi: 36 + pcs[0], duur: 0.75, vol: 1 });
+        ev.push({ t: a + 2, inst: 'orgelbas', midi: 36 + (n2 ? pcs2[0] : pcs[2]), duur: 0.75, vol: 0.9 });
+        [[1, pcs, 1], [3, pcs2, 0.9]].forEach(([o, p, v]) => pahLigging(p).forEach((m, k) => ev.push({ t: a + o + k * 0.006, inst: 'pah', midi: m, duur: 0.42, vol: v })));
+        ev.push({ t: a, inst: 'grotetrom', vol: i % 4 === 0 ? 0.95 : 0.7 });
+        ev.push({ t: a + 2, inst: 'grotetrom', vol: 0.58 });
+        ev.push({ t: a + 1, inst: 'kleinetrom', vol: 0.34 });
+        ev.push({ t: a + 3, inst: 'kleinetrom', vol: 0.3 });
+        if ((i + 1) % zin === 0) [3.25, 3.5, 3.75].forEach((o, k) => ev.push({ t: a + o, inst: 'kleinetrom', vol: 0.3 + k * 0.1 }));
+      } else {
+        ev.push({ t: a, inst: 'orgelbas', midi: 36 + (kwint ? pcs[2] : pcs[0]), duur: 0.75, vol: 1 });
+        [1, 2].forEach((o) => pahLigging(pcs).forEach((m, k) => ev.push({ t: a + o + k * 0.006, inst: 'pah', midi: m, duur: 0.42, vol: o === 1 ? 1 : 0.88 })));
+        ev.push({ t: a, inst: 'grotetrom', vol: i % 4 === 0 ? 0.95 : 0.66 });
+        ev.push({ t: a + 1, inst: 'kleinetrom', vol: 0.34 });
+        ev.push({ t: a + 2, inst: 'kleinetrom', vol: 0.28 });
+        if ((i + 1) % zin === 0) [2.25, 2.5, 2.75].forEach((o, k) => ev.push({ t: a + o, inst: 'kleinetrom', vol: 0.3 + k * 0.1 }));
+      }
+      if (ronde.bekken && i % zin === 0) ev.push({ t: a, inst: 'bekken', vol: 1 });
     });
     ev.sort((x, y) => x.t - y.t);
     const spb = 60 / stuk.tempo;
@@ -415,19 +614,20 @@
     return { ev, tijd, lengte: tijd(lengte), akkoorden: [] };
   }
 
+  // de ronden van een stuk: het orgel heeft zijn eigen registers, de vlotte stukken drie ronden, de rest de modi
+  const rondenVan = (stuk) => stuk.ronden || RONDEN;
   Object.values(STUKKEN).forEach((s) => {
-    Object.assign(s, lees(s.noten));
+    s.tekst = s.noten;
+    Object.assign(s, lees(s.tekst));
     if (s.stijl === 'orgel') {
       s.akkoorden = [];
       s.arrs = s.ronden.map((r) => arrangeerOrgel(s, r));
     } else {
       s.akkoorden = harmoniseer(s);
-      s.arrs = RONDEN.map((r) => arrangeer(s, r));
+      s.arrs = rondenVan(s).map((r) => arrangeer(s, r));
     }
     s.arr = s.arrs[0];
   });
-  // de ronden van een stuk: het orgel heeft zijn eigen registers, de andere stukken de modi
-  const rondenVan = (stuk) => stuk.ronden || RONDEN;
 
   // ============================================================
   // INSTRUMENTEN
@@ -558,6 +758,29 @@
       o.connect(gv); gv.connect(g); o.start(t); o.stop(t + 1.35);
     });
   }
+  // de speeldoos: een stalen kam met gestemde tongetjes, aangetokkeld door de pinnetjes op een draaiende rol. Een
+  // heldere toon die lang uitklinkt (de lage tongen langer), een tweede tong die een fractie anders gestemd is (dat
+  // zweeft), de onzuivere tweede trilling van een ingeklemde staaf (6,27 keer zo hoog) die snel wegsterft, en het
+  // tikje van het pinnetje.
+  function speeldoos(c, uit, f, t, vol, pan) {
+    const k = window.Klank.ketting(c);
+    const uitklank = Math.max(0.9, Math.min(3, 2.3 * Math.pow(440 / f, 0.45)));
+    const g = c.createGain(); g.gain.value = vol;
+    let naar = uit;
+    if (pan && c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = pan; p.connect(uit); naar = p; }
+    g.connect(naar);
+    [[1, 1, uitklank], [1.0017, 0.3, uitklank * 0.8], [2, 0.05, uitklank * 0.3], [6.27, 0.14, 0.15]].forEach(([r, a, d]) => {
+      if (f * r > c.sampleRate * 0.45) return;
+      const o = c.createOscillator(); o.frequency.value = f * r;
+      const og = c.createGain();
+      og.gain.setValueAtTime(0.0001, t); og.gain.linearRampToValueAtTime(a, t + 0.0015); og.gain.exponentialRampToValueAtTime(0.0001, t + d);
+      o.connect(og); og.connect(g); o.start(t); o.stop(t + d + 0.03);
+    });
+    const r = c.createBufferSource(); r.buffer = k.ruis;
+    const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = Math.min(9000, f * 4); bp.Q.value = 1.5;
+    const rg = c.createGain(); rg.gain.setValueAtTime(0.0001, t); rg.gain.linearRampToValueAtTime(0.1, t + 0.001); rg.gain.exponentialRampToValueAtTime(0.0001, t + 0.025);
+    r.connect(bp); bp.connect(rg); rg.connect(g); r.start(t, Math.random() * 1.5, 0.05);
+  }
   // de trommen van het orgel: de grote trom, de kleine trom en een bekken
   function grotetrom(c, uit, t, vol) {
     const k = window.Klank.ketting(c);
@@ -599,6 +822,7 @@
     if (e.inst === 'melodie') {
       const sp = e.speler || stuk.melodie;
       if (sp === 'blokfluit') K.blokfluit(c, uit, freq(e.midi), t, sec, 0.32 * e.vol * mens, -0.16, { legato: e.legato });
+      else if (sp === 'speeldoos') speeldoos(c, uit, freq(e.midi), t, 0.2 * e.vol * mens, -0.1);
       else K.tokkel(c, uit, sp, e.midi, t, (sp === 'luit' ? 0.5 : 0.42) * e.vol * mens, sp === 'klavecimbel' ? sec * 0.96 : 0, -0.12);
     } else if (e.inst === 'begeleiding') {
       const soort = stuk.stijl === 'klavier' ? 'klavecimbel' : stuk.stijl === 'dans' ? 'cister' : 'luit';
@@ -609,6 +833,7 @@
     else if (e.inst === 'pah') pijp(c, uit, 'fluit', freq(e.midi), t, sec, 0.06 * e.vol * mens, 0.14);
     else if (e.inst === 'orgelbas') pijp(c, uit, 'bourdon', freq(e.midi), t, sec, 0.3 * e.vol * mens, 0);
     else if (e.inst === 'klokje') klokje(c, uit, freq(e.midi), t, 0.085 * e.vol * mens, 0.24);
+    else if (e.inst === 'doos') speeldoos(c, uit, freq(e.midi), t, 0.15 * e.vol * mens, 0.12);
     else if (e.inst === 'grotetrom') grotetrom(c, uit, t, e.vol);
     else if (e.inst === 'kleinetrom') kleinetrom(c, uit, t, e.vol);
     else if (e.inst === 'bekken') bekken(c, uit, t, e.vol);
@@ -632,9 +857,12 @@
     return ctx;
   }
 
-  let huidigStuk = null, gewenst = 'thuis', gewenstVanaf = 0, speelt = null, klok = 0;
+  let huidigStuk = null, gewenst = 'straat', gewenstVanaf = 0, speelt = null, klok = 0;
   const VOORUIT = 0.4; // seconden vooruit plannen
-  const RONDE_NAAM = ['', '1e modo', '2e modo', ''];
+  // de ronden heten bij Van Eyck 'modi'; bij de eigen melodieën heet dat gewoon een variatie
+  const rondeNaam = (stuk, r) => (stuk.stijl === 'orgel' ? r.naam
+    : r.wissel ? `op de ${WISSEL[stuk.melodie] || stuk.melodie}`
+      : r.modo ? (/Van Eyck/.test(stuk.bron) ? `${r.modo}e modo` : r.modo === 1 ? 'variatie' : '2e variatie') : '');
 
   function begin(naam, vanaf) {
     const stuk = STUKKEN[naam];
@@ -688,8 +916,9 @@
 
   // ============================================================
   // DE FILMMUZIEK BIJ DE OPENING (zie opening.js): de torenklok slaat twee keer, een gamba zwelt aan op een
-  // open kwint, de luit breekt de akkoorden C, F en G, en dan zet de blokfluit het begin van het Engels
-  // Nachtegaeltje in. Het slotakkoord, met een roffel op de tabor, valt precies als de naam verschijnt.
+  // open kwint en de luit breekt het akkoord. Dan zet de blokfluit met de tabor het lied van het huis in:
+  // sol | do do-re mi do | sol sol-la en de hoge do, precies als de naam gaat glanzen (7,35 s). Daarna nog
+  // si-do met het slotakkoord, net voor de filmbalken wegschuiven. Een tel duurt hier een halve seconde.
   // ============================================================
   function film() {
     if (!maakContext()) return null;
@@ -698,35 +927,37 @@
     const klokken = c.createGain(); klokken.gain.value = 0.8; klokken.connect(k.muziek);
     const galm = c.createGain(); galm.gain.value = 0.6; klokken.connect(galm); galm.connect(k.galm);
     const t0 = c.currentTime + 0.06, T = (s) => t0 + s;
+    const tel = (x) => 4.36 + x * 0.5; // de eerste maat van het lied begint op 4,36 s
     // de torenklok (slagtoon C, de brom een octaaf lager)
     K.klok(c, klokken, T(0), 130.8, 0.19, -0.35);
     K.klok(c, klokken, T(1.75), 130.8, 0.12, -0.35);
-    // de gamba: eerst een open kwint, dan de baslijn onder de akkoorden
-    [[2.2, 1.75, 36, 0.12], [2.35, 1.6, 43, 0.07], [3.95, 0.6, 41, 0.17], [4.55, 0.3, 43, 0.18], [4.85, 1.88, 36, 0.19],
-      [6.73, 0.63, 43, 0.21], [7.36, 1.1, 36, 0.25], [7.36, 1.1, 48, 0.1], [8.46, 0.3, 43, 0.19], [8.76, 2.6, 36, 0.21]]
+    // de gamba: eerst een open kwint, dan een springende bas onder de dans (do, sol, do, sol, en do voor de naam)
+    [[2.2, 1.5, 36, 0.12], [2.35, 1.35, 43, 0.07], [tel(-1), 0.42, 43, 0.17], [tel(0), 0.44, 36, 0.2], [tel(2), 0.44, 43, 0.19],
+      [tel(4), 0.44, 36, 0.21], [tel(5), 0.44, 43, 0.21], [tel(6), 1.0, 36, 0.25], [tel(6), 1.0, 48, 0.1], [8.46, 0.3, 43, 0.19], [8.76, 2.6, 36, 0.21]]
       .forEach(([s, d, m, v]) => gamba(c, uit, freq(m), T(s), d, v, 0.18));
-    // de luit breekt de akkoorden
-    const breek = (s, noten, stap, vol) => noten.forEach((m, i) => K.tokkel(c, uit, 'luit', m, T(s + i * stap), vol * (1 - i * 0.04), 0, 0.24));
-    breek(3.0, [48, 55, 60, 64, 67], 0.16, 0.27);
-    breek(3.95, [53, 57, 60, 65], 0.12, 0.25);
-    breek(4.55, [55, 59, 62, 67], 0.07, 0.26);
-    breek(4.85, [48, 55, 60, 64], 0.03, 0.28);
-    breek(6.11, [52, 55, 60], 0.03, 0.18);
-    breek(6.73, [55, 59, 62, 65], 0.03, 0.26);
-    breek(7.36, [48, 55, 60, 64, 67, 72], 0.035, 0.34);
+    // de luit breekt het eerste akkoord, de cister slaat de akkoorden tussen de bastonen
+    const breek = (s, noten, stap, vol, soort) => noten.forEach((m, i) => K.tokkel(c, uit, soort || 'luit', m, T(s + i * stap), vol * (1 - i * 0.04), 0, soort === 'cister' ? 0.3 : 0.24));
+    breek(3.0, [48, 55, 60, 64, 67], 0.14, 0.27);
+    breek(tel(-1), [55, 59, 62, 67], 0.03, 0.22);
+    breek(tel(1), [55, 60, 64], 0.02, 0.24, 'cister');
+    breek(tel(3), [55, 60, 64], 0.02, 0.22, 'cister');
+    breek(tel(5), [55, 59, 62, 65], 0.02, 0.24, 'cister');
+    breek(tel(6), [48, 55, 60, 64, 67, 72], 0.035, 0.34);
     breek(8.46, [55, 59, 62, 67], 0.03, 0.22);
     breek(8.76, [48, 55, 60, 64, 67], 0.07, 0.3);
-    // het klavecimbel versterkt het slotakkoord, en hoog glinstert het als de naam verschijnt
-    [60, 64, 67, 72].forEach((m, i) => K.tokkel(c, uit, 'klavecimbel', m, T(7.36 + i * 0.012), 0.2, 1.3, 0.1));
+    // het klavecimbel versterkt het akkoord van de naam, en hoog glinstert het als die gaat glanzen
+    [60, 64, 67, 72].forEach((m, i) => K.tokkel(c, uit, 'klavecimbel', m, T(tel(6) + i * 0.012), 0.2, 1.3, 0.1));
     [84, 88, 91, 96].forEach((m, i) => K.tokkel(c, uit, 'klavecimbel', m, T(7.5 + i * 0.1), 0.1, 0.7, 0.35 - i * 0.18));
     [60, 64, 67, 72].forEach((m, i) => K.tokkel(c, uit, 'klavecimbel', m, T(8.76 + i * 0.02), 0.18, 2.4, 0.1));
-    // de blokfluit: e'' d'' e'' c'' g'' f'' | e'' d'' c''
-    [[4.85, 0.94, 76, 1, false], [5.79, 0.16, 74, 0.9, true], [5.95, 0.16, 76, 0.9, true], [6.11, 0.62, 72, 0.95, true], [6.73, 0.47, 79, 1, false],
-      [7.2, 0.16, 77, 0.9, true], [7.36, 1.1, 76, 1.15, false], [8.46, 0.3, 74, 0.95, true], [8.76, 2.1, 72, 1, true]]
-      .forEach(([s, d, m, v, legato]) => K.blokfluit(c, uit, freq(m), T(s), d, 0.3 * v, -0.16, { legato }));
-    // een roffel op de tabor naar het slotakkoord
-    for (let i = 0; i < 9; i++) tabor(c, uit, T(6.79 + i * 0.064), i < 5 ? 'zacht' : '');
-    tabor(c, uit, T(7.36), 'sterk');
+    // de blokfluit: sol | do do-re mi do | sol sol-la DO ... si DO
+    [[tel(-1), 0.42, 67, 0.9, false], [tel(0), 0.44, 72, 1, false], [tel(1), 0.22, 72, 0.9, false], [tel(1.5), 0.22, 74, 0.88, true],
+      [tel(2), 0.44, 76, 1, false], [tel(3), 0.44, 72, 0.92, false], [tel(4), 0.44, 79, 1.05, false], [tel(5), 0.22, 79, 0.92, false],
+      [tel(5.5), 0.22, 81, 0.92, true], [tel(6), 0.98, 84, 1.12, false], [8.46, 0.28, 83, 0.92, true], [8.76, 2.1, 84, 1, true]]
+      .forEach(([s, d, m, v, legato]) => K.blokfluit(c, uit, freq(m), T(s), d, 0.28 * v, -0.16, { legato }));
+    // de tabor: lang, kort-kort, en een roffel naar de naam
+    [[0, 'sterk'], [1, ''], [1.5, 'zacht'], [2, 'sterk'], [3, ''], [3.5, 'zacht'], [4, 'sterk']].forEach(([x, s]) => tabor(c, uit, T(tel(x)), s));
+    for (let i = 0; i < 8; i++) tabor(c, uit, T(tel(5) + i * 0.062), i < 4 ? 'zacht' : '');
+    tabor(c, uit, T(tel(6)), 'sterk');
     tabor(c, uit, T(8.76), 'zacht');
     let gestopt = false;
     return {
@@ -748,8 +979,7 @@
   function toonTitel() {
     if (!titelVak) return;
     if (speelt) {
-      const nr = rondeNr(speelt), r = rondenVan(speelt.stuk)[nr];
-      const extra = speelt.stuk.ronden ? r.naam : r.wissel ? `op de ${WISSEL[speelt.stuk.melodie] || speelt.stuk.melodie}` : RONDE_NAAM[nr];
+      const extra = rondeNaam(speelt.stuk, rondenVan(speelt.stuk)[rondeNr(speelt)]);
       titelVak.textContent = speelt.stuk.titel + (extra ? ` · ${extra}` : '');
       titelVak.title = speelt.stuk.bron; titelVak.hidden = false;
     } else { titelVak.textContent = ''; titelVak.hidden = true; }
@@ -793,11 +1023,12 @@
     get speelt() { return speelt ? speelt.naam : null; },
     get ronde() { return speelt ? rondeNr(speelt) : null; },
     get aan() { return aan; },
-    // het stuk voor dit scherm; 'vanaf' laat elk spel met een eigen variatie beginnen
+    // het stuk voor deze plek of dit spel ('vanaf': bij welke ronde het begint). Loopt de opening nog, dan begint
+    // het pas als de film klaar is (die heeft zijn eigen muziek).
     kies(naam, vanaf) {
-      const doel = STUKKEN[naam] ? naam : 'thuis';
+      const doel = STUKKEN[naam] ? naam : 'straat';
       gewenst = doel; gewenstVanaf = vanaf || 0;
-      if (!aan || !ctx) return;
+      if (!aan || !ctx || filmLoopt()) return;
       if (huidigStuk === doel) return;
       stopHuidig();
       setTimeout(() => { if (aan && gewenst === doel && !speelt) begin(doel, gewenstVanaf); }, 500);
