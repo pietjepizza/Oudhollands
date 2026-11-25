@@ -1287,7 +1287,7 @@
         duiven: plaats([950, 288], [566, 413], 0.9),
         vlieger: plaats([535, 452], [272, 690], 0.85),
         stelten: plaats([1045, 470], [632, 800], 1.2),
-        hobbel: plaats([330, 860], [165, 1292], 0.78),
+        hobbel: plaats([330, 860], [140, 1222], 0.62),   // achter de zandbak op de vloer, niet erachter verstopt
         knikkeren: plaats([490, 865], [330, 1270], 0.78),
         tollen: plaats([1125, 800], [650, 1262], 0.7),
         kisten: plaats([1400, 840], [790, 1190], 0.62),
@@ -1504,7 +1504,7 @@
     bouwStelten(plek('stelten', svg));
     bouwKisten(plek('kisten', svg));
     bouwRommel(plek('rommel', svg));
-    bouwHobbelpaard(plek('hobbel', svg));
+    bouwHobbelpaard(plek('hobbel', svg), defs);
     const kn = plek('knikkeren', svg);
     bouwLappendeken(kn);
     bouwZandbak(kn);
@@ -1628,22 +1628,158 @@
     }
   }
 
-  function bouwHobbelpaard(ouder) {
-    const g = el('g', { 'data-na': 'z-hobbel', 'data-doel': 'z-hobbel', 'data-vonk': 'z-hobbel' }, ouder);
-    el('ellipse', { cx: 335, cy: 864, rx: 112, ry: 14, fill: 'url(#h-schaduwvlek)' }, g);
-    const w = el('g', { class: 'hobbel' }, g);
-    el('path', { d: 'M220 840 Q330 884 442 840', fill: 'none', stroke: '#6B4423', 'stroke-width': 10, 'stroke-linecap': 'round' }, w);
-    el('path', { d: 'M268 846 L284 772 M300 854 L306 774 M360 854 L354 774 M392 846 L376 772', stroke: '#E9E4DA', 'stroke-width': 10, 'stroke-linecap': 'round' }, w);
-    el('path', { d: 'M268 846 L284 772 M392 846 L376 772', stroke: '#B9B2A4', 'stroke-width': 3, 'stroke-linecap': 'round' }, w);
-    el('ellipse', { cx: 330, cy: 760, rx: 72, ry: 30, fill: '#ECE7DD' }, w);
-    [[300, 752, 5], [322, 766, 4], [348, 750, 5], [366, 768, 4], [286, 770, 3.5]].forEach(([x, y, r]) => el('circle', { cx: x, cy: y, r, fill: '#A9A39A', opacity: 0.7 }, w));
-    el('path', { d: 'M382 752 Q412 704 404 672 L430 664 Q450 672 446 692 Q432 702 422 714 Q406 742 398 772 Z', fill: '#ECE7DD' }, w);
-    el('path', { d: 'M398 676 q -8 22 -18 42 q -6 14 -12 26', fill: 'none', stroke: '#4A4A4A', 'stroke-width': 7, 'stroke-linecap': 'round' }, w);
-    el('path', { d: 'M260 752 q -28 6 -34 38', fill: 'none', stroke: '#4A4A4A', 'stroke-width': 8, 'stroke-linecap': 'round' }, w);
-    el('path', { d: 'M302 732 Q330 722 358 732 L354 756 Q330 762 306 756 Z', fill: '#B23A2A' }, w);
-    el('path', { d: 'M306 742 h48', stroke: '#E7C36A', 'stroke-width': 2 }, w);
-    el('path', { d: 'M414 676 L438 690 M430 664 L426 654 L438 660', fill: 'none', stroke: '#B23A2A', 'stroke-width': 2.6 }, w);
-    el('circle', { cx: 433, cy: 676, r: 2.6, fill: '#2A1A0C' }, w);
+  // Het hobbelpaard: een antiek appelgrauw paard van beschilderd hout in volle galop op twee lange gebogen
+  // schommels (rood met een gouden bies en krullen aan de uiteinden). Manen en staart van echt paardenhaar,
+  // een rood zadel op een Delfts blauw kleed met gouden franje, een koperen stijgbeugel en een rood hoofdstel
+  // met koperen rozetjes. De verre schommel en de verre benen liggen iets hoger en donkerder, voor de diepte.
+  // Tik erop en het hobbelt (CSS: .hobbel). De schommel raakt de vloer in 330,860.
+  function bouwHobbelpaard(ouder, defs) {
+    const g0 = el('g', { 'data-na': 'z-hobbel', 'data-doel': 'z-hobbel', 'data-vonk': 'z-hobbel' }, ouder);
+    el('ellipse', { cx: 335, cy: 864, rx: 132, ry: 13, fill: 'url(#h-schaduwvlek)' }, g0);
+    const w = el('g', { class: 'hobbel' }, g0);
+    const f1 = (v) => (+v).toFixed(1);
+    // een ledemaat als gladde, taps toelopende vorm langs een reeks punten [x, y, breedte]
+    const ledemaat = (pts, attrs, o) => {
+      const L = [], R = [];
+      for (let i = 0; i < pts.length; i++) {
+        const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+        let dx = b[0] - a[0], dy = b[1] - a[1]; const d = Math.hypot(dx, dy) || 1; dx /= d; dy /= d;
+        const nx = -dy, ny = dx, hb = pts[i][2] / 2;
+        L.push([pts[i][0] + nx * hb, pts[i][1] + ny * hb]); R.push([pts[i][0] - nx * hb, pts[i][1] - ny * hb]);
+      }
+      const pad = (lijst) => {
+        let d = '';
+        for (let i = 1; i < lijst.length - 1; i++) {
+          const m = [(lijst[i][0] + lijst[i + 1][0]) / 2, (lijst[i][1] + lijst[i + 1][1]) / 2];
+          d += ` Q${f1(lijst[i][0])} ${f1(lijst[i][1])} ${f1(m[0])} ${f1(m[1])}`;
+        }
+        const z = lijst[lijst.length - 1];
+        return d + ` L${f1(z[0])} ${f1(z[1])}`;
+      };
+      const eind = pts[pts.length - 1], begin = pts[0];
+      const d = `M${f1(L[0][0])} ${f1(L[0][1])}` + pad(L) +
+        ` A${f1(eind[2] / 2)} ${f1(eind[2] / 2)} 0 0 1 ${f1(R[R.length - 1][0])} ${f1(R[R.length - 1][1])}` +
+        pad(R.slice().reverse()) + ` A${f1(begin[2] / 2)} ${f1(begin[2] / 2)} 0 0 1 ${f1(L[0][0])} ${f1(L[0][1])} Z`;
+      return el('path', Object.assign({ d }, attrs), o);
+    };
+    const hoef = (x, y, hoek, kleur, o) => {
+      const g = el('g', { transform: `translate(${f1(x)} ${f1(y)}) rotate(${f1(hoek)})` }, o);
+      el('path', { d: 'M-6.5 -7 L6 -7 L7.5 0 L-7.5 0 Z', fill: kleur }, g);
+      el('path', { d: 'M-6.5 -7 L6 -7', stroke: '#6E655C', 'stroke-width': 1.2 }, g);
+    };
+
+    verloop(defs, 'hb-lijf', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#FAF7F0'], [0.55, '#E9E3D8'], [1, '#BDB3A4']]);
+    verloop(defs, 'hb-been', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#E6E0D5'], [0.55, '#B9B0A2'], [1, '#7F776C']]);
+    verloop(defs, 'hb-been-ver', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#C9C2B6'], [0.6, '#9C9488'], [1, '#6A635A']]);
+    verloop(defs, 'hb-appel', 'radialGradient', { cx: '50%', cy: '50%', r: '50%' }, [[0, '#8E877C', 0], [0.55, '#8E877C', 0.05], [0.8, '#7C7569', 0.42], [1, '#7C7569', 0]]);
+    verloop(defs, 'hb-zadel', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#C9473A'], [0.5, '#9E2B20'], [1, '#6E1A12']]);
+    verloop(defs, 'hb-kleed', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#2C4E8C'], [1, '#18305E']]);
+    verloop(defs, 'hb-boog', 'linearGradient', { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, '#A9402E'], [0.5, '#86291D'], [1, '#5A1A12']]);
+    verloop(defs, 'hb-koper', 'linearGradient', { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, '#F6DC97'], [0.5, '#C9973F'], [1, '#7A5520']]);
+
+    const g = el('g', {}, w);
+    // de schommels (de verre iets hoger en naar rechts, zoals je hem schuin van voren ziet) met dwarslatten
+    const boog = (dx, dy, vul, bies, o) => {
+      const b = el('g', { transform: `translate(${dx} ${dy})` }, o);
+      el('path', { d: 'M196 832 Q330 888 464 832 L462 821 Q330 877 198 821 Z', fill: vul }, b);
+      // krul aan de uiteinden
+      el('path', { d: 'M198 821 q-9 -2 -10 6 q1 8 8 5', fill: 'none', stroke: vul === 'url(#hb-boog)' ? '#86291D' : vul, 'stroke-width': 5, 'stroke-linecap': 'round' }, b);
+      el('path', { d: 'M462 821 q9 -2 10 6 q-1 8 -8 5', fill: 'none', stroke: vul === 'url(#hb-boog)' ? '#86291D' : vul, 'stroke-width': 5, 'stroke-linecap': 'round' }, b);
+      if (bies) {
+        el('path', { d: 'M201 826.4 Q330 882.4 459 826.4', fill: 'none', stroke: '#E3C27A', 'stroke-width': 1.5, 'stroke-dasharray': '10 3 2 3' }, b);
+        el('path', { d: 'M198 821 Q330 877 462 821', fill: 'none', stroke: '#D9725E', 'stroke-width': 1, opacity: 0.6 }, b);
+      }
+      return b;
+    };
+    boog(11, -10, '#4E1912', false, g);
+    [[226, 0], [434, 0]].forEach(([x]) => {
+      const t = (x - 198) / 264, yb = 821 + 112 * t * (1 - t);
+      el('path', { d: `M${x - 3} ${f1(yb)} L${x + 8} ${f1(yb - 10)} L${x + 14} ${f1(yb - 10)} L${x + 3} ${f1(yb)} Z`, fill: '#5A3A22' }, g);
+    });
+    // de verre benen (donkerder), met hoeven op de verre schommel
+    const ver = el('g', {}, g);
+    ledemaat([[404, 756, 15], [416, 774, 12], [425, 789, 10.5], [430, 794, 11], [438, 806, 7.5], [447, 815, 8], [453, 820, 6.5]], { fill: 'url(#hb-been-ver)' }, ver);
+    ledemaat([[286, 756, 19], [276, 772, 14], [266, 786, 11], [262, 791, 11], [256, 804, 7.5], [247, 815, 8], [242, 820, 6.5]], { fill: 'url(#hb-been-ver)' }, ver);
+    hoef(457, 820, 6, '#24201C', ver);
+    hoef(240, 823, -6, '#24201C', ver);
+    // de staart: een volle bos echt paardenhaar die naar onderen uitwaaiert
+    const staart = el('g', { fill: 'none', 'stroke-linecap': 'round' }, g);
+    el('path', { d: 'M262 722 C 244 728, 234 752, 232 778 C 231 790, 228 800, 224 808 C 236 804, 242 792, 244 778 C 247 758, 254 740, 266 730 Z', fill: '#2E2824' }, staart);
+    for (let i = 0; i < 16; i++) {
+      const t = i / 15, s0 = (t - 0.5);
+      const x1 = 236 + s0 * 10, y1 = 750 + Math.abs(s0) * 8, x2 = 226 + s0 * 26, y2 = 800 + 8 * Math.cos(s0 * 3) + (i % 3) * 3;
+      el('path', { d: `M${f1(258 - s0 * 4)} ${f1(726 + s0 * 3)} C ${f1(x1 + 6)} ${f1(y1 - 16)}, ${f1(x1)} ${f1(y1)}, ${f1(x2)} ${f1(y2)}`,
+        stroke: ['#2A2420', '#4A413A', '#6E6258', '#3A332D'][i % 4], 'stroke-width': [2.4, 1.4, 0.9, 1.8][i % 4] }, staart);
+    }
+    // het lijf
+    const lijf = 'M370 716 C 352 724, 340 731, 326 730 C 306 729, 290 720, 272 718 C 256 716, 247 732, 250 748 C 252 762, 262 772, 276 776 C 300 782, 352 786, 386 778 C 400 774, 410 764, 410 750 C 410 738, 404 728, 396 722 C 388 718, 378 714, 370 716 Z';
+    const hals = 'M366 722 C 378 702, 392 678, 410 662 C 414 656, 422 655, 428 660 C 440 670, 456 688, 466 700 C 469 705, 466 713, 458 714 C 450 715, 444 711, 438 706 C 430 702, 424 700, 420 704 C 414 716, 410 734, 410 752 L 392 744 Z';
+    // de nabije achterbenen en voorbenen
+    const nabij = el('g', {}, g);
+    ledemaat([[272, 756, 23], [262, 773, 16], [252, 788, 12], [247, 793, 12], [241, 807, 8], [232, 820, 8.6], [227, 828, 7]], { fill: 'url(#hb-been)' }, nabij);
+    ledemaat([[396, 758, 18], [407, 776, 13.5], [416, 791, 11.5], [421, 797, 12], [428, 811, 8], [435, 822, 8.6], [439, 828, 7]], { fill: 'url(#hb-been)' }, nabij);
+    // knie, hak en kogel: een zachte schaduwlijn
+    [['M412 787 q5 6 4 12', 1.2], ['M246 789 q-6 4 -5 11', 1.2], ['M431 819 q4 3 3 7', 1], ['M236 816 q-4 3 -3 7', 1]].forEach(([d, w]) => el('path', { d, fill: 'none', stroke: '#8E857A', 'stroke-width': w, opacity: 0.7 }, nabij));
+    boog(0, 0, 'url(#hb-boog)', true, g);
+    hoef(440, 830, 6, '#2B2622', g);
+    hoef(226, 832, -6, '#2B2622', g);
+    el('path', { d: lijf, fill: 'url(#hb-lijf)' }, g);
+    el('path', { d: hals, fill: 'url(#hb-lijf)' }, g);
+    // appels (appelgrauw), binnen het lijf en de hals
+    const clip = el('clipPath', { id: 'hb-vel' }, defs);
+    el('path', { d: lijf }, clip); el('path', { d: hals }, clip);
+    const appels = el('g', { 'clip-path': 'url(#hb-vel)' }, g);
+    [[262, 736, 9], [276, 728, 8], [286, 744, 9], [270, 754, 8], [300, 738, 7], [298, 756, 8], [316, 746, 7], [334, 752, 7], [352, 748, 7], [372, 742, 8], [390, 736, 7], [384, 756, 7], [400, 748, 6],
+      [384, 712, 6], [394, 698, 6], [404, 684, 5], [398, 724, 6], [318, 764, 7], [342, 768, 6], [290, 766, 6]].forEach(([x, y, r]) => {
+      el('ellipse', { cx: x, cy: y, rx: r, ry: r * 0.86, fill: 'url(#hb-appel)' }, appels);
+    });
+    // schaduw onder de buik en een glimlicht over de rug
+    el('path', { d: 'M262 766 C 290 784, 352 790, 400 770 L 404 780 C 352 796, 290 794, 258 772 Z', fill: '#5E564C', opacity: 0.25 }, appels);
+    el('path', { d: 'M276 721 C 300 724, 320 732, 338 730 C 350 729, 360 722, 370 719', fill: 'none', stroke: '#FFFFFF', 'stroke-width': 2.4, opacity: 0.55, 'stroke-linecap': 'round' }, g);
+    el('path', { d: 'M380 708 C 390 690, 400 676, 410 666', fill: 'none', stroke: '#FFFFFF', 'stroke-width': 2, opacity: 0.45, 'stroke-linecap': 'round' }, g);
+    // oren
+    el('path', { d: 'M418 660 L416 640 L427 657 Z', fill: '#CFC7BA' }, g);
+    el('path', { d: 'M411 663 L403 641 L420 657 Z', fill: '#EDE8DF' }, g);
+    el('path', { d: 'M410 658 L406 646 L415 657 Z', fill: '#B9A9A0' }, g);
+    // de manen: een volle lok langs de kam van de hals, die over de nabije kant valt, met losse haren en een kuif
+    const manen = el('g', { fill: 'none', 'stroke-linecap': 'round' }, g);
+    el('path', { d: 'M414 660 C 402 668, 390 684, 380 700 C 374 710, 368 716, 362 722 C 362 730, 366 736, 370 738 C 374 728, 380 720, 386 714 C 394 700, 402 686, 412 676 Z', fill: '#2E2824' }, manen);
+    for (let i = 0; i < 22; i++) {
+      const t = i / 21, x = 414 - 50 * t, y = 660 + 62 * t;
+      const lang = 12 + 10 * Math.sin(t * Math.PI) + (i % 3) * 2;
+      el('path', { d: `M${f1(x)} ${f1(y)} q ${f1(-3 - 2 * t)} ${f1(lang * 0.5)} ${f1(-7 - 5 * t + (i % 2) * 2)} ${f1(lang)}`,
+        stroke: ['#2A2420', '#4A413A', '#6E6258', '#3A332D'][i % 4], 'stroke-width': [2.2, 1.3, 0.8, 1.6][i % 4] }, manen);
+    }
+    [[0, '#2A2420', 2.4], [3, '#4A413A', 1.4], [-2, '#2A2420', 1.8], [5, '#6E6258', 0.9]].forEach(([s0, k, w]) => el('path', { d: `M416 660 q ${6 + s0} 3 ${9 + s0} ${12 + s0 * 0.5}`, stroke: k, 'stroke-width': w }, manen));
+    // het hoofd: oog, neusgat, mond met tandjes
+    el('ellipse', { cx: 433, cy: 675, rx: 4.6, ry: 3.4, fill: '#2A1A10', transform: 'rotate(28 433 675)' }, g);
+    el('circle', { cx: 434.6, cy: 673.8, r: 1.2, fill: '#FFFFFF' }, g);
+    el('path', { d: 'M427 671 q6 -4 11 1', fill: 'none', stroke: '#6E655C', 'stroke-width': 1 }, g);
+    el('path', { d: 'M458 697 q4 -1 5 3 q-3 1 -5 -3 Z', fill: '#4A3A30' }, g);
+    el('path', { d: 'M449 710 Q456 704 465 706 Q460 712 452 712 Z', fill: '#8E2A22' }, g);
+    el('path', { d: 'M454 706.5 h7', stroke: '#FFFFFF', 'stroke-width': 1.6 }, g);
+    // het zadelkleed (Delfts blauw met een gouden rand en franje), het zadel, de singel en de stijgbeugel
+    const kleed = 'M306 728 C 322 732, 342 732, 358 722 C 360 734, 360 744, 356 752 C 340 758, 322 758, 304 750 C 300 744, 302 734, 306 728 Z';
+    el('path', { d: kleed, fill: 'url(#hb-kleed)' }, g);
+    el('path', { d: 'M304 750 C 322 758, 340 758, 356 752', fill: 'none', stroke: '#D9B05A', 'stroke-width': 2.2 }, g);
+    el('path', { d: 'M307 733 C 322 737, 342 737, 355 728 C 357 736, 357 742, 353 748 C 338 753, 322 753, 308 746 C 305 742, 305 737, 307 733 Z', fill: 'none', stroke: '#D9B05A', 'stroke-width': 0.9, opacity: 0.8 }, g);
+    for (let i = 0; i <= 12; i++) {
+      const t = i / 12, x = 304 + 52 * t, y = 750 + 7 * Math.sin(t * Math.PI) + 2 * t;
+      el('path', { d: `M${f1(x)} ${f1(y)} l0.3 4`, stroke: '#E3C27A', 'stroke-width': 1.2 }, g);
+    }
+    el('path', { d: 'M310 728 C 314 712, 326 722, 334 723 C 345 724, 352 708, 360 714 L 358 731 C 340 738, 324 738, 311 734 Z', fill: 'url(#hb-zadel)' }, g);
+    el('path', { d: 'M316 722 C 326 726, 344 726, 354 718', fill: 'none', stroke: '#E07A5E', 'stroke-width': 1.2, opacity: 0.7 }, g);
+    el('path', { d: 'M311 734 C 324 738, 340 738, 358 731', fill: 'none', stroke: '#E3C27A', 'stroke-width': 1.4, 'stroke-dasharray': '1.5 2.5' }, g);
+    el('path', { d: 'M342 734 L344 762', stroke: '#4A2414', 'stroke-width': 2.2 }, g);
+    el('path', { d: 'M338.5 761 h11 l-1.6 7 h-7.8 Z', fill: 'none', stroke: 'url(#hb-koper)', 'stroke-width': 2.2, 'stroke-linejoin': 'round' }, g);
+    // het hoofdstel: rood leer met koperen rozetjes, en de teugels naar het zadel
+    const leer = { fill: 'none', stroke: '#8E2A1E', 'stroke-width': 2.4, 'stroke-linecap': 'round' };
+    el('path', Object.assign({ d: 'M417 664 C 426 680, 438 694, 449 707' }, leer), g);
+    el('path', Object.assign({ d: 'M445 688 C 450 694, 458 694, 463 690' }, leer), g);
+    el('path', Object.assign({ d: 'M411 667 L425 664' }, leer), g);
+    el('path', Object.assign({ d: 'M418 668 C 418 680, 420 692, 422 702' }, leer), g);
+    el('path', Object.assign({ d: 'M449 708 Q 404 752 358 724', 'stroke-width': 2 }, leer), g);
+    [[417, 665], [449, 707], [446, 689]].forEach(([x, y]) => { el('circle', { cx: x, cy: y, r: 2.8, fill: 'url(#hb-koper)' }, g); el('circle', { cx: x - 0.8, cy: y - 0.8, r: 0.9, fill: '#FFF3C8' }, g); });
   }
 
   function bouwLappendeken(ouder) {

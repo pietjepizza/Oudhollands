@@ -42,7 +42,8 @@ Alles wordt in de browser bewaard; via het menu kun je opnieuw beginnen.
 **Kamers vrijspelen.** Is de voorkamer klaar, dan koop je de trap (60 duiten): de deur naar de gang gaat open en een
 steile Hollandse trap leidt naar de **zolder**. Daar staan twee nieuwe spellen (knikkeren in de zandbak, tollen op de
 kist) en acht eigen klussen: rommel opruimen, het hijsluik openen, balken schuren, planken boenen, een lantaarn, een
-lappendeken, een hobbelpaard en duiven op de hanenbalk. De straat is het knooppunt: onderaan staan de plekken
+lappendeken, een antiek appelgrauw hobbelpaard op gebogen schommels (met manen en staart van paardenhaar, een
+rood zadel op een Delfts blauw kleed; tik erop en het hobbelt) en duiven op de hanenbalk. De straat is het knooppunt: onderaan staan de plekken
 (voorkamer, zolder, herberg, kermis, ijsbaan, en rechts de pronkkamer en de Kunstkamer). De herberg en de ijsbaan zitten nog op slot.
 
 **De kermis.** Via de knop "Kermis" (of op Koningsdag via het draaiorgel op de kade) kom je op het kermisplein: een
@@ -272,7 +273,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=39`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=40`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
