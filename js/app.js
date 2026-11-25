@@ -15,6 +15,31 @@
   const PAGINA = { kunstkamer: () => window.Kunstkamer, pronkkamer: () => window.Pronk, kermis: () => window.Kermis };
   let huidig; // undefined = er is nog niets getoond
 
+  // ---------- Het doek ----------
+  // Over de straat, de kamers en de kermis ligt een fijne korrel met het weefsel van linnen (CSS: --linnen,
+  // met soft-light), zodat de vlakke tekeningen lezen als verf op doek. Eén tegel van 192 px, één keer gemaakt.
+  (function linnen() {
+    try {
+      const n = 192, c = document.createElement('canvas');
+      c.width = c.height = n;
+      const g = c.getContext('2d'), d = g.createImageData(n, n);
+      let z = 20240611;
+      const rnd = () => { z = (z * 16807) % 2147483647; return (z - 1) / 2147483646; };
+      for (let y = 0; y < n; y++) {
+        for (let x = 0; x < n; x++) {
+          const i = (y * n + x) * 4;
+          // schering en inslag om de 4 pixels, en een korrel die er onregelmatig doorheen loopt
+          const weefsel = Math.sin(x * Math.PI / 2) * 6 + Math.sin(y * Math.PI / 2 + 1.3) * 6;
+          const v = Math.max(0, Math.min(255, Math.round(128 + weefsel + (rnd() + rnd() + rnd() - 1.5) * 34)));
+          d.data[i] = d.data[i + 1] = d.data[i + 2] = v;
+          d.data[i + 3] = 255;
+        }
+      }
+      g.putImageData(d, 0, 0);
+      document.documentElement.style.setProperty('--linnen', `url(${c.toDataURL('image/png')})`);
+    } catch (e) { /* zonder doek gaat het ook */ }
+  })();
+
   function toon() {
     // het oude adres van de pronkkast leidt naar de pronkkamer
     if (location.hash === '#pronkkast') { location.replace('#pronkkamer'); return; }

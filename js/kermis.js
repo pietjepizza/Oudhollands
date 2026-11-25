@@ -832,9 +832,11 @@
   }
   function pasBeeldAan(soort, vak, breedte, hoogte) {
     const b = BEELD[soort];
-    const nieuweL = Math.round(B * klem(hoogte / Math.max(1, breedte), soort === 'plein' ? 0.36 : 0.5, 1.9));
-    const s = Math.max(0.4, Math.min(breedte / B, hoogte / nieuweL, 3.2));
-    const nieuweDpr = Math.min(2.5, window.devicePixelRatio || 1);
+    const plein = soort === 'plein';
+    const nieuweL = Math.round(B * klem(hoogte / Math.max(1, breedte), plein ? 0.36 : 0.5, plein ? 2.4 : 1.9));
+    const s = Math.max(0.4, Math.min(breedte / B, hoogte / nieuweL, plein ? 8 : 3.2));
+    // niet meer dan zo'n 2600 beeldpunten breed: op een groot scherm blijft het vlot
+    const nieuweDpr = Math.min(2.5, window.devicePixelRatio || 1, 2600 / (B * s));
     if (nieuweL === b.L && Math.abs(s - b.sc) < 0.001 && nieuweDpr === b.dpr && b.achter) return false;
     b.L = nieuweL; b.sc = s; b.dpr = nieuweDpr;
     vak.style.setProperty('--km-b', Math.round(B * s) + 'px');

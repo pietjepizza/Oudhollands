@@ -5,16 +5,20 @@
    Tegels, papier, hout en de kaartjes boven de kamer zijn "voorwerpen": hun kleuren veranderen niet met het thema. */
 
 :root {
-  /* Kleur: de muur van de site */
-  --grond: #E6EAEC;
-  --grond-diep: #D7DDE1;
-  --inkt: #18213B;
-  --inkt-zacht: #4B5672;
-  --accent: #1C3473;         /* kobalt */
-  --accent-tekst: #F7F6F1;
-  --lijn: rgba(24, 33, 59, .16);
-  --paneel: #F3F4F2;
-  --gevaar: #A8402E;
+  /* Kleur: ebbenhout met bladgoud, zoals de lijst om een schilderij uit de Gouden Eeuw.
+     Het huis is een schilderij; alles eromheen is de lijst. Licht of donker scherm: het blijft dezelfde lijst. */
+  --grond: #120C07;
+  --grond-diep: #21170E;
+  --inkt: #F1E6CF;
+  --inkt-zacht: #BCAA8B;
+  --accent: #E2B65C;         /* bladgoud */
+  --accent-tekst: #1A1008;
+  --lijn: rgba(226, 182, 92, .2);
+  --paneel: #1A120B;
+  --gevaar: #E8907A;
+  --goud: #E2B65C;
+  --goud-licht: #F3D891;
+  color-scheme: dark;
 
   /* Voorwerpen (veranderen niet met het thema) */
   --glazuur: #F8F7F1;
@@ -34,35 +38,6 @@
   --maat-m: 1.15rem;
   --maat-l: 1.6rem;
   --maat-xl: clamp(2rem, 1.4rem + 2.6vw, 3.2rem);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --grond: #0E1428;
-    --grond-diep: #141B33;
-    --inkt: #E7E9F0;
-    --inkt-zacht: #A3ACC4;
-    --accent: #9DB2EA;
-    --accent-tekst: #0E1428;
-    --lijn: rgba(231, 233, 240, .16);
-    --paneel: #161E38;
-    --gevaar: #F0917C;
-    --glazuur: #E8E5DA;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --grond: #0E1428;
-  --grond-diep: #141B33;
-  --inkt: #E7E9F0;
-  --inkt-zacht: #A3ACC4;
-  --accent: #9DB2EA;
-  --accent-tekst: #0E1428;
-  --lijn: rgba(231, 233, 240, .16);
-  --paneel: #161E38;
-  --gevaar: #F0917C;
-  --glazuur: #E8E5DA;
-  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -97,15 +72,23 @@ svg.duit { width: 22px; height: 22px; flex: none; }
 /* ---------- Kop ---------- */
 .kop {
   position: relative; z-index: 5;
-  padding-block: max(10px, env(safe-area-inset-top, 0px)) 10px;
-  border-bottom: 1px solid var(--lijn);
-  background: var(--grond);
+  padding-block: max(9px, env(safe-area-inset-top, 0px)) 9px;
+  background:
+    linear-gradient(180deg, rgba(255, 236, 196, .06), rgba(255, 236, 196, 0) 60%),
+    linear-gradient(180deg, #23180F, #120C07);
+  box-shadow: inset 0 -1px 0 rgba(226, 182, 92, .6), 0 1px 0 #050302;
+}
+/* de golflijst: fijn geribbeld ebbenhout onder de kop, zoals om een schilderij uit de 17e eeuw */
+.kop::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 6px; pointer-events: none;
+  background: repeating-linear-gradient(90deg, #2C1F13 0 1.5px, #0A0603 1.5px 3.5px);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, .6), 0 4px 10px rgba(0, 0, 0, .5);
 }
 .kop-binnen, .voet-binnen, .spel, .thuis-tekst { max-width: 1120px; margin-inline: auto; }
-.kop-binnen { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.merk { display: inline-flex; align-items: center; gap: 10px; min-width: 0; text-decoration: none; color: var(--inkt); font-family: var(--f-sier); font-size: 1.45rem; }
-.merk-naam { white-space: nowrap; }
-.merk-tegel { width: 36px; height: 36px; flex: none; }
+.kop-binnen { display: flex; align-items: center; justify-content: space-between; gap: 10px; max-width: none; }
+.merk { display: inline-flex; align-items: center; gap: 10px; min-width: 0; text-decoration: none; color: #ECCB80; font-family: var(--f-sier); font-size: 1.45rem; }
+.merk-naam { white-space: nowrap; text-shadow: 0 1px 0 rgba(0, 0, 0, .8), 0 0 18px rgba(226, 182, 92, .18); }
+.merk-tegel { width: 36px; height: 36px; flex: none; border-radius: 3px; box-shadow: 0 0 0 1px rgba(226, 182, 92, .55), 0 2px 6px rgba(0, 0, 0, .6); }
 .merk-grond { fill: var(--glazuur); }
 .merk-hoeken { color: var(--tegel-blauw); }
 .kop-knoppen { display: flex; align-items: center; gap: 6px; min-width: 0; }
@@ -115,8 +98,9 @@ svg.duit { width: 22px; height: 22px; flex: none; }
   display: inline-flex; align-items: center; gap: 6px;
   padding: 3px 12px 3px 5px; margin-right: 4px;
   border-radius: 999px;
-  background: var(--paneel);
-  box-shadow: inset 0 0 0 1px var(--lijn);
+  background: radial-gradient(circle at 50% 30%, #2E2116, #150E08);
+  color: #F6E3B4;
+  box-shadow: inset 0 0 0 1px rgba(226, 182, 92, .5), 0 2px 6px rgba(0, 0, 0, .5);
   font-family: var(--f-tekst); font-weight: 600; font-size: 1.15rem;
   font-variant-numeric: lining-nums tabular-nums;
 }
@@ -127,28 +111,39 @@ svg.duit { width: 22px; height: 22px; flex: none; }
 .ikoon-knop {
   width: 40px; height: 40px; padding: 0; flex: none;
   display: inline-grid; place-items: center;
-  border-radius: 50%; border: 1px solid var(--lijn);
-  background: transparent; color: var(--inkt); cursor: pointer;
+  border-radius: 50%; border: 0;
+  background: radial-gradient(circle at 50% 32%, #2E2116, #150E08); color: var(--inkt); cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(226, 182, 92, .5), 0 2px 6px rgba(0, 0, 0, .5);
+  transition: box-shadow .2s ease, transform .12s ease;
 }
+.ikoon-knop:active { transform: scale(.94); }
 .ikoon-knop svg { width: 22px; height: 22px; overflow: visible; }
 .ikoon-knop .streep { stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; display: none; }
-.ikoon-knop[aria-pressed="false"] { color: var(--inkt-zacht); }
+.ikoon-knop[aria-pressed="false"] { color: #8C7C62; }
 .ikoon-knop[aria-pressed="false"] .streep { display: inline; }
-.ikoon-knop:hover { background: var(--grond-diep); }
+.ikoon-knop:hover { box-shadow: inset 0 0 0 1px rgba(243, 216, 145, .85), 0 0 12px rgba(226, 182, 92, .25), 0 2px 6px rgba(0, 0, 0, .5); }
 
 /* ---------- Het toneel: gevel en kamer ---------- */
-.thuis { padding-block: 0 24px; }
+.thuis { padding-block: 0; }
+/* het huis is een app geworden: geen uitleg en voet meer onder het schilderij (het menu heeft 'Over de spellen') */
+.thuis-tekst, .voet { display: none; }
 .toneel {
   position: relative;
   overflow: hidden;
-  height: min(calc(100svh - var(--kop-h, 70px)), 64vw);
-  min-height: 440px;
+  height: calc(100svh - var(--kop-h, 64px));
+  min-height: 320px;
   margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
   margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
   background: #140D08;
   isolation: isolate;
 }
 .gevel, .kamer { position: absolute; inset: 0; }
+/* het doek: over de straat, de kamers en de kermis ligt een fijne korrel van linnen, zoals bij een schilderij */
+.toneel::before, .kermis::before, .pronkkast::before {
+  content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: var(--linnen, none) 0 0 / 192px 192px; mix-blend-mode: soft-light; opacity: .55;
+}
+.kermis::before { z-index: 1; opacity: .42; }
 /* een zachte vignet rond de straat geeft diepte */
 .gevel::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(130% 95% at 50% 42%, transparent 62%, rgba(22, 13, 6, .32)); }
 .gevel-tekst { z-index: 2; }
@@ -387,6 +382,10 @@ html[data-seizoen="winter"] .stof { display: none; }
 /* ---------- Spelpagina's ---------- */
 .spel { padding-block: 22px 40px; }
 .spel:not([hidden]) { animation: binnenkomen .5s ease-out; }
+/* ook de kermis, de pronkkamer en de Kunstkamer komen zacht uit het donker op */
+.kermis:not([hidden]), .pronkkast:not([hidden]), .kunstkamer:not([hidden]) { animation: uit-het-donker .45s ease-out; }
+/* alleen de dekking: deze schermen meten hun maat bij het opkomen (een schaal zou die meting verstoren) */
+@keyframes uit-het-donker { from { opacity: 0; } to { opacity: 1; } }
 @keyframes binnenkomen { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: none; } }
 .spel-kop { display: grid; gap: 8px; margin-bottom: 18px; justify-items: start; }
 .terug {
@@ -1896,8 +1895,6 @@ button.mo-kaart { cursor: pointer; }
 /* ---------- Telefoon: de kamer vult het scherm, weinig tekst ---------- */
 @media (max-width: 760px) {
   .toneel { height: calc(100svh - var(--kop-h, 60px)); min-height: 460px; }
-  .thuis { padding-block: 0; }
-  .thuis-tekst, .voet { display: none; }
   .nu-speelt { display: none; }
   .merk { font-size: 1.2rem; gap: 8px; }
   .merk-tegel { width: 32px; height: 32px; }
@@ -2140,6 +2137,8 @@ button.mo-kaart { cursor: pointer; }
 
 /* ---------- De kermis (het plein) en ringsteken (in de draaimolen) ---------- */
 .km-veldvak { position: relative; width: var(--km-b, 320px); height: var(--km-h, 400px); }
+/* het plein vult het hele scherm, de kop ligt eroverheen */
+.km-plein .km-doek { border-radius: 0; box-shadow: none; }
 .km-doek { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 16px; outline: none; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-shadow: 0 20px 38px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); }
 .rs-doek { touch-action: none; cursor: pointer; }
 .rs-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E, 0 20px 38px rgba(0, 0, 0, .55); }
@@ -2172,11 +2171,15 @@ button.mo-kaart { cursor: pointer; }
   position: fixed; inset: 0; z-index: 20; margin: 0; padding: 0; max-width: none; color: #F4E9CF; background: #2A1A0E;
   -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
 }
-.km-plein {
-  position: absolute; inset: 0; display: grid; grid-template-rows: auto minmax(0, 1fr);
-  padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
+.km-plein { position: absolute; inset: 0; }
+.km-plein .km-vak { position: absolute; inset: 0; }
+.km-kop {
+  position: absolute; z-index: 3; left: 0; right: 0; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 26px max(12px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(180deg, rgba(14, 9, 4, .6), rgba(14, 9, 4, .28) 60%, rgba(14, 9, 4, 0));
+  pointer-events: none;
 }
-.km-kop { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; max-width: 760px; margin: 0 auto; padding-bottom: 8px; }
+.km-kop > * { pointer-events: auto; }
 .km-naam { margin: 0; font-family: var(--f-sier); font-style: italic; font-size: clamp(1.15rem, .95rem + .9vw, 1.6rem); color: #F2CF7A; text-shadow: 0 2px 8px rgba(0, 0, 0, .7); white-space: nowrap; }
 .km-vak { position: relative; display: grid; place-items: center; min-height: 0; }
 .km-plek { position: absolute; z-index: 2; display: block; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer; border-radius: 18px; -webkit-tap-highlight-color: transparent; font: inherit; color: inherit; text-decoration: none; }
@@ -2380,7 +2383,7 @@ html.met-opening .film { display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   .kroon, .vlam, .gloed, .haardvlam, .haardgloed, .gloeit, .kj-kaarten.wijs .kj-kaart .kj-voor, .kj-melding.in, .kj-troefkeuze, .stofje, .lichtbundel, .zonvlek, .hoepel-hang, .kat-lijf, .kat-staart, .gangLicht, .glim, .kast-glim path,
-  .wolk, .uithangbord, .vogels, .water-glans line, .deur-licht, .deur-wenk, .spel:not([hidden]), .schud .vw,
+  .wolk, .uithangbord, .vogels, .water-glans line, .deur-licht, .deur-wenk, .spel:not([hidden]), .kermis:not([hidden]), .pronkkast:not([hidden]), .kunstkamer:not([hidden]), .schud .vw,
   .klusknop.kan, .klusknop.schud, .speelbaar.wenk .vw, .beurs.wip, .beloning.open .bel-kaart, .beloning.open .bel-munt,
   .vel.open .vel-kaart, .kamer-svg .verschijnt, .feest, .klus-wenk.in,
   .vlok, .vlagje, .vlag-doek, .schaatser, .schaats-lijf, .deinen, .rook circle, .noot, .schoen .s-gloed, .schoen .vw,

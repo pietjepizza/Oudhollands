@@ -21,6 +21,36 @@
     stops.forEach(([o, c, a]) => el('stop', { offset: o, 'stop-color': c, 'stop-opacity': a === undefined ? 1 : a }, g));
     return g;
   }
+  // Licht als op een schilderij van Vermeer of De Hooch: het daglicht komt door één opening binnen en valt naar
+  // achteren en naar boven af, de hoeken lopen donker weg. Twee lagen over de kamer:
+  //  - een glacis (multiply): verder van de opening en hoger in de kamer steeds donkerder; de kleuren blijven
+  //    verzadigd. Beide verlopen zijn samen voorgebakken in één klein plaatje (een kwart van de maat; het zijn
+  //    zachte verlopen), zodat de kamer per beeldje maar één laag hoeft te mengen;
+  //  - een zachte gloed (screen) bij de opening, alleen zo groot als hij is; met o.na pas als die klus gedaan
+  //    is (schone ramen, het luik open).
+  // bron: de hoekpunten van de opening op het scherm; v: voorvoegsel voor de id's en de naam van het plaatje.
+  function sfeerLicht(svg, defs, L, v, bron, o) {
+    const xs = bron.map((p) => p[0]), ys = bron.map((p) => p[1]);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const cx = x0 + (x1 - x0) * o.fx, cy = y0 + (y1 - y0) * o.fy, r = Math.hypot(L.b, L.h) * o.r, k = 4;
+    const url = textuur(`licht-${v}-${L.naam}`, Math.ceil(L.b / k), Math.ceil(L.h / k), (g, b, h) => {
+      const val = g.createRadialGradient(cx / k, cy / k, 0, cx / k, cy / k, r / k);
+      o.val.forEach(([t, kl]) => val.addColorStop(t, kl));
+      g.fillStyle = val; g.fillRect(0, 0, b, h);
+      g.globalCompositeOperation = 'multiply';
+      const boven = g.createLinearGradient(0, 0, 0, h);
+      o.boven.forEach(([t, kl]) => boven.addColorStop(t, kl));
+      g.fillStyle = boven; g.fillRect(0, 0, b, h);
+    });
+    const g = el('g', { class: 'sfeerlicht', 'pointer-events': 'none' }, svg);
+    if (url) el('image', { href: url, width: L.b, height: L.h, preserveAspectRatio: 'none', style: 'mix-blend-mode:multiply' }, g);
+    const zx = x0 + (x1 - x0) * o.zx, zy = y0 + (y1 - y0) * o.zy, zr = Math.max(L.b, L.h) * o.zr;
+    verloop(defs, v + '-zongloed', 'radialGradient', { gradientUnits: 'userSpaceOnUse', cx: zx.toFixed(1), cy: zy.toFixed(1), r: zr.toFixed(1) },
+      [[0, o.zonKleur, o.zon], [0.5, o.zonKleur, o.zon * 0.35], [1, o.zonKleur, 0]]);
+    const gloed = o.na ? el('g', { 'data-na': o.na, 'pointer-events': 'none' }, g) : g;
+    const gx = Math.max(0, zx - zr), gy = Math.max(0, zy - zr);
+    el('rect', { x: gx.toFixed(1), y: gy.toFixed(1), width: (Math.min(L.b, zx + zr) - gx).toFixed(1), height: (Math.min(L.h, zy + zr) - gy).toFixed(1), fill: `url(#${v}-zongloed)`, style: 'mix-blend-mode:screen' }, gloed);
+  }
   function vervaag(defs, id, sd) {
     const f = el('filter', { id, x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs);
     el('feGaussianBlur', { stdDeviation: sd }, f);
@@ -559,6 +589,13 @@
     // ---------- Schemer en vignet ----------
     el('rect', { width: L.b, height: L.h, fill: '#170E06', class: 'schemer', 'pointer-events': 'none' }, svg);
     el('rect', { width: L.b, height: L.h, fill: 'url(#h-vignet)', 'pointer-events': 'none' }, svg);
+
+    // ---------- Licht als bij Vermeer: daglicht door het raam, naar achteren en naar boven donkerder ----------
+    sfeerLicht(svg, defs, L, 'h', glas, {
+      fx: 0.9, fy: 0.75, r: 0.8, zx: 1.1, zy: 0.85, zr: 0.42, zon: 0.36, zonKleur: '#FFEBC8', na: 'ramen',
+      val: [[0, '#FFFCF6'], [0.22, '#FAF1E0'], [0.48, '#D6C0A1'], [0.72, '#957E64'], [1, '#55473A']],
+      boven: [[0, '#A28B72'], [0.24, '#EFE6D8'], [0.42, '#FFFFFF'], [0.86, '#FFFFFF'], [1, '#CDBBA2']]
+    });
     return svg;
   }
 
@@ -1477,6 +1514,13 @@
 
     el('rect', { width: L.b, height: L.h, fill: '#120A04', class: 'schemer', 'pointer-events': 'none' }, svg);
     el('rect', { width: L.b, height: L.h, fill: 'url(#h-vignet)', 'pointer-events': 'none' }, svg);
+
+    // ---------- Licht: door het hijsluik valt het daglicht naar voren; de hoeken onder het dak blijven donker ----------
+    sfeerLicht(svg, defs, L, 'z', lp, {
+      fx: 0.5, fy: 0.62, r: 0.62, zx: 0.5, zy: 0.7, zr: 0.4, zon: 0.3, zonKleur: '#FFE7C0', na: 'z-luik',
+      val: [[0, '#FFF9EE'], [0.24, '#F2E4CC'], [0.5, '#C9AE8A'], [0.76, '#86694C'], [1, '#4A3828']],
+      boven: [[0, '#8F7A64'], [0.2, '#E6DAC8'], [0.38, '#FFFFFF'], [0.9, '#FFFFFF'], [1, '#D2C2AA']]
+    });
     return svg;
   }
 

@@ -2,6 +2,15 @@
 
 Oud-Hollandse spellen om digitaal te spelen, in de sfeer van Delfts blauw en 17e-eeuwse prentborden.
 
+**De uitstraling.** Het huis is een schilderij uit de Gouden Eeuw, en alles eromheen is de lijst: een kop van
+ebbenhout met een gouden filet en een fijn geribbelde golflijst eronder, knoppen als ebbenhouten medaillons met een
+gouden rand, en één palet van ebbenhout en bladgoud (ook in de menu's). Over de straat, de kamers, de pronkkamer en de
+kermis ligt een fijne korrel met het weefsel van linnen, zodat de tekeningen lezen als verf op doek. In de voorkamer
+valt het daglicht zoals bij Vermeer en De Hooch door het raam naar binnen: dichtbij helder en warm, naar achteren en
+naar boven steeds donkerder, met donkere hoeken; met schone ramen gloeit het licht bij het raam. Op de zolder valt het
+licht door het hijsluik. Het huis en de kermis vullen het hele scherm, en de kermis, de pronkkamer en de Kunstkamer
+komen zacht uit het donker op.
+
 **De straat.** Je begint aan de gracht, voor een pand met een trapgevel, een gevelsteen met een gans en een uithangbord,
 tussen een herberg met een halsgevel en een buurhuis met een klokgevel. In de verte draaien molens en staat een kerktoren.
 De straat leeft: Jantje hoepelt over de keien, de burgemeester maakt zijn wandeling, Molenaar Kees rookt een pijpje op
@@ -263,7 +272,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=38`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=39`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
