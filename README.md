@@ -156,7 +156,7 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   je een stapje naar de koek toe. Wie het eerst zijn koek op heeft, wint de ronde; een partij is één koek, of wie er het
   eerst twee op heeft. Tegen Jantje, Mieke, Trijntje en Bakkersjongen Teun (die rekenen de slinger vooruit, maar niet
   allemaal even vlug; afgesteld met duizenden nagespeelde races) of met z'n tweeën op één scherm (links en rechts, of
-  de toetsen A en L). De koek aan het plafond van de voorkamer opent het spel.
+  de toetsen A en L). Je speelt het op de kermis: tik op de koekkraam. De terugknop brengt je weer op het kermisplein.
 - **Hoepelen** (schermvullend): een hoepelrace langs de gracht, tot boven op de brug. Je kijkt over het water naar de
   overkant: grachtenhuizen met trap-, hals-, klok-, lijst- en tuitgevels en iepen langs de kade, die golvend in het
   water spiegelen. Er vaart een schuit voorbij, en aan jouw kant staan meerpalen en de olielampen op palen die Jan van
@@ -263,7 +263,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=37`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=38`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

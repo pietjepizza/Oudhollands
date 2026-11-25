@@ -548,7 +548,7 @@
     podium = document.getElementById('kh-podium');
     podium.innerHTML = '';
     const boven = html(`<div class="mo-rij mo-boven">
-      <a class="mo-knop" href="#" aria-label="Naar het huis" title="Naar het huis">${icoon('huis')}</a>
+      <a class="mo-knop" href="#kermis" aria-label="Terug naar de kermis" title="Terug naar de kermis">${icoon('terug')}</a>
       <button class="mo-kaart mo-speler" type="button" data-kant="1" aria-haspopup="dialog">
         <span class="mo-gezicht"></span>
         <span class="mo-info"><span class="mo-naam"></span><span class="mo-wieken"></span><span class="mo-doe"></span></span>

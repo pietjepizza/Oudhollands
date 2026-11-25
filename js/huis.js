@@ -118,7 +118,7 @@
         kroon: plaats([800, 0], [450, 20], 1.1),
         ganzenbord: plaats([800, 208], [450, 262], 1.22),
         sjoelbak: plaats([1025, 186], [712, 262], 1.05),
-        kopvanjut: plaats([1176, 169], [192, 262], 0.8),
+        vliegeren: plaats([1176, 169], [192, 262], 0.8),
         rek: plaats([365, 372], [192, 430], 0.78),
         molenspel: plaats([550, 292], [240, 735], 1.05),
         uilenspel: plaats([360, 173], [440, 755], 0.9),
@@ -128,7 +128,6 @@
         tafel: plaats([60, 945], [-30, 1300], 0.75),
         bikkels: plaats([918, 880], [470, 1250], 0.85),
         kat: plaats([1390, 925], [720, 1265], 0.8),
-        koek: plaats([1290, -10], [610, -10], 0.85),
         schoen: plaats([1006.7, 789.5], [578, 1192], 0.85)
       },
       schouw: { X: -14, hb: 92, top: 300, kolommen: 4, diep: 40, maat: 0.9 }
@@ -507,7 +506,7 @@
     bouwMolenspel(plek('molenspel', wand));
     bouwSjoelbak(plek('sjoelbak', wand));
     bouwPrent(plek('uilenspel', wand), { x: 300, y: 180, b: 120, h: 140, naam: 'Uilenspel', ill: 'ill-uil', gordijn: '#3F5B3B' });
-    bouwPrent(plek('kopvanjut', wand), { x: 1112, y: 176, b: 128, h: 144, naam: 'Kop van Jut', ill: 'ill-jut', gordijn: '#7A2E28' });
+    bouwPrent(plek('vliegeren', wand), { x: 1112, y: 176, b: 128, h: 144, naam: 'Vliegeren', ill: 'ill-vlieger', gordijn: '#7A2E28' });
     bouwHoepel(plek('hoepel', wand), L);
     bouwPlank(plek('plank', wand));
 
@@ -537,7 +536,6 @@
     bouwTafel(plek('tafel', svg));
     bouwBikkels(plek('bikkels', svg), L);
     bouwKat(plek('kat', svg));
-    bouwKoek(plek('koek', svg));
     bouwKroon(plek('kroon', svg));
     bouwSeizoenVoorkamer(svg, L, glas, defs);
 
@@ -1073,24 +1071,6 @@
     el('path', { d: 'M1343 922 l -2 2 l 4 0 Z', fill: '#6E3A2A' }, kat);
     el('path', { d: 'M1360 938 q 10 6 26 4', fill: 'none', stroke: '#F3D2A5', 'stroke-width': 6, 'stroke-linecap': 'round' }, kat);
     el('path', { class: 'kat-staart', d: 'M1450 926 C 1470 948, 1430 960, 1372 952', fill: 'none', stroke: '#B46A2E', 'stroke-width': 10, 'stroke-linecap': 'round' }, g);
-  }
-
-  // koekhappen: een plak ontbijtkoek aan een touwtje uit de balk, net als in het spel (met al een hap eruit)
-  function bouwKoek(ouder) {
-    const g = voorwerp(ouder, { spel: 'koekhappen', label: 'Speel koekhappen' });
-    el('rect', { x: 1240, y: 110, width: 100, height: 200, fill: 'transparent' }, g);
-    naambordje(g, 1292, 268, 'Koekhappen');
-    const t = el('g', { class: 'koek-touw' }, g);
-    el('line', { x1: 1290, y1: -10, x2: 1290, y2: 200, stroke: '#E4D7BC', 'stroke-width': 1.6 }, t);
-    // de plak met een hap uit de hoek (en zijn schaduw op de muur)
-    const plak = 'M1271 203 Q1290 195 1309 203 L1309 236 A8.5 8.5 0 0 0 1296 250 L1274 250 Q1271 250 1271 247 Z';
-    el('path', { d: plak, fill: '#1A0F06', opacity: 0.3, filter: 'url(#h-zacht)', transform: 'translate(7 8)' }, t);
-    el('path', { d: plak, fill: '#93511F', stroke: '#5A2C10', 'stroke-width': 1.2 }, t);
-    el('path', { d: 'M1271 203 Q1290 195 1309 203 L1309 208 Q1290 200.5 1271 208 Z', fill: '#4A220C' }, t);
-    el('path', { d: 'M1275 202 Q1284 198.6 1292 199', fill: 'none', stroke: '#F2CFA0', 'stroke-width': 0.9, opacity: 0.6 }, t);
-    for (let i = 0; i < 16; i++) el('circle', { cx: 1274 + rnd() * 32, cy: 211 + rnd() * 36, r: 0.6 + rnd() * 0.8, fill: rnd() < 0.6 ? '#5E2E12' : '#C38A4E', opacity: 0.8 }, t);
-    el('path', { d: 'M1309 236 A8.5 8.5 0 0 0 1296 250', fill: 'none', stroke: '#D9A066', 'stroke-width': 1.4 }, t);
-    el('circle', { cx: 1290, cy: 205, r: 1.8, fill: '#2A1206' }, t);
   }
 
   function bouwKroon(ouder) {
