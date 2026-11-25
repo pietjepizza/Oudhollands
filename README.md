@@ -248,10 +248,20 @@ begint bij de eerste tik, en na de opening pas als de film klaar is. De film hee
 (een gegoten klok met brom, slagtoon, kleine terts, kwint en nominaal die zweven), een gamba die aanzwelt, de luit, en
 dan de blokfluit met het begin van het Engels Nachtegaeltje, met een roffel op de tabor naar het slotakkoord.
 
+Op de kermis speelt een **draaiorgel** de Kermiswals, een eigen melodie in de trant van de oude kermiswalsen (lange
+tonen met een chromatisch buurtje, e-dis-e en d-cis-d, in de vorm A-B-A). Het orgel heeft vioolpijpen in twee rijen
+die een fractie uit elkaar staan (de zweving van een draaiorgel), fluitpijpen die aanspreken met een zuchtje wind,
+een gedekte baspijp, een klokkenspel, en alle pijpen golven met de tremulant. Het speelt hoempa: de bas op de één,
+het akkoord op twee en drie, met de grote trom op de één, de kleine trom zacht op twee en drie, een roffeltje naar
+elk nieuw deel en in het volle orgel een bekken. Een orgel speelt strak in de maat. De wals speelt ook in de
+draaimolen en bij de koekkraam, en loopt door als je van het plein naar een attractie gaat. Op de kermis zit een
+eigen muziekknop rechtsboven.
+
 | Plek | Stuk | Bezetting | Begint bij |
 |---|---|---|---|
 | Het huis, de pronkkamer en de Kunstkamer | Engels Nachtegaeltje | blokfluit, luit en viola da gamba | thema |
-| Ganzenbord, knikkeren, koekhappen, bikkelen, hoepelen, ringsteken en het kermisplein | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, 2e modo, luit |
+| Ganzenbord, knikkeren, bikkelen en hoepelen | Malle Symen | blokfluit en tabor, met cister | thema, 1e modo, luit |
+| Het kermisplein, ringsteken en koekhappen | Kermiswals (eigen melodie) | draaiorgel: vioolpijpen, fluiten, bourdon, klokkenspel, trommen en bekken | vioolpijpen, met klokkenspel, vol orgel |
 | Sjoelen, klaverjassen, tollen en kolf | Onder de Linde groene | klavecimbel | thema, 1e modo, 2e modo, blokfluit |
 | Molenspel, triktrak en dammen | Doen Daphne d'over schoone Maeght | luit en viola da gamba | thema, 1e modo, blokfluit |
 
@@ -273,7 +283,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=40`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=41`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

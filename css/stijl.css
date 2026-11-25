@@ -2137,7 +2137,8 @@ button.mo-kaart { cursor: pointer; }
 
 /* ---------- De kermis (het plein) en ringsteken (in de draaimolen) ---------- */
 .km-veldvak { position: relative; width: var(--km-b, 320px); height: var(--km-h, 400px); }
-/* het plein vult het hele scherm, de kop ligt eroverheen */
+/* het plein vult het hele scherm, de kop ligt eroverheen; rechts de duiten en de muziekknop */
+.km-rechts { display: flex; align-items: center; gap: 8px; }
 .km-plein .km-doek { border-radius: 0; box-shadow: none; }
 .km-doek { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 16px; outline: none; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-shadow: 0 20px 38px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); }
 .rs-doek { touch-action: none; cursor: pointer; }

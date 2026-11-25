@@ -1472,7 +1472,10 @@
     zaal.innerHTML = `<header class="km-kop">
         <a class="mo-knop km-terug" href="#" aria-label="Terug naar de gracht" title="Terug naar de gracht">${icoon('terug')}</a>
         <p class="km-naam">De kermis</p>
-        <span class="pk-saldo km-saldo" aria-label="Duiten"><svg class="duit" aria-hidden="true"><use href="#i-duit"/></svg><b class="km-saldo-getal">0</b></span>
+        <span class="km-rechts">
+          <span class="pk-saldo km-saldo" aria-label="Duiten"><svg class="duit" aria-hidden="true"><use href="#i-duit"/></svg><b class="km-saldo-getal">0</b></span>
+          <button class="mo-knop km-muziek" type="button" aria-pressed="true" aria-label="Muziek" title="Muziek">${icoon('muziek')}<i class="streep"></i></button>
+        </span>
       </header>
       <div class="km-vak"><div class="km-veldvak">
         <canvas class="km-doek" aria-hidden="true"></canvas>
@@ -1487,6 +1490,9 @@
       Geluid.pak(); if (window.Tril) Tril.fout();
     });
     zaal.querySelectorAll('a.km-plek').forEach((a) => a.addEventListener('click', () => Geluid.deur()));
+    // de muziekknop zet de muziek van het hele huis aan of uit (de knop in de kop), en toont hoe die staat
+    const muziek = zaal.querySelector('.km-muziek');
+    muziek.addEventListener('click', () => { const k = document.getElementById('knop-muziek'); if (k) k.click(); zetMuziekKnop(); });
     plein = { zaal, vak: zaal.querySelector('.km-vak'), veld: zaal.querySelector('.km-veldvak') };
     if ('ResizeObserver' in window) new ResizeObserver(() => pasPleinAan()).observe(plein.vak);
     window.addEventListener('resize', () => pasPleinAan());
@@ -1525,9 +1531,14 @@
     if (BEELD.plein.voor) g.drawImage(BEELD.plein.voor, 0, 0);
     if (BEELD.plein.vignet) g.drawImage(BEELD.plein.vignet, 0, 0);
   }
+  function zetMuziekKnop() {
+    const k = document.getElementById('knop-muziek'), b = plein && plein.zaal.querySelector('.km-muziek');
+    if (b) b.setAttribute('aria-pressed', k ? k.getAttribute('aria-pressed') : 'true');
+  }
   window.Kermis = {
     start() {
       if (!plein) bouwPlein();
+      zetMuziekKnop();
       const s = plein && plein.zaal.querySelector('.km-saldo-getal');
       if (s && window.Duiten) s.textContent = Duiten.saldo;
       requestAnimationFrame(() => {

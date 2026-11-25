@@ -15,7 +15,31 @@
    c' = centrale do, getal = notenwaarde (4 = kwart), punt = gepunteerd, ~ = overbinding, | = maatstreep,
    |: :| = herhaling, [1 [2 = eerste en tweede eind, || = slot. */
 (function () {
+  // De kermiswals: een eigen melodie in de trant van de oude kermiswalsen, voor het draaiorgel. Lange tonen met
+  // een chromatisch buurtje (e-dis-e, d-cis-d, a-gis-a), A-B-A. De akkoorden staan per maat in 'maten';
+  // het orgel speelt ze als hoempa: de bas op de één, het akkoord op twee en drie.
+  const KERMIS_A = "e''2. | e''4 dis''4 e''4 | g''2. | f''4 e''4 d''4 | d''2. | d''4 cis''4 d''4 | f''2. | e''4 d''4 c''4 | " +
+    "a''2. | a''4 gis''4 a''4 | c'''2. | h''4 a''4 g''4 | g''2. | e''4 f''4 g''4 | f''4 e''4 d''4 | c''2 g'4 | ";
+  const KERMIS_B = "d''4 h'4 d''4 | g''2. | fis''4 e''4 fis''4 | a''2. | a''4 g''4 fis''4 | g''4 a''4 h''4 | c'''4 h''4 a''4 | g''2. | " +
+    "e''4 dis''4 e''4 | c'''2. | h''4 a''4 g''4 | d''2. | f''4 e''4 d''4 | g''2. | g''4 f''4 e''4 | d''2 g'4 | ";
+  const KERMIS_AKK_A = 'C C C G7 G7 G7 G7 C F F F G7 C C G7 C ';
+  const KERMIS_AKK_B = 'G G D7 D7 D7 G D7 G C C G G G7 G7 G7 G7 ';
+
   const STUKKEN = {
+    kermis: {
+      titel: 'Kermiswals',
+      bron: 'Op het draaiorgel: een eigen wals in de trant van de oude kermiswalsen',
+      melodie: 'orgel', stijl: 'orgel', tempo: 168, transpositie: 0, maat: 3, grond: 0, mineur: false, niveau: 0.5,
+      noten: KERMIS_A + KERMIS_B + KERMIS_A + '||',
+      maten: KERMIS_AKK_A + KERMIS_AKK_B + KERMIS_AKK_A,
+      // de registers per ronde: vioolpijpen, fluiten met klokkenspel, viool met klokkenspel, en het volle orgel
+      ronden: [
+        { reg: 'viool', naam: '', pauze: 0.35 },
+        { reg: 'fluit', klok: true, naam: 'met klokkenspel', pauze: 0.35 },
+        { reg: 'viool', klok: true, naam: 'met klokkenspel', pauze: 0.35 },
+        { reg: 'vol', klok: true, bekken: true, naam: 'vol orgel', pauze: 1.6 }
+      ]
+    },
     thuis: {
       titel: 'Engels Nachtegaeltje',
       bron: 'Jacob van Eyck, Der Fluyten Lust-hof I (1649)',
@@ -352,12 +376,58 @@
     return { ev, tijd, lengte: tijd(stuk.lengte), akkoorden };
   }
 
+  // ============================================================
+  // HET DRAAIORGEL: de melodie op de vioolpijpen (of de fluiten), het klokkenspel erbij, en hoempa:
+  // de baspijp op de één, het akkoord kort op twee en drie. De grote trom op de één, de kleine trom zacht op
+  // twee en drie, een roffeltje naar elk nieuw deel en in het volle orgel een bekken. Een orgel speelt strak
+  // in de maat: geen vertraging naar het slot.
+  // ============================================================
+  const AKKOORD = { C: [0, 4, 7], F: [5, 9, 0], G: [7, 11, 2], G7: [7, 11, 2, 5], D7: [2, 6, 9, 0], Am: [9, 0, 4], C7: [0, 4, 7, 10] };
+  function arrangeerOrgel(stuk, ronde) {
+    const ev = [], maat = stuk.maat, lengte = stuk.lengte;
+    const regs = ronde.reg === 'vol' ? [['viool', 1], ['fluit', 0.5]] : ronde.reg === 'fluit' ? [['fluit', 1]] : [['viool', 1], ['fluit', 0.36]];
+    stuk.noten.forEach((n) => {
+      if (n.midi === null) return;
+      const opTel = Math.abs(n.begin / maat - Math.round(n.begin / maat)) < 1e-6;
+      const vol = opTel ? 1 : 0.86;
+      regs.forEach(([sp, v]) => ev.push({ t: n.begin, inst: 'orgel', speler: sp, midi: n.midi, duur: n.duur * 0.92, vol: vol * v }));
+      if (ronde.klok && (opTel || n.duur >= 2)) ev.push({ t: n.begin, inst: 'klokje', midi: n.midi + 12, vol: (n.duur >= 2 ? 1 : 0.8) });
+    });
+    let vorige = null, kwint = false;
+    stuk.maten.split(/\s+/).filter(Boolean).forEach((naam, i) => {
+      const a = i * maat;
+      if (a >= lengte - 1e-6) return;
+      const pcs = AKKOORD[naam] || AKKOORD.C;
+      kwint = naam === vorige ? !kwint : false; vorige = naam;
+      ev.push({ t: a, inst: 'orgelbas', midi: 36 + (kwint ? pcs[2] : pcs[0]), duur: 0.75, vol: 1 });
+      const van = pcs.length > 3 ? 1 : 0;
+      const ligging = pcs.slice(van, van + 3).map((p) => 55 + ((p - 7 + 12) % 12)).sort((x, y) => x - y);
+      [1, 2].forEach((o) => ligging.forEach((m, k) => ev.push({ t: a + o + k * 0.006, inst: 'pah', midi: m, duur: 0.42, vol: o === 1 ? 1 : 0.88 })));
+      ev.push({ t: a, inst: 'grotetrom', vol: i % 4 === 0 ? 0.95 : 0.66 });
+      ev.push({ t: a + 1, inst: 'kleinetrom', vol: 0.34 });
+      ev.push({ t: a + 2, inst: 'kleinetrom', vol: 0.28 });
+      if ((i + 1) % 16 === 0) [2.25, 2.5, 2.75].forEach((o, k) => ev.push({ t: a + o, inst: 'kleinetrom', vol: 0.3 + k * 0.1 }));
+      if (ronde.bekken && i % 16 === 0) ev.push({ t: a, inst: 'bekken', vol: 1 });
+    });
+    ev.sort((x, y) => x.t - y.t);
+    const spb = 60 / stuk.tempo;
+    const tijd = (tel) => tel * spb;
+    return { ev, tijd, lengte: tijd(lengte), akkoorden: [] };
+  }
+
   Object.values(STUKKEN).forEach((s) => {
     Object.assign(s, lees(s.noten));
-    s.akkoorden = harmoniseer(s);
-    s.arrs = RONDEN.map((r) => arrangeer(s, r));
+    if (s.stijl === 'orgel') {
+      s.akkoorden = [];
+      s.arrs = s.ronden.map((r) => arrangeerOrgel(s, r));
+    } else {
+      s.akkoorden = harmoniseer(s);
+      s.arrs = RONDEN.map((r) => arrangeer(s, r));
+    }
     s.arr = s.arrs[0];
   });
+  // de ronden van een stuk: het orgel heeft zijn eigen registers, de andere stukken de modi
+  const rondenVan = (stuk) => stuk.ronden || RONDEN;
 
   // ============================================================
   // INSTRUMENTEN
@@ -426,6 +496,102 @@
     r.start(t, Math.random() * 1.5, 0.2);
   }
 
+  // ---------- Het draaiorgel ----------
+  // Pijpen in plaats van snaren: de fluitpijp is bijna zuiver en spreekt aan met een zuchtje wind; de vioolpijp is
+  // smal en helder, in twee rijen een fractie uit elkaar (de zweving van het draaiorgel); de gedekte baspijp
+  // (bourdon) heeft vooral oneven boventonen. Alle pijpen golven met de tremulant, zo'n zes keer per seconde.
+  const ORGEL = new WeakMap();
+  function orgelGolven(c) {
+    let w = ORGEL.get(c);
+    if (w) return w;
+    const golf = (n, f) => { const re = new Float32Array(n), im = new Float32Array(n); for (let k = 1; k < n; k++) im[k] = f(k); return c.createPeriodicWave(re, im); };
+    w = {
+      fluit: golf(8, (k) => [0, 1, 0.2, 0.09, 0.035, 0.015, 0.008, 0][k]),
+      viool: golf(28, (k) => Math.pow(k, -1.08) * (k % 2 ? 1 : 0.78)),
+      bourdon: golf(10, (k) => (k % 2 ? [0, 1, 0, 0.36, 0, 0.14, 0, 0.06, 0, 0.025][k] : 0.03 / k))
+    };
+    ORGEL.set(c, w);
+    return w;
+  }
+  function pijp(c, uit, soort, f, t, duur, vol, pan) {
+    const k = window.Klank.ketting(c), w = orgelGolven(c);
+    const lengte = Math.max(0.06, duur), aan = soort === 'bourdon' ? 0.016 : 0.026, af = soort === 'bourdon' ? 0.06 : 0.05;
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + aan);
+    g.gain.setValueAtTime(vol, t + lengte);
+    g.gain.linearRampToValueAtTime(0.0001, t + lengte + af);
+    let naar = uit;
+    if (pan && c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = pan; p.connect(uit); naar = p; }
+    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.5;
+    lp.frequency.value = soort === 'viool' ? 5200 : soort === 'bourdon' ? 1400 : 3800;
+    g.connect(lp); lp.connect(naar);
+    const trem = c.createGain(); trem.gain.value = 1;
+    const lfo = c.createOscillator(); lfo.frequency.value = 6.1;
+    const diep = c.createGain(); diep.gain.value = soort === 'bourdon' ? 0.04 : 0.16;
+    lfo.connect(diep); diep.connect(trem.gain); trem.connect(g);
+    const rijen = soort === 'viool' ? [[w.viool, 1, 0.62], [w.viool, 1.0042, 0.5]] : soort === 'bourdon' ? [[w.bourdon, 1, 1]] : [[w.fluit, 1, 0.9], [w.fluit, 0.9986, 0.25]];
+    const eind = t + lengte + af + 0.05;
+    rijen.forEach(([golf, r, v]) => {
+      const o = c.createOscillator(); o.setPeriodicWave(golf); o.frequency.value = f * r;
+      const gv = c.createGain(); gv.gain.value = v;
+      o.connect(gv); gv.connect(trem); o.start(t); o.stop(eind);
+    });
+    lfo.start(t); lfo.stop(eind);
+    if (soort !== 'viool') {
+      const r = c.createBufferSource(); r.buffer = k.ruis;
+      const rb = c.createBiquadFilter(); rb.type = 'bandpass'; rb.frequency.value = Math.min(9000, f * 3.2); rb.Q.value = 1.2;
+      const rg = c.createGain(); rg.gain.setValueAtTime(0.0001, t); rg.gain.linearRampToValueAtTime(vol * 0.45, t + 0.006); rg.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+      r.connect(rb); rb.connect(rg); rg.connect(naar); r.start(t, Math.random() * 1.5, 0.1);
+    }
+  }
+  // het klokkenspel: metalen staafjes, helder en lang uitklinkend, met de onzuivere boventonen van een staaf
+  function klokje(c, uit, f, t, vol, pan) {
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.002); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.3);
+    let naar = uit;
+    if (c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = pan; p.connect(uit); naar = p; }
+    g.connect(naar);
+    [[1, 1, 1.3], [2.76, 0.3, 0.3], [5.4, 0.12, 0.14]].forEach(([r, v, d]) => {
+      const o = c.createOscillator(); o.frequency.value = f * r;
+      const gv = c.createGain(); gv.gain.setValueAtTime(v, t); gv.gain.exponentialRampToValueAtTime(0.0008, t + d);
+      o.connect(gv); gv.connect(g); o.start(t); o.stop(t + 1.35);
+    });
+  }
+  // de trommen van het orgel: de grote trom, de kleine trom en een bekken
+  function grotetrom(c, uit, t, vol) {
+    const k = window.Klank.ketting(c);
+    const o = c.createOscillator(); o.frequency.setValueAtTime(92, t); o.frequency.exponentialRampToValueAtTime(52, t + 0.14);
+    const g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.8 * vol, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
+    o.connect(g); g.connect(uit); o.start(t); o.stop(t + 0.45);
+    const r = c.createBufferSource(); r.buffer = k.ruis;
+    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 420;
+    const rg = c.createGain(); rg.gain.setValueAtTime(0.0001, t); rg.gain.linearRampToValueAtTime(0.35 * vol, t + 0.003); rg.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+    r.connect(lp); lp.connect(rg); rg.connect(uit); r.start(t, Math.random(), 0.12);
+  }
+  function kleinetrom(c, uit, t, vol) {
+    const k = window.Klank.ketting(c);
+    let naar = uit;
+    if (c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = -0.15; p.connect(uit); naar = p; }
+    const r = c.createBufferSource(); r.buffer = k.ruis;
+    const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 3400; bp.Q.value = 0.7;
+    const rg = c.createGain(); rg.gain.setValueAtTime(0.0001, t); rg.gain.linearRampToValueAtTime(0.32 * vol, t + 0.002); rg.gain.exponentialRampToValueAtTime(0.0001, t + 0.13);
+    r.connect(bp); bp.connect(rg); rg.connect(naar); r.start(t, Math.random() * 1.5, 0.15);
+    const o = c.createOscillator(); o.frequency.setValueAtTime(200, t); o.frequency.exponentialRampToValueAtTime(150, t + 0.05);
+    const g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.18 * vol, t + 0.002); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+    o.connect(g); g.connect(naar); o.start(t); o.stop(t + 0.09);
+  }
+  function bekken(c, uit, t, vol) {
+    const k = window.Klank.ketting(c);
+    let naar = uit;
+    if (c.createStereoPanner) { const p = c.createStereoPanner(); p.pan.value = 0.28; p.connect(uit); naar = p; }
+    const r = c.createBufferSource(); r.buffer = k.ruis; r.loop = true;
+    const hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 5200;
+    const pk = c.createBiquadFilter(); pk.type = 'peaking'; pk.frequency.value = 8200; pk.Q.value = 1.4; pk.gain.value = 6;
+    const g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.22 * vol, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+    r.connect(hp); hp.connect(pk); pk.connect(g); g.connect(naar); r.start(t, Math.random() * 1.5); r.stop(t + 1.7);
+  }
+
   // speel één gebeurtenis
   function speel(c, uit, stuk, e, t, sec) {
     const K = window.Klank;
@@ -439,6 +605,13 @@
       K.tokkel(c, uit, soort, e.midi, t, ({ luit: 0.3, klavecimbel: 0.24, cister: 0.2 })[soort] * e.vol * mens, soort === 'klavecimbel' ? sec : 0, ({ luit: 0.24, klavecimbel: 0.1, cister: 0.3 })[soort]);
     } else if (e.inst === 'bas') gamba(c, uit, freq(e.midi), t, sec, 0.2 * e.vol * mens, 0.18);
     else if (e.inst === 'trom') tabor(c, uit, t, e.sterk);
+    else if (e.inst === 'orgel') pijp(c, uit, e.speler, freq(e.midi), t, sec, (e.speler === 'viool' ? 0.15 : 0.17) * e.vol * mens, -0.08);
+    else if (e.inst === 'pah') pijp(c, uit, 'fluit', freq(e.midi), t, sec, 0.06 * e.vol * mens, 0.14);
+    else if (e.inst === 'orgelbas') pijp(c, uit, 'bourdon', freq(e.midi), t, sec, 0.3 * e.vol * mens, 0);
+    else if (e.inst === 'klokje') klokje(c, uit, freq(e.midi), t, 0.085 * e.vol * mens, 0.24);
+    else if (e.inst === 'grotetrom') grotetrom(c, uit, t, e.vol);
+    else if (e.inst === 'kleinetrom') kleinetrom(c, uit, t, e.vol);
+    else if (e.inst === 'bekken') bekken(c, uit, t, e.vol);
   }
 
   // ============================================================
@@ -477,7 +650,7 @@
     klok = setInterval(plan, 60);
     plan();
   }
-  const rondeNr = (s) => (s.ronde + s.vanaf) % RONDEN.length;
+  const rondeNr = (s) => (s.ronde + s.vanaf) % rondenVan(s.stuk).length;
 
   function plan() {
     if (!speelt) return;
@@ -486,7 +659,7 @@
     for (let veilig = 0; veilig < 400; veilig++) {
       const nr = rondeNr(s), arr = stuk.arrs[nr];
       if (s.index >= arr.ev.length) {
-        const volgende = s.rondeBegin + arr.lengte + RONDEN[nr].pauze;
+        const volgende = s.rondeBegin + arr.lengte + rondenVan(stuk)[nr].pauze;
         if (volgende > horizon) break;
         s.index = 0; s.ronde++; s.rondeBegin = volgende;
         toonTitel();
@@ -575,7 +748,8 @@
   function toonTitel() {
     if (!titelVak) return;
     if (speelt) {
-      const nr = rondeNr(speelt), extra = RONDEN[nr].wissel ? `op de ${WISSEL[speelt.stuk.melodie] || speelt.stuk.melodie}` : RONDE_NAAM[nr];
+      const nr = rondeNr(speelt), r = rondenVan(speelt.stuk)[nr];
+      const extra = speelt.stuk.ronden ? r.naam : r.wissel ? `op de ${WISSEL[speelt.stuk.melodie] || speelt.stuk.melodie}` : RONDE_NAAM[nr];
       titelVak.textContent = speelt.stuk.titel + (extra ? ` · ${extra}` : '');
       titelVak.title = speelt.stuk.bron; titelVak.hidden = false;
     } else { titelVak.textContent = ''; titelVak.hidden = true; }
@@ -635,10 +809,11 @@
       return window.Klank.render(seconden, (oc, k) => {
         const h = oc.createGain(); h.gain.value = 0.62 * (stuk.niveau || 1); h.connect(k.muziek);
         let begin = 0.1;
+        const ronden = rondenVan(stuk);
         for (let r = 0; r < 8 && begin < seconden; r++) {
-          const nr = (r + (vanaf || 0)) % RONDEN.length, arr = stuk.arrs[nr], b = begin;
+          const nr = (r + (vanaf || 0)) % ronden.length, arr = stuk.arrs[nr], b = begin;
           arr.ev.forEach((e) => { const t = b + arr.tijd(e.t); if (t < seconden) speel(oc, h, stuk, e, t, arr.tijd(e.t + (e.duur || 0)) - arr.tijd(e.t)); });
-          begin += arr.lengte + RONDEN[nr].pauze;
+          begin += arr.lengte + ronden[nr].pauze;
         }
       });
     },
