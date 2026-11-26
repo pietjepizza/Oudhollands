@@ -1420,6 +1420,8 @@ button.mo-kaart { cursor: pointer; }
   .mo-rij { flex-direction: column; justify-content: center; max-width: none; height: 100%; }
   .mo-rij .mo-kaart { flex: 0 0 auto; width: 100%; }
   .mo-onder .mo-ballon { bottom: auto; top: calc(100% + 8px); }
+  /* het ganzenbord en het uilenspel: het bord bepaalt de middelste kolom, de zijkolommen delen de rest */
+  .mo-podium.gb-podium, .mo-podium.ul-podium { grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr); }
 }
 
 /* ---------- Ganzenbord ---------- */
@@ -1506,6 +1508,45 @@ button.mo-kaart { cursor: pointer; }
   .gb-spelers { gap: 9px; }
   .gb-beker { width: 78px; height: 78px; }
   .gb-beker svg { width: 48px; height: 48px; }
+}
+
+/* ---------- Uilenspel ---------- */
+.ul-bordvak .ul-prent { display: block; width: 100%; height: 100%; border-radius: 4px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .4), 0 18px 30px rgba(0, 0, 0, .5); }
+.ul-laag { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.ul-gloed { fill: rgba(255, 226, 140, .3); stroke: #F2C14E; stroke-width: 5; stroke-linejoin: round; opacity: 0; }
+.ul-gloed.aan { animation: ul-gloed 1s ease-in-out infinite alternate; }
+@keyframes ul-gloed { from { opacity: .5; stroke-width: 4; } to { opacity: 1; stroke-width: 7.5; } }
+.ul-pot-tal circle { fill: #F4E9CF; stroke: #6A3E1A; stroke-width: 2; }
+.ul-pot-tal text { font: 600 17px var(--f-tekst); fill: #2A1A08; font-variant-numeric: lining-nums tabular-nums; }
+.ul-vlucht { position: absolute; inset: 0; z-index: 20; pointer-events: none; overflow: visible; }
+.ul-munt { position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45)); will-change: transform; }
+.ul-munt svg { display: block; width: 100%; height: 100%; }
+.ul-geld { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: lining-nums tabular-nums; }
+.ul-geld svg { display: block; width: 18px; height: 18px; flex: none; }
+.ul-zelf-geld { font: 600 1.08rem var(--f-tekst); color: #F2D78E; }
+.ul-chip-geld { position: absolute; right: -16px; bottom: -8px; height: 22px; padding: 0 7px 0 2px; border-radius: 11px; background: #F4E9CF; color: #2A1A08; font: 600 .84rem/22px var(--f-tekst); box-shadow: 0 1px 3px rgba(0, 0, 0, .45); }
+.ul-chip-geld svg { width: 17px; height: 17px; }
+.ul-chip { transition: transform .25s ease, box-shadow .25s ease, filter .4s ease, opacity .4s ease; }
+.ul-chip.blut { filter: grayscale(1); opacity: .5; }
+.gb-spelers .ul-chip + .ul-chip { margin-left: 10px; }
+.ul-zelf-beeld > svg { background: #3A2A1C; }
+.ul-kaartje-worp svg { display: block; width: 90px; height: 30px; margin-bottom: 2px; }
+.ul-kaartje.trek, .ul-kaartje.uil, .ul-kaartje.einde, .ul-kaartje.helft { background: linear-gradient(#FFF3C8, #F2D78E); }
+.ul-kaartje.betaal { background: linear-gradient(#FBE6DC, #EBC3B1); }
+.ul-kaartje.niets { background: linear-gradient(#F1F4F8, #CDD8E5); }
+.ul-kaartje.uil .gb-kaartje-beeld svg { width: 92px; height: 104px; }
+/* de uil knippert af en toe; bij drie zessen klappert hij met zijn vleugels en gloeien zijn ogen */
+.ul-ooglid { transform-box: fill-box; transform-origin: 50% 0; transform: scaleY(0); }
+.ul-vleugel { transform-box: fill-box; }
+.ul-vleugel-l { transform-origin: 100% 8%; } .ul-vleugel-r { transform-origin: 0 8%; }
+.ul-uil.ul-feest .ul-oog { animation: ul-gloei .4s ease-in-out 6 alternate; }
+@keyframes ul-gloei { to { fill: #FFE98A; } }
+/* de kaars brandt (en flakkert) */
+.ul-vlam-binnen { transform-box: fill-box; transform-origin: 50% 100%; animation: ul-flakker 1.7s ease-in-out infinite alternate; }
+@keyframes ul-flakker { 0% { transform: scale(1, 1) skewX(0deg); } 45% { transform: scale(.93, 1.08) skewX(4deg); } 100% { transform: scale(1.05, .94) skewX(-3deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .ul-vlam-binnen, .ul-gloed.aan, .ul-uil.ul-feest .ul-oog { animation: none !important; }
+  .ul-gloed.aan { opacity: 1; }
 }
 
 /* ---------- Sjoelen ---------- */

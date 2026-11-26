@@ -535,7 +535,7 @@
     bouwGanzenbord(plek('ganzenbord', wand));
     bouwMolenspel(plek('molenspel', wand));
     bouwSjoelbak(plek('sjoelbak', wand));
-    bouwPrent(plek('uilenspel', wand), { x: 300, y: 180, b: 120, h: 140, naam: 'Uilenspel', ill: 'ill-uil', gordijn: '#3F5B3B' });
+    bouwUilenspel(plek('uilenspel', wand));
     bouwPrent(plek('vliegeren', wand), { x: 1112, y: 176, b: 128, h: 144, naam: 'Vliegeren', ill: 'ill-vlieger', gordijn: '#7A2E28' });
     bouwHoepel(plek('hoepel', wand), L);
     bouwPlank(plek('plank', wand));
@@ -756,6 +756,36 @@
     naambordje(g, x + b / 2, y + h + 12, 'Sjoelen');
   }
 
+  // Het uilenspel: dezelfde prent als in het spel, met de regels eronder. Eerst hangt het vel los aan een spijker
+  // (met een omgekrulde hoek); na de klus 'prenten ophangen' zit het in een zwarte lijst met een gouden randje.
+  function bouwUilenspel(ouder) {
+    const o = { x: 300, y: 180, b: 120, h: 140 };
+    const g = voorwerp(ouder, { spel: 'uilenspel', label: 'Speel het uilenspel' });
+    el('rect', { x: o.x - 8, y: o.y - 18, width: o.b + 16, height: o.h + 26, fill: 'transparent' }, g);
+    const lijst = el('g', { 'data-na': 'prenten', 'data-vonk': 'prenten' }, g);
+    spijker(lijst, o.x + o.b / 2, o.y - 12, [[o.x + 14, o.y + 3], [o.x + o.b - 14, o.y + 3]]);
+    schaduw(lijst, o.x, o.y, o.b, o.h);
+    el('rect', { x: o.x, y: o.y, width: o.b, height: o.h, fill: '#17110D' }, lijst);
+    el('rect', { x: o.x + 4, y: o.y + 4, width: o.b - 8, height: o.h - 8, fill: 'url(#h-goud)' }, lijst);
+    const los = el('g', { 'data-voor': 'prenten' }, g);
+    schaduw(los, o.x + 7, o.y + 5, o.b - 14, o.h - 12);
+    if (window.Spellen && window.Spellen.uilenspel && window.Spellen.uilenspel.maakPrent) {
+      const prent = window.Spellen.uilenspel.maakPrent();
+      prent.setAttribute('x', o.x + 7); prent.setAttribute('y', o.y + 7); prent.setAttribute('width', o.b - 14); prent.setAttribute('height', o.h - 14);
+      prent.setAttribute('preserveAspectRatio', 'none');
+      g.appendChild(prent);
+    } else {
+      el('rect', { x: o.x + 7, y: o.y + 7, width: o.b - 14, height: o.h - 14, fill: '#EFE2C0' }, g);
+    }
+    // los aan de muur: de spijker door het papier en een hoekje dat omkrult
+    const krul = el('g', { 'data-voor': 'prenten' }, g);
+    el('path', { d: `M${o.x + o.b - 7} ${o.y + o.h - 7} h-15 q9 -3 15 -15 Z`, fill: '#D6C59C', stroke: '#8A7A5C', 'stroke-width': 0.8 }, krul);
+    spijker(krul, o.x + o.b / 2, o.y + 12);
+    veelhoek([[o.x + 7, o.y + 7], [o.x + 62, o.y + 7], [o.x + 7, o.y + 72]], { fill: '#FFFFFF', opacity: 0.1, 'data-na': 'prenten' }, g);
+    naambordje(g, o.x + o.b / 2, o.y + o.h + 10, 'Uilenspel');
+  }
+
+  // een prent die nog achter een gordijntje hangt (vliegeren komt binnenkort)
   function bouwPrent(ouder, o) {
     // voor de klus: een lichte rand op de muur waar ooit een prent hing, en de spijker
     const leeg = el('g', { 'data-voor': 'prenten' }, ouder);

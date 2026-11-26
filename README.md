@@ -181,6 +181,21 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   met z'n tweeën (links en rechts tikken, of de toetsen A en L). Met vaart zoomt de camera uit en kijk je verder
   vooruit; je hoort de hoepel over de klinkers rollen, de belletjes rinkelen en de klompen klakken. De hoepel aan de
   muur van de voorkamer opent het spel.
+- **Uilenspel** (schermvullend): het geluksspel van de 17e-eeuwse prenten (Jegher, later Hendriksen in Rotterdam en
+  Brepols in Turnhout; in Frankrijk het *Jeu de la chouette*). Een rond, handgekleurd prentbord met vijftig vakken:
+  elke worp met drie stenen behalve de drie gelijke, elk met de drie stenen, een houtsnede van een dier of voorwerp en
+  B (betalen) of T (trekken) met een bedrag. In de ring daarbinnen de zes gelijke worpen (de helft van de pot, en drie
+  zessen: alles), en in het midden een ransuil voor een bolle spiegel, met de pot aan zijn voeten. Om het bord de
+  oude titel *Het nieuwe tydkortige Uylenspel* en de spreuk *Wat baet kaers en bril, als den uyl niet sien wil*; in
+  de hoeken een pijp, een roemer en een kan, een dobbelbeker en een kaars met een bril. Iedereen legt drie koperen
+  legpenningen in; je schudt de beker, drie stenen tuimelen, het vak licht op en een kaartje toont het plaatje
+  (de haan, de kat, het schip...), en de penningen vliegen naar de pot of naar jou. Is de pot leeg, dan legt iedereen
+  opnieuw in. Bij drie zessen klappert de uil met zijn vleugels en roept hij oehoe. Een partij duurt zolang de kaars
+  brandt: acht rondes, één ring per ronde; wie dan de meeste penningen heeft, wint. De bedragen hangen af van hoe
+  zeldzaam de worp is (lage worpen kosten geld, hoge leveren op, met een paar verrassingen) en zijn doorgerekend: de pot
+  loopt ongeveer twee keer per partij leeg en blut gaan gebeurt zelden. Met Opoe, Molenaar Kees, de burgemeester,
+  Grietje en Jantje, of met vrienden op hetzelfde toestel (tot vier spelers). De prent hangt in de voorkamer: eerst
+  los aan een spijker, na de klus 'prenten ophangen' in een lijst. Win van drie spelers tegelijk voor de zilveren uil.
 - **Ringsteken** (op de kermis, schermvullend): je rijdt op een houten paard in de draaimolen; naast de molen staat een
   galg met een arm waaraan een ring hangt, en de ringenman hangt steeds een nieuwe op (soms een gouden). Elk rondje kom
   je er één keer langs: tik op het goede moment en je kind steekt zijn lans uit. Raak? Dan schuift de ring op je lans,
@@ -296,6 +311,7 @@ rechtsboven.
 | Kolf | IJswals (eigen wals met klokjes als ijskristallen) | klavecimbel, klokjes, luit en gamba | thema, variatie, blokfluit |
 | Koekhappen | Happolka (eigen polka) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
 | Hoepelen | Hoepelloopje (eigen dans in loopjes) | blokfluit, cister en tabor | thema, variatie, luit |
+| Uilenspel | Het Uilenlied (eigen wijsje in d-klein, met een uilenroep) | blokfluit, luit en gamba | thema, variatie, luit |
 | Ringsteken | Draaimolenwals (eigen wals) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
 | Kop van Jut | Sterke-mannenmars (eigen mars) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
 | Knikkeren | Knikkerdeuntje (eigen deuntje) | klavecimbel | thema, variatie, blokfluit |
@@ -312,14 +328,14 @@ opnames: feestgeluiden het luidst, spelgeluiden daaronder, het tikje bij elke aa
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": uilenspel, vliegeren en steltlopen. Knikkeren en tollen speel
+Nog "in de oven": vliegeren en steltlopen. Knikkeren en tollen speel
 je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=43`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=44`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

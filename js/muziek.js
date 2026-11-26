@@ -215,6 +215,14 @@
              "|: h''8 a''8 g''8 fis''8 e''8 fis''8 g''8 e''8 | a''8 g''8 fis''8 e''8 d''8 e''8 fis''8 d''8 | g''8 fis''8 e''8 d''8 cis''8 d''8 e''8 cis''8 | fis''4 d''4 d''2 | " +
              "h''8 a''8 g''8 fis''8 e''8 fis''8 g''8 e''8 | a''8 g''8 fis''8 e''8 fis''8 g''8 a''8 h''8 | cis'''8 h''8 a''8 g''8 fis''8 e''8 d''8 cis''8 | d''2 d''4 r4 :|"
     },
+    uilenspel: {
+      titel: 'Het Uilenlied',
+      bron: 'Een eigen wijsje in d-klein: een uil die roept in de nacht (oe-hoe), en een herbergdans eromheen',
+      melodie: 'blokfluit', stijl: 'arpeggio', tempo: 108, maat: 4, grond: 2, mineur: true, niveau: 0.45, wissel: 3.9,
+      ronden: DRIE,
+      noten: "|: d''4 a'4 d''4 f''4 | a''2 f''4 d''4 | g''4 e''4 cis''4 a'4 | d''4 e''8 f''8 e''2 | d''4 a'4 d''4 f''4 | a''2 f''4 a''4 | g''8 f''8 e''8 d''8 cis''4 e''4 | d''2 d''4 r4 :| " +
+             "|: c'''4 a''4 f''4 a''4 | c'''2 a''4 f''4 | b''4 g''4 d''4 g''4 | a''2 f''2 | b''4 a''4 g''4 f''4 | e''4 f''4 g''4 a''4 | f''8 e''8 d''8 e''8 cis''4 a'4 | d''2 d''4 r4 :|"
+    },
     ringsteken: {
       titel: 'Draaimolenwals',
       bron: 'Op het draaiorgel: een eigen wals die rondzwiert als de draaimolen',

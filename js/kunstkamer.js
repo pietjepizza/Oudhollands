@@ -29,6 +29,27 @@
       ]
     },
     {
+      id: 'uilenspel', naam: 'Uilenspel', tegel: 'ill-uil', tijd: 'Zeventiende eeuw', kort: 'Drie stenen, vijftig vakken en een uil met de pot',
+      herkomst: [
+        'Het uilenspel is een geluksspel met drie dobbelstenen op een rond bord. Het komt waarschijnlijk uit Italië, waar het <i>Pela il chiù</i> heette. In Frankrijk speelde men het als <i>Jeu de la chouette</i>.',
+        'In de Nederlanden was het in de zeventiende en achttiende eeuw een geliefd spel voor volwassenen, naast het ganzenbord. Op een prent van Jan Christoffel Jegher, gedrukt tussen 1628 en 1667, zitten in de vier hoeken mensen te roken en te drinken.',
+        'Later drukten Hendriksen in Rotterdam en Brepols in Turnhout het uilenspel als goedkope prent, met de regels eronder. Zo hing het ook in de huiskamer.'
+      ],
+      spelen: ['Iedereen legt drie penningen in de pot, bij de uil in het midden.', 'Om de beurt gooi je met drie stenen. Elk vak hoort bij één worp: daar staat of je moet betalen (B) of mag trekken (T), en hoeveel.', 'Drie gelijke stenen? Dan trek je de helft van de pot. Drie zessen: de uil! Dan is de hele pot voor jou.', 'Is de pot leeg, dan legt iedereen opnieuw in. Is de kaars op, dan wint wie de meeste penningen heeft.'],
+      weetjes: ['Het bord heeft vijftig vakken: zoveel verschillende worpen kun je met drie stenen gooien, als je de zes worpen met drie gelijke niet meetelt.', 'Op de Franse borden stond een P voor <i>payer</i> (betalen) en een T voor <i>tirer</i> (trekken).', 'Op ons bord staat het oude spreekwoord: wat baten kaars en bril, als de uil niet zien wil? Wie iets niet wil zien, heeft niets aan licht of een bril.', 'Een uil en een spiegel: zo werd ook Tijl Uilenspiegel vaak getekend.'],
+      kunst: [
+        { titel: 'Het nieuwe tydkortige uylenspel', maker: 'Jan Christoffel Jegher, 1628–1667', url: 'https://www.rijksmuseum.nl/en/collection/object/Het-nieuwe-tydkortige-uylenspel--0ea74a32e305c51c8e534ad6a16b4e0a', waar: 'Rijksmuseum' },
+        { titel: 'Het uilenbord / Jeu de la chouette', maker: 'Brepols & Dierckx zoon, Turnhout, 1833–1911', url: 'https://www.rijksmuseum.nl/en/collection/RP-P-OB-202.154', waar: 'Rijksmuseum' },
+        { titel: 'Bordspel Nieuw Uilenspel', maker: 'Rotterdam, 1812–1849', url: 'https://www.collectiegelderland.nl/nederlandsopenluchtmuseum/object/4512ca7e-64cd-54ed-b285-b06553238e80', waar: 'Nederlands Openluchtmuseum' },
+        { titel: 'Nouveau jeu de la chouette', maker: 'Jean Crépy, omstreeks 1720–1730', url: 'https://essentiels.bnf.fr/fr/image/d4988541-2616-4cb0-a29f-b77a3db0ab6f-nouveau-jeu-la-chouette', waar: 'Bibliothèque nationale de France' }
+      ],
+      bronnen: [
+        { tekst: 'Uilenspel (Canon van Nederland)', url: 'https://www.canonvannederland.nl/nl/page/232265/uilenspel' },
+        { tekst: 'Le Jeu de la Chouette, XVIIIe siècle (Musées de Poissy)', url: 'https://musees.ville-poissy.fr/fr/objet-du-mois/le-jeu-de-la-chouette-xviiie-siecle' },
+        { tekst: 'Het Uilenbord, N.226 (Nederlands Openluchtmuseum)', url: 'https://www.collectiegelderland.nl/nederlandsopenluchtmuseum/object/9d47f1e6-ec3b-590d-91ea-8daf74b6d7b6' }
+      ]
+    },
+    {
       id: 'sjoelen', naam: 'Sjoelen', tegel: 'ill-sjoelbak', tijd: 'Nederland, negentiende eeuw', kort: 'Houten schijven over een gladde bak de poortjes in',
       herkomst: [
         'Sjoelen is een echt Nederlands spel, familie van het Engelse <i>shuffleboard</i>. Sjoelbakken komen in Nederland vanaf de late negentiende eeuw voor, en het spel wordt vaak met Friesland verbonden.',

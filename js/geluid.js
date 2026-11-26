@@ -889,6 +889,24 @@
       const n = Math.round(d * 15);
       for (let i = 0; i < n; i++) modaal(B, t + i / n * d * 0.9 + rnd(0, 0.008), rnd(1900, 2250) * (1 + i / (n * 2.5)), IJZER.map(([r, a, dd]) => [r, a, dd * 0.05]), 0.02 * (1 - i / (n * 1.6)), rnd(-0.2, 0.2));
     },
+    // één koperen penning die op de stapel valt (en nog even natikt)
+    penning() {
+      const B = bron(); if (!B) return;
+      const t = nu(B), pan = rnd(-0.25, 0.25), f = rnd(2300, 3200);
+      modaal(B, t, f, MUNT.map(([r, a, d]) => [r, a, d * 0.45]), 0.07, pan);
+      stoot(B, t, { duur: 0.005, f: 6000, q: 1, vol: 0.06, pan });
+      modaal(B, t + rnd(0.035, 0.06), f * rnd(1.04, 1.12), MUNT.map(([r, a, d]) => [r, a, d * 0.3]), 0.03, pan);
+    },
+    // de uil: een lage, ademende roep, even stil, en dan nog eens met een trilling (oehoe... hoe-oe-oe-oe)
+    oehoe() {
+      const B = bron(); if (!B) return;
+      const t = nu(B);
+      glij(B, t, { golf: 'sine', f1: 410, f2: 372, duur: 0.52, vol: 0.34, aanzet: 0.09, vib: 6, vibF: 5, formanten: [[380, 1.5, 0.55], [800, 3, 0.08]] });
+      glij(B, t + 0.8, { golf: 'sine', f1: 392, f2: 420, duur: 0.16, vol: 0.24, aanzet: 0.04, formanten: [[380, 1.5, 0.55]] });
+      glij(B, t + 1, { golf: 'sine', f1: 420, f2: 356, duur: 0.95, vol: 0.3, aanzet: 0.06, vib: 28, vibF: 8.5, formanten: [[380, 1.5, 0.55], [800, 3, 0.08]] });
+      stoot(B, t, { duur: 0.5, type: 'bandpass', f: 700, q: 1.2, aanzet: 0.1, vol: 0.022 });
+      stoot(B, t + 1, { duur: 0.9, type: 'bandpass', f: 700, q: 1.2, aanzet: 0.1, vol: 0.02 });
+    },
     // het rollen van een houten hoepel over de klinkers, zolang hij rolt (zet de vaart, en stop aan het eind)
     rollen() {
       const leeg = { zet() {}, stop() {} };
@@ -931,7 +949,7 @@
     woesj: 1.8, munt: 1.12, klus: 1.45, tada: 1, tik: 1.6, knik: 3.4, bikkel: 2, stuit: 2.1, vang: 2.8, kolf: 2.05, paal: 1.58,
     hap: 3.9, klap: 1.6, boing: 2.4, tel: 1.86, start: 0.7, gak: 2.1, kling: 2.1, tralies: 1.1, molen: 1.23, plop: 2.1,
     zweep: 0.5, val: 1.78, cadeau: 1.3, koer: 1.1, kwak: 1.7, kaart: 2.7, deel: 2.6, schud: 1.8, fluit: 1.33, miauw: 1.06,
-    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4, ring: 1.7, bel: 1.5, slee: 1.6
+    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4, ring: 1.7, bel: 1.5, slee: 1.6, penning: 1.5, oehoe: 1.4
   };
   Object.keys(window.Geluid).forEach((naam) => {
     const d = Object.getOwnPropertyDescriptor(window.Geluid, naam);

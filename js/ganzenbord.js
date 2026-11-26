@@ -339,8 +339,11 @@
     if (!ui.midden) return;
     const rr = ui.midden.getBoundingClientRect();
     if (!rr.width || !rr.height) return;
-    const maat = Math.floor(Math.min(rr.width - 12, rr.height - 10, 780));
-    podium.style.setProperty('--bord', Math.max(260, maat) + 'px');
+    // liggend op een telefoon: de kolommen links en rechts geven ruimte af (tot 150 px), zodat het bord past
+    const liggend = window.matchMedia && window.matchMedia('(orientation: landscape) and (max-height: 620px)').matches;
+    const breed = liggend ? podium.clientWidth - 2 * 150 - 44 : rr.width - 12;
+    const maat = Math.floor(Math.min(breed, rr.height - 10, 780));
+    podium.style.setProperty('--bord', Math.max(liggend ? 180 : 260, maat) + 'px');
   }
 
   // ============================================================
