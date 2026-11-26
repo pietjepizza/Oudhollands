@@ -1153,6 +1153,8 @@ html[data-seizoen="koningsdag"] .alleen-koningsdag { display: inline; }
 /* ---------- Wenken: een tikkende hand waar je iets kunt doen ---------- */
 .wenk-hand { position: fixed; left: 0; top: 0; z-index: 16; width: 64px; height: 64px; pointer-events: none; color: #FFF7E2; filter: drop-shadow(0 5px 6px rgba(0, 0, 0, .5)); }
 .wenk-hand[hidden] { display: none; }
+/* omgedraaid (wijst omlaag naar iets onderaan het scherm): de schaduw draait mee, dus hier naar 'boven' */
+.wenk-hand.omlaag { filter: drop-shadow(0 -5px 6px rgba(0, 0, 0, .5)); }
 .wenk-hand.in { animation: wenk-hand-in .5s ease-out; }
 @keyframes wenk-hand-in { from { opacity: 0; } to { opacity: 1; } }
 .wenk-hand svg { position: absolute; inset: 0; width: 100%; height: 100%; stroke: #2A1A08; stroke-width: 1.1px; paint-order: stroke; transform-origin: 46% 7%; animation: wenk-tik 1.7s cubic-bezier(.4, 0, .2, 1) infinite; }

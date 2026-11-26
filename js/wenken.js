@@ -43,12 +43,19 @@
   function werk() {
     const doel = zoekDoel();
     if (!doel || !zichtbaar(doel)) { if (!hand.hidden) hand.hidden = true; doelNu = null; return; }
-    const r = doel.getBoundingClientRect();
+    // bij de klusknop wijst de hand het ronde ikoontje aan (daar zie je wat je gaat doen)
+    const ikoon = doel.id === 'klusknop' ? doel.querySelector('.klus-ikoon') : null;
+    const r = (ikoon || doel).getBoundingClientRect();
     if (r.width < 4 || r.bottom < 0 || r.top > innerHeight) { hand.hidden = true; return; }
-    // de vingertop komt iets onder het midden van het doel
     const maat = hand.offsetWidth || 64;
-    const x = r.left + r.width * (doel.id === 'klusknop' ? 0.18 : 0.5), y = r.top + r.height * (doel.id === 'klusknop' ? 0.55 : 0.58);
-    hand.style.transform = `translate(${Math.round(x - maat * 0.42)}px, ${Math.round(y - maat * 0.06)}px)`;
+    // de vingertop komt iets onder het midden van het doel. Staat het doel onderaan het scherm (de klusknop), dan
+    // komt de hand van boven en wijst hij omlaag; anders valt de hand half van het scherm.
+    const omlaag = r.top + r.height * 0.58 + maat * 0.95 > innerHeight;
+    const x = r.left + r.width * 0.5, y = r.top + r.height * (omlaag ? 0.32 : 0.58);
+    hand.classList.toggle('omlaag', omlaag);
+    // de vingertop zit op 46% en 7% van de hand; omgedraaid (180 graden om het midden) op 54% en 93%
+    hand.style.transform = omlaag ? `translate(${Math.round(x - maat * 0.54)}px, ${Math.round(y - maat * 0.93)}px) rotate(180deg)`
+      : `translate(${Math.round(x - maat * 0.42)}px, ${Math.round(y - maat * 0.06)}px)`;
     if (doelNu !== doel) { doelNu = doel; hand.hidden = false; hand.classList.remove('in'); void hand.offsetWidth; hand.classList.add('in'); }
   }
   function start() {
