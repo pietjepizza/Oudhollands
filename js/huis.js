@@ -3786,10 +3786,12 @@
     if (bezig) return;
     naar = naar === 'zolder' && kamerOpen('zolder') ? 'zolder' : 'voorkamer';
     zetBinnen(true);
-    if (window.Duiten && !Duiten.veld('bezocht', false)) Duiten.zetVeld('bezocht', true);
+    // de eerste keer binnen lichten de spellen één keer op (buiten wees een hand de deur aan; binnen wijst niets meer)
+    const eerste = !!(window.Duiten && !Duiten.veld('bezocht', false));
+    if (eerste) Duiten.zetVeld('bezocht', true);
     if (naar !== kamerNaam) zetKamerNaam(naar);
     if (getekend !== kamerNaam) maakKamer(gewensteIndeling());
-    if (rustig()) { toonKamer(); return; }
+    if (rustig()) { toonKamer(); if (eerste) lichtOp(400); return; }
     bezig = true;
     verbergLabel();
     const deurKlik = gevelSvg.querySelector(naar === 'zolder' ? '.luik-klik' : '.deur-klik');
@@ -3821,10 +3823,18 @@
         a.onfinish = () => kamerSvg.classList.remove('zoomt');
         sluier.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, easing: 'ease-out', fill: 'forwards' });
         if (hint) hint.classList.remove('weg');
+        if (eerste) lichtOp(1100);
       } catch (err) {
         gevel.hidden = true; kamer.hidden = false; sluier.style.opacity = 0;
       }
     }, wachtTijd + 1120);
+  }
+
+  function lichtOp(wacht) {
+    setTimeout(() => {
+      if (kamer.hidden || !kamerSvg) return;
+      kamerSvg.querySelectorAll('.speelbaar').forEach((s) => { s.classList.remove('wenk'); void s.getBoundingClientRect(); s.classList.add('wenk'); });
+    }, wacht);
   }
 
   // Naar de pronkkamer: de camera zoomt in op de ramen van de eerste verdieping, en dan sta je in de kamer.

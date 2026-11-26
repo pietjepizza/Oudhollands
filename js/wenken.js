@@ -1,8 +1,8 @@
 /* Wenken: geen uitleg vooraf, maar een tikkende hand op de plek waar je iets kunt doen.
-   - Buiten, zolang je nog nooit binnen was: de hand tikt op de deur.
-   - Binnen, zolang je nog geen spel hebt gespeeld: de hand tikt op het ganzenbord.
-   - Heb je genoeg duiten voor je eerste klus: de hand tikt op de klusknop.
-   Wie iets aanraakt, ziet de hand even niet; daarna komt hij terug zolang het nog nodig is.
+   - Buiten, zolang je nog nooit binnen was: de hand tikt op de deur. Wie iets aanraakt, ziet de hand even niet;
+     daarna komt hij terug tot je naar binnen gaat.
+   - Binnen wijst geen hand meer (die bleef maar terugkomen): de spellen lichten even op als je binnenkomt, en de
+     klusknop roept zelf zodra je een klus kunt betalen.
    In het menu staat 'Zo werkt het': vier plaatjes (spelen, duiten, opknappen, prijzen). */
 (function () {
   'use strict';
@@ -26,30 +26,23 @@
     const d = D();
     if (!d || !thuis() || html.classList.contains('met-opening') || Date.now() < rust) return null;
     if (document.querySelector('.vel:not([hidden]), .beloning:not([hidden]), .cadeau-vel:not([hidden]), .les:not([hidden])')) return null;
-    const gevel = $('#gevel'), kamer = $('#kamer');
+    const gevel = $('#gevel');
     if (gevel && !gevel.hidden && !d.veld('bezocht', false)) return $('.gevel-svg .deur-klik');
-    if (kamer && !kamer.hidden && !kamer.classList.contains('hud-weg') && kamer.getAttribute('data-kamer') === 'voorkamer') {
-      if (!d.potjes) return $('#kamer [data-spel="ganzenbord"]');
-      const v = d.volgendeKlus('voorkamer');
-      if (d.aantalKlaar('voorkamer') === 0 && v && d.saldo >= v.prijs) return $('#klusknop');
-    }
     return null;
   }
-  // nog iets te wijzen, of zijn we klaar met wenken?
+  // nog iets te wijzen, of zijn we klaar met wenken? (klaar zodra je een keer binnen bent geweest)
   function nogNodig() {
     const d = D();
-    return !d || !d.veld('bezocht', false) || !d.potjes || d.aantalKlaar('voorkamer') === 0;
+    return !d || !d.veld('bezocht', false);
   }
   function werk() {
     const doel = zoekDoel();
     if (!doel || !zichtbaar(doel)) { if (!hand.hidden) hand.hidden = true; doelNu = null; return; }
-    // bij de klusknop wijst de hand het ronde ikoontje aan (daar zie je wat je gaat doen)
-    const ikoon = doel.id === 'klusknop' ? doel.querySelector('.klus-ikoon') : null;
-    const r = (ikoon || doel).getBoundingClientRect();
+    const r = doel.getBoundingClientRect();
     if (r.width < 4 || r.bottom < 0 || r.top > innerHeight) { hand.hidden = true; return; }
     const maat = hand.offsetWidth || 64;
-    // de vingertop komt iets onder het midden van het doel. Staat het doel onderaan het scherm (de klusknop), dan
-    // komt de hand van boven en wijst hij omlaag; anders valt de hand half van het scherm.
+    // de vingertop komt iets onder het midden van het doel. Staat het doel onderaan het scherm, dan komt de hand van
+    // boven en wijst hij omlaag; anders valt de hand half van het scherm.
     const omlaag = r.top + r.height * 0.58 + maat * 0.95 > innerHeight;
     const x = r.left + r.width * 0.5, y = r.top + r.height * (omlaag ? 0.32 : 0.58);
     hand.classList.toggle('omlaag', omlaag);

@@ -259,9 +259,9 @@ schuiven weg en de knoppen komen in beeld. Nevel, stofjes en licht liggen in lag
 mee, zodat het beeld diepte krijgt; er ligt een vleugje filmkorrel over. Overslaan kan altijd (tik, een toets of
 "Overslaan"). De opening komt één keer per bezoek, en met "minder beweging" alleen als stil titelbeeld.
 
-**Wenken in plaats van uitleg.** Er is geen rondleiding meer: een tikkende hand wijst wat je kunt doen, en verdwijnt
-zodra je het gedaan hebt. Buiten tikt hij op de deur zolang je nog nooit binnen was, binnen op het ganzenbord zolang je
-nog geen spel hebt gespeeld, en op de klusknop zodra je je eerste klus kunt betalen. In het menu staat "Zo werkt het":
+**Wenken in plaats van uitleg.** Er is geen rondleiding meer. Buiten tikt een hand op de deur zolang je nog nooit
+binnen was; daarna is hij weg. Binnen lichten de spellen even op als je binnenkomt, en de klusknop roept zelf zodra je
+een klus kunt betalen. In het menu staat "Zo werkt het":
 vier plaatjes in een kring (speel, verdien duiten, knap het huis op, win prijzen).
 
 **Muziek** (knop "Muziek" rechtsboven): elke plek en elk spel heeft een eigen stuk, gespeeld door een klein
@@ -352,7 +352,7 @@ je alleen op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=46`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=47`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
