@@ -28,7 +28,9 @@ een klus klaarstaat.
 
 **Het huis.** Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
 marmeren vloer, een schouw, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
-in naar het spel. Op tafel liggen het dambord en de speelkaarten. Een spel dat nog niet klaar is (de stelten op zolder) zegt 'komt binnenkort'.
+in naar het spel. Op tafel liggen het dambord en de speelkaarten, en naast het raam hangt een merklap (het alfabet in
+kruissteek, met een tulp, een hart, een huisje, een vogel en een levensboom). Een spel dat nog niet klaar is (de stelten
+op zolder) zegt 'komt binnenkort'.
 
 **Duiten verdienen en het huis opknappen.** De voorkamer begint stoffig: spinnenwebben, vuile ruiten, vochtige muren,
 een doffe vloer. Met elk potje verdien je duiten (winnen 40, verliezen 10 à 15, sjoelen 10 plus een kwart van je score).
@@ -40,8 +42,8 @@ het grachtenpand de lichten.
 Alles wordt in de browser bewaard; via het menu kun je opnieuw beginnen.
 
 **Kamers vrijspelen.** Is de voorkamer klaar, dan koop je de trap (60 duiten): de deur naar de gang gaat open en een
-steile Hollandse trap leidt naar de **zolder**. Daar staan twee nieuwe spellen (knikkeren in de zandbak, tollen op de
-kist) en acht eigen klussen: rommel opruimen, het hijsluik openen, balken schuren, planken boenen, een lantaarn, een
+steile Hollandse trap leidt naar de **zolder**. Daar staan drie nieuwe spellen (knikkeren in de zandbak, tollen op de
+kist, en de vlieger aan de muur) en acht eigen klussen: rommel opruimen, het hijsluik openen, balken schuren, planken boenen, een lantaarn, een
 lappendeken, een antiek appelgrauw hobbelpaard op gebogen schommels (met manen en staart van paardenhaar, een
 rood zadel op een Delfts blauw kleed; tik erop en het hobbelt) en duiven op de hanenbalk. De straat is het knooppunt: onderaan staan de plekken
 (voorkamer, zolder, herberg, kermis, ijsbaan, en rechts de pronkkamer en de Kunstkamer). De herberg en de ijsbaan zitten nog op slot.
@@ -209,7 +211,8 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   hoogst staat; de wijzer op de toren en het klokje bovenin lopen mee. Tegen Mieke, bakkersjongen Teun, Trijntje en
   Molenaar Kees (die de wind kent), die verschillen in hoe snel ze een vlaag zien aankomen en hoe vaak ze toch blijven
   trekken (afgesteld met nagespeelde wedstrijden), of met z'n tweeën, ieder op een eigen helft van het veld. De vlieger
-  hangt in de voorkamer aan een spijker, met de klos ernaast. Win van Molenaar Kees voor de zilveren vlieger.
+  hangt op de zolder aan een spijker, met de klos ernaast: daar wacht hij tot de nazomer. Win van Molenaar Kees voor de
+  zilveren vlieger.
 - **Ringsteken** (op de kermis, schermvullend): je rijdt op een houten paard in de draaimolen; naast de molen staat een
   galg met een arm waaraan een ring hangt, en de ringenman hangt steeds een nieuwe op (soms een gouden). Elk rondje kom
   je er één keer langs: tik op het goede moment en je kind steekt zijn lans uit. Raak? Dan schuift de ring op je lans,
@@ -345,14 +348,14 @@ opnames: feestgeluiden het luidst, spelgeluiden daaronder, het tikje bij elke aa
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": steltlopen. Knikkeren en tollen speel
-je alleen op de zolder.
+Nog "in de oven": steltlopen. Knikkeren, tollen en vliegeren speel
+je op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=47`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=48`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:

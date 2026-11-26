@@ -148,7 +148,7 @@
         kroon: plaats([800, 0], [450, 20], 1.1),
         ganzenbord: plaats([800, 208], [450, 262], 1.22),
         sjoelbak: plaats([1025, 186], [712, 262], 1.05),
-        vliegeren: plaats([1176, 169], [192, 262], 0.8),
+        merklap: plaats([1176, 169], [192, 262], 0.8),
         rek: plaats([365, 372], [192, 430], 0.78),
         molenspel: plaats([550, 292], [240, 735], 1.05),
         uilenspel: plaats([360, 173], [440, 755], 0.9),
@@ -536,7 +536,7 @@
     bouwMolenspel(plek('molenspel', wand));
     bouwSjoelbak(plek('sjoelbak', wand));
     bouwUilenspel(plek('uilenspel', wand));
-    bouwVliegerWand(plek('vliegeren', wand), L);
+    bouwMerklap(plek('merklap', wand));
     bouwHoepel(plek('hoepel', wand), L);
     bouwPlank(plek('plank', wand));
 
@@ -785,63 +785,47 @@
     naambordje(g, o.x + o.b / 2, o.y + o.h + 10, 'Uilenspel');
   }
 
-  // vliegeren: jouw kruisvlieger (geel papier met een rode zon, net als in het spel) aan een spijker, de staart met
-  // papieren strikjes in een bocht ernaast, en de houten klos met het touw aan een eigen spijker
-  function bouwVliegerWand(ouder, L) {
-    const staand = L && L.naam === 'staand';
-    const g = voorwerp(ouder, { spel: 'vliegeren', label: 'Speel vliegeren' });
-    el('rect', { x: 1100, y: 168, width: staand ? 168 : 206, height: 174, fill: 'transparent' }, g);
-    // het naambordje: staand onder de vlieger; breed onder de klos (onder de vlieger hangt het bordje van de hoepel)
-    naambordje(g, staand ? 1156 : 1252, staand ? 312 : 263, 'Vliegeren');
-    // de klos: een houten spoel met het opgewonden touw, aan een lusje
-    const k = el('g', { class: 'vlieger-klos' }, g);
-    el('ellipse', { cx: 1243, cy: 252, rx: 15, ry: 5, fill: '#2A1A0C', opacity: 0.28, filter: 'url(#h-zacht)' }, k);
-    el('path', { d: 'M1236 190 L1233 202 M1236 190 L1239 202', stroke: '#EFE3C4', 'stroke-width': 1, opacity: 0.9 }, k);
-    el('line', { x1: 1236, y1: 199, x2: 1236, y2: 256, stroke: '#4A2C12', 'stroke-width': 4, 'stroke-linecap': 'round' }, k);
-    el('ellipse', { cx: 1236, cy: 245, rx: 15, ry: 4.6, fill: '#7A4A22', stroke: '#3A2210', 'stroke-width': 1 }, k);
-    el('rect', { x: 1225, y: 211, width: 22, height: 34, fill: '#EFE3C4', stroke: '#8A7A5C', 'stroke-width': 0.6 }, k);
-    for (let y = 214; y < 244; y += 3.2) el('line', { x1: 1225.5, y1: y, x2: 1246.5, y2: y + 0.8, stroke: '#C9B78E', 'stroke-width': 0.8 }, k);
-    el('rect', { x: 1240, y: 211, width: 7, height: 34, fill: '#2A1A0C', opacity: 0.12 }, k);
-    el('ellipse', { cx: 1236, cy: 211, rx: 15, ry: 4.6, fill: '#94643A', stroke: '#3A2210', 'stroke-width': 1 }, k);
-    el('ellipse', { cx: 1236, cy: 211, rx: 3, ry: 1.2, fill: '#3A2210' }, k);
-    spijker(k, 1236, 190);
-    // de vlieger hangt een tikje scheef aan zijn spijker
-    const v = el('g', { class: 'vlieger-hang', transform: 'rotate(-8 1152 178)' }, g);
-    const ruit = 'M1152 188 L1194 234 L1152 300 L1110 234 Z';
-    el('path', { d: ruit, fill: '#2A1A0C', opacity: 0.32, filter: 'url(#h-schaduw)', transform: 'translate(8 10)' }, v);
-    el('line', { x1: 1152, y1: 178, x2: 1152, y2: 190, stroke: '#EFE3C4', 'stroke-width': 1.1 }, v);
-    el('path', { d: ruit, fill: '#F2D27A', stroke: '#4A3018', 'stroke-width': 1.8, 'stroke-linejoin': 'round' }, v);
-    // het papier is over het randtouw omgevouwen, en het licht valt van links
-    el('path', { d: 'M1152 193 L1189 234 L1152 294 L1115 234 Z', fill: 'none', stroke: '#D7AE52', 'stroke-width': 2.4, opacity: 0.75 }, v);
-    el('path', { d: 'M1152 188 L1110 234 L1152 300 Z', fill: '#FFF6D8', opacity: 0.16 }, v);
-    el('path', { d: 'M1152 188 L1194 234 L1152 300 Z', fill: '#6A4A16', opacity: 0.08 }, v);
-    // de zon met een vriendelijk gezicht
-    for (let i = 0; i < 12; i++) {
-      const a = i * Math.PI / 6;
-      el('line', { x1: 1152 + Math.cos(a) * 14.5, y1: 238 + Math.sin(a) * 14.5, x2: 1152 + Math.cos(a) * (i % 2 ? 19 : 21), y2: 238 + Math.sin(a) * (i % 2 ? 19 : 21), stroke: '#C8553A', 'stroke-width': 2.2, 'stroke-linecap': 'round' }, v);
-    }
-    el('circle', { cx: 1152, cy: 238, r: 12, fill: '#C8553A' }, v);
-    el('circle', { cx: 1148, cy: 234, r: 5, fill: '#E07A55', opacity: 0.6 }, v);
-    el('circle', { cx: 1147.5, cy: 235.5, r: 1.3, fill: '#3A2A1A' }, v);
-    el('circle', { cx: 1156.5, cy: 235.5, r: 1.3, fill: '#3A2A1A' }, v);
-    el('path', { d: 'M1146.5 241 Q1152 245.5 1157.5 241', fill: 'none', stroke: '#3A2A1A', 'stroke-width': 1.2, 'stroke-linecap': 'round' }, v);
-    // de latjes en het toompje (twee touwtjes naar een knoop voor de vlieger)
-    el('path', { d: 'M1152 189 V299 M1111 234 H1193', stroke: '#6A4A22', 'stroke-width': 2.6, 'stroke-linecap': 'round' }, v);
-    el('path', { d: 'M1152 200 L1160 241 L1152 286', fill: 'none', stroke: '#EFE3C4', 'stroke-width': 1, opacity: 0.95 }, v);
-    // het touw van de knoop naar de klos
-    el('path', { d: 'M1161 240 Q1196 276 1225 228', fill: 'none', stroke: '#EFE3C4', 'stroke-width': 1.1 }, g);
-    // de staart: een touwtje met papieren strikjes, in een bocht naar rechts
-    const staart = 'M1169 299 C1178 311 1194 308 1208 303 C1224 297 1240 300 1248 312 C1254 321 1257 330 1258 340';
-    el('path', { d: staart, fill: 'none', stroke: '#2A1A0C', 'stroke-width': 1.4, opacity: 0.25, transform: 'translate(5 7)' }, g);
-    el('path', { d: staart, fill: 'none', stroke: '#5A4632', 'stroke-width': 1.2 }, g);
-    [[1188, 307.5, 18], [1214, 300.5, -6], [1238, 301, 22], [1252, 318, 62], [1258, 337, 84]].forEach(([x, y, hoek], i) => {
-      const draai = hoek + (rnd() * 16 - 8);
-      const s = el('g', { transform: `rotate(${draai.toFixed(1)} ${x} ${y})` }, g);
-      el('path', { d: `M${x} ${y} L${x - 7} ${y - 4.5} L${x - 7} ${y + 4.5} Z M${x} ${y} L${x + 7} ${y - 4.5} L${x + 7} ${y + 4.5} Z`, fill: i % 2 ? '#F7EFE2' : '#C8553A', stroke: '#4A3018', 'stroke-width': 0.7, 'stroke-linejoin': 'round' }, s);
-      el('circle', { cx: x, cy: y, r: 1.4, fill: '#4A3018' }, s);
+  // een merklap in een notenhouten lijstje: het alfabet en de cijfers in kruissteek, rood en blauw, met een tulp, een
+  // hart, een huisje, een vogel en een levensboom, en onderaan de voorletters en het jaar. Zo oefenden meisjes in de
+  // zeventiende en achttiende eeuw hun steken; de lap hing daarna vaak ingelijst in de kamer.
+  function bouwMerklap(ouder) {
+    const g = el('g', { class: 'merklap', 'aria-hidden': 'true' }, ouder);
+    const x = 1120, y = 186, b = 112, h = 130;
+    spijker(g, x + b / 2, y - 12, [[x + 12, y + 2], [x + b - 12, y + 2]]);
+    schaduw(g, x, y, b, h);
+    el('rect', { x, y, width: b, height: h, fill: '#3A2414' }, g);
+    el('rect', { x: x + 2, y: y + 2, width: b - 4, height: h - 4, fill: 'none', stroke: '#6A4428', 'stroke-width': 1.2 }, g);
+    el('rect', { x: x + 7, y: y + 7, width: b - 14, height: h - 14, fill: '#EDE3CB' }, g);
+    // het linnen: een fijn weefsel
+    const weef = el('g', { stroke: '#C9B994', 'stroke-width': 0.35, opacity: 0.5 }, g);
+    for (let i = 10; i < b - 8; i += 3) el('line', { x1: x + i, y1: y + 8, x2: x + i, y2: y + h - 8 }, weef);
+    for (let i = 10; i < h - 8; i += 3) el('line', { x1: x + 8, y1: y + i, x2: x + b - 8, y2: y + i }, weef);
+    // een rand van kruisjes
+    el('rect', { x: x + 11, y: y + 11, width: b - 22, height: h - 22, fill: 'none', stroke: '#A8342A', 'stroke-width': 1.6, 'stroke-dasharray': '2 1.4' }, g);
+    const steek = { 'font-family': 'IM Fell English SC, Georgia, serif', 'font-size': 10.5, 'letter-spacing': 1.1, 'text-anchor': 'middle' };
+    [['ABCDEFGHI', '#A8342A'], ['KLMNOPQR', '#2B4C8A'], ['STVWXYZ', '#A8342A'], ['123456789', '#3F6B3A']].forEach(([t, kleur], i) => {
+      tekst(t, Object.assign({ x: x + b / 2, y: y + 29 + i * 13.5, fill: kleur }, steek), g);
     });
-    spijker(g, 1152, 178);
+    // de motiefjes, elk een tikje scheef geborduurd
+    const mot = (mx, my) => el('g', { transform: `rotate(${(rnd() * 6 - 3).toFixed(1)} ${mx} ${my})` }, g);
+    const m1 = mot(x + 22, y + 94);
+    el('path', { d: `M${x + 22} ${y + 101} V${y + 92} M${x + 22} ${y + 98} q-5 -2 -6 -6 M${x + 22} ${y + 97} q5 -2 6 -6`, fill: 'none', stroke: '#3F6B3A', 'stroke-width': 1.3 }, m1);
+    el('path', { d: `M${x + 17} ${y + 85} q1 6 5 7 q4 -1 5 -7 l-2.5 2.5 l-2.5 -3.5 l-2.5 3.5 Z`, fill: '#A8342A' }, m1);
+    const m2 = mot(x + 40, y + 93);
+    el('path', { d: `M${x + 40} ${y + 99} c-7 -5 -7 -10 -3.5 -11 c2 -0.5 3 1 3.5 2 c0.5 -1 1.5 -2.5 3.5 -2 c3.5 1 3.5 6 -3.5 11 Z`, fill: '#A8342A' }, m2);
+    const m3 = mot(x + 56, y + 93);
+    el('path', { d: `M${x + 50} ${y + 100} V${y + 92} L${x + 56} ${y + 86} L${x + 62} ${y + 92} V${y + 100} Z`, fill: '#2B4C8A' }, m3);
+    el('rect', { x: x + 54.5, y: y + 95, width: 3, height: 5, fill: '#EDE3CB' }, m3);
+    const m4 = mot(x + 73, y + 93);
+    el('path', { d: `M${x + 67} ${y + 95} q3 -6 8 -5 l4 -2 l-2 3.5 q1 5 -5 6 l-6 1 l2 -2 Z`, fill: '#2B4C8A' }, m4);
+    el('circle', { cx: x + 75.5, cy: y + 91.5, r: 0.7, fill: '#EDE3CB' }, m4);
+    const m5 = mot(x + 90, y + 93);
+    el('path', { d: `M${x + 90} ${y + 101} V${y + 86} M${x + 90} ${y + 96} l-5 -4 M${x + 90} ${y + 96} l5 -4 M${x + 90} ${y + 91} l-4 -3.5 M${x + 90} ${y + 91} l4 -3.5`, fill: 'none', stroke: '#3F6B3A', 'stroke-width': 1.3, 'stroke-linecap': 'round' }, m5);
+    tekst('A·V 1698', Object.assign({}, steek, { x: x + b / 2, y: y + 116, 'font-size': 9.5, fill: '#2B4C8A' }), g);
+    // het glas ervoor
+    veelhoek([[x + 7, y + 7], [x + 52, y + 7], [x + 7, y + 60]], { fill: '#FFFFFF', opacity: 0.1 }, g);
   }
+
 
 
   // Bordenrek met vier Delfts blauwe borden (klus: Delfts servies)
@@ -1603,20 +1587,65 @@
     }
   }
 
-  // een oude vlieger op zolder: versiering (vliegeren speel je in de voorkamer)
+  // vliegeren: jouw kruisvlieger (geel papier met een rode zon, net als in het spel) aan een spijker op de zoldermuur,
+  // waar hij tot de nazomer wacht; de staart met papieren strikjes, en de houten klos met het touw aan een eigen spijker
   function bouwVlieger(ouder) {
-    const g = el('g', { class: 'zolder-vlieger', 'aria-hidden': 'true' }, ouder);
+    const g = voorwerp(ouder, { spel: 'vliegeren', label: 'Speel vliegeren' });
+    el('rect', { x: 426, y: 442, width: 186, height: 320, fill: 'transparent' }, g);
+    naambordje(g, 520, 734, 'Vliegeren');
+    // de klos: een houten spoel met het opgewonden touw, aan een lusje
+    const k = el('g', { class: 'vlieger-klos' }, g);
+    el('ellipse', { cx: 460, cy: 704, rx: 17, ry: 5.5, fill: '#2A1A0C', opacity: 0.3, filter: 'url(#h-zacht)' }, k);
+    el('path', { d: 'M452 624 L448.5 637 M452 624 L455.5 637', stroke: '#EFE3C4', 'stroke-width': 1.1, opacity: 0.9 }, k);
+    el('line', { x1: 452, y1: 634, x2: 452, y2: 702, stroke: '#4A2C12', 'stroke-width': 4.6, 'stroke-linecap': 'round' }, k);
+    el('ellipse', { cx: 452, cy: 690, rx: 18, ry: 5.4, fill: '#7A4A22', stroke: '#3A2210', 'stroke-width': 1.1 }, k);
+    el('rect', { x: 439, y: 649, width: 26, height: 41, fill: '#EFE3C4', stroke: '#8A7A5C', 'stroke-width': 0.6 }, k);
+    for (let yy = 652; yy < 689; yy += 3.4) el('line', { x1: 439.5, y1: yy, x2: 464.5, y2: yy + 0.9, stroke: '#C9B78E', 'stroke-width': 0.9 }, k);
+    el('rect', { x: 457, y: 649, width: 8, height: 41, fill: '#2A1A0C', opacity: 0.12 }, k);
+    el('ellipse', { cx: 452, cy: 649, rx: 18, ry: 5.4, fill: '#94643A', stroke: '#3A2210', 'stroke-width': 1.1 }, k);
+    el('ellipse', { cx: 452, cy: 649, rx: 3.4, ry: 1.4, fill: '#3A2210' }, k);
+    spijker(k, 452, 624);
+    // de vlieger hangt een tikje scheef aan zijn spijker
+    const v = el('g', { class: 'vlieger-hang', transform: 'rotate(-6 535 452)' }, g);
+    const ruit = 'M535 462 L587 519 L535 602 L483 519 Z';
+    el('path', { d: ruit, fill: '#2A1A0C', opacity: 0.32, filter: 'url(#h-schaduw)', transform: 'translate(9 11)' }, v);
+    el('line', { x1: 535, y1: 452, x2: 535, y2: 464, stroke: '#EFE3C4', 'stroke-width': 1.2 }, v);
+    el('path', { d: ruit, fill: '#F2D27A', stroke: '#4A3018', 'stroke-width': 2, 'stroke-linejoin': 'round' }, v);
+    // het papier is over het randtouw omgevouwen, en het licht valt van rechts (door het hijsluik)
+    el('path', { d: 'M535 467 L582 519 L535 596 L488 519 Z', fill: 'none', stroke: '#D7AE52', 'stroke-width': 2.6, opacity: 0.75 }, v);
+    el('path', { d: 'M535 462 L587 519 L535 602 Z', fill: '#FFF6D8', opacity: 0.16 }, v);
+    el('path', { d: 'M535 462 L483 519 L535 602 Z', fill: '#6A4A16', opacity: 0.1 }, v);
+    // de zon met een vriendelijk gezicht
+    for (let i = 0; i < 12; i++) {
+      const a2 = i * Math.PI / 6, r2 = i % 2 ? 23 : 25.5;
+      el('line', { x1: 535 + Math.cos(a2) * 17.5, y1: 524 + Math.sin(a2) * 17.5, x2: 535 + Math.cos(a2) * r2, y2: 524 + Math.sin(a2) * r2, stroke: '#C8553A', 'stroke-width': 2.6, 'stroke-linecap': 'round' }, v);
+    }
+    el('circle', { cx: 535, cy: 524, r: 14.5, fill: '#C8553A' }, v);
+    el('circle', { cx: 539.5, cy: 519.5, r: 6, fill: '#E07A55', opacity: 0.6 }, v);
+    el('circle', { cx: 530, cy: 521, r: 1.5, fill: '#3A2A1A' }, v);
+    el('circle', { cx: 540, cy: 521, r: 1.5, fill: '#3A2A1A' }, v);
+    el('path', { d: 'M528.5 527.5 Q535 533 541.5 527.5', fill: 'none', stroke: '#3A2A1A', 'stroke-width': 1.4, 'stroke-linecap': 'round' }, v);
+    // de latjes en het toompje (twee touwtjes naar een knoop voor de vlieger)
+    el('path', { d: 'M535 463 V601 M484 519 H586', stroke: '#6A4A22', 'stroke-width': 3, 'stroke-linecap': 'round' }, v);
+    el('path', { d: 'M535 476 L545 526 L535 584', fill: 'none', stroke: '#EFE3C4', 'stroke-width': 1.1, opacity: 0.95 }, v);
+    // het touw van de knoop naar de klos
+    el('path', { d: 'M553 524 Q508 606 465 655', fill: 'none', stroke: '#EFE3C4', 'stroke-width': 1.2 }, g);
+    // de staart: een touwtje met papieren strikjes, in een bocht naar beneden
+    const bez = (p, t) => { const u = 1 - t; return [0, 1].map((i) => u * u * u * p[0][i] + 3 * u * u * t * p[1][i] + 3 * u * t * t * p[2][i] + t * t * t * p[3][i]); };
+    const delen = [[[551, 601], [560, 626], [584, 626], [592, 646]], [[592, 646], [600, 666], [584, 690], [592, 712]]];
+    const staart = 'M551 601 C560 626 584 626 592 646 C600 666 584 690 592 712';
+    el('path', { d: staart, fill: 'none', stroke: '#2A1A0C', 'stroke-width': 1.6, opacity: 0.25, transform: 'translate(6 8)' }, g);
+    el('path', { d: staart, fill: 'none', stroke: '#5A4632', 'stroke-width': 1.3 }, g);
+    [[0, 0.35], [0, 0.8], [1, 0.25], [1, 0.62], [1, 1]].forEach(([d, t], i) => {
+      const [bx, by] = bez(delen[d], t), [nx, ny] = bez(delen[d], Math.min(1, t + 0.04)), [px, py] = bez(delen[d], Math.max(0, t - 0.04));
+      const hoek = Math.atan2(ny - py, nx - px) * 180 / Math.PI + 90;
+      const s2 = el('g', { transform: `rotate(${hoek.toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)})` }, g);
+      el('path', { d: `M${bx} ${by} l-8 -5 v10 Z M${bx} ${by} l8 -5 v10 Z`, fill: i % 2 ? '#F7EFE2' : '#C8553A', stroke: '#4A3018', 'stroke-width': 0.8, 'stroke-linejoin': 'round' }, s2);
+      el('circle', { cx: bx, cy: by, r: 1.6, fill: '#4A3018' }, s2);
+    });
     spijker(g, 535, 452);
-    el('path', { d: 'M535 458 L592 522 L535 604 L478 522 Z', fill: '#2A1A0C', opacity: 0.3, filter: 'url(#h-schaduw)', transform: 'translate(8 10)' }, g);
-    el('path', { d: 'M535 458 L592 522 L535 522 Z', fill: '#B6452C' }, g);
-    el('path', { d: 'M535 458 L478 522 L535 522 Z', fill: '#E8D9AE' }, g);
-    el('path', { d: 'M478 522 L535 604 L535 522 Z', fill: '#2B4C9A' }, g);
-    el('path', { d: 'M592 522 L535 604 L535 522 Z', fill: '#E8D9AE' }, g);
-    el('path', { d: 'M535 458 V604 M478 522 H592', stroke: '#6B4423', 'stroke-width': 2.4 }, g);
-    el('path', { d: 'M535 458 L592 522 L535 604 L478 522 Z', fill: 'none', stroke: '#4A3018', 'stroke-width': 1.5 }, g);
-    el('path', { d: 'M535 604 q -14 30 4 56 q 16 26 -6 60', fill: 'none', stroke: '#5A4632', 'stroke-width': 1.4 }, g);
-    [[531, 630, '#B6452C'], [538, 662, '#2B4C9A'], [534, 698, '#E8741C']].forEach(([x, y, k]) => el('path', { d: `M${x - 8} ${y - 5} L${x + 8} ${y + 5} M${x + 8} ${y - 5} L${x - 8} ${y + 5}`, stroke: k, 'stroke-width': 3.5, 'stroke-linecap': 'round' }, g));
   }
+
 
   function bouwStelten(ouder) {
     const g = voorwerp(ouder, { label: 'Steltlopen · komt binnenkort' });

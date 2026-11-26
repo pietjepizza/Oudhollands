@@ -24,7 +24,7 @@
       // na de laatste klus: de trap naar de zolder
       ontgrendelt: { id: 'trap', naam: 'Trap naar de zolder', icoon: 'trap', prijs: 60, kamer: 'zolder' },
       // (ringsteken en koekhappen speel je op de kermis; die horen bij geen kamer)
-      spellen: ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'hoepelen', 'uilenspel', 'vliegeren']
+      spellen: ['ganzenbord', 'sjoelen', 'molenspel', 'dammen', 'klaverjassen', 'triktrak', 'bikkelen', 'kolf', 'hoepelen', 'uilenspel']
     },
     zolder: {
       naam: 'Zolder',
@@ -39,7 +39,7 @@
         { id: 'z-duiven', naam: 'Duiven op de balk', icoon: 'duif', prijs: 90 }
       ],
       ontgrendelt: null,
-      spellen: ['knikkeren', 'tollen']
+      spellen: ['knikkeren', 'tollen', 'vliegeren']
     }
   };
   const SPEL_KAMER = {};
