@@ -939,6 +939,66 @@
           try { src.stop(n + 0.4); lfo.stop(n + 0.4); } catch (e) { /* */ }
         }
       };
+    },
+    // de wind over het stoppelveld, zolang je vliegert: een laag ruisen en een zacht suizen dat met de wind aanzwelt,
+    // en een zingend touw als het strak staat (zet de wind in m/s en de spanning op het touw, en stop aan het eind)
+    wind() {
+      const leeg = { zet() {}, stop() {} };
+      const B = bron(); if (!B) return leeg;
+      const c = B.c, t = c.currentTime;
+      const laag = c.createBufferSource(); laag.buffer = B.k.ruis; laag.loop = true;
+      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 260; lp.Q.value = 0.6;
+      const gLaag = c.createGain(); gLaag.gain.value = 0;
+      laag.connect(lp); lp.connect(gLaag); gLaag.connect(uitgang(B, 1, -0.15));
+      const suis = c.createBufferSource(); suis.buffer = B.k.ruis; suis.loop = true;
+      const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 700; bp.Q.value = 0.8;
+      // het suizen golft langzaam op en neer, zoals wind doet
+      const lfo = c.createOscillator(); lfo.frequency.value = 0.23;
+      const diep = c.createGain(); diep.gain.value = 180;
+      lfo.connect(diep); diep.connect(bp.frequency);
+      const gSuis = c.createGain(); gSuis.gain.value = 0;
+      suis.connect(bp); bp.connect(gSuis); gSuis.connect(uitgang(B, 1, 0.2));
+      // het touw dat zingt: een smalle band ruis, hoger naarmate het strakker staat
+      const zing = c.createBiquadFilter(); zing.type = 'bandpass'; zing.frequency.value = 900; zing.Q.value = 28;
+      const gZing = c.createGain(); gZing.gain.value = 0;
+      suis.connect(zing); zing.connect(gZing); gZing.connect(uitgang(B, 1, 0.05));
+      laag.start(t, Math.random()); suis.start(t, Math.random()); lfo.start(t);
+      let weg = false;
+      return {
+        zet(w, span) {
+          if (weg) return;
+          const n = c.currentTime, k = klem((w - 1) / 11, 0, 1.2);
+          gLaag.gain.setTargetAtTime(0.05 + k * 0.16, n, 0.25);
+          lp.frequency.setTargetAtTime(180 + k * 260, n, 0.3);
+          gSuis.gain.setTargetAtTime(k * k * 0.075, n, 0.25);
+          bp.frequency.setTargetAtTime(520 + k * 520, n, 0.3);
+          const s = klem(((span || 0) - 0.72) / 0.4, 0, 1);
+          gZing.gain.setTargetAtTime(s * 1.6, n, 0.08);
+          zing.frequency.setTargetAtTime(760 + s * 700, n, 0.1);
+        },
+        stop() {
+          if (weg) return;
+          weg = true;
+          const n = c.currentTime;
+          [gLaag, gSuis, gZing].forEach((g) => { g.gain.cancelScheduledValues(n); g.gain.setTargetAtTime(0, n, 0.25); });
+          try { laag.stop(n + 1.4); suis.stop(n + 1.4); lfo.stop(n + 1.4); } catch (e) { /* */ }
+        }
+      };
+    },
+    // de houten klos ratelt als je het touw inhaalt
+    klos() {
+      const B = bron(); if (!B) return;
+      const t = nu(B);
+      raak(B, t, HOUT, rnd(1250, 1450), 0.05, 0.12, 5200, 0.7);
+    },
+    // het touw knapt: een droge knal en een tuimelende, wegzingende draad
+    knap() {
+      const B = bron(); if (!B) return;
+      const t = nu(B);
+      stoot(B, t, { duur: 0.016, type: 'highpass', f: 2600, q: 0.7, aanzet: 0.0005, vol: 0.5 });
+      modaal(B, t, 1900, [[1, 1, 0.02], [2.4, 0.4, 0.01]], 0.14);
+      glij(B, t + 0.005, { golf: 'triangle', f1: 1250, f2: 210, duur: 0.42, vol: 0.12, aanzet: 0.002, vib: 40, vibF: 19 });
+      stoot(B, t + 0.02, { duur: 0.5, type: 'bandpass', f: 1500, f2: 500, q: 1.2, aanzet: 0.02, vol: 0.05, pan: 0, pan2: 0.5 });
     }
   };
 
@@ -949,7 +1009,8 @@
     woesj: 1.8, munt: 1.12, klus: 1.45, tada: 1, tik: 1.6, knik: 3.4, bikkel: 2, stuit: 2.1, vang: 2.8, kolf: 2.05, paal: 1.58,
     hap: 3.9, klap: 1.6, boing: 2.4, tel: 1.86, start: 0.7, gak: 2.1, kling: 2.1, tralies: 1.1, molen: 1.23, plop: 2.1,
     zweep: 0.5, val: 1.78, cadeau: 1.3, koer: 1.1, kwak: 1.7, kaart: 2.7, deel: 2.6, schud: 1.8, fluit: 1.33, miauw: 1.06,
-    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4, ring: 1.7, bel: 1.5, slee: 1.6, penning: 1.5, oehoe: 1.4
+    hoepel: 2.2, rinkel: 2.4, kletter: 1.7, spat: 1.6, voet: 1.5, rollen: 1.4, ring: 1.7, bel: 1.5, slee: 1.6, penning: 1.5, oehoe: 1.4,
+    wind: 1.3, klos: 1.6, knap: 0.9
   };
   Object.keys(window.Geluid).forEach((naam) => {
     const d = Object.getOwnPropertyDescriptor(window.Geluid, naam);

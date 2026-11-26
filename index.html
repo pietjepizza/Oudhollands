@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
-<link rel="stylesheet" href="css/stijl.css?v=44">
+<link rel="stylesheet" href="css/stijl.css?v=45">
 <script>
   /* de opening (een korte film over de gracht) alleen als je bij het huis begint, één keer per bezoek; meteen zetten,
      zodat de straat niet eerst even flitst. Laadt het filmscript niet, dan gaat de opening na een tijdje vanzelf weg. */
@@ -609,7 +609,7 @@
       <div class="intro">
         <p class="bovenregel">Oud-Hollandse spellen</p>
         <h2 class="intro-kop">Speel, verdien duiten en knap het huis op</h2>
-        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel, het dambord, de speelkaarten, het triktrakbord, de bikkels, de kolf, de hoepel of de prent van het uilenspel om te spelen. Op de kermis ga je ringsteken en koekhappen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
+        <p class="intro-tekst">Klik op het ganzenbord, de sjoelbak, het molenspel, het dambord, de speelkaarten, het triktrakbord, de bikkels, de kolf, de hoepel, de prent van het uilenspel of de vlieger om te spelen. Op de kermis ga je ringsteken en koekhappen. Met elk potje verdien je duiten. Daarmee lap je de ramen, wit je de muren en hang je de kroonluchter op. Is de voorkamer klaar, dan koop je de trap naar de zolder: daar knikker en tol je.</p>
         <ul class="spellijst">
           <li><a href="#ganzenbord">Ganzenbord</a></li>
           <li><a href="#sjoelen">Sjoelen</a></li>
@@ -621,9 +621,10 @@
           <li><a href="#kolf">Kolf op het ijs</a></li>
           <li><a href="#hoepelen">Hoepelen</a></li>
           <li><a href="#uilenspel">Uilenspel</a></li>
+          <li><a href="#vliegeren">Vliegeren</a></li>
           <li><a href="#kermis">De kermis: ringsteken, koekhappen en de kop van Jut</a></li>
           <li class="later">Op de zolder: knikkeren en tollen</li>
-          <li class="later">Binnenkort: vliegeren</li>
+          <li class="later">Binnenkort: steltlopen</li>
         </ul>
         <p><a href="#" id="naar-buiten">Bekijk het huis van buiten</a></p>
       </div>
@@ -704,6 +705,11 @@
   <section id="scherm-uilenspel" class="weergave spel volscherm" aria-labelledby="ul-titel" hidden>
     <h1 id="ul-titel" class="sr-only">Uilenspel</h1>
     <div class="mo-podium ul-podium" id="ul-podium"></div>
+  </section>
+  <!-- VLIEGEREN (schermvullend): een vliegerwedstrijd op het stoppelveld -->
+  <section id="scherm-vliegeren" class="weergave spel volscherm" aria-labelledby="vl-titel" hidden>
+    <h1 id="vl-titel" class="sr-only">Vliegeren</h1>
+    <div class="mo-podium vl-podium" id="vl-podium"></div>
   </section>
   <!-- RINGSTEKEN (schermvullend): in de draaimolen op de kermis -->
   <section id="scherm-ringsteken" class="weergave spel volscherm" aria-labelledby="rs-titel" hidden>
@@ -909,34 +915,35 @@
   </div>
 </footer>
 
-<script src="js/geluid.js?v=44"></script>
-<script src="js/muziek.js?v=44"></script>
-<script src="js/duiten.js?v=44"></script>
-<script src="js/pronk.js?v=44"></script>
-<script src="js/seizoen.js?v=44"></script>
-<script src="js/les.js?v=44"></script>
-<script src="js/personen.js?v=44"></script>
-<script src="js/ganzenbord.js?v=44"></script>
-<script src="js/sjoelen.js?v=44"></script>
-<script src="js/molenspel.js?v=44"></script>
-<script src="js/damregels.js?v=44"></script>
-<script src="js/dammen.js?v=44"></script>
-<script src="js/klaverregels.js?v=44"></script>
-<script src="js/klaverjassen.js?v=44"></script>
-<script src="js/triktrakregels.js?v=44"></script>
-<script src="js/triktrak.js?v=44"></script>
-<script src="js/bikkelen.js?v=44"></script>
-<script src="js/kolf.js?v=44"></script>
-<script src="js/koekhappen.js?v=44"></script>
-<script src="js/hoepelen.js?v=44"></script>
-<script src="js/uilenspel.js?v=44"></script>
-<script src="js/kermis.js?v=44"></script>
-<script src="js/kunstkamer.js?v=44"></script>
-<script src="js/knikkeren.js?v=44"></script>
-<script src="js/tollen.js?v=44"></script>
-<script src="js/huis.js?v=44"></script>
-<script src="js/app.js?v=44"></script>
-<script src="js/wenken.js?v=44"></script>
-<script src="js/opening.js?v=44"></script>
+<script src="js/geluid.js?v=45"></script>
+<script src="js/muziek.js?v=45"></script>
+<script src="js/duiten.js?v=45"></script>
+<script src="js/pronk.js?v=45"></script>
+<script src="js/seizoen.js?v=45"></script>
+<script src="js/les.js?v=45"></script>
+<script src="js/personen.js?v=45"></script>
+<script src="js/ganzenbord.js?v=45"></script>
+<script src="js/sjoelen.js?v=45"></script>
+<script src="js/molenspel.js?v=45"></script>
+<script src="js/damregels.js?v=45"></script>
+<script src="js/dammen.js?v=45"></script>
+<script src="js/klaverregels.js?v=45"></script>
+<script src="js/klaverjassen.js?v=45"></script>
+<script src="js/triktrakregels.js?v=45"></script>
+<script src="js/triktrak.js?v=45"></script>
+<script src="js/bikkelen.js?v=45"></script>
+<script src="js/kolf.js?v=45"></script>
+<script src="js/koekhappen.js?v=45"></script>
+<script src="js/hoepelen.js?v=45"></script>
+<script src="js/uilenspel.js?v=45"></script>
+<script src="js/vliegeren.js?v=45"></script>
+<script src="js/kermis.js?v=45"></script>
+<script src="js/kunstkamer.js?v=45"></script>
+<script src="js/knikkeren.js?v=45"></script>
+<script src="js/tollen.js?v=45"></script>
+<script src="js/huis.js?v=45"></script>
+<script src="js/app.js?v=45"></script>
+<script src="js/wenken.js?v=45"></script>
+<script src="js/opening.js?v=45"></script>
 </body>
 </html>

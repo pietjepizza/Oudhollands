@@ -301,8 +301,6 @@ svg.duit { width: 22px; height: 22px; flex: none; }
 @keyframes wenk-gloed { 0%, 100% { filter: drop-shadow(0 0 0 rgba(242, 193, 78, 0)); } 50% { filter: drop-shadow(0 0 12px rgba(242, 193, 78, .95)) brightness(1.1); transform: translateY(-5px); } }
 .binnenkort:hover .vw, .binnenkort:focus-visible .vw { transform: translateY(-3px); filter: brightness(1.08); }
 .binnenkort:focus-visible .vw { filter: drop-shadow(0 0 4px #F2C14E); }
-.gordijn { transition: transform .6s cubic-bezier(.2,.8,.2,1); transform-box: fill-box; transform-origin: 100% 0; }
-.binnenkort:hover .gordijn, .binnenkort:focus-visible .gordijn { transform: scaleX(.55); }
 .schud .vw { animation: schud .5s ease; }
 @keyframes schud { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
 
@@ -2176,6 +2174,47 @@ button.mo-kaart { cursor: pointer; }
   .hp-stand { grid-column: 1 / -1; grid-row: 3; margin: 6px 0 0; justify-content: center; }
 }
 
+/* ---------- Vliegeren: een vliegerwedstrijd op het stoppelveld ---------- */
+.vl-veldvak { position: relative; width: var(--vl-b, 320px); height: var(--vl-h, 400px); }
+.vl-doek { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 16px; touch-action: none; outline: none; cursor: pointer; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-shadow: 0 20px 38px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); }
+.vl-doek:focus-visible { box-shadow: 0 0 0 3px #F2C14E, 0 20px 38px rgba(0, 0, 0, .55); }
+.vl-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr) auto; }
+/* de hoogte van je vlieger, in meters (briefjes tellen mee) */
+.vl-stand { display: flex; align-items: baseline; gap: 2px; margin-left: auto; padding-right: 6px; grid-column: 3; grid-row: 1 / span 2; align-self: center; font-family: var(--f-sier); color: #FFF0C8; text-shadow: 0 1px 0 rgba(0, 0, 0, .5); }
+.vl-stand b { font-weight: normal; font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
+.vl-stand small { font-size: .9rem; font-style: italic; opacity: .8; }
+.vl-kaart .knop { margin-top: 4px; }
+/* een hint op je kaart blijft op één regel, zodat het veld niet verspringt */
+.vl-podium .mo-onder .mo-info { flex-wrap: nowrap; }
+.vl-podium .mo-doe { min-width: 0; overflow: hidden; }
+.vl-podium .mo-doe span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+/* teksten boven het veld: op een donker lintje, want de lucht is licht */
+.vl-pops .sj-pop { padding: 2px 14px 4px; border-radius: 16px; background: rgba(42, 26, 10, .74); box-shadow: 0 3px 10px rgba(0, 0, 0, .25); text-shadow: 0 1px 2px rgba(0, 0, 0, .6); }
+/* het briefje: een envelopje met hoeveel je er nog hebt */
+.vl-brief { width: 56px; height: 56px; }
+.vl-brief svg { width: 30px; height: 30px; color: #5A3A1A; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .4)); }
+.vl-brief-tal { position: absolute; right: -3px; top: -3px; min-width: 21px; height: 21px; padding: 0 5px; border-radius: 11px; background: #B8432C; color: #FFF6DC; font: normal 700 .78rem/21px Georgia, serif; text-align: center; box-shadow: 0 2px 5px rgba(0, 0, 0, .45), inset 0 0 0 1px rgba(255, 230, 200, .3); }
+.vl-brief:disabled { opacity: .42; cursor: default; }
+.vl-brief.schud { animation: schud-plek .45s ease; }
+/* de klos: houd vast om in te halen */
+.vl-klos svg { transform-origin: 50% 50%; }
+.vl-klos.uit { opacity: .55; }
+.vl-klos.schudt { animation: none; transform: scale(1.06); }
+.vl-klos.schudt svg { animation: vl-winden .22s linear infinite alternate; }
+@keyframes vl-winden { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
+.vl-klos.roep { animation: beker-roep 1s ease-in-out infinite; box-shadow: 0 0 0 3px #E7C36A, 0 0 24px rgba(231, 195, 106, .6), 0 6px 16px rgba(0, 0, 0, .45); }
+.vl-klos.gevaar { box-shadow: 0 0 0 3px #D9573A, 0 0 26px rgba(217, 87, 58, .7), 0 6px 16px rgba(0, 0, 0, .45); }
+.vl-klos.gevaar .gb-beker-tekst { color: #FFB8A0; }
+@media (orientation: landscape) and (max-height: 620px) {
+  .vl-podium { grid-template-columns: minmax(0, 1fr) calc(var(--vl-b, 300px) + 4px) minmax(0, 1fr); }
+  .vl-podium .mo-kaart { grid-template-columns: auto minmax(0, 1fr); }
+  .vl-stand { grid-column: 1 / -1; grid-row: 3; margin: 6px 0 0; justify-content: center; }
+  .vl-podium .mo-onder { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vl-klos.roep, .vl-klos.schudt svg { animation: none !important; }
+}
+
 /* ---------- De kermis (het plein) en ringsteken (in de draaimolen) ---------- */
 .km-veldvak { position: relative; width: var(--km-b, 320px); height: var(--km-h, 400px); }
 /* het plein vult het hele scherm, de kop ligt eroverheen; rechts de duiten en de muziekknop */
@@ -2454,7 +2493,7 @@ html.met-opening .film { display: block; }
   .gevel-svg .blaadjes { display: none !important; }
   .les-licht { transition: none; }
   .tafel, .diepte { transform: none; }
-  .voorwerp .vw, .gordijn, .kamer-svg [data-na], .kamer-svg [data-voor], .schemer { transition: none; }
+  .voorwerp .vw, .kamer-svg [data-na], .kamer-svg [data-voor], .schemer { transition: none; }
   .gb-bord .pion { transition: none; }
   .dobbel.rolt { animation: none; }
 }

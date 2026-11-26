@@ -212,6 +212,27 @@
       ]
     },
     {
+      id: 'vliegeren', naam: 'Vliegeren', tegel: 'ill-vlieger', tijd: 'Sinds de zeventiende eeuw', kort: 'Papier, twee latjes en een lang touw',
+      herkomst: [
+        'Vliegers komen uit Azië: in China liet men ze al meer dan tweeduizend jaar geleden op. Hoe de platte vlieger van papier naar Europa kwam, weet niemand precies; misschien met zeelieden en handelaars.',
+        'Een van de vroegste afbeeldingen van een vlieger in de Nederlanden staat in het <i>Kinder-spel</i> van Jacob Cats (Middelburg, 1618). Op de prent naar Adriaen van de Venne spelen kinderen op het plein voor het Hof van Zeeland, en hoog boven hen staat een vlieger.',
+        'Bij Cats is elk kinderspel ook een les voor grote mensen. Op latere prenten werd de vlieger zelfs een beeld voor de staat.',
+        'Vroeger was de nazomer de tijd om te vliegeren: na de oogst lagen de velden open en stond er wind. Dan stonden de vliegers boven de stoppels.'
+      ],
+      spelen: ['Een kruisvlieger maak je van twee latjes, een touw eromheen en papier eroverheen, met een staart van papieren strikjes.', 'Met de wind in je rug laat je hem opstijgen. Vier je touw, dan gaat hij verder weg; haal je in, dan klimt hij steiler.', 'In een windvlaag moet je niet hard trekken, anders knapt het touw en waait je vlieger weg.', 'Wie het hoogst staat, wint. En wie durft, stuurt een papiertje langs het touw naar boven.'],
+      weetjes: ['Zo\'n papiertje langs het touw heette in Brabant een bode en in Brugge een verzendertje. De wind duwt het omhoog tot bij de vlieger.', 'De staart houdt de vlieger recht. Zonder staart tolt hij rond en duikt hij naar beneden.', 'In het spel zie je een windvlaag aankomen als een donkere strook over het veld, met windkrullen zoals op de oude prenten.'],
+      kunst: [
+        { titel: 'Kinder-spel, uit het boek van Jacob Cats', maker: 'Naar Adriaen van de Venne (1618); deze druk 1655', url: 'https://artsandculture.google.com/asset/print-book-out-of-trifles-children-s-games-seriousness-kinder-spel/JgFZZ-k3Ul0faA', waar: 'The Strong National Museum of Play' },
+        { titel: 'Kinderen aan het vliegeren', maker: 'Joseph Antoine Cochet, omstreeks 1645-1670', url: 'https://www.rijksmuseum.nl/en/collection/RP-P-1911-759', waar: 'Rijksmuseum, Amsterdam' }
+      ],
+      bronnen: [
+        { tekst: 'De vlieger als terugkerend beeld in de Nederlandse cultuur (Neerlandistiek)', url: 'https://neerlandistiek.nl/2020/11/de-vlieger-als-terugkerend-beeld-in-de-nederlandse-cultuur/' },
+        { tekst: 'The Kite of State (Early Modern Low Countries)', url: 'https://emlc-journal.org/article/view/7152' },
+        { tekst: 'Kites (Cotsen Children\'s Library, Princeton)', url: 'https://static-prod.lib.princeton.edu/cotsen/exhibitions2/Kites/Kites1.html' },
+        { tekst: 'Biekorf, jaargang 37 (1931): boden en verzendertjes', url: 'https://dbnl.org/tekst/_bie001193101_01/_bie001193101_01_0070.php' }
+      ]
+    },
+    {
       id: 'ringsteken', naam: 'Ringsteken', tegel: 'ill-draaimolen', tijd: 'Eeuwenoud, en nog steeds', kort: 'In volle vaart met je lans door de ring',
       herkomst: [
         'Ringsteken en ringrijden zijn eeuwenoud. Een ruiter komt in volle vaart aanrijden en probeert met een lans of een houten stok een kleine ring te steken die aan een galg hangt.',

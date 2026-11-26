@@ -56,6 +56,7 @@
     { id: 'koek', spel: 'koekhappen', titel: 'Koekhappen', naam: 'Vergulde koek', veld: 'kh-gewonnen', kampioen: 'teun', eis: 'Win van bakkersjongen Teun' },
     { id: 'hoepel', spel: 'hoepelen', titel: 'Hoepelen', naam: 'Zilveren hoepel', veld: 'hoepel-gewonnen', kampioen: 'jantje', eis: 'Win van Jantje' },
     { id: 'uil', spel: 'uilenspel', titel: 'Uilenspel', naam: 'Zilveren uil', veld: 'uil-gewonnen', minstens: 3, eis: 'Win van drie spelers tegelijk', gezicht: 'opoe' },
+    { id: 'vlieger', spel: 'vliegeren', titel: 'Vliegeren', naam: 'Zilveren vlieger', veld: 'vlieger-gewonnen', kampioen: 'kees', eis: 'Win van Molenaar Kees' },
     { id: 'draaimolen', spel: 'ringsteken', titel: 'Ringsteken', naam: 'Zilveren draaimolentje', veld: 'ring-gewonnen', kampioen: 'trijntje', eis: 'Win van Trijntje' },
     { id: 'jut', spel: 'kopvanjut', titel: 'Kop van Jut', naam: 'Zilveren kop van Jut', veld: 'jut-gewonnen', kampioen: 'kees', eis: 'Win van Molenaar Kees' },
     { id: 'knikkers', spel: 'knikkeren', titel: 'Knikkeren', naam: 'Zilveren knikkerschaal', veld: 'knikker-gewonnen', kampioen: 'burgemeester', eis: 'Win van de burgemeester' },
@@ -229,6 +230,18 @@
       `<path d="M28 81 C40 77 60 77 72 81 L71 85.4 C60 81.4 40 81.4 29 85.4 Z" fill="${G}" stroke="#7E5616" stroke-width=".7"/>` +
       `<path d="M43 78 l-2 4 M46 78.6 l0 4.4 M54 78.6 l0 4.4 M57 78 l2 4" stroke="${DONKER}" stroke-width="1.3" stroke-linecap="round"/>` +
       glans('M38.5 28 C38.5 23 42 20 47 19', 1.3) + glans('M35 50 C34 58 36 66 40 71', 1.2),
+    // een zilveren kruisvlieger op een gouden stokje, met een gouden zon in het midden en een staart met gouden strikjes
+    vlieger: () => voet(46, 90, 22) +
+      `<path d="M46 66 V88" stroke="${LIJN}" stroke-width="3.6" stroke-linecap="round"/><path d="M46 66 V88" stroke="${GH}" stroke-width="2.2" stroke-linecap="round"/>` +
+      `<path d="M46 66 C54 74 64 70 70 74 C77 79 74 86 80 88" fill="none" stroke="${DONKER}" stroke-width="1.2"/>` +
+      [[56, 71.5, 20], [68, 73.4, -10], [76, 83, 60]].map(([x, y, h]) => `<g transform="rotate(${h} ${x} ${y})"><path d="M${x} ${y} l-4.6 -3 v6 Z M${x} ${y} l4.6 -3 v6 Z" fill="${G}" stroke="#7E5616" stroke-width=".5"/></g>`).join('') +
+      `<path d="M46 7 L70 33 L46 66 L22 33 Z" fill="${Z}" stroke="${LIJN}" stroke-width="1.2" stroke-linejoin="round"/>` +
+      `<path d="M46 7 L22 33 L46 66 Z" fill="${ZH}" opacity=".55"/>` +
+      `<path d="M46 11 L66.5 33 L46 61.5 L25.5 33 Z" fill="none" stroke="${DONKER}" stroke-width=".6" opacity=".6"/>` +
+      Array.from({ length: 12 }, (_, i) => { const a = i * Math.PI / 6; return `<path d="M${(46 + Math.cos(a) * 8.6).toFixed(1)} ${(35 + Math.sin(a) * 8.6).toFixed(1)} L${(46 + Math.cos(a) * 12).toFixed(1)} ${(35 + Math.sin(a) * 12).toFixed(1)}" stroke="${G}" stroke-width="1.6" stroke-linecap="round"/>`; }).join('') +
+      `<path d="M46 8 V65 M23 33 H69" stroke="${DONKER}" stroke-width="1.6" stroke-linecap="round"/>` +
+      `<circle cx="46" cy="35" r="7" fill="${G}" stroke="#7E5616" stroke-width=".7"/><circle cx="43.6" cy="33.6" r=".9" fill="#7E5616"/><circle cx="48.4" cy="33.6" r=".9" fill="#7E5616"/><path d="M43 37 Q46 39.6 49 37" fill="none" stroke="#7E5616" stroke-width=".8" stroke-linecap="round"/>` +
+      glans('M28 30 L42 14', 1.5),
     // een zilveren kop van Jut in het klein: een paal met een gouden bel en een dakje, een blokje met de kop en zijn hoge hoed
     jut: () => voet(50, 89, 28) +
       `<rect x="54" y="18" width="9" height="68" fill="${ZH}" stroke="${LIJN}" stroke-width=".8"/>` +

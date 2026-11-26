@@ -4,7 +4,7 @@
      Zo kan een nieuwe pagina nooit met oude scripts worden gecombineerd.
    - Letters van Google Fonts: één keer ophalen en daarna uit de opslag.
    Bij een nieuwe versie: verhoog V hier en het ?v= nummer in index.html. */
-const V = '44';
+const V = '45';
 const VERSIE = 'speelhuys-v' + V;
 const LETTERS = 'speelhuys-letters-v1';
 const BESTANDEN = [
@@ -30,6 +30,7 @@ const BESTANDEN = [
   'js/koekhappen.js',
   'js/hoepelen.js',
   'js/uilenspel.js',
+  'js/vliegeren.js',
   'js/kermis.js',
   'js/kunstkamer.js',
   'js/knikkeren.js',

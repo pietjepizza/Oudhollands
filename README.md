@@ -28,7 +28,7 @@ een klus klaarstaat.
 
 **Het huis.** Via de voordeur kom je in een 17e-eeuwse kamer naar Vermeer en De Hooch: glas-in-loodraam met zonlicht en stofjes,
 marmeren vloer, een schouw, kroonluchter en een slapende kat. De spellen hangen aan de muur; klik erop en de kamer zoomt
-in naar het spel. Op tafel liggen het dambord en de speelkaarten. Spellen die nog niet klaar zijn hangen achter een gordijntje of liggen op tafel.
+in naar het spel. Op tafel liggen het dambord en de speelkaarten. Een spel dat nog niet klaar is (de stelten op zolder) zegt 'komt binnenkort'.
 
 **Duiten verdienen en het huis opknappen.** De voorkamer begint stoffig: spinnenwebben, vuile ruiten, vochtige muren,
 een doffe vloer. Met elk potje verdien je duiten (winnen 40, verliezen 10 à 15, sjoelen 10 plus een kwart van je score).
@@ -67,12 +67,12 @@ bolpoten, met een kaststel van vijf vazen van Delfts blauw op de kroonlijst.
 
 Tik op de kast en de deurtjes gaan open. Achter het glas staan zilveren prijsjes: voor elk spel één, en je wint hem
 door de kampioen van dat spel te verslaan (de burgemeester, Opoe bij het bikkelen, bakkersjongen Teun bij het
-koekhappen, Jantje bij het hoepelen, Trijntje bij het ringsteken, Molenaar Kees bij de kop van Jut; bij het ganzenbord win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
+koekhappen, Jantje bij het hoepelen, Trijntje bij het ringsteken, Molenaar Kees bij het vliegeren en de kop van Jut; bij het ganzenbord en het uilenspel win je van drie spelers tegelijk). Wat je nog niet hebt, staat er als donker silhouet;
 tik erop en je ziet van wie je moet winnen, met een knop naar het spel. Een nieuwe prijs zie je meteen in het
 beloningsscherm (tik erop en je gaat naar de pronkkamer), en tot je hem hebt bekeken staat er een gouden sterretje bij
 de knop en de wijzer. De prijzen zijn een gans, een sjoelbakje, een molentje, een dam met kroon, vergulde kaarten, een
-dobbelbeker, bikkels, een kolf, een koek aan een galg, een hoepel met belletjes, een draaimolentje, een kop van Jut, een knikkerschaal en
-een tol (vijf per plank). Zulke piepkleine zilveren
+dobbelbeker, bikkels, een kolf, een koek aan een galg, een hoepel met belletjes, een uil, een vlieger met een gouden zon,
+een draaimolentje, een kop van Jut, een knikkerschaal en een tol (zes per plank). Zulke piepkleine zilveren
 voorwerpen maakten Amsterdamse zilversmeden in de 17e en 18e eeuw voor pronkkasten en poppenhuizen (zie de
 poppenhuizen en miniaturen in het Rijksmuseum). Onderin zitten vijf laatjes met speelgoed: sjoelschijven,
 dobbelstenen, molen- en damstenen, knikkers en tollen. Trek een laatje open om te kiezen wat je gebruikt, of koop iets
@@ -196,6 +196,20 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
   loopt ongeveer twee keer per partij leeg en blut gaan gebeurt zelden. Met Opoe, Molenaar Kees, de burgemeester,
   Grietje en Jantje, of met vrienden op hetzelfde toestel (tot vier spelers). De prent hangt in de voorkamer: eerst
   los aan een spijker, na de klus 'prenten ophangen' in een lijst. Win van drie spelers tegelijk voor de zilveren uil.
+- **Vliegeren** (schermvullend): een vliegerwedstrijd op het stoppelveld in de nazomer, onder een Hollandse wolkenlucht,
+  met hokken schoven die in echte perspectief naar de horizon lopen, een kerktoren en een molen in de verte en
+  vliegers van andere kinderen. Zoals op de prent naar Adriaen van de Venne in het *Kinder-spel* van Jacob Cats (1618)
+  vlieg je een kruisvlieger: twee latjes, papier met een rode zon en een staart van papieren strikjes. Houd je vinger
+  op het veld (of de klos) en je haalt het touw in: de vlieger klimt steiler, maar je touw wordt korter. Laat los en je
+  viert: de wind neemt touw mee en de vlieger gaat verder weg. Een windvlaag trekt als een donkere strook met
+  windkrullen van links over het veld, een luwte als een bleke, stille strook met pluisjes. In een luwte zakt je
+  vlieger (haal in, anders valt hij in de stoppels); in een vlaag mag je niet trekken: het touw trilt, kleurt rood en
+  knapt, en je vlieger waait weg (dan laat je gauw je reservevlieger op). Stuur een briefje langs het touw omhoog (in
+  Brabant heette dat een bode): komt het boven, dan telt het vijf meter mee. Als de kerkklok slaat, wint wie het
+  hoogst staat; de wijzer op de toren en het klokje bovenin lopen mee. Tegen Mieke, bakkersjongen Teun, Trijntje en
+  Molenaar Kees (die de wind kent), die verschillen in hoe snel ze een vlaag zien aankomen en hoe vaak ze toch blijven
+  trekken (afgesteld met nagespeelde wedstrijden), of met z'n tweeën, ieder op een eigen helft van het veld. De vlieger
+  hangt in de voorkamer aan een spijker, met de klos ernaast. Win van Molenaar Kees voor de zilveren vlieger.
 - **Ringsteken** (op de kermis, schermvullend): je rijdt op een houten paard in de draaimolen; naast de molen staat een
   galg met een arm waaraan een ring hangt, en de ringenman hangt steeds een nieuwe op (soms een gouden). Elk rondje kom
   je er één keer langs: tik op het goede moment en je kind steekt zijn lans uit. Raak? Dan schuift de ring op je lans,
@@ -312,6 +326,7 @@ rechtsboven.
 | Koekhappen | Happolka (eigen polka) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
 | Hoepelen | Hoepelloopje (eigen dans in loopjes) | blokfluit, cister en tabor | thema, variatie, luit |
 | Uilenspel | Het Uilenlied (eigen wijsje in d-klein, met een uilenroep) | blokfluit, luit en gamba | thema, variatie, luit |
+| Vliegeren | Het Vliegerwijsje (eigen menuet in G: de vlieger klimt en danst) | blokfluit, luit en gamba | thema, variatie, luit |
 | Ringsteken | Draaimolenwals (eigen wals) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
 | Kop van Jut | Sterke-mannenmars (eigen mars) | draaiorgel | vioolpijpen, met klokkenspel, vol orgel |
 | Knikkeren | Knikkerdeuntje (eigen deuntje) | klavecimbel | thema, variatie, blokfluit |
@@ -321,21 +336,23 @@ rechtsboven.
 een handvol tonen die elk op hun eigen tempo uitsterven (modale klank), met een tikje ruis waar het ding iets raakt;
 schuiven, papier, kruim en water zijn gevormde ruis, soms in tientallen piepkleine korrels (de hap in de koek, het
 rollen van een dobbelsteen). Bij het hoepelen rolt de hoepel over de klinkers (ruis die met de vaart meegaat en over
-de voegen hobbelt), rinkelen de belletjes bij elke halve omwenteling en klakken de klompen bij elke stap.
+de voegen hobbelt), rinkelen de belletjes bij elke halve omwenteling en klakken de klompen bij elke stap. Bij het
+vliegeren ruist de wind over het veld en zwelt hij aan in een vlaag, zingt het touw als het strak staat, ratelt de
+houten klos als je inhaalt en knapt het touw met een droge knal.
 Feestjes en jammer-geluidjes worden op het klavecimbel en de luit gespeeld. Elk geluid
 klinkt elke keer net iets anders, heeft een eigen plek in het stereobeeld, en alles is op elkaar afgesteld met
 opnames: feestgeluiden het luidst, spelgeluiden daaronder, het tikje bij elke aanraking heel zacht.
 
 De composities zijn al eeuwen rechtenvrij. Er worden geen opnames gebruikt, dus er spelen ook geen rechten van uitvoerenden. De thema's zijn overgezet uit moderne edities op IMSLP (o.a. de CC0-editie van Cayo Gomes, 2024).
 
-Nog "in de oven": vliegeren en steltlopen. Knikkeren en tollen speel
+Nog "in de oven": steltlopen. Knikkeren en tollen speel
 je alleen op de zolder.
 
 ## Techniek
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=44`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=45`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
