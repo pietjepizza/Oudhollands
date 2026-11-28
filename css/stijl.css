@@ -2433,6 +2433,23 @@ html.met-opening .film { display: block; }
 .kk-kunst a small { font-size: .78rem; font-style: italic; color: #6A5030; }
 .kk-bron-kop { font-size: 1rem !important; }
 .kk-bronnen { font-size: .92rem; }
+/* de muziek: welk stuk je hoort, waar het vandaan komt en wie het speelt, met een knop om te luisteren */
+.kk-muziek { margin-top: 18px; padding: 2px 14px 8px; border-radius: 6px; background: rgba(44, 74, 124, .08); box-shadow: inset 3px 0 0 #2C4A7C; }
+.kk-muziek h3 { margin-top: 10px; }
+.kk-stukregel { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: start; padding: 8px 0; border-top: 1px dashed rgba(44, 74, 124, .25); }
+.kk-muziek h3 + .kk-stukregel { border-top: 0; }
+.kk-stukregel p { margin: 0 0 3px; }
+.kk-stuktitel { font-family: var(--f-sier); font-size: 1.12rem; line-height: 1.2; color: #22392B; }
+.kk-stuktitel b { font-weight: normal; }
+.kk-plek { display: block; font-family: var(--f-kapitaal); font-size: .78rem; letter-spacing: .06em; color: #6A5030; }
+.kk-stukbron { font-size: .9rem !important; font-style: italic; color: #5A4630; }
+.kk-luister { display: inline-flex; align-items: center; gap: 6px; min-width: 92px; margin-top: 2px; padding: 7px 12px; border: 0; border-radius: 999px; cursor: pointer; font: inherit; font-family: var(--f-sier); font-size: .95rem; color: #F6EBD2; background: #2C4A7C; box-shadow: 0 2px 6px rgba(0, 0, 0, .25); }
+.kk-luister svg { width: 16px; height: 16px; flex: none; }
+.kk-luister:hover { background: #355A94; }
+.kk-luister:focus-visible { outline: 3px solid #F2C14E; outline-offset: 2px; }
+.kk-luister.speelt { background: #C9973F; color: #2A1A08; animation: kk-speelt 1.6s ease-in-out infinite; }
+@keyframes kk-speelt { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 151, 63, .55), 0 2px 6px rgba(0, 0, 0, .25); } 50% { box-shadow: 0 0 0 6px rgba(201, 151, 63, 0), 0 2px 6px rgba(0, 0, 0, .25); } }
+@media (prefers-reduced-motion: reduce) { .kk-luister.speelt { animation: none; } }
 .kk-bronnen a { color: #2C4A7C; }
 .kk-naar-spel { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-family: var(--f-sier); background: var(--groen-deur); color: #F6EBD2; box-shadow: 0 3px 8px rgba(0, 0, 0, .3); }
 .kk-naar-spel svg { width: 18px; height: 18px; flex: none; }

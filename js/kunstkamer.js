@@ -12,6 +12,7 @@
   const STUKKEN = [
     {
       id: 'ganzenbord', naam: 'Ganzenbord', tegel: 'ill-gans', tijd: 'Italië, vijftiende eeuw', kort: 'Het bordspel dat op één vel papier paste',
+      muziek: 'Een Engels volksdeuntje (Mall Sims) dat in de Gouden Eeuw in heel Holland bekend was. Er zitten echo\'s in: daarom heette het ook \'de Engelse echo\'. Het huppelt van noot naar noot, zoals je gans van vak naar vak, en het is een beetje mal, net als het geluk van de dobbelstenen.',
       herkomst: [
         'Het ganzenbord komt uit Italië, waar het <i>il gioco dell\'oca</i> heet. De oudste vermelding is uit 1480, in de preken van de Italiaanse monnik Gabriele da Barletta.',
         'Volgens een oud verhaal stuurde groothertog Francesco de\' Medici van Florence een ganzenbord naar koning Filips II van Spanje. Dat verhaal werd pas in 1617 opgeschreven; of het echt zo ging, weet niemand zeker.',
@@ -30,6 +31,7 @@
     },
     {
       id: 'uilenspel', naam: 'Uilenspel', tegel: 'ill-uil', tijd: 'Zeventiende eeuw', kort: 'Drie stenen, vijftig vakken en een uil met de pot',
+      muziek: 'Het uilenspel speelde je \'s avonds in de herberg, met een pijp en een kan bier. Daar hoort een dans bij die een beetje geheimzinnig klinkt, als een uil in het donker.',
       herkomst: [
         'Het uilenspel is een geluksspel met drie dobbelstenen op een rond bord. Het komt waarschijnlijk uit Italië, waar het <i>Pela il chiù</i> heette. In Frankrijk speelde men het als <i>Jeu de la chouette</i>.',
         'In de Nederlanden was het in de zeventiende en achttiende eeuw een geliefd spel voor volwassenen, naast het ganzenbord. Op een prent van Jan Christoffel Jegher, gedrukt tussen 1628 en 1667, zitten in de vier hoeken mensen te roken en te drinken.',
@@ -51,6 +53,7 @@
     },
     {
       id: 'sjoelen', naam: 'Sjoelen', tegel: 'ill-sjoelbak', tijd: 'Nederland, negentiende eeuw', kort: 'Houten schijven over een gladde bak de poortjes in',
+      muziek: 'Een oud lied over de groene linde, dat Van Eyck voor de blokfluit bewerkte. Hier speelt het klavecimbel het: rustige, gelijke noten, schuif na schuif, zoals de schijven over de bak glijden.',
       herkomst: [
         'Sjoelen is een echt Nederlands spel, familie van het Engelse <i>shuffleboard</i>. Sjoelbakken komen in Nederland vanaf de late negentiende eeuw voor, en het spel wordt vaak met Friesland verbonden.',
         'Lange tijd werd er vooral thuis en in buurthuizen gesjoeld, bij de kachel of op verjaardagen. Sinds 1977 is sjoelen ook een wedstrijdsport, met een eigen bond: de Algemene Nederlandse Sjoelbond.'
@@ -65,6 +68,7 @@
     },
     {
       id: 'molenspel', naam: 'Molenspel', tegel: 'ill-molen', tijd: 'Romeinse tijd, en misschien ouder', kort: 'Drie op een rij: een molen',
+      muziek: 'Een Engels lied over de nimf Daphne, die wegvlucht voor de god Apollo (When Daphne did from Phoebus fly). In Holland zong iedereen het. Een ernstige melodie in mineur, voor een spel waarbij je goed moet nadenken en, net als Daphne, je stenen moet zien te redden.',
       herkomst: [
         'Het molenspel is een van de oudste bordspellen die we kennen. De Romeinen speelden het al, en in de middeleeuwen werd het bord in heel Europa in stenen, kerkbanken en kloostermuren gekrast.',
         'Ook in Nederland zijn zulke borden gevonden, zoals een ingekraste molen op een laatmiddeleeuwse baksteen uit de Martinikerk in Groningen.',
@@ -80,6 +84,7 @@
     },
     {
       id: 'dammen', naam: 'Dammen', tegel: 'ill-dammen', tijd: 'De Nederlanden, zeventiende eeuw', kort: 'Twintig stenen op honderd velden',
+      muziek: 'De gavotte was een deftige dans aan het hof. Rustig en bedachtzaam, op de luit: zo heb je tijd om je volgende zet te bedenken.',
       herkomst: [
         'Dammen op een bord van honderd velden komt uit de Nederlanden en Frankrijk. Volgens de taalkundige Arie van der Stoep kende men het bord van honderd velden in de zeventiende eeuw al, toen nog met vijftien stenen per speler.',
         'In Friesland speelde men van oudsher op honderd velden. Daar mag je ook recht vooruit en opzij slaan: dat heet Fries dammen.',
@@ -97,6 +102,7 @@
     },
     {
       id: 'klaverjassen', naam: 'Klaverjassen', tegel: 'ill-kaarten', tijd: 'Holland, achttiende eeuw', kort: 'Troef, roem en een maat tegenover je',
+      muziek: 'Gezellig, zoals Opoe het graag heeft aan tafel. Je hoort de één-twee-drie van kaarten die op tafel vallen, slag na slag.',
       herkomst: [
         'Klaverjassen is een Nederlands kaartspel. Al in 1730 wordt het genoemd als \'een soort kaartspel in Holland\', en in 1821 beschreef een Nederlands boek een vroege vorm ervan.',
         'De naam komt van <i>klaver</i>, de kleur klaveren, en <i>jas</i>, de oude naam voor de troefboer: de sterkste kaart. Volgens kaartspelkenner David Parlett is deze familie van jas-spellen in de Nederlanden ontstaan. In Zwitserland is <i>Jass</i> nu het grote volkskaartspel.'
@@ -112,6 +118,7 @@
     },
     {
       id: 'triktrak', naam: 'Triktrak', tegel: 'ill-triktrak', tijd: 'Geliefd in de zeventiende eeuw', kort: 'Vijftien schijven en twee dobbelstenen',
+      muziek: 'Een gaillarde gaat met vijf passen en een sprong, zoals stenen die over het bord springen. In mineur en een beetje spannend, want met dobbelstenen weet je nooit hoe het afloopt.',
       herkomst: [
         'Triktrak is de oude Nederlandse naam voor het spel dat we nu backgammon noemen. Spellen met vijftien schijven en twee dobbelstenen, de \'tafelspellen\', worden al heel lang gespeeld; de Romeinen kenden al een verwant spel.',
         'In de zeventiende eeuw was triktrak in de Republiek erg geliefd, in herbergen en in deftige huizen. Schilders als Willem Duyster en Jan Steen schilderden mensen aan het triktrakbord.',
@@ -129,6 +136,7 @@
     },
     {
       id: 'bikkelen', naam: 'Bikkelen', tegel: 'ill-bikkel', tijd: 'Sinds de oudheid', kort: 'Vier botjes en een balletje op de stoep',
+      muziek: 'De melodie huppelt op en neer als het balletje, en de tabortrom tikt als de bikkels op de stoep.',
       herkomst: [
         'Bikkels zijn sprongbeentjes uit de enkel van een schaap. Er werd al in de oudheid mee gespeeld. In de Nederlanden was bikkelen vooral een spel van meisjes, op de stoep of op tafel, vaak met liedjes erbij.',
         'In Delft zijn bikkels van schapen-, varkens- en runderbotjes opgegraven uit lagen van 1600 tot 1800. Later kwamen er ook metalen bikkels; in sommige families gingen die van moeder op dochter over.',
@@ -148,6 +156,7 @@
     },
     {
       id: 'kolf', naam: 'Kolf op het ijs', tegel: 'ill-kolf', tijd: 'Middeleeuwen tot zeventiende eeuw', kort: 'Met de kolf naar de paal',
+      muziek: 'Een wals glijdt rond, zoals schaatsers op het ijs. Het klavecimbel speelt hem, zoals in een deftig huis aan de gracht op een winteravond.',
       herkomst: [
         'Colf, of kolf, werd in de Nederlanden al in de middeleeuwen gespeeld: je sloeg een bal met een kolf naar een doel, met zo min mogelijk slagen. Er wordt een wedstrijd uit 1297 in Loenen aan de Vecht genoemd.',
         'In de winter speelde men het op het ijs. Op de schilderijen van Hendrick Avercamp zie je kolvers tussen de schaatsers. Op het ijs sloeg je naar een paal.',
@@ -169,6 +178,7 @@
     },
     {
       id: 'koekhappen', naam: 'Koekhappen', tegel: 'ill-koek', tijd: 'Negentiende eeuw tot nu', kort: 'Een koek aan een touwtje, je handen op je rug',
+      muziek: 'Koekhappen doe je op de kermis, en daar hoort het draaiorgel bij. Een polka is kort en huppelend: hap, hap, mis!',
       herkomst: [
         'Koek was lang een feestelijke lekkernij, en op de kermis kon je er ook mee spelen. Jan ter Gouw noemt in zijn boek De volksvermaken (1871) vier spellen met koek: koekhakken, koekhappen, koekknuppelen en koekgooien.',
         'Koekhappen gaat natuurlijk met de mond, schrijft hij. Hij zag het zelf in 1869 nog in de Diemermeer, bij de Tolbrug.',
@@ -189,6 +199,7 @@
     },
     {
       id: 'hoepelen', naam: 'Hoepelen', tegel: 'ill-hoepel', tijd: 'Sinds de oudheid', kort: 'Een hoepel, een stok, en rennen maar',
+      muziek: 'De noten rollen rond als een hoepel over de klinkers, en de tabortrom klinkt als klompen op straat.',
       herkomst: [
         'Een hoepel en een stok: meer had je niet nodig. In het oude Griekenland en Rome hoepelden kinderen al; de Romeinen noemden de hoepel trochus.',
         'Vaak was het een oude band van een ton, van hout of van ijzer. Met een stokje hield je hem aan het rollen.',
@@ -213,6 +224,7 @@
     },
     {
       id: 'vliegeren', naam: 'Vliegeren', tegel: 'ill-vlieger', tijd: 'Sinds de zeventiende eeuw', kort: 'Papier, twee latjes en een lang touw',
+      muziek: 'Licht en luchtig, voor een dag in de wind op het stoppelveld: de blokfluit zweeft boven de luit, zoals je vlieger boven het veld.',
       herkomst: [
         'Vliegers komen uit Azië: in China liet men ze al meer dan tweeduizend jaar geleden op. Hoe de platte vlieger van papier naar Europa kwam, weet niemand precies; misschien met zeelieden en handelaars.',
         'Een van de vroegste afbeeldingen van een vlieger in de Nederlanden staat in het <i>Kinder-spel</i> van Jacob Cats (Middelburg, 1618). Op de prent naar Adriaen van de Venne spelen kinderen op het plein voor het Hof van Zeeland, en hoog boven hen staat een vlieger.',
@@ -234,6 +246,7 @@
     },
     {
       id: 'ringsteken', naam: 'Ringsteken', tegel: 'ill-draaimolen', tijd: 'Eeuwenoud, en nog steeds', kort: 'In volle vaart met je lans door de ring',
+      muziek: 'Bij de draaimolen stond altijd een draaiorgel: dit is de muziek waarbij je je rondjes rijdt, en bij elke ronde komt de ring weer langs.',
       herkomst: [
         'Ringsteken en ringrijden zijn eeuwenoud. Een ruiter komt in volle vaart aanrijden en probeert met een lans of een houten stok een kleine ring te steken die aan een galg hangt.',
         'Op Walcheren werd het ringrijden vroeger op alle dorpen gehouden, ter gelegenheid van de kermis. In Zeeland en in Enkhuizen doen ze het nog steeds.',
@@ -256,6 +269,7 @@
     },
     {
       id: 'kopvanjut', naam: 'Kop van Jut', tegel: 'ill-jut', tijd: 'Sinds de jaren 1870', kort: 'Sla zo hard je kan: ding!',
+      muziek: 'Precies goed voor de sterke mannen op de kermis, die met de moker laten zien hoe hard ze kunnen slaan. De grote trom slaat mee.',
       herkomst: [
         'De kop van Jut is een krachtmeter op de kermis. Je slaat met een zware houten hamer op een blok, en een slee schiet langs een hoge paal omhoog. Sla je hard genoeg, dan klinkt bovenin de bel.',
         'De naam komt van Hendrik Jut. In 1872 pleegde hij in Den Haag een beruchte roofmoord. Toen hij in 1876 terechtstond, was het hele land boos, en kermisbazen boden een kop van Jut aan: een houten kop waar je met een hamer op mocht slaan. Zo gaat het verhaal; helemaal zeker is het niet.'
@@ -273,6 +287,7 @@
     },
     {
       id: 'knikkeren', naam: 'Knikkeren', tegel: 'ill-knikkers', tijd: 'Eeuwenoud', kort: 'Een potje in het zand',
+      muziek: 'De snaren van het klavecimbel worden aangetokkeld: korte, heldere tikjes, als knikkers die tegen elkaar ketsen en wegrollen.',
       herkomst: [
         'Kinderen speelden al in de oudheid met noten, steentjes en balletjes. Knikkers waren vaak van gebakken klei; die waren goedkoop. Wie meer geld had, kon knikkers van steen of glas kopen.',
         'Op prenten uit de zeventiende eeuw zie je kinderen knikkeren, zoals op het Knikkerspel van Michiel Mosijn (omstreeks 1640 tot 1655).'
@@ -287,6 +302,7 @@
     },
     {
       id: 'tollen', naam: 'Tollen', tegel: 'ill-tol', tijd: 'Eeuwenoud', kort: 'Een zweepje en een tol die maar blijft draaien',
+      muziek: 'In drie tellen, met noten die om en om draaien: zo blijft de muziek bewegen zolang je tol draait.',
       herkomst: [
         'De tol is een van de oudste stukken speelgoed. Op het schilderij Kinderspelen van Pieter Bruegel de Oude, uit 1560, zie je kinderen die hun tol met een zweepje laten draaien.',
         'Er waren drijftollen, die je met een zweepje aan de gang houdt, en tollen die je met een touw opwindt en weggooit.'
@@ -297,6 +313,34 @@
       bronnen: [
         { tekst: 'Children\'s Games (Bruegel) (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Children%27s_Games_(Bruegel)' },
         { tekst: 'Bruegels Kinderspelen (World History Commons)', url: 'https://worldhistorycommons.org/node/83' }
+      ]
+    },
+    {
+      id: 'muziek', naam: 'De muziek', tegel: 'ill-muziek', tijd: 'Gouden Eeuw, en later', kort: 'Wat je hoort in Het Speelhuys, en waarom',
+      herkomst: [
+        'In Het Speelhuys heeft elke plek en elk spel een eigen stuk. Er klinkt geen opname: een klein ensemble zoals in de zeventiende eeuw speelt alles zelf, in je telefoon of computer. De blokfluit en de luit spelen de melodie, de viola da gamba strijkt de bas, de cister tokkelt, het klavecimbel tikt en de tabortrom slaat de maat.',
+        'Vier melodieën komen van Jacob van Eyck (rond 1590-1657). Hij was blind, stadsbeiaardier van Utrecht en de grootste klokkenkenner van zijn tijd. Volgens de verhalen speelde hij \'s avonds blokfluit voor de wandelaars op het Janskerkhof.',
+        'Zijn stukken staan in <i>Der Fluyten Lust-hof</i> (Amsterdam, 1644-1656): bekende liedjes, vaak uit Engeland, met daarna variaties waarin de noten steeds sneller worden. Het is het grootste werk voor één blaasinstrument uit de Europese geschiedenis.',
+        'De andere stukken zijn nieuw, in de trant van toen: dansen, menuetten, een gaillarde en een gavotte. Op zolder speelt een speeldoos en op de kermis een draaiorgel; die kwamen pas later, rond 1800 en in de negentiende eeuw.'
+      ],
+      plekken: [
+        ['straat', 'De gracht', 'Een vrolijk haakje dat in je hoofd blijft hangen (do, do-re, mi, do): zo word je welkom geheten aan de gracht, en zo herken je het huis.'],
+        ['voorkamer', 'De voorkamer', 'Deftig en rustig, zoals een nette voorkamer met een kroonluchter en spellen aan de muur.'],
+        ['zolder', 'De zolder', 'Zacht en een beetje dromerig, zoals een oud speeldoosje dat je tussen het speelgoed onder de balken terugvindt.'],
+        ['pronkkamer', 'De pronkkamer', 'Hier staan je prijzen achter glas: daar hoort plechtige muziek bij, alsof je met je zilver binnenkomt.'],
+        ['kunstkamer', 'De Kunstkamer', 'De blokfluit zingt als een nachtegaal, met trillers en loopjes: een van de bekendste stukken van Van Eyck, om rustig bij te lezen.'],
+        ['kermis', 'De kermis', 'Met klokkenspel, grote trom en bekken: zo klonk de kermis, al van ver.']
+      ],
+      weetjes: ['Elk stuk komt in ronden: eerst de melodie, dan een variatie met snellere noten, en dan de melodie op een ander instrument. Zo deed Van Eyck het ook.', 'De begeleiding wordt per stuk bedacht, zoals een speler aan het klavecimbel dat vroeger deed: bij elke maat het akkoord dat het best bij de melodie past.', 'Vlak voor het slot van een deel klinkt een triller, en het tempo vertraagt een tikje, zoals echte musici dat doen.'],
+      kunst: [
+        { titel: 'Jonge fluitspeler', maker: 'Judith Leyster, omstreeks 1630-1635', url: 'https://collection.nationalmuseum.se/en/collection/item/18123/', waar: 'Nationalmuseum, Stockholm' },
+        { titel: 'Jonge vrouw met een luit', maker: 'Johannes Vermeer, omstreeks 1662-1665', url: 'https://metmuseum.org/toah/works-of-art/25.110.24', waar: 'Metropolitan Museum of Art, New York' }
+      ],
+      bronnen: [
+        { tekst: 'Jacob van Eyck (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Jacob_van_Eyck' },
+        { tekst: 'Der Fluyten Lust-hof (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Der_Fluyten_Lust-hof' },
+        { tekst: 'Proefschrift over Jacob van Eyck (Universiteit Utrecht)', url: 'https://dspace.library.uu.nl/handle/1874/9195' },
+        { tekst: 'Louis Peter Grijp, Het Nederlandse lied in de Gouden Eeuw (DBNL)', url: 'https://dbnl.org/tekst/grij001nede01_01/grij001nede01_01_0042.php' }
       ]
     }
   ];
@@ -339,6 +383,55 @@
   }
 
   function lijstje(items) { return `<ul>${items.map((t) => `<li>${t}</li>`).join('')}</ul>`; }
+
+  // ---------- De muziek: welk stuk, waar het vandaan komt, wie het speelt, en luisteren ----------
+  const INSTRUMENT = { blokfluit: 'blokfluit', luit: 'luit', klavecimbel: 'klavecimbel' };
+  function bezettingVan(st) {
+    if (st.stijl === 'orgel') return 'draaiorgel';
+    if (st.stijl === 'speeldoos') return 'speeldoos';
+    const l = [INSTRUMENT[st.melodie] || st.melodie];
+    if (st.stijl === 'klavier') l.push('klavecimbel');
+    if (st.stijl === 'dans') { l.push('cister'); if (st.gamba) l.push('viola da gamba'); if (st.trom) l.push('tabortrom'); }
+    if (st.stijl === 'arpeggio' || st.stijl === 'menuet') { if (st.klokjes) l.push('klokjes'); l.push('luit', 'viola da gamba'); }
+    const u = Array.from(new Set(l));
+    return u.length > 1 ? u.slice(0, -1).join(', ') + ' en ' + u[u.length - 1] : u[0];
+  }
+  const stukVan = (naam) => (window.Muziek && Muziek.stukken[naam]) || null;
+  let luisterNaar = null;   // het stuk dat je hier aanzette (null: het eigen stuk van de Kunstkamer)
+  function luisterKnop(naam, wat) {
+    const aan = luisterNaar === naam && window.Muziek && Muziek.aan;
+    return `<button class="kk-luister${aan ? ' speelt' : ''}" type="button" data-stuk="${naam}" aria-pressed="${aan}" aria-label="Luister naar ${esc(wat)}">${icoon('muziek')}<span>${aan ? 'Speelt nu' : 'Luister'}</span></button>`;
+  }
+  function stukRegel(naam, wat, uitleg) {
+    const st = stukVan(naam);
+    if (!st) return '';
+    // de instrumenten noemen we niet nog eens als de beschrijving ze al noemt
+    const bez = bezettingVan(st), al = bez.split(/, | en /).every((i) => st.bron.toLowerCase().includes(i));
+    return `<div class="kk-stukregel">${luisterKnop(naam, st.titel)}<div><p class="kk-stuktitel">${wat ? `<span class="kk-plek">${esc(wat)}</span>` : ''}<b>${esc(st.titel)}</b></p><p class="kk-stukbron">${esc(st.bron)}.${al ? '' : ` Gespeeld op ${esc(bez)}.`}</p>${uitleg ? `<p>${esc(uitleg)}</p>` : ''}</div></div>`;
+  }
+  function werkLuisterknoppen() {
+    if (!zaal) return;
+    zaal.querySelectorAll('.kk-luister').forEach((b) => {
+      const aan = b.dataset.stuk === luisterNaar && window.Muziek && Muziek.aan;
+      b.classList.toggle('speelt', !!aan);
+      b.setAttribute('aria-pressed', String(!!aan));
+      b.querySelector('span').textContent = aan ? 'Speelt nu' : 'Luister';
+    });
+  }
+  function luister(naam) {
+    if (!window.Muziek) return;
+    if (luisterNaar === naam && Muziek.aan) { luisterNaar = null; Muziek.kies('kunstkamer'); werkLuisterknoppen(); return; }
+    luisterNaar = naam;
+    Muziek.kies(naam);
+    // staat de muziek uit, dan zet deze knop hem aan (je vroeg erom)
+    if (!Muziek.aan) { const k = document.getElementById('knop-muziek'); if (k) k.click(); }
+    werkLuisterknoppen();
+  }
+  function terugNaarEigenMuziek() {
+    if (luisterNaar === null) return;
+    luisterNaar = null;
+    if (window.Muziek && location.hash === '#kunstkamer') Muziek.kies('kunstkamer');
+  }
   function toonStuk(i) {
     const s = STUKKEN[i];
     open = i;
@@ -358,14 +451,16 @@
           <div class="kk-tekst">
             <h2>${esc(s.naam)}</h2>
             <p class="kk-tijd">${esc(s.tijd)}</p>
-            <h3>Waar komt het vandaan?</h3>
+            <h3>${s.plekken ? 'Waar komt de muziek vandaan?' : 'Waar komt het vandaan?'}</h3>
             ${s.herkomst.map((p) => `<p>${p}</p>`).join('')}
-            <h3>Zo speel je het</h3>
-            ${lijstje(s.spelen.map(esc))}
+            ${s.spelen ? `<h3>Zo speel je het</h3>${lijstje(s.spelen.map(esc))}` : ''}
+            ${s.plekken ? `<section class="kk-muziek"><h3>Wat je waar hoort</h3>${s.plekken.map(([naam, wat, uitleg]) => stukRegel(naam, wat, uitleg)).join('')}
+              <h3>En in de spellen</h3>${STUKKEN.filter((x) => x.muziek).map((x) => stukRegel(x.id, x.naam, '')).join('')}</section>` : ''}
+            ${s.muziek ? `<section class="kk-muziek"><h3>De muziek in het spel</h3>${stukRegel(s.id, '', s.muziek)}</section>` : ''}
             ${s.weetjes.length ? `<div class="kk-weetje"><h3>Wist je dat?</h3>${s.weetjes.map((w) => `<p>${esc(w)}</p>`).join('')}</div>` : ''}
             <h3 class="kk-bron-kop">Bronnen</h3>
             <ul class="kk-bronnen">${s.bronnen.map((b) => `<li><a href="${b.url}" target="_blank" rel="noopener">${esc(b.tekst)}</a></li>`).join('')}</ul>
-            <a class="kk-naar-spel" href="#${s.id}">${icoon('pijl')}<span>Zelf ${esc(s.naam.toLowerCase())} spelen in Het Speelhuys</span></a>
+            ${s.plekken ? '' : `<a class="kk-naar-spel" href="#${s.id}">${icoon('pijl')}<span>Zelf ${esc(s.naam.toLowerCase())} spelen in Het Speelhuys</span></a>`}
           </div>
         </div>
         <nav class="kk-blader" aria-label="Bladeren">
@@ -374,6 +469,7 @@
         </nav>
       </div>`;
     stuk.querySelector('.kk-terug').addEventListener('click', terug);
+    stuk.querySelectorAll('.kk-luister').forEach((b) => b.addEventListener('click', () => luister(b.dataset.stuk)));
     stuk.querySelector('.kk-vorige').addEventListener('click', () => toonStuk((i + STUKKEN.length - 1) % STUKKEN.length));
     stuk.querySelector('.kk-volgende').addEventListener('click', () => toonStuk((i + 1) % STUKKEN.length));
     stuk.hidden = false;
@@ -388,6 +484,7 @@
   function terug() {
     const was = open;
     open = null;
+    terugNaarEigenMuziek();
     const stuk = zaal.querySelector('.kk-stuk');
     stuk.hidden = true;
     zaal.classList.remove('leest');
@@ -401,7 +498,7 @@
       if (open !== null) terug();
       zaal.scrollTop = 0;
     },
-    stop() { open = null; },
+    stop() { open = null; luisterNaar = null; },
     _stukken: STUKKEN.map((s) => s.id),
     _toon(id) { const i = STUKKEN.findIndex((s) => s.id === id); if (i >= 0) toonStuk(i); }
   };

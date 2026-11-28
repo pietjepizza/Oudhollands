@@ -250,7 +250,11 @@ Op de iPhone: open de site in Safari, tik op Deel en kies *Zet op beginscherm*.
 kijken" boven de deur, en een eigen knop met een boekje helemaal rechts in de knoppenbalk aan de gracht. Binnen hangt goudleer aan de
 muur en staat per spel een vitrine met een Delfts tegeltje. Wie een vitrine opent, leest waar het spel vandaan komt, hoe
 je het speelt, op welke schilderijen en prenten het staat (met links naar de musea), een weetje en de bronnen; onderaan
-staat een knop om het spel zelf te spelen. Een kunstkamer was in de zeventiende eeuw de verzameling waarmee een
+staat een knop om het spel zelf te spelen. Bij elk spel staat ook **de muziek** die je in dat spel hoort: de titel, waar
+het stuk vandaan komt, welke instrumenten het spelen en waarom het bij het spel past, met een knop **Luister** die het
+stuk laat klinken (terug bij alle vitrines speelt weer het Nachtegaeltje). De laatste vitrine, met een tegeltje van een
+luit, gaat over de muziek zelf: Jacob van Eyck en zijn *Der Fluyten Lust-hof*, de instrumenten, en wat je waar hoort,
+met een luisterknop bij elke plek en elk spel. Een kunstkamer was in de zeventiende eeuw de verzameling waarmee een
 welgestelde burger liet zien wat hij wist en had.
 
 **De opening.** Een korte film over de echte straat. Eerst zwart met het tegeltje van het huis: tik om te beginnen
@@ -355,7 +359,7 @@ je op de zolder.
 
 Een statische site zonder build-stap: `index.html`, `css/stijl.css` en losse scripts in `js/`.
 
-**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=48`), zodat een
+**Nieuwe versie uitbrengen.** Stijl en scripts hebben een versienummer in hun adres (`js/huis.js?v=49`), zodat een
 browser of de app nooit een nieuwe pagina met oude scripts combineert. Verhoog bij elke uitgave het nummer `?v=` in
 `index.html` en `V` in `sw.js`. Neemt een nieuwe versie het over, dan laadt de pagina zichzelf één keer opnieuw.
 Lokaal draaien:
